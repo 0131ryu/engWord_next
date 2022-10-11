@@ -7,7 +7,7 @@ const items = [
   { label: <Link href="/">영단어 외우기</Link>, key: "item-1" },
   { label: <Link href="/sns">SNS</Link>, key: "item-2" },
   {
-    label: <Link href="/login">로그인</Link>,
+    label: <Link href="/signin">로그인</Link>,
     key: "item-3",
   },
   { label: <Link href="/signup">회원가입</Link>, key: "item-4" },

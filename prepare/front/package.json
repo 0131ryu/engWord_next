@@ -12,10 +12,11 @@
   "license": "ISC",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@reduxjs/toolkit": "^1.8.6",
     "antd": "^4.23.5",
     "babel-plugin-styled-components": "^2.0.7",
     "next": "^12.3.1",
-    "next-redux-wrapper": "^8.0.0",
+    "next-redux-wrapper": "^6.0.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-redux": "^8.0.4",

@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Card, Avatar, Button } from "antd";
+import { useDispatch } from "react-redux";
+// import { logoutAction } from "../reducers/user";
+import { logoutAction } from "../store/userSlice";
 
-const UserInfo = ({ setIsLoggedIn }) => {
-  // const onLogout = useCallback(() => {
-  //   setIsLoggedIn(false);
-  // }, []);
+const UserInfo = () => {
+  const dispatch = useDispatch();
+  const onLogout = useCallback(() => {
+    dispatch(logoutAction());
+  }, []);
   return (
     <>
       <Card
@@ -21,7 +25,7 @@ const UserInfo = ({ setIsLoggedIn }) => {
         ]}
       >
         <Card.Meta avatar={<Avatar>ZC</Avatar>} title="Zerocho" />
-        {/* <Button onClick={onLogout}>로그아웃</Button> */}
+        <Button onClick={onLogout}>로그아웃</Button>
       </Card>
     </>
   );

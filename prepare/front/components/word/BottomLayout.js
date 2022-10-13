@@ -20,10 +20,6 @@ const data = [
     title: "Ant Design Title 3",
     subTitle: "subTitle 3",
   },
-  {
-    title: "Ant Design Title 4",
-    subTitle: "subTitle 4",
-  },
 ];
 
 const BottomLayout = () => {

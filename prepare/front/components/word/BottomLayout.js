@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addWord } from "../../store/wordSlice";
 import { List, Row, Col, Form, Input, Button, Checkbox, Card } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
@@ -21,6 +21,7 @@ const dummyPost = {
 
 const BottomLayout = () => {
   const dispatch = useDispatch();
+  const { wordList } = useSelector((state) => state.word);
   const onChangeEng = useCallback((e) => {
     setEnglish(e.target.value);
   }, []);
@@ -37,6 +38,7 @@ const BottomLayout = () => {
         return (
           <Col span={8}>
             <List
+              itemLayout="vertical"
               bordered
               header={
                 <div>
@@ -85,7 +87,11 @@ const BottomLayout = () => {
                 </div>
               }
             >
-              <WordCard />
+              <List.Item>
+                {wordList.map((c) => {
+                  return <WordCard key={c.id} word={c} />;
+                })}
+              </List.Item>
             </List>
           </Col>
         );

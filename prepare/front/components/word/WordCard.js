@@ -1,9 +1,18 @@
 import React, { useCallback, useState } from "react";
 // import { useDispatch } from "react-redux";
-import { Button, Checkbox } from "antd";
+import { Row, Col, Button, Checkbox, Card } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-// import { addWord } from "../../store/wordSlice";
+import styled from "styled-components";
+
+const CardWrapper = styled.div`
+  width: 130;
+  height: 50;
+  textalign: "center";
+  display: "flex";
+  justifycontent: "center";
+  alignitems: "center";
+`;
 
 const WordCard = () => {
   const onChange = useCallback(() => {
@@ -11,21 +20,23 @@ const WordCard = () => {
   }, []);
   return (
     <div>
-      <Button
-        style={{
-          width: 330,
-          height: 50,
-          textAlign: "center",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Checkbox onChange={onChange} />
-        <span>hello</span> <span>hello2</span>
-        <EditOutlined />
-        <DeleteOutlined />
-      </Button>
+      <Row gutter={{ xs: 24, sm: 16, md: 8 }}>
+        <Col span={24}>
+          <Card>
+            <Card.Grid style={{ border: "none" }} hoverable={false}>
+              <Checkbox onChange={onChange} />
+              <span>hello</span>
+            </Card.Grid>
+            <Card.Grid style={{ border: "none" }} hoverable={false}>
+              <span>hello2</span>
+            </Card.Grid>
+            <Card.Grid style={{ border: "none" }} hoverable={false}>
+              <EditOutlined />
+              <DeleteOutlined />
+            </Card.Grid>
+          </Card>
+        </Col>
+      </Row>
     </div>
   );
 };

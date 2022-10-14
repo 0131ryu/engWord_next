@@ -5,8 +5,6 @@ import TopLayout from "../components/word/TopLayout";
 import MiddleLayout from "../components/word/MiddleLayout";
 import BottomLayout from "../components/word/Bottomlayout";
 
-import EasyWords from "../components/word/EasyWords";
-
 const onChange = (e) => {
   console.log(`checked = ${e.target.checked}`);
 };

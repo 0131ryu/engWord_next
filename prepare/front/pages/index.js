@@ -4,6 +4,7 @@ import AppLayout from "../components/AppLayout";
 import TopLayout from "../components/word/TopLayout";
 import MiddleLayout from "../components/word/MiddleLayout";
 import BottomLayout from "../components/word/Bottomlayout";
+import AllWords from "../components/word/AllWords";
 
 const onChange = (e) => {
   console.log(`checked = ${e.target.checked}`);
@@ -15,8 +16,8 @@ const Home = () => {
       <TopLayout />
       <MiddleLayout />
       <br />
-      <BottomLayout />
-      {/* <EasyWords /> */}
+      {/* <BottomLayout /> */}
+      <AllWords />
     </AppLayout>
   );
 };

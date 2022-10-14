@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 // import { useDispatch } from "react-redux";
-import { Row, Col, Checkbox, Card } from "antd";
+import { Row, Col, Button, Checkbox, Card } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import styled from "styled-components";
@@ -14,7 +14,7 @@ const CardWrapper = styled.div`
   alignitems: "center";
 `;
 
-const WordCard = ({ word }) => {
+const AdvanceCard = () => {
   const onChange = useCallback(() => {
     console.log("onChangeButton");
   }, []);
@@ -25,10 +25,10 @@ const WordCard = ({ word }) => {
           <Card>
             <Card.Grid style={{ border: "none" }} hoverable={false}>
               <Checkbox onChange={onChange} />
-              <span>{word.english}</span>
+              <span>advance</span>
             </Card.Grid>
             <Card.Grid style={{ border: "none" }} hoverable={false}>
-              <span>{word.korean}</span>
+              <span>advance2</span>
             </Card.Grid>
             <Card.Grid style={{ border: "none" }} hoverable={false}>
               <EditOutlined />
@@ -41,8 +41,8 @@ const WordCard = ({ word }) => {
   );
 };
 
-WordCard.prototype = {
+AdvanceCard.prototype = {
   children: PropTypes.node.isRequired,
 };
 
-export default WordCard;
+export default AdvanceCard;

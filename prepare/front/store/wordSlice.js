@@ -4,8 +4,52 @@
 //체크하기
 import { createSlice } from "@reduxjs/toolkit";
 
+// const initialState = {
+//   wordList: [
+//     {
+//       id: 1,
+//       User: {
+//         id: 1,
+//         nickname: "HIHI",
+//       },
+//       english: "hello",
+//       korean: "안녕하세요",
+//       type: "easy",
+//       status: "C",
+//     },
+//   ],
+// }
+
 const initialState = {
-  wordList: [
+  //wordList로 공유되서 다 같이 늘어나는 것
+
+  easyList: [
+    {
+      id: 1,
+      User: {
+        id: 1,
+        nickname: "HIHI",
+      },
+      english: "hello",
+      korean: "안녕하세요",
+      type: "easy",
+      status: "C",
+    },
+  ],
+  middleList: [
+    {
+      id: 1,
+      User: {
+        id: 1,
+        nickname: "HIHI",
+      },
+      english: "hello",
+      korean: "안녕하세요",
+      type: "easy",
+      status: "C",
+    },
+  ],
+  advanceList: [
     {
       id: 1,
       User: {
@@ -28,9 +72,22 @@ export const postSlice = createSlice({
       state.wordList.push(action.payload),
         (state.wordList = [...state.wordList]);
     },
+    addEasyWord: (state, action) => {
+      state.easyList.push(action.payload),
+        (state.easyList = [...state.easyList]);
+    },
+    addMiddleWord: (state, action) => {
+      state.middleList.push(action.payload),
+        (state.middleList = [...state.middleList]);
+    },
+    addAdvanceWord: (state, action) => {
+      state.advanceList.push(action.payload),
+        (state.advanceList = [...state.advanceList]);
+    },
   },
 });
 
-export const { addWord } = postSlice.actions;
+export const { addWord, addEasyWord, addMiddleWord, addAdvanceWord } =
+  postSlice.actions;
 
 export default postSlice.reducer;

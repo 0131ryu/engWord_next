@@ -20,18 +20,6 @@ const initialState = {
   ],
 };
 
-const dummyPost = {
-  id: 1,
-  User: {
-    id: 1,
-    nickname: "HI2",
-  },
-  english: "test",
-  korean: "테스트",
-  type: "easy",
-  status: "C",
-};
-
 export const postSlice = createSlice({
   name: "post",
   initialState,

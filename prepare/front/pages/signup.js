@@ -1,23 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
-import LoginForm from "../components/LoginForm";
-// import SuccessLogin from "../components/SuccessLogin";
 import AppLayout from "../components/AppLayout";
 import FormBg from "../components/FormBg";
+import JoinForm from "../components/JoinForm";
 
-const signIn = () => {
+const signUp = () => {
   return (
     <div>
       <FormBg>
         <AppLayout />
-        <LoginForm />
+        <JoinForm />
       </FormBg>
     </div>
   );
 };
 
-signIn.prototype = {
+signUp.prototype = {
   children: PropTypes.node.isRequired,
 };
 
-export default signIn;
+export default signUp;

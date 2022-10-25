@@ -3,6 +3,11 @@ import { useSelector } from "react-redux";
 import { Menu, Row, Col, Button } from "antd";
 import Link from "next/link";
 import PropTypes from "prop-types";
+// import styled from "styled-components";
+
+// const AppLayoutWrapper = () => styled.div`
+//   z-index: 10;
+// `;
 
 const items = [
   { label: <Link href="/">영단어 외우기</Link>, key: "item-1" },
@@ -26,13 +31,13 @@ const AppLayout = ({ children }) => {
   return (
     <div>
       <Menu items={isLoggedIn ? loginItems : items} mode="horizontal" />
-      <Row>
-        <Col xs={24} md={3}></Col>
-        <Col xs={24} md={18}>
-          {children}
-        </Col>
-        <Col xs={24} md={3}>
-          {/* <Button
+      {/* <Row>
+        <Col xs={0} md={4}></Col>
+        <Col xs={8} md={16} lg={32}> */}
+      {children}
+      {/* </Col>
+        <Col xs={0} md={4}> */}
+      {/* <Button
             type="link"
             href="https://ba-gotocode131.tistory.com/"
             target="_blank"
@@ -40,8 +45,8 @@ const AppLayout = ({ children }) => {
           >
             블로그
           </Button> */}
-        </Col>
-      </Row>
+      {/* </Col>
+      </Row> */}
     </div>
   );
 };

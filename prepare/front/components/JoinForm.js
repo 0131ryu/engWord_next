@@ -1,21 +1,17 @@
 import React, { useCallback } from "react";
 import { Button, Checkbox, Form, Input } from "antd";
 import styled from "styled-components";
-import Link from "next/link";
-import { CommentOutlined, GoogleOutlined } from "@ant-design/icons";
 
 import useInput from "../hooks/useInput";
 import { useDispatch } from "react-redux";
 import { loginAction } from "../store/userSlice";
 
-const LoginWrapper = styled(Form)`
+const JoinWrapper = styled(Form)`
   background-color: white;
   width: 500px;
   height: 500px;
   border-radius: 1%;
   z-index: 2;
-  text-align: center;
-  align-items: center;
   // 가운데 정렬
   position: absolute;
   top: 120px;
@@ -23,20 +19,20 @@ const LoginWrapper = styled(Form)`
   margin-left: calc(500px / -2);
 `;
 
-const LoginInputWrapper = styled(Input)`
-  margin-top: 10px;
+const JoinInputWrapper = styled(Input)`
   border-style: solid;
   border-color: green;
   width: 400px;
   height: 40px;
 `;
 
-const LoginDivWrapper = styled.div`
+const JoinDivWrapper = styled.div`
   position: relative;
-  top: 140px;
+  top: 80px;
+  left: 50px;
 `;
 
-const LoginButtonWrapper = styled(Button)`
+const JoinButtonWrapper = styled(Button)`
   background-color: green;
   color: white;
   width: 400px;
@@ -48,7 +44,7 @@ const ButtonWrapper = styled.div`
   margin-top: 10px;
 `;
 
-const LoginForm = () => {
+const JounForm = () => {
   const onFinish = (values) => {
     console.log("Success:", values);
   };
@@ -57,24 +53,11 @@ const LoginForm = () => {
   };
 
   return (
-    <LoginWrapper>
-      <LoginDivWrapper>
-        <Link href="https://accounts.kakao.com/login?continue=https%3A%2F%2Faccounts.kakao.com%2Fweblogin%2Faccount%2Finfo">
-          <a>
-            <CommentOutlined />
-            카카오톡
-          </a>
-        </Link>
-        <Link href="https://contacts.google.com/?hl=ko">
-          <a>
-            <GoogleOutlined />
-            구글
-          </a>
-        </Link>
-        {/* <Image src={kakaoIcon} alt="img" width="500" height="500" />
-        <Image src={googleIcon} alt="img" width="500" height="500" /> */}
+    <JoinWrapper>
+      <JoinDivWrapper>
+        <label htmlFor="user-email">이메일</label>
         <br />
-        <LoginInputWrapper
+        <JoinInputWrapper
           name="user-email"
           type="email"
           placeholder="이메일"
@@ -82,7 +65,32 @@ const LoginForm = () => {
           // onChange={onChangeEmail}
           required
         />
-        <LoginInputWrapper
+        <br />
+        <label htmlFor="user-email">닉네임</label>
+        <br />
+        <JoinInputWrapper
+          name="user-nickname"
+          placeholder="닉네임"
+          // value={password}
+          // onChange={onChangePassword}
+          type="text"
+          required
+        />
+        <br />
+        <label htmlFor="user-email">비밀번호</label>
+        <br />
+        <JoinInputWrapper
+          name="user-password"
+          placeholder="비밀번호"
+          // value={password}
+          // onChange={onChangePassword}
+          type="password"
+          required
+        />
+        <br />
+        <label htmlFor="user-email">비밀번호 확인</label>
+        <br />
+        <JoinInputWrapper
           name="user-password"
           placeholder="비밀번호"
           // value={password}
@@ -91,16 +99,11 @@ const LoginForm = () => {
           required
         />
         <div>
-          <LoginButtonWrapper htmlType="submit">로그인</LoginButtonWrapper>
-          <Link href="/signup">
-            <a>
-              <ButtonWrapper>회원가입</ButtonWrapper>
-            </a>
-          </Link>
+          <JoinButtonWrapper htmlType="submit">회원가입</JoinButtonWrapper>
         </div>
-      </LoginDivWrapper>
-    </LoginWrapper>
+      </JoinDivWrapper>
+    </JoinWrapper>
   );
 };
 
-export default LoginForm;
+export default JounForm;

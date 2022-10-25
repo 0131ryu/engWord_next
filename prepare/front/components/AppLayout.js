@@ -32,9 +32,15 @@ const AppLayout = ({ children }) => {
     <div>
       <Menu items={isLoggedIn ? loginItems : items} mode="horizontal" />
       {/* <Row>
-        <Col xs={0} md={4}></Col>
-        <Col xs={8} md={16} lg={32}> */}
-      {children}
+        <Col></Col>*/}
+      <Row>
+        <Col xs={8} md={3}></Col>
+        <Col xs={8} md={18} lg={32}>
+          {children}
+        </Col>
+        <Col xs={8} md={3}></Col>
+      </Row>
+
       {/* </Col>
         <Col xs={0} md={4}> */}
       {/* <Button

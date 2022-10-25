@@ -25,10 +25,10 @@ const WordCard = ({ word }) => {
           <Card>
             <Card.Grid style={{ border: "none" }} hoverable={false}>
               <Checkbox onChange={onChange} />
-              <span>{word.english}</span>
+              <span>A</span>
             </Card.Grid>
             <Card.Grid style={{ border: "none" }} hoverable={false}>
-              <span>{word.korean}</span>
+              <span>B</span>
             </Card.Grid>
             <Card.Grid style={{ border: "none" }} hoverable={false}>
               <EditOutlined />

@@ -45,53 +45,17 @@ const BottomLayout = () => {
                   {title[i]}
                   <div>
                     <Row gutter={{ xs: 8, sm: 16, md: 24 }}>
-                      <Col span={24}>
-                        <Form onFinish={onSubmit}>
-                          <Input
-                            placeholder="영어 입력"
-                            style={{
-                              width: 95,
-                              height: 37,
-                              marginLeft: 10,
-                              marginBottom: 5,
-                            }}
-                            onChange={onChangeEng}
-                          />
-
-                          <Input
-                            placeholder="한글 입력"
-                            style={{
-                              width: 95,
-                              height: 37,
-                              marginLeft: 10,
-                              marginBottom: 5,
-                            }}
-                            onChange={onChangeKor}
-                          />
-
-                          <Button
-                            style={{
-                              width: 95,
-                              height: 37,
-                              marginLeft: 10,
-                              marginBottom: 5,
-                            }}
-                            htmlType="submit"
-                          >
-                            등록
-                          </Button>
-                        </Form>
-                      </Col>
+                      <Col span={18}></Col>
                     </Row>
                   </div>
                 </div>
               }
             >
-              <List.Item>
+              {/* <List.Item>
                 {wordList.map((c) => {
                   return <WordCard key={c.id} word={c} />;
                 })}
-              </List.Item>
+              </List.Item> */}
             </List>
           </Col>
         );

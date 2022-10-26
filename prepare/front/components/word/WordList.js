@@ -1,4 +1,11 @@
 import React from "react";
+import { Fragment } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 
 const products = [
   {
@@ -7,6 +14,7 @@ const products = [
     href: "#",
     price: "$35",
     color: "Black",
+    title: "🥉 Easy",
   },
   {
     id: 1,
@@ -14,6 +22,7 @@ const products = [
     href: "#",
     price: "$35",
     color: "Black",
+    title: "🥈 Middle",
   },
   {
     id: 1,
@@ -21,26 +30,33 @@ const products = [
     href: "#",
     price: "$35",
     color: "Black",
+    title: "🥇 Advance",
   },
 ];
 const WordList = () => {
   return (
     <>
-      <div className="bg-white">
-        <div className="bg-red-400 mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+      <div className="bg-white lg:w-full w-full">
+        <div className="bg-red-400 place-center mx-auto max-w-3xl py-8 px-4 sm:py-20 sm:px-3 lg:max-w-screen-xl">
           <h2 className="text-2xl font-bold tracking-tight text-gray-900">
             Customers also purchased
           </h2>
 
-          <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+          <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-1">
             {products.map((product) => (
               <div
                 key={product.id}
-                className="group relative bg-white rounded-lg p-4"
+                className="group relative rounded-lg p-3 lg:w-80 lg:ml-10"
               >
-                <div className="min-h-30 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
-                  <div className="rounded-lg p-2">
-                    <div className="flex items-start bg-white">
+                <div className="min-h-20 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-white lg:aspect-none">
+                  {/* item start */}
+                  <div>
+                    <h1 class="text-slate-900 font-medium px-3 pt-2">
+                      {product.title}
+                    </h1>
+                  </div>
+                  <div className="flex items-start bg-gray-400 group-hover:opacity-80 rounded-lg m-2">
+                    <div className="h-24 w-90 sm:600 w-96 lg:w-48">
                       <div className="flex py-5 pl-1">
                         <input
                           id="comments"
@@ -50,52 +66,79 @@ const WordList = () => {
                         />
                       </div>
                       <li class="flex first:pt-0 last:pb-0">
-                        <div class="py-3 ml-3 overflow-hidden">
-                          <p class="text-sm text-slate-900">
-                            {product.name} asfafqrqwrqwrfafagag qrqwrqwrfafagag
+                        <div class="relative bottom-10 ml-9 overflow-hidden">
+                          <p class="text-sm font-medium text-slate-900">
+                            {product.name}
                           </p>
-                          <p class="text-sm text-slate-500 truncate">
-                            {product.color}asfafqrqwrqwrfafagag
+                          <p class="text-sm text-slate-900 truncate">
+                            {product.color}
                           </p>
                         </div>
                       </li>
-                      <div className="py-3 text-sm">
-                        <p className="text-gray-500 group-hover:text-emerald-600">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="w-6 h-6"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                    </div>
+                    <div class="relative h-24 w-24 py-2">
+                      <Menu
+                        as="div"
+                        className="relative inline-block text-left"
+                      >
+                        <div>
+                          <Menu.Button className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-1 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-100">
+                            Options
+                            <ChevronDownIcon
+                              className="ml-1 h-5 w-5"
+                              aria-hidden="true"
                             />
-                          </svg>
-                        </p>
+                          </Menu.Button>
+                        </div>
 
-                        <p className="my-2 text-gray-500 group-hover:text-red-500">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-6 h-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                            />
-                          </svg>
-                        </p>
-                      </div>
+                        <Transition
+                          as={Fragment}
+                          enter="transition ease-out duration-90"
+                          enterFrom="transform opacity-0 scale-95"
+                          enterTo="transform opacity-100 scale-100"
+                          leave="transition ease-in duration-75"
+                          leaveFrom="transform opacity-100 scale-100"
+                          leaveTo="transform opacity-0 scale-95"
+                        >
+                          <Menu.Items className="absolute right-0 z-10 mt-2 w-24 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <div className="py-0">
+                              <Menu.Item>
+                                {({ active }) => (
+                                  <a
+                                    href="#"
+                                    className={classNames(
+                                      active
+                                        ? "rounded-md bg-gray-100 text-gray-900"
+                                        : "rounded-md text-gray-700",
+                                      "block px-8 py-1 text-sm"
+                                    )}
+                                  >
+                                    수정
+                                  </a>
+                                )}
+                              </Menu.Item>
+                              <Menu.Item>
+                                {({ active }) => (
+                                  <a
+                                    href="#"
+                                    className={classNames(
+                                      active
+                                        ? "bg-gray-100 text-gray-900"
+                                        : "text-gray-700",
+                                      "block px-8 py-1 text-sm"
+                                    )}
+                                  >
+                                    삭제
+                                  </a>
+                                )}
+                              </Menu.Item>
+                            </div>
+                          </Menu.Items>
+                        </Transition>
+                      </Menu>
                     </div>
                   </div>
+                  {/* item end */}
                 </div>
               </div>
             ))}

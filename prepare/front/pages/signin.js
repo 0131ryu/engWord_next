@@ -13,9 +13,8 @@ const signIn = () => {
         <AppLayout />
         <LoginForm />
       </FormBg> */}
-      <NavbarForm>
-        <LoginForm />
-      </NavbarForm>
+      <NavbarForm />
+      <LoginForm />
     </div>
   );
 };

@@ -36,15 +36,15 @@ const products = [
 const WordList = () => {
   return (
     <>
-      <div className="bg-white lg:w-full relative">
-        <div className="bg-green-400 place-content-center mx-auto max-w-1xl py-8 px-4 sm:py-20 sm:px-3 lg:max-w-screen-xl">
-          <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-1">
+      <div className=" lg:w-full relative bottom-28">
+        <div className=" place-content-center mx-auto max-w-1xl py-8 px-4 sm:py-20 sm:px-3 lg:max-w-screen-xl">
+          <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-1">
             {products.map((product) => (
               <div
                 key={product.id}
                 className="group relative rounded-lg p-3 lg:w-80 lg:ml-10"
               >
-                <div className="overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-white lg:aspect-none">
+                <div className="overflow-y-auto max-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-white border-2 border-light-green lg:aspect-none">
                   <div>
                     <h1 class="text-slate-900 font-medium px-3 pt-2">
                       {product.title}

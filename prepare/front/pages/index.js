@@ -9,10 +9,9 @@ const Home = () => {
     // <AppLayout>
     <>
       {/* <TopLayout /> */}
-      <NavbarForm>
-        <WordForm />
-        <WordList />
-      </NavbarForm>
+      <NavbarForm />
+      <WordForm />
+      <WordList />
     </>
     // {/* </AppLayout> */}
   );

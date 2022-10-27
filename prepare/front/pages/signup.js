@@ -12,9 +12,8 @@ const signUp = () => {
         <AppLayout />
         <JoinForm />
       </FormBg> */}
-      <NavbarForm>
-        <JoinForm />
-      </NavbarForm>
+      <NavbarForm />
+      <JoinForm />
     </div>
   );
 };

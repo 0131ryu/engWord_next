@@ -6,7 +6,14 @@ module.exports = {
   ],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "dark-green": "#395144",
+        "light-green": "#4E6C50",
+        "light-brown": "#AA8B56",
+        "light-beige": "#F0EBCE",
+      },
+    },
   },
   plugins: [],
 };

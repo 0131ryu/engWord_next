@@ -4,14 +4,18 @@ import LoginForm from "../components/LoginForm";
 // import SuccessLogin from "../components/SuccessLogin";
 import AppLayout from "../components/AppLayout";
 import FormBg from "../components/FormBg";
+import NavbarForm from "../components/NavbarForm";
 
 const signIn = () => {
   return (
     <div>
-      <FormBg>
+      {/* <FormBg>
         <AppLayout />
         <LoginForm />
-      </FormBg>
+      </FormBg> */}
+      <NavbarForm>
+        <LoginForm />
+      </NavbarForm>
     </div>
   );
 };

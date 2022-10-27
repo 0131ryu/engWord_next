@@ -3,14 +3,18 @@ import PropTypes from "prop-types";
 import AppLayout from "../components/AppLayout";
 import FormBg from "../components/FormBg";
 import JoinForm from "../components/JoinForm";
+import NavbarForm from "../components/NavbarForm";
 
 const signUp = () => {
   return (
     <div>
-      <FormBg>
+      {/* <FormBg>
         <AppLayout />
         <JoinForm />
-      </FormBg>
+      </FormBg> */}
+      <NavbarForm>
+        <JoinForm />
+      </NavbarForm>
     </div>
   );
 };

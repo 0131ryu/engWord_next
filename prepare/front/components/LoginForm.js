@@ -1,105 +1,88 @@
 import React, { useCallback } from "react";
-import { Button, Checkbox, Form, Input } from "antd";
-import styled from "styled-components";
-import Link from "next/link";
-import { CommentOutlined, GoogleOutlined } from "@ant-design/icons";
-
-import useInput from "../hooks/useInput";
-import { useDispatch } from "react-redux";
-import { loginAction } from "../store/userSlice";
-
-const LoginWrapper = styled(Form)`
-  background-color: white;
-  width: 500px;
-  height: 500px;
-  border-radius: 1%;
-  z-index: 2;
-  text-align: center;
-  align-items: center;
-  // 가운데 정렬
-  position: absolute;
-  top: 120px;
-  left: 50%;
-  margin-left: calc(500px / -2);
-`;
-
-const LoginInputWrapper = styled(Input)`
-  margin-top: 10px;
-  border-style: solid;
-  border-color: green;
-  width: 400px;
-  height: 40px;
-`;
-
-const LoginDivWrapper = styled.div`
-  position: relative;
-  top: 140px;
-`;
-
-const LoginButtonWrapper = styled(Button)`
-  background-color: green;
-  color: white;
-  width: 400px;
-  height: 40px;
-  margin-top: 30px;
-`;
-
-const ButtonWrapper = styled.div`
-  margin-top: 10px;
-`;
+import { LockClosedIcon, BookmarkIcon } from "@heroicons/react/20/solid";
 
 const LoginForm = () => {
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
-
   return (
-    <LoginWrapper>
-      <LoginDivWrapper>
-        <Link href="https://accounts.kakao.com/login?continue=https%3A%2F%2Faccounts.kakao.com%2Fweblogin%2Faccount%2Finfo">
-          <a>
-            <CommentOutlined />
-            카카오톡
-          </a>
-        </Link>
-        <Link href="https://contacts.google.com/?hl=ko">
-          <a>
-            <GoogleOutlined />
-            구글
-          </a>
-        </Link>
-        {/* <Image src={kakaoIcon} alt="img" width="500" height="500" />
-        <Image src={googleIcon} alt="img" width="500" height="500" /> */}
-        <br />
-        <LoginInputWrapper
-          name="user-email"
-          type="email"
-          placeholder="이메일"
-          // value={email}
-          // onChange={onChangeEmail}
-          required
-        />
-        <LoginInputWrapper
-          name="user-password"
-          placeholder="비밀번호"
-          // value={password}
-          // onChange={onChangePassword}
-          type="password"
-          required
-        />
+    <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md space-y-8">
         <div>
-          <LoginButtonWrapper htmlType="submit">로그인</LoginButtonWrapper>
-          <Link href="/signup">
-            <a>
-              <ButtonWrapper>회원가입</ButtonWrapper>
-            </a>
-          </Link>
+          <div className="mt-20 mx-auto w-auto bg-light-beige rounded-md h-10 w-10">
+            <BookmarkIcon />
+          </div>
+          <h4 className="mt-8 text-center text-3xl font-bold tracking-tight text-gray-900">
+            <span className="text-light-brown">EngWord</span>에 환영합니다!
+          </h4>
         </div>
-      </LoginDivWrapper>
-    </LoginWrapper>
+        <form className="mt-8 space-y-6" action="#" method="POST">
+          <input type="hidden" name="remember" defaultValue="true" />
+          <div className=" rounded-lg shadow-sm">
+            <div>
+              <label htmlFor="email-address" className="sr-only">
+                Email address
+              </label>
+              <input
+                id="email-address"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                className="relative mb-2 block w-full appearance-none rounded-lg border-2 border-light-beige px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-dark-green focus:outline-none focus:dark-green sm:text-sm"
+                placeholder="Email"
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="sr-only">
+                Password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                className="relative block w-full appearance-none rounded-lg border-2 border-light-beige px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-dark-green focus:outline-none focus:dark-green sm:text-sm"
+                placeholder="Password"
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <a
+                href="#"
+                className="font-medium text-light-brown hover:text-dark-green font-bold"
+              >
+                카카오 로그인
+              </a>
+            </div>
+
+            <div className="text-sm">
+              <a
+                href="#"
+                className="font-medium text-dark-green hover:text-light-green font-bold"
+              >
+                회원가입
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              className="group relative flex w-full justify-center rounded-md border border-transparent bg-dark-green py-2 px-4 text-sm font-medium text-white hover:bg-light-green focus:outline-none focus:ring-2 focus:ring-light-beige focus:ring-offset-2"
+            >
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                <LockClosedIcon
+                  className="h-5 w-5 text-light-beige group-hover:text-light-beige"
+                  aria-hidden="true"
+                />
+              </span>
+              Sign in
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 

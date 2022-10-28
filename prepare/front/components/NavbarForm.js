@@ -10,7 +10,7 @@ import {
 
 const navigation = [
   { name: "EngWord", href: "/", current: true },
-  { name: "SNS", href: "/sns", current: false },
+  { name: "SNS", href: "/post", current: false },
   { name: "WordGame", href: "/game", current: false },
 ];
 

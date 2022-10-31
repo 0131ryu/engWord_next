@@ -51,37 +51,6 @@ const PostForm = () => {
                 </button>
               </form>
             </div>
-            <div className="flex bg-light-beige m-2 p-2 rounded-lg">
-              <form className="w-full h-full" action="#" method="POST">
-                <div className="flex">
-                  <label htmlFor="word" className="sr-only">
-                    Email address
-                  </label>
-                  <textarea
-                    id="word"
-                    name="word"
-                    type="text"
-                    autoComplete="word"
-                    required
-                    className="group relative w-full justify-center rounded-md border border-transparent bg-white boder border-dark-green py-2 px-4 text-sm font-medium text-black hover:bg-light-green focus:outline-none focus:ring-2 focus:ring-light-green focus:ring-offset-2"
-                    placeholder="which one do you find?"
-                  />
-
-                  <button
-                    type="submit"
-                    className="group relative flex ml-2 w-20 justify-center rounded-md border border-transparent bg-light-orange py-2 px-4 text-sm font-medium text-white hover:bg-light-green focus:outline-none focus:ring-2 focus:ring-light-green focus:ring-offset-2"
-                  >
-                    search
-                  </button>
-                </div>
-                <button
-                  type="submit"
-                  className="mt-2 group relative flex ml-2 w-20 justify-center rounded-md border border-transparent bg-light-brown py-2 px-4 text-sm font-medium text-white hover:bg-light-orange focus:outline-none focus:ring-2 focus:ring-light-green focus:ring-offset-2"
-                >
-                  이미지 추가
-                </button>
-              </form>
-            </div>
             {/* post 생성 end */}
             <div className="overflow-hidden bg-white shadow sm:rounded-lg">
               <div className="px-4 py-5 sm:px-6">

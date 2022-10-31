@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
-  BellIcon,
   XMarkIcon,
   BookmarkIcon,
 } from "@heroicons/react/24/outline";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { logoutAction } from "../store/userSlice";
 
 const navigation = [
   { name: "EngWord", href: "/", current: true },
@@ -19,9 +21,14 @@ function classNames(...classes) {
 }
 
 const NavbarForm = () => {
+  const { isLoggedIn } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const onLogout = useCallback(() => {
+    dispatch(logoutAction());
+  }, []);
   return (
     <Disclosure as="nav" className="bg-dark-green">
-      {({ open, IsLogin }) => (
+      {({ open, LoggedIn }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-3 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
@@ -85,15 +92,21 @@ const NavbarForm = () => {
                 <Menu as="div" className="relative ml-3">
                   <div>
                     {
-                      (IsLogin = false ? (
-                        <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                          <span className="sr-only">Open user menu</span>
-                          <img
-                            className="h-8 w-8 rounded-full"
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                            alt=""
-                          />
-                        </Menu.Button>
+                      isLoggedIn ? (
+                        <div className="flex">
+                          <p className="text-white mt-1 mr-3">
+                            <span className="text-white font-bold">Tester</span>
+                            님
+                          </p>
+                          <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                            <span className="sr-only">Open user menu</span>
+                            <img
+                              className="h-8 w-8 rounded-full"
+                              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                              alt=""
+                            />
+                          </Menu.Button>
+                        </div>
                       ) : (
                         <div className="flex">
                           <div>
@@ -113,11 +126,12 @@ const NavbarForm = () => {
                             </a>
                           </div>
                         </div>
-                      ))
+                      )
+                      // (LoggedIn = true ?  : )
                     }
                   </div>
                   {
-                    (IsLogin = true ? (
+                    (LoggedIn = true ? (
                       <Transition
                         as={Fragment}
                         enter="transition ease-out duration-100"
@@ -145,8 +159,8 @@ const NavbarForm = () => {
                           </Menu.Item>
                           <Menu.Item>
                             {({ active }) => (
-                              <a
-                                href="#"
+                              <div
+                                onClick={onLogout}
                                 className={classNames(
                                   active
                                     ? "bg-light-beige text-white font-bold rounded-lg"
@@ -155,7 +169,7 @@ const NavbarForm = () => {
                                 )}
                               >
                                 Sign out
-                              </a>
+                              </div>
                             )}
                           </Menu.Item>
                         </Menu.Items>

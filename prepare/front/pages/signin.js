@@ -1,20 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import LoginForm from "../components/LoginForm";
-// import SuccessLogin from "../components/SuccessLogin";
-import AppLayout from "../components/AppLayout";
-import FormBg from "../components/FormBg";
+import SuccessLogin from "../components/SuccessLogin";
 import NavbarForm from "../components/NavbarForm";
 
+import { useSelector } from "react-redux";
+
 const signIn = () => {
+  const { isLoggedIn } = useSelector((state) => state.user);
   return (
     <div>
-      {/* <FormBg>
-        <AppLayout />
-        <LoginForm />
-      </FormBg> */}
       <NavbarForm />
-      <LoginForm />
+      {isLoggedIn ? <SuccessLogin /> : <LoginForm />}
     </div>
   );
 };

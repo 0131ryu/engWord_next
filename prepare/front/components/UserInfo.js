@@ -19,10 +19,14 @@ const UserInfo = () => {
             가입날짜 : 2022-10-28
           </p>
           <div className="ml-4 mt-1">
-            팔로잉 : <span>1</span>
+            <a href="#">
+              팔로잉 : <span>1</span>
+            </a>
           </div>
           <div className="ml-4 mt-1">
-            팔로워 : <span>2</span>
+            <a href="#">
+              팔로워 : <span>2</span>
+            </a>
           </div>
         </div>
         <p className="mt-1 max-w-2xl text-sm text-gray-500">

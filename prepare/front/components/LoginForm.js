@@ -1,23 +1,35 @@
 import React, { useCallback } from "react";
 import { LockClosedIcon, BookmarkIcon } from "@heroicons/react/20/solid";
 import useInput from "../hooks/useInput";
-import { useDispatch } from "react-redux";
-import { loginAction } from "../store/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { loginRequest } from "../redux/feature/userSlice";
+// import { loginAction } from "../store/userSlice";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
+
   const [email, onChangeEmail] = useInput("");
   const [password, onChangePassword] = useInput("");
 
   const onSubmitForm = useCallback(() => {
     console.log(email, password);
     dispatch(
-      loginAction({
+      loginRequest({
         email,
         password,
       })
     );
   }, [email, password]);
+
+  // const onSubmitForm = useCallback(() => {
+  //   console.log(email, password);
+  //   dispatch(
+  //     loginAction({
+  //       email,
+  //       password,
+  //     })
+  //   );
+  // }, [email, password]);
 
   return (
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

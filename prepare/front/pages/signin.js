@@ -7,11 +7,17 @@ import NavbarForm from "../components/NavbarForm";
 import { useSelector } from "react-redux";
 
 const signIn = () => {
-  const { isLoggedIn } = useSelector((state) => state.user);
+  const { loginComplete, loginLoading, me } = useSelector(
+    (state) => state.user
+  );
+  console.log("me", me);
+  // const { isLoggedIn } = useSelector((state) => state.user);
   return (
     <div>
       <NavbarForm />
-      {isLoggedIn ? <SuccessLogin /> : <LoginForm />}
+      {me ? <SuccessLogin /> : <LoginForm />}
+      {/* {loginComplete ? <SuccessLogin /> : <LoginForm />} */}
+      {/* {isLoggedIn ? <SuccessLogin /> : <LoginForm />} */}
     </div>
   );
 };

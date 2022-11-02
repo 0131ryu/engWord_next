@@ -1,11 +1,12 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { logoutAction } from "../store/userSlice";
+// import { logoutAction } from "../store/userSlice";
+import { logoutRequest } from "../redux/feature/userSlice";
 
 const SuccessLogin = () => {
   const dispatch = useDispatch();
   const onLogout = useCallback(() => {
-    dispatch(logoutAction());
+    dispatch(logoutRequest());
   }, []);
   return (
     <>

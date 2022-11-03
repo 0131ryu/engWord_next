@@ -3,11 +3,30 @@ import { Fragment, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { ArrowDownIcon, CheckIcon } from "@heroicons/react/20/solid";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { addWordRequest } from "../../redux/feature/wordSlice";
+import { useCallback } from "react";
+import { useDispatch } from "react-redux";
+import useInput from "../../hooks/useInput";
 
-const type = [{ name: "Easy" }, { name: "Middle" }, { name: "Advance" }];
+const types = [{ name: "Easy" }, { name: "Middle" }, { name: "Advance" }];
 
 const WordForm = () => {
-  const [selected, setSelected] = useState(type[0]);
+  const dispatch = useDispatch();
+  const [selected, setSelected] = useState(types[0]);
+  const [english, onChangeEnglish] = useInput("");
+  const [korean, onChangeKorean] = useInput("");
+  const [type, onChangeType] = useInput("");
+
+  const onSubmitWord = useCallback(() => {
+    console.log(english, korean, type);
+    // dispatch(
+    //   addWordRequest({
+    //     english,
+    //     korean,
+    //     type,
+    //   })
+    // );
+  });
   return (
     <>
       <div className="bg-light-beige lg:w-full relative">
@@ -19,94 +38,104 @@ const WordForm = () => {
               <MagnifyingGlassIcon className="w-5 h-5 ml-2" />
             </button>
           </h2>
-          <div className=" flex felx-row place-content-center rounded-lg lg:w-8/12 lg:relative left-48 top-5">
+          <div>
             {/* english */}
-            <input
-              placeholder="English"
-              type="text"
-              name="english"
-              className="
+            <form
+              onSubmit={onSubmitWord}
+              className=" flex felx-row place-content-center rounded-lg lg:w-8/12 lg:relative left-48 top-5"
+            >
+              <input
+                onChange={onChangeEnglish}
+                placeholder="English"
+                type="text"
+                name="english"
+                className="
             basis-1/5 md:basis-1/3 sm:600 w-28 md:w-48 lg:w-48 grid grid-cols-2 gap-4 place-content-center
             pl-2 h-9  placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-full m-2"
-            />
-            {/* korean */}
-            <input
-              placeholder="한글"
-              type="text"
-              name="english"
-              className="
+              />
+              {/* korean */}
+              <input
+                onChange={onChangeKorean}
+                placeholder="한글"
+                type="text"
+                name="korean"
+                className="
             basis-1/5 md:basis-1/3 sm:600 w-28 lg:w-48 grid grid-cols-2 gap-4 place-content-center
             pl-2 h-9  placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-full m-2"
-            />
-            {/* type */}
-            {/* 여기 때문에 전체 길이가 너무 길어짐 */}
-            <div className="w-20 h-44 mt-2 mr-2">
-              <Listbox value={selected} onChange={setSelected}>
-                <div className="relative ">
-                  <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-2 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm border-2 border-light-green">
-                    <span className="block ">{selected.name}</span>
-                    <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                      <ArrowDownIcon
-                        className="h-5 w-5 text-gray-400"
-                        aria-hidden="true"
-                      />
-                    </span>
-                  </Listbox.Button>
-                  <Transition
-                    as={Fragment}
-                    leave="transition ease-in duration-100"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                  >
-                    <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                      {type.map((type, typeIdx) => (
-                        <Listbox.Option
-                          key={typeIdx}
-                          className={({ active }) =>
-                            `relative cursor-default select-none py-2 pl-2 pr-4 ${
-                              active
-                                ? "bg-light-orange rounded-lg text-black"
-                                : "text-gray-900"
-                            }`
-                          }
-                          value={type}
-                        >
-                          {({ selected }) => (
-                            <>
-                              <span
-                                className={`block ${
-                                  selected ? "font-medium" : "font-normal"
-                                }`}
-                              >
-                                {type.name}
-                              </span>
-                              {selected ? (
-                                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                                  <CheckIcon
-                                    className="h-5 w-5 ml-11"
-                                    aria-hidden="false"
-                                  />
+              />
+              {/* types */}
+              {/* 여기 때문에 전체 길이가 너무 길어짐 */}
+              <div className="w-20 h-48 mt-2 mr-2">
+                <Listbox value={selected} onChange={setSelected}>
+                  <div className="relative ">
+                    <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-2 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm border-2 border-light-green">
+                      <span className="block" onChange={onChangeType}>
+                        {selected.name}
+                      </span>
+                      <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                        <ArrowDownIcon
+                          className="h-5 w-5 text-gray-400"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </Listbox.Button>
+                    <Transition
+                      as={Fragment}
+                      leave="transition ease-in duration-100"
+                      leaveFrom="opacity-100"
+                      leaveTo="opacity-0"
+                    >
+                      <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                        {types.map((type, typeIdx) => (
+                          <Listbox.Option
+                            key={typeIdx + 1}
+                            className={({ active }) =>
+                              `relative cursor-default select-none py-2 pl-2 pr-4 ${
+                                active
+                                  ? "bg-light-orange rounded-lg text-black"
+                                  : "text-gray-900"
+                              }`
+                            }
+                            value={type}
+                          >
+                            {({ selected }) => (
+                              <>
+                                <span
+                                  className={`block ${
+                                    selected ? "font-medium" : "font-normal"
+                                  }`}
+                                >
+                                  {type.name}
                                 </span>
-                              ) : null}
-                            </>
-                          )}
-                        </Listbox.Option>
-                      ))}
-                    </Listbox.Options>
-                  </Transition>
-                </div>
-              </Listbox>
-            </div>
-            {/* submit */}
-            <button
-              type="button"
-              className="basis-1/7 inline-flex justify-center my-2 md:basis-1/5 h-9 lg:w-12  inline-flex items-center rounded-md border border-transparent bg-dark-green px-5 py-2 text-sm font-medium text-white shadow-sm hover:bg-light-green focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >
-              Submit
-            </button>
+                                {selected ? (
+                                  <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                                    <CheckIcon
+                                      className="h-5 w-5 ml-11"
+                                      aria-hidden="false"
+                                    />
+                                  </span>
+                                ) : null}
+                              </>
+                            )}
+                          </Listbox.Option>
+                        ))}
+                      </Listbox.Options>
+                    </Transition>
+                  </div>
+                </Listbox>
+              </div>
+              {/* submit */}
+              <button
+                type="submit"
+                className="basis-1/7 inline-flex justify-center my-2 md:basis-1/5 h-9 lg:w-12  inline-flex items-center rounded-md border border-transparent bg-dark-green px-5 py-2 text-sm font-medium text-white shadow-sm hover:bg-light-green focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Submit
+              </button>
+            </form>
           </div>
+
           {/* checkbox */}
-          <div className="absolute bottom-20 right-5 md:right-20 lg:right-52">
+          {/* <div className="absolute bottom-20 right-5 md:right-20 lg:right-52">
             <div className="flex items-center mb-2">
               <input
                 id="default-checkbox"
@@ -124,6 +153,7 @@ const WordForm = () => {
             <div className="flex items-center">
               <input
                 checked
+                onChange={""}
                 id="default-checkbox"
                 type="checkbox"
                 value=""
@@ -136,7 +166,7 @@ const WordForm = () => {
                 전체 해제(현재 : 1/20)
               </label>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

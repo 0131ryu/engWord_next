@@ -11,8 +11,7 @@ const signIn = () => {
   console.log("me", me);
   return (
     <div>
-      <NavbarForm />
-      {me ? <SuccessLogin /> : <LoginForm />}
+      <NavbarForm>{me ? <SuccessLogin /> : <LoginForm />}</NavbarForm>
     </div>
   );
 };

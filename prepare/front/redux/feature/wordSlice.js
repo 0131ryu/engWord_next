@@ -5,9 +5,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  wordList: [
+  words: [
     {
-      id: 1,
+      id: 3,
       User: {
         id: 1,
         nickname: "HIHI",
@@ -18,32 +18,35 @@ const initialState = {
       status: "C",
     },
   ],
+  addWordLoading: false, //단어 추가
+  addWordComplete: false,
+  addWordError: null,
 };
 
-export const postSlice = createSlice({
-  name: "post",
+export const wordSlice = createSlice({
+  name: "word",
   initialState,
   reducers: {
-    addWord: (state, action) => {
-      state.wordList.push(action.payload),
-        (state.wordList = [...state.wordList]);
+    //단어 추가
+    addWordRequest: (state) => {
+      state.addWordLoading = true;
+      state.addWordError = null;
+      state.addWordComplete = false;
     },
-    addEasyWord: (state, action) => {
-      state.easyList.push(action.payload),
-        (state.easyList = [...state.easyList]);
+    addWordSuccess: (state, action) => {
+      state.addWordLoading = false;
+      state.addWordComplete = true;
+      state.wordList = action.payload;
+      console.log("state.wordList", state.wordList);
     },
-    addMiddleWord: (state, action) => {
-      state.middleList.push(action.payload),
-        (state.middleList = [...state.middleList]);
-    },
-    addAdvanceWord: (state, action) => {
-      state.advanceList.push(action.payload),
-        (state.advanceList = [...state.advanceList]);
+    addWordError: (state, action) => {
+      state.addWordLoading = true;
+      state.addWordError = action.error;
     },
   },
 });
 
-export const { addWord, addEasyWord, addMiddleWord, addAdvanceWord } =
-  postSlice.actions;
+export const { addWordRequest, addWordSuccess, addWordError } =
+  wordSlice.actions;
 
-export default postSlice.reducer;
+export default wordSlice.reducer;

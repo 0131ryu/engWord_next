@@ -17,8 +17,7 @@ const signUp = () => {
   // }, [me && me.id]);
   return (
     <div>
-      <NavbarForm />
-      {me ? <SuccessSignup /> : <JoinForm />}
+      <NavbarForm>{me ? <SuccessSignup /> : <JoinForm />}</NavbarForm>
     </div>
   );
 };

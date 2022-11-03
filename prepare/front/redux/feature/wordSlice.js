@@ -5,19 +5,50 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  words: [
-    {
-      id: 3,
-      User: {
+  wordList: {
+    easy: [
+      {
         id: 1,
-        nickname: "HIHI",
+        english: "red",
+        korean: "빨강",
+        type: "easy",
       },
-      english: "hello",
-      korean: "안녕하세요",
-      type: "easy",
-      status: "C",
-    },
-  ],
+      {
+        id: 2,
+        english: "blue",
+        korean: "파랑",
+        type: "easy",
+      },
+    ],
+    middle: [
+      {
+        id: 3,
+        english: "yellow",
+        korean: "노랑",
+        type: "middle",
+      },
+    ],
+    advance: [
+      {
+        id: 4,
+        english: "green",
+        korean: "초록",
+        type: "advance",
+      },
+      {
+        id: 5,
+        english: "purple",
+        korean: "보라",
+        type: "advance",
+      },
+      {
+        id: 6,
+        english: "black",
+        korean: "검정",
+        type: "advance",
+      },
+    ],
+  },
   addWordLoading: false, //단어 추가
   addWordComplete: false,
   addWordError: null,

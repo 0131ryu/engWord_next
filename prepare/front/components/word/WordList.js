@@ -3,50 +3,33 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
-const easyWord = [
-  {
-    id: 1,
-    english: "Americano",
-    korean: "아메리카노",
-    type: "easy",
-  },
-  {
-    id: 2,
-    english: "Americano22",
-    korean: "아메리카노22",
-    type: "easy",
-  },
-];
-
-const middleWord = [
-  {
-    id: 3,
-    english: "Latte",
-    korean: "라떼",
-    type: "middle",
-  },
-];
-
-const advanceWord = [
-  {
-    id: 4,
-    english: "Water",
-    korean: "물",
-    type: "advance",
-  },
-  {
-    id: 5,
-    english: "Hot Water",
-    korean: "뜨거운 물",
-    type: "advance",
-  },
-  {
-    id: 6,
-    english: "Cold Water",
-    korean: "차가운 물",
-    type: "advance",
-  },
-];
+//객체 안에 배열
+const words = {
+  easy: [
+    {
+      id: 1,
+      english: "Americano",
+      korean: "아메리카노",
+      type: "easy",
+    },
+  ],
+  middle: [
+    {
+      id: 2,
+      english: "Latte",
+      korean: "라떼",
+      type: "middle",
+    },
+  ],
+  advance: [
+    {
+      id: 3,
+      english: "Water",
+      korean: "물",
+      type: "advance",
+    },
+  ],
+};
 
 const WordList = () => {
   return (
@@ -63,7 +46,7 @@ const WordList = () => {
                   </h1>
                 </div>
                 {/* item start */}
-                {easyWord.map((word) => (
+                {words.easy.map((word) => (
                   <div
                     key={word.id}
                     className="flex items-start bg-gray-400 group-hover:opacity-80 rounded-lg m-2"
@@ -118,12 +101,12 @@ const WordList = () => {
                                 {({ active }) => (
                                   <a
                                     href="#"
-                                    className={classNames(
-                                      active
+                                    className={
+                                      (active
                                         ? "rounded-md bg-gray-100 text-gray-900"
                                         : "rounded-md text-gray-700",
-                                      "block px-8 py-1 text-sm"
-                                    )}
+                                      "block px-8 py-1 text-sm")
+                                    }
                                   >
                                     수정
                                   </a>
@@ -133,12 +116,12 @@ const WordList = () => {
                                 {({ active }) => (
                                   <a
                                     href="#"
-                                    className={classNames(
-                                      active
+                                    className={
+                                      (active
                                         ? "bg-gray-100 text-gray-900"
                                         : "text-gray-700",
-                                      "block px-8 py-1 text-sm"
-                                    )}
+                                      "block px-8 py-1 text-sm")
+                                    }
                                   >
                                     삭제
                                   </a>
@@ -164,7 +147,7 @@ const WordList = () => {
                   </h1>
                 </div>
                 {/* item start */}
-                {middleWord.map((word) => (
+                {words.middle.map((word) => (
                   <div
                     key={word.id}
                     className="flex items-start bg-gray-400 group-hover:opacity-80 rounded-lg m-2"
@@ -219,12 +202,12 @@ const WordList = () => {
                                 {({ active }) => (
                                   <a
                                     href="#"
-                                    className={classNames(
-                                      active
+                                    className={
+                                      (active
                                         ? "rounded-md bg-gray-100 text-gray-900"
                                         : "rounded-md text-gray-700",
-                                      "block px-8 py-1 text-sm"
-                                    )}
+                                      "block px-8 py-1 text-sm")
+                                    }
                                   >
                                     수정
                                   </a>
@@ -234,12 +217,12 @@ const WordList = () => {
                                 {({ active }) => (
                                   <a
                                     href="#"
-                                    className={classNames(
-                                      active
+                                    className={
+                                      (active
                                         ? "bg-gray-100 text-gray-900"
                                         : "text-gray-700",
-                                      "block px-8 py-1 text-sm"
-                                    )}
+                                      "block px-8 py-1 text-sm")
+                                    }
                                   >
                                     삭제
                                   </a>
@@ -265,7 +248,7 @@ const WordList = () => {
                   </h1>
                 </div>
                 {/* item start */}
-                {advanceWord.map((word) => (
+                {words.advance.map((word) => (
                   <div
                     key={word.id}
                     className="flex items-start bg-gray-400 group-hover:opacity-80 rounded-lg m-2"
@@ -320,12 +303,12 @@ const WordList = () => {
                                 {({ active }) => (
                                   <a
                                     href="#"
-                                    className={classNames(
-                                      active
+                                    className={
+                                      (active
                                         ? "rounded-md bg-gray-100 text-gray-900"
                                         : "rounded-md text-gray-700",
-                                      "block px-8 py-1 text-sm"
-                                    )}
+                                      "block px-8 py-1 text-sm")
+                                    }
                                   >
                                     수정
                                   </a>
@@ -335,12 +318,12 @@ const WordList = () => {
                                 {({ active }) => (
                                   <a
                                     href="#"
-                                    className={classNames(
-                                      active
+                                    className={
+                                      (active
                                         ? "bg-gray-100 text-gray-900"
                                         : "text-gray-700",
-                                      "block px-8 py-1 text-sm"
-                                    )}
+                                      "block px-8 py-1 text-sm")
+                                    }
                                   >
                                     삭제
                                   </a>

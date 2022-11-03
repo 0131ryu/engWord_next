@@ -7,11 +7,13 @@ import NavbarForm from "../components/NavbarForm";
 import { useSelector } from "react-redux";
 
 const signIn = () => {
-  const { me } = useSelector((state) => state.user);
+  const { me, loginComplete } = useSelector((state) => state.user);
   console.log("me", me);
   return (
     <div>
-      <NavbarForm>{me ? <SuccessLogin /> : <LoginForm />}</NavbarForm>
+      <NavbarForm>
+        {me && loginComplete ? <SuccessLogin /> : <LoginForm />}
+      </NavbarForm>
     </div>
   );
 };

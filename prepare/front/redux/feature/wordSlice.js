@@ -5,7 +5,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  wordList: {
+  wordLists: {
     easy: [
       {
         id: 1,
@@ -67,8 +67,8 @@ export const wordSlice = createSlice({
     addWordSuccess: (state, action) => {
       state.addWordLoading = false;
       state.addWordComplete = true;
-      state.wordList = action.payload;
-      console.log("state.wordList", state.wordList);
+      state.wordLists = action.payload;
+      console.log("state.wordList", state.wordLists);
     },
     addWordError: (state, action) => {
       state.addWordLoading = true;

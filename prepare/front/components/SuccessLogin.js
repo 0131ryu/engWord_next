@@ -1,13 +1,17 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-// import { logoutAction } from "../store/userSlice";
 import { logoutRequest } from "../redux/feature/userSlice";
+import Router from "next/router";
 
 const SuccessLogin = () => {
   const dispatch = useDispatch();
   const onLogout = useCallback(() => {
     dispatch(logoutRequest());
   }, []);
+
+  const onMain = () => {
+    Router.push("/");
+  };
   return (
     <>
       <div className=" flex min-h-full items-center justify-center py-48 px-4 sm:px-6 lg:px-6">
@@ -20,12 +24,12 @@ const SuccessLogin = () => {
           </h2>
           <div className="mt-8 flex ">
             <div className="inline-flex rounded-md shadow">
-              <a
-                href="/"
+              <button
+                onClick={onMain}
                 className="inline-flex items-center justify-center rounded-md border border-transparent bg-light-beige px-5 py-3 text-base font-medium text-black font-bold hover:bg-light-brown hover:text-white"
               >
                 메인화면
-              </a>
+              </button>
             </div>
             <button
               onClick={onLogout}

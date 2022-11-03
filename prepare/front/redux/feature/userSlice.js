@@ -7,7 +7,9 @@ const initialState = {
   logoutLoading: false, //로그아웃 시도
   logoutComplete: false,
   logoutError: null,
-  isLoggedIn: false,
+  signupLoading: false, //회원가입 시도
+  signupComplete: false,
+  signupError: null,
   me: null,
   signUpData: {},
   loginData: {},
@@ -57,16 +59,21 @@ export const userSlice = createSlice({
       state.logoutLoading = false;
       state.logoutError = action.error;
     },
-    loginAction: (state, action) => ({
-      ...state,
-      isLoggedIn: true,
-      me: action.payload,
-    }),
-    logoutAction: (state) => ({
-      ...state,
-      isLoggedIn: false,
-      me: null,
-    }),
+    //회원가입
+    signupRequest: (state) => {
+      state.signupLoading = true;
+      state.signupError = null;
+      state.signupComplete = false;
+    },
+    signupSuccess: (state, action) => {
+      state.me = action.payload;
+      state.signupLoading = false;
+      state.signupComplete = true;
+    },
+    signupFailure: (state, action) => {
+      state.signupLoading = false;
+      state.signupError = action.error;
+    },
   },
 });
 
@@ -77,8 +84,9 @@ export const {
   logoutRequest,
   logoutSuccess,
   logoutFailure,
-  loginAction,
-  logoutAction,
+  signupRequest,
+  signupSuccess,
+  signupFailure,
 } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -21,7 +21,7 @@ function classNames(...classes) {
 
 const NavbarForm = () => {
   const dispatch = useDispatch();
-  // const { loginComplete } = useSelector((state) => ({ ...state.me }));
+  const { me, loginComplete } = useSelector((state) => state.user);
 
   const onLogout = useCallback(() => {
     dispatch(logoutRequest());
@@ -91,44 +91,40 @@ const NavbarForm = () => {
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
-                    {
-                      LoggedIn ? (
-                        <div className="flex">
-                          <p className="text-white mt-1 mr-3">
-                            <span className="text-white font-bold">Tester</span>
-                            님
-                          </p>
-                          <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                            <span className="sr-only">Open user menu</span>
-                            <img
-                              className="h-8 w-8 rounded-full"
-                              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                              alt=""
-                            />
-                          </Menu.Button>
+                    {me && loginComplete ? (
+                      <div className="flex">
+                        <p className="text-white mt-1 mr-3">
+                          <span className="text-white font-bold">Tester</span>님
+                        </p>
+                        <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                          <span className="sr-only">Open user menu</span>
+                          <img
+                            className="h-8 w-8 rounded-full"
+                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            alt=""
+                          />
+                        </Menu.Button>
+                      </div>
+                    ) : (
+                      <div className="flex">
+                        <div>
+                          <a
+                            href="/signin"
+                            className="px-3 py-2 rounded-md text-sm font-medium bg-light-beige text-black hover:bg-light-brown hover:text-white"
+                          >
+                            LogIn
+                          </a>
                         </div>
-                      ) : (
-                        <div className="flex">
-                          <div>
-                            <a
-                              href="/signin"
-                              className="px-3 py-2 rounded-md text-sm font-medium bg-light-beige text-black hover:bg-light-brown hover:text-white"
-                            >
-                              LogIn
-                            </a>
-                          </div>
-                          <div>
-                            <a
-                              href="/signin"
-                              className="ml-3 px-3 py-2 rounded-md text-sm font-medium bg-light-orange text-black hover:bg-light-brown hover:text-white"
-                            >
-                              Sign Up
-                            </a>
-                          </div>
+                        <div>
+                          <a
+                            href="/signup"
+                            className="ml-3 px-3 py-2 rounded-md text-sm font-medium bg-light-orange text-black hover:bg-light-brown hover:text-white"
+                          >
+                            Sign Up
+                          </a>
                         </div>
-                      )
-                      // (LoggedIn = true ?  : )
-                    }
+                      </div>
+                    )}
                   </div>
                   {
                     (LoggedIn = true ? (

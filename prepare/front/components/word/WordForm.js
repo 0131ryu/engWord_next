@@ -8,8 +8,6 @@ import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import useInput from "../../hooks/useInput";
 
-import WordList from "./WordList";
-
 const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
 
 const WordForm = () => {
@@ -30,11 +28,17 @@ const WordForm = () => {
         type,
       })
     );
+    setEnglish = "";
+    setKorean = "";
   }, [english, korean, type]);
+
+  const checkboxChange = () => {
+    console.log("체크박스");
+  };
   return (
     <>
-      <div className="bg-light-beige lg:w-full relative">
-        <div className="place-content-center mx-auto max-w-2xl py-8 px-4 sm:py-20 sm:px-3 lg:max-w-screen-xl">
+      <div className="lg:w-full relative">
+        <div className=" h-80 place-content-center mx-auto max-w-2xl py-8 px-4 sm:py-20 sm:px-3 lg:max-w-screen-xl">
           <h2 className="text-2xl tracking-tight text-gray-900">
             <span className="text-dark-green font-bold">영어 단어</span>, 만들어
             봅시다!
@@ -141,7 +145,7 @@ const WordForm = () => {
           </div>
 
           {/* checkbox */}
-          {/* <div className="absolute bottom-20 right-5 md:right-20 lg:right-52">
+          <div className="absolute bottom-20 right-5 md:right-20 lg:right-52">
             <div className="flex items-center mb-2">
               <input
                 id="default-checkbox"
@@ -150,7 +154,7 @@ const WordForm = () => {
                 className="w-4 h-4 text-light-green bg-gray-100 rounded border-light-green focus:ring-light-green dark:focus:ring-light-green dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               />
               <label
-                for="default-checkbox"
+                htmlFor="default-checkbox"
                 className="ml-2 text-sm font-bold text-gray-900 border-light-green"
               >
                 전체 선택
@@ -159,21 +163,20 @@ const WordForm = () => {
             <div className="flex items-center">
               <input
                 checked
-                onChange={""}
+                onChange={checkboxChange}
                 id="default-checkbox"
                 type="checkbox"
                 value=""
                 className="w-4 h-4 text-light-green bg-gray-900 rounded border-light-green focus:ring-light-green dark:focus:ring-light-green dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               />
               <label
-                for="checked-checkbox"
+                htmlFor="checked-checkbox"
                 className="ml-2 text-sm font-bold text-gray-900 border-light-green"
               >
                 전체 해제(현재 : 1/20)
               </label>
             </div>
-          </div> */}
-          <WordList />
+          </div>
         </div>
       </div>
     </>

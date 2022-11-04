@@ -2,36 +2,15 @@ import React from "react";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-
-//객체 안에 배열
-const words = {
-  easy: [
-    {
-      id: 1,
-      english: "Americano",
-      korean: "아메리카노",
-      type: "easy",
-    },
-  ],
-  middle: [
-    {
-      id: 2,
-      english: "Latte",
-      korean: "라떼",
-      type: "middle",
-    },
-  ],
-  advance: [
-    {
-      id: 3,
-      english: "Water",
-      korean: "물",
-      type: "advance",
-    },
-  ],
-};
+import { useSelector } from "react-redux";
 
 const WordList = () => {
+  const { wordLists } = useSelector((state) => state.word);
+
+  const easyList = wordLists.filter((word) => word.type === "easy");
+  const middleList = wordLists.filter((word) => word.type === "middle");
+  const advanceList = wordLists.filter((word) => word.type === "advance");
+
   return (
     <>
       <div className=" lg:w-full relative bg-black">
@@ -46,7 +25,8 @@ const WordList = () => {
                   </h1>
                 </div>
                 {/* item start */}
-                {words.easy.map((word) => (
+                {/*   console.log(wordLists.map((w) => w.type === "easy")); */}
+                {easyList.map((word) => (
                   <div
                     key={word.id}
                     className="flex items-start bg-gray-400 group-hover:opacity-80 rounded-lg m-2"
@@ -147,7 +127,7 @@ const WordList = () => {
                   </h1>
                 </div>
                 {/* item start */}
-                {words.middle.map((word) => (
+                {middleList.map((word) => (
                   <div
                     key={word.id}
                     className="flex items-start bg-gray-400 group-hover:opacity-80 rounded-lg m-2"
@@ -248,7 +228,7 @@ const WordList = () => {
                   </h1>
                 </div>
                 {/* item start */}
-                {words.advance.map((word) => (
+                {advanceList.map((word) => (
                   <div
                     key={word.id}
                     className="flex items-start bg-gray-400 group-hover:opacity-80 rounded-lg m-2"

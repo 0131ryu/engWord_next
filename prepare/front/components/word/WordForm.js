@@ -10,7 +10,7 @@ import useInput from "../../hooks/useInput";
 
 import WordList from "./WordList";
 
-const typesName = [{ name: "Easy" }, { name: "Middle" }, { name: "Advance" }];
+const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
 
 const WordForm = () => {
   const dispatch = useDispatch();
@@ -18,17 +18,13 @@ const WordForm = () => {
   const [selected, setSelected] = useState(typesName[0]);
   const [english, onChangeEnglish, setEnglish] = useInput("");
   const [korean, onChangeKorean, setKorean] = useInput("");
-  const [type, onChangeType, setType] = useInput("");
-
-  const onType = (e) => {
-    console.log("type", type);
-    console.log(e);
-  };
+  const type = selected.name;
 
   const onSubmitWord = useCallback(() => {
     console.log(english, korean, type);
     dispatch(
       addWordRequest({
+        id: 10,
         english,
         korean,
         type,
@@ -93,10 +89,7 @@ const WordForm = () => {
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                   >
-                    <Listbox.Options
-                      onChange={onType(this)}
-                      className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
-                    >
+                    <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                       {typesName.map((t, typeIdx) => (
                         <Listbox.Option
                           key={typeIdx + 1}
@@ -115,7 +108,6 @@ const WordForm = () => {
                                 className={`block ${
                                   selected ? "font-medium" : "font-normal"
                                 }`}
-                                onChange={onChangeType}
                                 name={t.name}
                               >
                                 {t.name}

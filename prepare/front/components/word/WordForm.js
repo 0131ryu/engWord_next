@@ -10,15 +10,20 @@ import useInput from "../../hooks/useInput";
 
 import WordList from "./WordList";
 
-const types = [{ name: "Easy" }, { name: "Middle" }, { name: "Advance" }];
+const typesName = [{ name: "Easy" }, { name: "Middle" }, { name: "Advance" }];
 
 const WordForm = () => {
   const dispatch = useDispatch();
 
-  const [selected, setSelected] = useState(types[0]);
-  const [english, onChangeEnglish] = useInput("");
-  const [korean, onChangeKorean] = useInput("");
-  const [type, onChangeType] = useInput("");
+  const [selected, setSelected] = useState(typesName[0]);
+  const [english, onChangeEnglish, setEnglish] = useInput("");
+  const [korean, onChangeKorean, setKorean] = useInput("");
+  const [type, onChangeType, setType] = useInput("");
+
+  const onType = (e) => {
+    console.log("type", type);
+    console.log(e);
+  };
 
   const onSubmitWord = useCallback(() => {
     console.log(english, korean, type);
@@ -42,14 +47,13 @@ const WordForm = () => {
             </button>
           </h2>
           <div className=" flex felx-row place-content-center rounded-lg lg:w-8/12 lg:relative left-48 top-5">
-            {/* english */}
             {/* <form
               action="#"
               method="POST"
               onSubmit={onSubmitWord}
               className=" flex felx-row place-content-center rounded-lg lg:w-8/12 lg:relative left-48 top-5"
             > */}
-
+            {/* english */}
             <input
               onChange={onChangeEnglish}
               placeholder="English"
@@ -69,15 +73,13 @@ const WordForm = () => {
             basis-1/5 md:basis-1/3 sm:600 w-28 lg:w-48 grid grid-cols-2 gap-4 place-content-center
             pl-2 h-9  placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-full m-2"
             />
-            {/* types */}
+            {/* typesName start */}
             {/* 여기 때문에 전체 길이가 너무 길어짐 */}
             <div className="w-20 h-48 mt-2 mr-2">
               <Listbox value={selected} onChange={setSelected}>
                 <div className="relative ">
                   <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-2 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm border-2 border-light-green">
-                    <span className="block" onChange={onChangeType}>
-                      {selected.name}
-                    </span>
+                    <span className="block">{selected.name}</span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                       <ArrowDownIcon
                         className="h-5 w-5 text-gray-400"
@@ -91,8 +93,11 @@ const WordForm = () => {
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                   >
-                    <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                      {types.map((type, typeIdx) => (
+                    <Listbox.Options
+                      onChange={onType(this)}
+                      className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+                    >
+                      {typesName.map((t, typeIdx) => (
                         <Listbox.Option
                           key={typeIdx + 1}
                           className={({ active }) =>
@@ -102,7 +107,7 @@ const WordForm = () => {
                                 : "text-gray-900"
                             }`
                           }
-                          value={type}
+                          value={t}
                         >
                           {({ selected }) => (
                             <>
@@ -110,8 +115,10 @@ const WordForm = () => {
                                 className={`block ${
                                   selected ? "font-medium" : "font-normal"
                                 }`}
+                                onChange={onChangeType}
+                                name={t.name}
                               >
-                                {type.name}
+                                {t.name}
                               </span>
                               {selected ? (
                                 <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
@@ -130,6 +137,7 @@ const WordForm = () => {
                 </div>
               </Listbox>
             </div>
+            {/* typeName end */}
             {/* submit */}
             <button
               onClick={onSubmitWord}

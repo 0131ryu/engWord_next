@@ -8,9 +8,10 @@ import {
 function* addWord(action) {
   try {
     const data = action.payload;
-    console.log("data", data);
-    yield put(addWordSuccess({ data: data }));
-    // yield call(loginSuccess, data);
+    console.log("data type", typeof data);
+    console.log("wordLists", typeof wordLists);
+    yield put(addWordSuccess(data));
+    // yield call(addWordSuccess, data);
   } catch (error) {
     yield put(addWordError(error));
     console.log(error);

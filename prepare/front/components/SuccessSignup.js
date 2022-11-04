@@ -1,16 +1,14 @@
-import React, { useCallback } from "react";
-import { useDispatch } from "react-redux";
-// import { logoutAction } from "../store/userSlice";
-import { logoutRequest } from "../redux/feature/userSlice";
-import Router from "next/router";
+import React from "react";
+import { useRouter } from "next/router";
 
 const SuccessSignup = () => {
+  const router = useRouter();
   const onMain = () => {
-    Router.push("/");
+    router.push("/");
   };
 
   const onLogin = () => {
-    Router.push("/signin");
+    router.push("/signin");
   };
   return (
     <>

@@ -1,16 +1,17 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { logoutRequest } from "../redux/feature/userSlice";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 const SuccessLogin = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const onLogout = useCallback(() => {
     dispatch(logoutRequest());
   }, []);
 
   const onMain = () => {
-    Router.push("/");
+    router.push("/");
   };
   return (
     <>

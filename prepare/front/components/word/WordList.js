@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
@@ -13,59 +13,47 @@ import ReviseWordModal from "./ReviseWordModal";
 const WordList = () => {
   const dispatch = useDispatch();
   let [modal, setModal] = useState(false);
+  // const [english, setEnglish] = useState("");
+  // const [korean, setKorean] = useState("");
+  const [id, setId] = useState(0);
+  // const [wordId, setWordId] = useState(0);
+
   const { wordLists } = useSelector((state) => state.word);
 
   const easyList = wordLists.filter((word) => word.type === "easy");
   const middleList = wordLists.filter((word) => word.type === "middle");
   const advanceList = wordLists.filter((word) => word.type === "advance");
 
-  const id = 0;
-
   const onRemoveWord = useCallback((e) => {
-    id = parseInt(e.target.value);
+    setId(parseInt(e.target.value));
     dispatch(removeWordRequest(id));
-    console.log("id", e.target);
-    console.log("value", e.target.value);
-    console.log(wordLists[0].id === id);
   });
 
-  const onReviseWord = () => {
-    console.log("modal1", modal);
+  const onReviseWord = (e) => {
+    setId(parseInt(e.target.value));
     setModal(!modal); //누를 때마다 모달창 나타나기
-    console.log("modal2", modal);
-    // console.log(e);
-    // id = parseInt(e.target.value);
+
+    // console.log("revise id", id);
     // dispatch(reviseWordRequest(id));
   };
-
-  // const onReviseWord = useCallback(
-  //   (e) => {
-  //     console.log("modal1", modal);
-  //     setModal(true); //누를 때마다 모달창 나타나기
-  //     console.log("modal2", modal);
-  //     // console.log(e);
-  //     // id = parseInt(e.target.value);
-  //     // dispatch(reviseWordRequest(id));
-  //   },
-  //   [id]
-  // );
 
   return (
     <>
       {/* 수정 모달창 */}
-      {/* <ReviseWordModal state={modal} /> */}
-      {modal ? <ReviseWordModal /> : null}
+      {modal ? <ReviseWordModal isId={id} /> : null}
 
+      {/* {modal ? <ReviseWordModal english={english} korean={korean} /> : null} */}
       <div className="lg:w-full relative">
         <div className="h-max mx-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-1">
           {/* Easy start */}
           <div className="group relative rounded-lg p-3 lg:w-80 lg:ml-10">
             <div className="overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-white border-2 border-light-green lg:aspect-none">
               <div>
-                <h1 className="text-slate-900 font-medium px-3 pt-2">🥉Easy</h1>
+                <h1 className="text-slate-900 font-medium px-3 pt-2">
+                  🥉Easy ({easyList.length}개)
+                </h1>
               </div>
               {/* item start */}
-              {/*   console.log(wordLists.map((w) => w.type === "easy")); */}
               {easyList.map((word) => (
                 <div
                   key={word.id}
@@ -162,7 +150,7 @@ const WordList = () => {
             <div className="overflow-y-auto max-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-white border-2 border-light-green lg:aspect-none">
               <div>
                 <h1 className="text-slate-900 font-medium px-3 pt-2">
-                  🥈 Middle
+                  🥈 Middle ({middleList.length}개)
                 </h1>
               </div>
               {/* item start */}
@@ -262,7 +250,7 @@ const WordList = () => {
             <div className=" overflow-y-auto max-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-white border-2 border-light-green lg:aspect-none">
               <div>
                 <h1 className="text-slate-900 font-medium px-3 pt-2">
-                  🥇 Advance
+                  🥇 Advance ({advanceList.length}개)
                 </h1>
               </div>
               {/* item start */}

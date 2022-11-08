@@ -7,38 +7,38 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   wordLists: [
     {
-      id: 0,
+      id: 2,
       english: "red",
       korean: "빨강",
       type: "easy",
     },
     {
-      id: 1,
+      id: 4,
       english: "blue",
       korean: "파랑",
       type: "easy",
     },
     {
-      id: 2,
+      id: 6,
       english: "yellow",
       korean: "노랑",
       type: "middle",
     },
 
     {
-      id: 3,
+      id: 8,
       english: "green",
       korean: "초록",
       type: "advance",
     },
     {
-      id: 4,
+      id: 10,
       english: "purple",
       korean: "보라",
       type: "advance",
     },
     {
-      id: 5,
+      id: 12,
       english: "black",
       korean: "검정",
       type: "advance",
@@ -82,10 +82,17 @@ export const wordSlice = createSlice({
       state.reviseWordComplete = false;
     },
     reviseWordSuccess: (state, action) => {
+      const wordInfo = action.payload;
       state.reviseWordLoading = false;
       state.reviseWordComplete = true;
-      console.log("state.wordLists", state.wordLists);
-      console.log(action.payload);
+      console.log("slice", action.payload);
+      console.log("slice.id", action.payload.id);
+      state.wordLists.splice(wordInfo.id, 1, {
+        id: wordInfo.id,
+        english: wordInfo.english,
+        korean: wordInfo.korean,
+        type: wordInfo.type,
+      });
       // state.wordLists.splice(action.payload, 1);
     },
     reviseWordError: (state, action) => {
@@ -101,8 +108,7 @@ export const wordSlice = createSlice({
     removeWordSuccess: (state, action) => {
       state.removeWordLoading = false;
       state.removeWordComplete = true;
-      state.wordLists.shift(action.payload);
-      // state.wordLists.splice(action.payload, 1); //나중에 사용
+      state.wordLists.splice(action.payload, 1);
     },
     removeWordError: (state, action) => {
       state.removeWordLoading = true;

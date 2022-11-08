@@ -1,6 +1,8 @@
-import { Fragment, useRef, useState, useEffect } from "react";
+import { Fragment, useRef, useState, useEffect, useCallback } from "react";
 import { Dialog, Transition, Listbox } from "@headlessui/react";
 import { useSelector, useDispatch } from "react-redux";
+import useInput from "../../hooks/useInput";
+import { reviseWordRequest } from "../../redux/feature/wordSlice";
 import {
   ArrowsRightLeftIcon,
   ArrowDownIcon,
@@ -9,32 +11,33 @@ import {
 
 const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
 
-const ReviseWordModal = ({ isId }) => {
+const ReviseWordModal = ({ isId, setModal }) => {
+  const dispatch = useDispatch();
+
   const [open, setOpen] = useState(true);
   const [selected, setSelected] = useState(typesName[0]);
 
   const { wordLists } = useSelector((state) => state.word);
 
-  const [english, setEnglish] = useState("");
-  const [korean, setKorean] = useState("");
+  const [english, onChangeEnglish, setEnglish] = useInput("");
+  const [korean, onChangeKorean, setKorean] = useInput("");
   const [id, setId] = useState(0);
 
-  console.log("isId", isId);
-  // console.log("wordId", wordId);
+  const type = selected.name;
 
-  useEffect(() => {
-    wordLists.forEach((w, i, arr) => {
-      console.log(w);
+  // console.log("english", wordLists[isId].english);
+  // console.log("korean", wordLists[isId].korean);
+  // console.log("index", isId);
 
-      setEnglish(arr[isId].english);
-      setKorean(arr[isId].korean);
-      setId(arr[isId].id);
-    });
-  }, []);
+  const onReviseWordSubmit = () => {
+    setModal(false);
+    console.log(english, korean, type, isId);
+    dispatch(reviseWordRequest({ id: isId, english, korean, type }));
+  };
 
   const onOpenCloseModal = () => {
     console.log("open", open);
-    setOpen(!open);
+    setModal(false);
   };
   const cancelButtonRef = useRef(null);
 
@@ -88,8 +91,8 @@ const ReviseWordModal = ({ isId }) => {
                       <div className="flex w-96">
                         <div>
                           <input
-                            // onChange={onChangeEnglish}
-                            placeholder={english}
+                            onChange={onChangeEnglish}
+                            placeholder={wordLists[isId].english}
                             // placeholder="englsih"
                             type="text"
                             name="english"
@@ -97,8 +100,8 @@ const ReviseWordModal = ({ isId }) => {
                           pl-2 h-9  placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-full m-2"
                           />
                           <input
-                            // onChange={onChangeEnglish}
-                            placeholder={korean}
+                            onChange={onChangeKorean}
+                            placeholder={wordLists[isId].korean}
                             // placeholder="korean"
                             type="text"
                             name="korean"
@@ -174,7 +177,7 @@ const ReviseWordModal = ({ isId }) => {
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md border border-transparent bg-light-green px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-dark-green focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={onOpenCloseModal}
+                    onClick={onReviseWordSubmit}
                   >
                     수정
                   </button>
@@ -184,7 +187,7 @@ const ReviseWordModal = ({ isId }) => {
                     onClick={onOpenCloseModal}
                     ref={cancelButtonRef}
                   >
-                    Cancel
+                    취소
                   </button>
                 </div>
               </Dialog.Panel>

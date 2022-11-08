@@ -11,6 +11,7 @@ const Home = () => {
       <NavbarForm>
         <WordForm />
         <WordList />
+
       </NavbarForm>
     </>
   );

@@ -13,11 +13,10 @@ import {
 
 function* addWord(action) {
   try {
+    console.log("action", action);
     const data = action.payload;
-    console.log("data type", typeof data);
-    console.log("wordLists", typeof wordLists);
+    console.log("data", data);
     yield put(addWordSuccess(data));
-    // yield call(addWordSuccess, data);
   } catch (error) {
     yield put(addWordError(error));
     console.log(error);
@@ -26,11 +25,10 @@ function* addWord(action) {
 
 function* reviseWord(action) {
   try {
+    console.log("action", action);
     const data = action.payload;
-    console.log("data type", typeof data);
-    console.log("wordLists", typeof wordLists);
+    console.log("data", data);
     yield put(reviseWordSuccess(data));
-    // yield call(addWordSuccess, data);
   } catch (error) {
     yield put(reviseWordError(error));
     console.log(error);
@@ -39,9 +37,9 @@ function* reviseWord(action) {
 
 function* removeWord(action) {
   try {
+    console.log("action", action);
     const data = action.payload;
-    console.log("data type", typeof data);
-    console.log("wordLists", typeof wordLists);
+    console.log("data", data);
     yield put(removeWordSuccess(data));
     // yield call(addWordSuccess, data);
   } catch (error) {

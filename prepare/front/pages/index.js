@@ -9,9 +9,9 @@ const Home = () => {
   return (
     <>
       <NavbarForm>
+  
         <WordForm />
         <WordList />
-
       </NavbarForm>
     </>
   );

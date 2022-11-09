@@ -1,23 +1,31 @@
-import React from "react";
-import { Fragment, useState } from "react";
+import React, { Fragment, useState, useCallback } from "react";
 import { Listbox, Transition } from "@headlessui/react";
-import { ArrowDownIcon, CheckIcon } from "@heroicons/react/20/solid";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowDownIcon,
+  CheckIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
 import { addWordRequest } from "../../redux/feature/wordSlice";
-import { useCallback } from "react";
+
 import { useDispatch } from "react-redux";
 import useInput from "../../hooks/useInput";
+import FindWordModal from "./FindWordModal";
 
 const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
 
 const WordForm = () => {
   const dispatch = useDispatch();
 
+  const [modal, setModal] = useState(false);
   const [selected, setSelected] = useState(typesName[0]);
   const [english, onChangeEnglish, setEnglish] = useInput("");
   const [korean, onChangeKorean, setKorean] = useInput("");
 
   const type = selected.name;
+
+  const onSearchModal = () => {
+    setModal(true);
+  };
 
   const onSubmitWord = useCallback(() => {
     console.log(english, korean, type);
@@ -38,12 +46,17 @@ const WordForm = () => {
   };
   return (
     <>
+      {/* 검색 모달창 */}
+      {modal ? <FindWordModal setModal={setModal} /> : null}
       <div className="lg:w-full relative">
         <div className=" h-80 place-content-center mx-auto max-w-2xl py-8 px-4 sm:py-20 sm:px-3 lg:max-w-screen-xl">
           <h2 className="text-2xl tracking-tight text-gray-900">
             <span className="text-dark-green font-bold">영어 단어</span>, 만들어
             봅시다!
-            <button className="bg-light-orange ml-3 h-8 w-20 rounded-lg mb-2">
+            <button
+              onClick={onSearchModal}
+              className="bg-light-orange ml-3 h-8 w-20 rounded-lg mb-2"
+            >
               <MagnifyingGlassIcon className="w-5 h-5 ml-2" />
             </button>
           </h2>

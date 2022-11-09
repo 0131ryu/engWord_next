@@ -1,4 +1,4 @@
-import { Fragment, useRef, useState, useEffect, useCallback } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition, Listbox } from "@headlessui/react";
 import { useSelector, useDispatch } from "react-redux";
 import useInput from "../../hooks/useInput";
@@ -21,7 +21,6 @@ const ReviseWordModal = ({ isId, setModal }) => {
 
   const [english, onChangeEnglish, setEnglish] = useInput("");
   const [korean, onChangeKorean, setKorean] = useInput("");
-  const [id, setId] = useState(0);
 
   const type = selected.name;
 

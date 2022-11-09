@@ -1,16 +1,24 @@
 import { Fragment, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { removeWordRequest } from "../../redux/feature/wordSlice";
 
-const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
-
-const RemoveWordModal = ({ isId }) => {
+const RemoveWordModal = ({ isId, setRemoveModal }) => {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(true);
 
   const cancelButtonRef = useRef(null);
 
+  const onRemoveWordSubmit = () => {
+    setRemoveModal(false);
+    dispatch(removeWordRequest(isId));
+    console.log("최종 삭제 버튼 시 modal 3");
+  };
+
   const onOpenCloseModal = () => {
     console.log("open", open);
+    setRemoveModal(false);
     setOpen(!open);
   };
   return (
@@ -72,7 +80,7 @@ const RemoveWordModal = ({ isId }) => {
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={onOpenCloseModal}
+                    onClick={onRemoveWordSubmit}
                   >
                     삭제
                   </button>

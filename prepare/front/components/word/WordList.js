@@ -1,36 +1,32 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  reviseWordRequest,
-  removeWordRequest,
-} from "../../redux/feature/wordSlice";
+import { useSelector } from "react-redux";
+
 import ReviseWordModal from "./ReviseWordModal";
 import RemoveWordModal from "./RemoveWordModal";
 
 const WordList = () => {
-  const dispatch = useDispatch();
   const [modal, setModal] = useState(false);
+  const [removeModal, setRemoveModal] = useState(false);
   const [id, setId] = useState(0);
 
   const { wordLists } = useSelector((state) => state.word);
-
-  const onRemoveWord = (e) => {
-    console.log(e.target.value);
-    //   setRemoveModal(!removeModal);
-    // setId(parseInt(e.target.value));
-    dispatch(removeWordRequest(e.target.value));
-  };
 
   console.log("첫 화면 modal 1", modal);
 
   const onReviseWord = (e) => {
     setId(parseInt(e.target.value));
-
     setModal(true);
-    console.log("버튼 클릭 시 modal 2", modal);
+    // console.log("버튼 클릭 시 modal 2", modal);
+  };
+
+  const onRemoveWord = (e) => {
+    setId(parseInt(e.target.value));
+    setRemoveModal(true);
+    console.log(e.target.value, id);
+    console.log("메인에서 삭제 버튼 클릭 시 modal 2", removeModal);
   };
 
   return (
@@ -38,7 +34,9 @@ const WordList = () => {
       {/* 수정 모달창 */}
       {modal ? <ReviseWordModal isId={id} setModal={setModal} /> : null}
       {/* 삭제 모달창 */}
-      {/* {removeModal ? <RemoveWordModal isId={id} /> : null} */}
+      {removeModal ? (
+        <RemoveWordModal isId={id} setRemoveModal={setRemoveModal} />
+      ) : null}
 
       <div className="lg:w-full relative">
         <div className="h-max mx-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-1">

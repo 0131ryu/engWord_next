@@ -1,8 +1,8 @@
 import { Fragment, useRef, useState } from "react";
-import { Dialog, Transition, Listbox } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
 import { useSelector, useDispatch } from "react-redux";
 import useInput from "../../hooks/useInput";
-import { reviseWordRequest } from "../../redux/feature/wordSlice";
+import { findWordRequest } from "../../redux/feature/wordSlice";
 import { DocumentMagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import FindResultModal from "./FindResultModal";
 
@@ -14,7 +14,6 @@ const FindWordModal = ({ isId, setModal }) => {
   const [open, setOpen] = useState(true);
   const [selected, setSelected] = useState(typesName[0]);
 
-  const [english, onChangeEnglish, setEnglish] = useInput("");
   const [korean, onChangeKorean, setKorean] = useInput("");
 
   const type = selected.name;
@@ -26,8 +25,8 @@ const FindWordModal = ({ isId, setModal }) => {
   const onFindWordSubmit = () => {
     // setModal(false);
     setResultModal(true);
-    console.log(english, korean, type, isId);
-    dispatch(reviseWordRequest({ id: isId, english, korean, type }));
+    console.log("korean", korean);
+    dispatch(findWordRequest(korean));
   };
 
   const onFindResultEng = () => {
@@ -44,7 +43,11 @@ const FindWordModal = ({ isId, setModal }) => {
     <>
       {/* 검색 결과창 */}
       {resultModal ? (
-        <FindResultModal setResultModal={setResultModal} setModal={setModal} />
+        <FindResultModal
+          korean={korean}
+          setResultModal={setResultModal}
+          setModal={setModal}
+        />
       ) : null}
 
       <Transition.Root show={open} as={Fragment}>

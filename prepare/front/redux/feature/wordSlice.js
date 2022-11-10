@@ -53,6 +53,9 @@ const initialState = {
   removeWordLoading: false, //단어 삭제
   removeWordComplete: false,
   removeWordError: null,
+  findWordLoading: false, //단어 찾기
+  findWordComplete: false,
+  findWordError: null,
 };
 
 export const wordSlice = createSlice({
@@ -114,6 +117,21 @@ export const wordSlice = createSlice({
       state.removeWordLoading = true;
       state.removeWordError = action.error;
     },
+    //단어 찾기
+    findWordRequest: (state) => {
+      state.findWordLoading = true;
+      state.findWordError = null;
+      state.findWordComplete = false;
+    },
+    findWordSuccess: (state, action) => {
+      state.findWordLoading = false;
+      state.findWordComplete = true;
+      // state.wordLists.unshift(action.payload, 1);
+    },
+    findWordError: (state, action) => {
+      state.findWordLoading = true;
+      state.findWordError = action.error;
+    },
   },
 });
 
@@ -127,6 +145,9 @@ export const {
   removeWordRequest,
   removeWordSuccess,
   removeWordError,
+  findWordRequest,
+  findWordSuccess,
+  findWordError,
 } = wordSlice.actions;
 
 export default wordSlice.reducer;

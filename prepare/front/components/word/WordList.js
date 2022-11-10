@@ -14,7 +14,7 @@ const WordList = () => {
 
   const { wordLists } = useSelector((state) => state.word);
 
-  console.log("첫 화면 modal 1", modal);
+  // console.log("첫 화면 modal 1", modal);
 
   const onReviseWord = (e) => {
     setId(parseInt(e.target.value));

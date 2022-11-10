@@ -1,11 +1,11 @@
 import { Fragment, useRef, useState, createRef } from "react";
-import { Dialog, Transition, Listbox } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
 import { useSelector, useDispatch } from "react-redux";
 import { createPopper } from "@popperjs/core";
-
 import useInput from "../../hooks/useInput";
-import { reviseWordRequest } from "../../redux/feature/wordSlice";
+import { addWordRequest } from "../../redux/feature/wordSlice";
 import { DocumentMagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { useCallback } from "react";
 
 const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
 
@@ -15,29 +15,37 @@ const searching = [
   { result: "relaxation " },
 ];
 
-const FindResultModal = ({ setModal, setResultModal }) => {
+const FindResultModal = ({ korean, setModal, setResultModal }) => {
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(true);
-  const [selected, setSelected] = useState(typesName[0]);
   //popperjs/core 이용
   const [popoverShow, setPopoverShow] = useState(false);
   const btnRef = createRef();
   const popoverRef = createRef();
 
   const [english, onChangeEnglish, setEnglish] = useInput("");
-  const [korean, onChangeKorean, setKorean] = useInput("");
-
-  const type = selected.name;
+  const [type, onChangeType, setType] = useInput(typesName[0]);
 
   // console.log("english", wordLists[isId].english);
   // console.log("korean", wordLists[isId].korean);
   // console.log("index", isId);
 
-  const onFindResultSubmit = () => {
+  const onFindResultSubmit = useCallback(() => {
     setModal(false);
     setResultModal(false);
-  };
+    console.log(english, korean, type);
+    dispatch(
+      addWordRequest({
+        id: 8,
+        english,
+        korean,
+        type,
+      })
+    );
+    english = "";
+    korean = "";
+  }, [english, korean, type]);
 
   const onOpenCloseModal = () => {
     console.log("open", open);
@@ -132,16 +140,22 @@ const FindResultModal = ({ setModal, setResultModal }) => {
                                 }
                               >
                                 "충전"의 다른 단어
+                                <p className="text-xs">
+                                  (단어 클릭 시 네이버 사전으로 이동)
+                                </p>
                               </div>
-                              {searching.map((eng) => (
-                                // <a
-                                //   href="https://en.dict.naver.com/#/search?query=find&range=all"
-                                //   target="_blank"
-                                // >
-                                <span className="text-black ml-2 mb-2">
-                                  {eng.result}
-                                </span>
-                                // </a>
+                              {searching.map((eng, index) => (
+                                <a
+                                  href={`https://en.dict.naver.com/#/search?query=${eng.result}&range=all`}
+                                  target="_blank"
+                                >
+                                  <span
+                                    className="text-dark-green font-bold hover:text-light-orange ml-2 mb-2"
+                                    key={index}
+                                  >
+                                    {eng.result}
+                                  </span>
+                                </a>
                               ))}
                             </div>
                           </div>
@@ -155,8 +169,9 @@ const FindResultModal = ({ setModal, setResultModal }) => {
                           <div className="flex">
                             <p className="mt-3 ml-3 font-bold">한글</p>
                             <input
-                              onChange={onChangeKorean}
-                              placeholder="충전"
+                              // onChange={onChangeKorean}
+                              readOnly
+                              placeholder={korean}
                               type="text"
                               name="korean"
                               className="sm:600 w-80 grid grid-cols-2 gap-4 place-content-center
@@ -166,57 +181,35 @@ const FindResultModal = ({ setModal, setResultModal }) => {
                           <div className="flex">
                             <p className="mt-3 ml-3 font-bold">영어</p>
                             <input
-                              onChange={onChangeKorean}
+                              onChange={onChangeEnglish}
                               placeholder="filling in; filling up"
                               type="text"
-                              name="korean"
+                              name="english"
                               className="sm:600 w-80 grid grid-cols-2 gap-4 place-content-center
                           pl-2 h-8 placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-lg m-2"
                             />
                           </div>
-                          <div className="flex">
+                          <div className="flex bg-gray-100">
                             <p className="mt-3 ml-3 font-bold">타입</p>
                             <div className="flex items-center">
-                              <input
-                                id="push-everything"
-                                name="push-notifications"
-                                type="radio"
-                                className="ml-3 mt-3 h-4 w-4 border-gray-300 text-dark-green focus:ring-dark-green"
-                              />
-                              <label
-                                htmlFor="push-everything"
-                                className="ml-3 mt-2 block text-sm font-medium text-gray-700"
-                              >
-                                easy
-                              </label>
-                            </div>
-                            <div className="flex items-center">
-                              <input
-                                id="push-email"
-                                name="push-notifications"
-                                type="radio"
-                                className="ml-3 mt-3 h-4 w-4 border-gray-300 text-dark-green focus:ring-dark-green"
-                              />
-                              <label
-                                htmlFor="push-email"
-                                className="ml-3 mt-2 block text-sm font-medium text-gray-700"
-                              >
-                                middle
-                              </label>
-                            </div>
-                            <div className="flex items-center">
-                              <input
-                                id="push-nothing"
-                                name="push-notifications"
-                                type="radio"
-                                className="ml-3 mt-3 h-4 w-4 border-gray-300 text-dark-green focus:ring-dark-green"
-                              />
-                              <label
-                                htmlFor="push-nothing"
-                                className="ml-3 mt-2 block text-sm font-medium text-gray-700"
-                              >
-                                advance
-                              </label>
+                              {typesName.map((type) => (
+                                <>
+                                  <input
+                                    id={type.name}
+                                    name="type"
+                                    value={type.name}
+                                    onChange={onChangeType}
+                                    type="radio"
+                                    className="ml-3 mt-3 h-4 w-4 border-gray-300 text-dark-green focus:ring-dark-green"
+                                  />
+                                  <label
+                                    htmlFor="easy"
+                                    className="ml-3 mt-2 block text-sm font-medium text-gray-700"
+                                  >
+                                    {type.name}
+                                  </label>
+                                </>
+                              ))}
                             </div>
                           </div>
                         </div>

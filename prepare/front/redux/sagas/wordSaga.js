@@ -59,7 +59,7 @@ async function findWordAPI(data) {
   //   await axios
   //     .get(
   //       `${process.env.NEXT_PUBLIC_WORD_URL}?key=${process.env.NEXT_PUBLIC_WORD_API}&q=${data}&advanced=y&method=exact&translated=y&trans_lang=1`
-  //       //https://krdict.korean.go.kr/api/search?key=2022874DB25BA22E3C851287F7D87618&q=충전&advanced=y&method=exact&translated=y&trans_lang=1
+  //
   //     )
   //     .then((response) => {
   //       if (response.ok) {

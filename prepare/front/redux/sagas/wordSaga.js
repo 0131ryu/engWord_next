@@ -90,7 +90,7 @@ function* findWord(action) {
     console.log("Response", response);
     // yield put(findWordSuccess(data));
   } catch (error) {
-    yield put(removeWordError(error));
+    yield put(findWordError(error));
     console.log(error);
   }
 }

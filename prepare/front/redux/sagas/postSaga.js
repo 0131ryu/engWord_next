@@ -4,6 +4,15 @@ import {
   addPostRequest,
   addPostSuccess,
   addPostFailure,
+  removePostRequest,
+  removePostSuccess,
+  removePostFailure,
+  addCommentRequest,
+  addCommentSuccess,
+  addCommentFailure,
+  removeCommentRequest,
+  removeCommentSuccess,
+  removeCommentFailure,
 } from "../feature/postSlice";
 
 function addPostAPI(data) {
@@ -13,6 +22,7 @@ function addPostAPI(data) {
 function* addPost(action) {
   try {
     //   const result = yield call(addPostAPI, action.data);
+    console.log(action.payload);
     const id = shortId.generate();
     yield put(addPostSuccess({ data: { id, content: action.payload } }));
   } catch (err) {
@@ -20,8 +30,72 @@ function* addPost(action) {
     yield put(addPostFailure(err));
   }
 }
+
+function removePostAPI(data) {
+  return axios.post("/post", data);
+}
+
+function* removePost(action) {
+  try {
+    //   const result = yield call(removePostAPI, action.data);
+    console.log(action.payload);
+    yield put(removePostSuccess(action.payload));
+  } catch (err) {
+    console.error(err);
+    yield put(removePostFailure(err));
+  }
+}
+
+function addCommentAPI(data) {
+  return axios.post("/post", data);
+}
+
+function* addComment(action) {
+  try {
+    //   const result = yield call(addCommentAPI, action.data);
+    console.log(action.payload);
+    const id = shortId.generate();
+    yield put(addCommentSuccess({ data: { id, content: action.payload } }));
+  } catch (err) {
+    console.error(err);
+    yield put(addCommentFailure(err));
+  }
+}
+
+function removeCommentAPI(data) {
+  return axios.post("/post", data);
+}
+
+function* removeComment(action) {
+  try {
+    //   const result = yield call(removeCommentAPI, action.data);
+    console.log(action.payload);
+    yield put(removeCommentSuccess(action.payload));
+  } catch (err) {
+    console.error(err);
+    yield put(removeCommentFailure(err));
+  }
+}
+
 function* addPost_Req() {
   yield takeLatest(addPostRequest.type, addPost);
 }
 
-export const postSagas = [fork(addPost_Req)];
+function* removePost_Req() {
+  yield takeLatest(removePostRequest.type, removePost);
+}
+
+function* addComment_Req() {
+  yield takeLatest(addCommentRequest.type, addComment);
+}
+
+function* removeComment_Req() {
+  yield takeLatest(removeCommentRequest.type, removeComment);
+}
+
+export const postSagas = [
+  fork(addPost_Req),
+  fork(removePost_Req),
+  fork(addComment_Req),
+  fork(removeComment_Req),
+];

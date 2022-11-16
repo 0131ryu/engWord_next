@@ -11,14 +11,15 @@ app.use(
   })
 );
 
-app.get("/", async (req, res) => {
-  await axdata("지브리", (error, { wordLists } = {}) => {
-    if (error) {
-      res.send(error);
-    }
-    res.send(wordLists);
-  });
-});
+//json 파일 불러오기
+// app.get("/", async (req, res) => {
+//   await axdata("사과", (error, { wordLists } = {}) => {
+//     if (error) {
+//       res.send(error);
+//     }
+//     res.send(wordLists);
+//   });
+// });
 
 app.listen(8000, () => {
   console.log("The server is running at port 8000");

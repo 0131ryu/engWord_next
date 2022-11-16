@@ -39,7 +39,7 @@ const axdata = async (wordName, callback) => {
     // console.log(obj.channel.item);
     // console.log(Object.keys(obj.channel.item).includes("0"));
 
-    //이상한 단어 입력 시 obj.channel.item === undefined
+    console.log(obj.channel.item);
 
     if (obj.channel.item === undefined) {
       korean = wordName;
@@ -50,21 +50,34 @@ const axdata = async (wordName, callback) => {
       english = "잘못 검색한 단어";
       english_dfn = "값을 찾을 수 없습니다.";
     } else if (obj.channel.item !== undefined) {
-      // console.log(obj.channel.item.sense[1] !== undefined); //값이 한 개면 undefined
-      korean = obj.channel.item.word._text;
-      if (obj.channel.item.sense[1] !== undefined) {
-        //값이 여러 개라면
-        korean_dfn = obj.channel.item.sense[0].definition._text;
-        english = obj.channel.item.sense[0].translation.trans_word._cdata;
-        english_dfn = obj.channel.item.sense[0].translation.trans_dfn._cdata;
+      //단어 뜻이 여러 개인 경우
+      if (obj.channel.item[0].word._text !== undefined) {
+        korean = obj.channel.item[0].word._text;
+        korean_dfn = obj.channel.item[0].sense.definition._text;
+        english = obj.channel.item[0].sense.translation.trans_word._cdata;
+        english_dfn = obj.channel.item[0].sense.translation.trans_dfn._cdata;
 
-        ex_english = obj.channel.item.sense[1].translation.trans_word._cdata;
-        ex_english_dfn = obj.channel.item.sense[1].translation.trans_dfn._cdata;
+        ex_english = obj.channel.item[1].sense.translation.trans_word._cdata;
+        ex_english_dfn = obj.channel.item[1].sense.translation.trans_dfn._cdata;
       } else {
-        //값이 한 개라면
-        korean_dfn = obj.channel.item.sense.definition._text;
-        english = obj.channel.item.sense.translation.trans_word._cdata;
-        english_dfn = obj.channel.item.sense.translation.trans_dfn._cdata;
+        //단어 뜻이 1개인 경우
+        // console.log(obj.channel.item.sense[1] !== undefined); //값이 한 개면 undefined
+        korean = obj.channel.item.word._text;
+        if (obj.channel.item.sense[1] !== undefined) {
+          //값이 여러 개라면
+          korean_dfn = obj.channel.item.sense[0].definition._text;
+          english = obj.channel.item.sense[0].translation.trans_word._cdata;
+          english_dfn = obj.channel.item.sense[0].translation.trans_dfn._cdata;
+
+          ex_english = obj.channel.item.sense[1].translation.trans_word._cdata;
+          ex_english_dfn =
+            obj.channel.item.sense[1].translation.trans_dfn._cdata;
+        } else {
+          //값이 한 개라면
+          korean_dfn = obj.channel.item.sense.definition._text;
+          english = obj.channel.item.sense.translation.trans_word._cdata;
+          english_dfn = obj.channel.item.sense.translation.trans_dfn._cdata;
+        }
       }
     }
 

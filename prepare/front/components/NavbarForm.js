@@ -8,6 +8,11 @@ import {
 } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutRequest } from "../redux/feature/userSlice";
+import { useRouter } from "next/router";
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 
 const navigation = [
   { name: "EngWord", href: "/", current: true },
@@ -15,17 +20,27 @@ const navigation = [
   { name: "WordGame", href: "/game", current: false },
 ];
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
 const NavbarForm = ({ children }) => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const { me, loginComplete } = useSelector((state) => state.user);
 
   const onLogout = useCallback(() => {
     dispatch(logoutRequest());
   }, []);
+
+  const onGoMain = () => {
+    router.push("/");
+  };
+
+  const onGoSNS = () => {
+    router.push("/post");
+  };
+
+  const onGoGame = () => {
+    router.push("/game");
+  };
+
   return (
     <>
       <Disclosure as="nav" className="bg-dark-green">
@@ -47,9 +62,7 @@ const NavbarForm = ({ children }) => {
                 <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                   <div className="flex flex-shrink-0 items-center">
                     <div className="block h-6 w-auto lg:hidden bg-light-beige rounded-md h-6 w-6">
-                      <a href="/" className="underline hover:text-black ">
-                        <BookmarkIcon className="w-6 h-6" />
-                      </a>
+                      <BookmarkIcon className="w-6 h-6" onClick={onGoMain} />
                     </div>
                     <div className="hidden h-6 w-auto lg:block bg-light-beige rounded-md h-6 w-6">
                       <a href="/" className="underline hover:text-black ">
@@ -70,7 +83,7 @@ const NavbarForm = ({ children }) => {
                   </div>
                   <div className="hidden sm:ml-6 sm:block">
                     <div className="flex space-x-4">
-                      {navigation.map((item, i) => (
+                      {/* {navigation.map((item, i) => (
                         <a
                           key={i}
                           href={item.href}
@@ -84,7 +97,25 @@ const NavbarForm = ({ children }) => {
                         >
                           {item.name}
                         </a>
-                      ))}
+                      ))} */}
+                      <button
+                        onClick={onGoMain}
+                        className="px-3 py-2 font-medium rounded-lg bg-light-brown text-white hover:bg-light-beige hover:text-black"
+                      >
+                        Home
+                      </button>
+                      <button
+                        onClick={onGoSNS}
+                        className="px-3 py-2 font-medium rounded-lg bg-light-brown text-white hover:bg-light-beige hover:text-black"
+                      >
+                        SNS
+                      </button>
+                      <button
+                        onClick={onGoGame}
+                        className="px-3 py-2 font-medium rounded-lg bg-light-brown text-white hover:bg-light-beige hover:text-black"
+                      >
+                        Game
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -182,8 +213,26 @@ const NavbarForm = ({ children }) => {
             </div>
 
             <Disclosure.Panel className="sm:hidden">
-              <div className="space-y-1 px-2 pt-2 pb-3">
-                {navigation.map((item) => (
+              <div className="space-y-1 px-2 pt-2 pb-3 grid grid-rows-3">
+                <Disclosure.Button
+                  onClick={onGoMain}
+                  className="h-10 mx-2 my-1 font-medium rounded-lg bg-light-brown text-white hover:bg-light-beige hover:text-black"
+                >
+                  Home
+                </Disclosure.Button>
+                <Disclosure.Button
+                  onClick={onGoSNS}
+                  className="h-10 mx-2 my-1 font-medium rounded-lg bg-light-brown text-white hover:bg-light-beige hover:text-black"
+                >
+                  SNS
+                </Disclosure.Button>
+                <Disclosure.Button
+                  onClick={onGoGame}
+                  className="h-10 mx-2 my-1 font-medium rounded-lg bg-light-brown text-white hover:bg-light-beige hover:text-black"
+                >
+                  Game
+                </Disclosure.Button>
+                {/* {navigation.map((item) => (
                   <Disclosure.Button
                     key={item.name}
                     as="a"
@@ -198,7 +247,7 @@ const NavbarForm = ({ children }) => {
                   >
                     {item.name}
                   </Disclosure.Button>
-                ))}
+                ))} */}
               </div>
             </Disclosure.Panel>
           </>

@@ -15,6 +15,7 @@ function* logIn(action) {
   try {
     const data = action.payload;
     console.log("data", data);
+    console.log(action);
     yield put(loginSuccess({ data: data }));
     // yield call(loginSuccess, data);
   } catch (error) {

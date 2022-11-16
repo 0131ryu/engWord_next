@@ -1,7 +1,4 @@
-//등록하기
-//삭제하기
-//수정하기
-//체크하기
+import shortId from "shortid";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {

@@ -1,4 +1,3 @@
-import shortId from "shortid";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -14,6 +13,121 @@ const initialState = {
       english: "blue",
       korean: "파랑",
       type: "easy",
+    },
+    {
+      id: 3,
+      english: "blue2",
+      korean: "파랑2",
+      type: "easy",
+    },
+    {
+      id: 5,
+      english: "blue3",
+      korean: "파랑3",
+      type: "easy",
+    },
+    {
+      id: 7,
+      english: "blue4",
+      korean: "파랑4",
+      type: "easy",
+    },
+    {
+      id: 9,
+      english: "blue5",
+      korean: "파랑5",
+      type: "easy",
+    },
+    {
+      id: 2,
+      english: "red",
+      korean: "빨강",
+      type: "easy",
+    },
+    {
+      id: 4,
+      english: "blue",
+      korean: "파랑",
+      type: "easy",
+    },
+    {
+      id: 3,
+      english: "blue2",
+      korean: "파랑2",
+      type: "easy",
+    },
+    {
+      id: 5,
+      english: "blue3",
+      korean: "파랑3",
+      type: "easy",
+    },
+    {
+      id: 7,
+      english: "blue4",
+      korean: "파랑4",
+      type: "easy",
+    },
+    {
+      id: 9,
+      english: "blue5",
+      korean: "파랑5",
+      type: "easy",
+    },
+    {
+      id: 2,
+      english: "red",
+      korean: "빨강",
+      type: "easy",
+    },
+    {
+      id: 4,
+      english: "blue",
+      korean: "파랑",
+      type: "easy",
+    },
+
+    {
+      id: 6,
+      english: "yellow",
+      korean: "노랑",
+      type: "middle",
+    },
+    {
+      id: 6,
+      english: "yellow",
+      korean: "노랑",
+      type: "middle",
+    },
+    {
+      id: 6,
+      english: "yellow",
+      korean: "노랑",
+      type: "middle",
+    },
+    {
+      id: 6,
+      english: "yellow",
+      korean: "노랑",
+      type: "middle",
+    },
+    {
+      id: 6,
+      english: "yellow",
+      korean: "노랑",
+      type: "middle",
+    },
+    {
+      id: 6,
+      english: "yellow",
+      korean: "노랑",
+      type: "middle",
+    },
+    {
+      id: 6,
+      english: "yellow",
+      korean: "노랑",
+      type: "middle",
     },
     {
       id: 6,
@@ -40,6 +154,24 @@ const initialState = {
       korean: "검정",
       type: "advance",
     },
+    {
+      id: 14,
+      english: "gray",
+      korean: "회색",
+      type: "advance",
+    },
+    {
+      id: 16,
+      english: "black2",
+      korean: "검정2",
+      type: "advance",
+    },
+    {
+      id: 18,
+      english: "black3",
+      korean: "검정3",
+      type: "advance",
+    },
   ],
   addWordLoading: false, //단어 추가
   addWordComplete: false,
@@ -53,6 +185,12 @@ const initialState = {
   findWordLoading: false, //단어 찾기
   findWordComplete: false,
   findWordError: null,
+  page: 0, // 페이지 이동
+  minIndex: 0,
+  maxIndex: 3,
+  pageMiddle: 0, // 페이지 이동
+  minIndexMiddle: 0,
+  maxIndexMiddle: 3,
 };
 
 export const wordSlice = createSlice({
@@ -129,6 +267,74 @@ export const wordSlice = createSlice({
       state.findWordLoading = true;
       state.findWordError = action.error;
     },
+    //페이지 이동
+    incrementEasy: (state) => {
+      state.page += 1;
+      const arrayEasy = [];
+
+      state.wordLists.map((word, i) => {
+        if (word.type === "easy") {
+          arrayEasy.push(i);
+        }
+      });
+
+      const easyLists = Object.keys(arrayEasy).length - 1;
+
+      if (easyLists === state.maxIndex) {
+        // state.page === state.page; //값 고정 필요
+        state.minIndex = easyLists - 3;
+        state.maxIndex = easyLists;
+      } else {
+        state.minIndex += 3;
+        state.maxIndex += 3;
+      }
+    },
+    decrementEasy: (state) => {
+      state.page -= 1;
+      if (state.page < 0) {
+        state.page = 0;
+        state.minIndex = 0;
+        state.maxIndex = 3;
+      } else {
+        state.minIndex -= 3;
+        state.maxIndex -= 3;
+      }
+    },
+    incrementMiddle: (state) => {
+      state.pageMiddle += 1;
+      const arrayMiddle = [];
+
+      state.wordLists.map((word, i) => {
+        if (word.type === "middle") {
+          arrayMiddle.push(i);
+        }
+      });
+
+      // state.minIndexMiddle = Math.min.apply(null, arrayMiddle);
+      // state.maxIndexMiddle = Math.min.apply(null, arrayMiddle) + 2;
+
+      const middleLists = Object.keys(arrayMiddle).length - 1;
+
+      if (middleLists === state.maxIndexMiddle) {
+        // state.page === state.page; //값 고정 필요
+        state.minIndexMiddle = middleLists - 3;
+        state.maxIndexMiddle = middleLists;
+      } else {
+        state.minIndexMiddle += 3;
+        state.maxIndexMiddle += 3;
+      }
+    },
+    decrementMiddle: (state) => {
+      state.pageMiddle -= 1;
+      if (state.pageMiddle < 0) {
+        state.pageMiddle = 0;
+        state.minIndexMiddle = 0;
+        state.maxIndexMiddle = 3;
+      } else {
+        state.minIndexMiddle -= 3;
+        state.maxIndexMiddle -= 3;
+      }
+    },
   },
 });
 
@@ -145,6 +351,10 @@ export const {
   findWordRequest,
   findWordSuccess,
   findWordError,
+  incrementEasy,
+  decrementEasy,
+  incrementMiddle,
+  decrementMiddle,
 } = wordSlice.actions;
 
 export default wordSlice.reducer;

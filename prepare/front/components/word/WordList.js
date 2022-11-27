@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import {
@@ -56,41 +56,35 @@ const WordList = () => {
   });
 
   const easyLists = Object.keys(arrayEasy).length - 1;
-  let middleLists = Object.keys(arrayMiddle).length - 1;
+  // let middleLists = Object.keys(arrayMiddle).length - 1;
 
-  // minIndexMiddle = Math.min.apply(null, arrayMiddle);
-  // maxIndexMiddle = Math.min.apply(null, arrayMiddle) + 2;
-
-  const onClickLeftEasy = () => {
+  const onClickLeftEasy = useCallback(() => {
     dispatch(decrementEasy());
-  };
+  });
 
-  const onClickRightEasy = () => {
+  const onClickRightEasy = useCallback(() => {
     if (easyLists < maxIndex) {
       null;
     } else {
       dispatch(incrementEasy());
     }
-  };
+  });
 
-  const onClickLeftMiddle = () => {
+  const onClickLeftMiddle = useCallback(() => {
     if (Math.min.apply(null, arrayMiddle) > minIndexMiddle) {
       null;
     } else {
       dispatch(decrementMiddle());
     }
-  };
+  });
 
-  // console.log(arrayMiddle);
-  console.log(Math.max.apply(null, arrayMiddle));
-  console.log("maxIndexMiddle", maxIndexMiddle);
-  const onClickRightMiddle = () => {
+  const onClickRightMiddle = useCallback(() => {
     if (Math.max.apply(null, arrayMiddle) === maxIndexMiddle) {
       null;
     } else {
       dispatch(incrementMiddle());
     }
-  };
+  });
 
   return (
     <>
@@ -246,8 +240,8 @@ const WordList = () => {
               </div>
               {/* item start */}
               {wordLists.map((word, index) => {
+                word.type === "middle";
                 if (
-                  word.type === "middle" &&
                   `${minIndexMiddle}` < index &&
                   index <= `${maxIndexMiddle}`
                 ) {

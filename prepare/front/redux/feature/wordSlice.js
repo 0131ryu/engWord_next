@@ -310,13 +310,9 @@ export const wordSlice = createSlice({
         }
       });
 
-      // state.minIndexMiddle = Math.min.apply(null, arrayMiddle);
-      // state.maxIndexMiddle = Math.min.apply(null, arrayMiddle) + 2;
-
       const middleLists = Object.keys(arrayMiddle).length - 1;
 
       if (middleLists === state.maxIndexMiddle) {
-        // state.page === state.page; //값 고정 필요
         state.minIndexMiddle = middleLists - 3;
         state.maxIndexMiddle = middleLists;
       } else {

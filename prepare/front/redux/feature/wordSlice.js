@@ -304,23 +304,33 @@ export const wordSlice = createSlice({
       state.pageMiddle += 1;
       const arrayMiddle = [];
 
+      if (state.minIndexMiddle < 0) {
+        state.minIndexMiddle = 0;
+      }
+
       state.wordLists.map((word, i) => {
         if (word.type === "middle") {
           arrayMiddle.push(i);
         }
       });
 
-      const middleLists = Object.keys(arrayMiddle).length - 1;
+      const lastMiddleIndex = arrayMiddle[arrayMiddle.length - 1];
 
-      if (middleLists === state.maxIndexMiddle) {
-        state.minIndexMiddle = middleLists - 3;
-        state.maxIndexMiddle = middleLists;
+      console.log(lastMiddleIndex);
+
+      if (lastMiddleIndex < state.maxIndexMiddle) {
+        state.minIndexMiddle = lastMiddleIndex - 3;
+        state.maxIndexMiddle = lastMiddleIndex;
       } else {
         state.minIndexMiddle += 3;
         state.maxIndexMiddle += 3;
       }
     },
     decrementMiddle: (state) => {
+      if (state.minIndexMiddle < 0) {
+        state.minIndexMiddle = 0;
+      }
+
       state.pageMiddle -= 1;
       if (state.pageMiddle < 0) {
         state.pageMiddle = 0;

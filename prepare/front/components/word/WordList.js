@@ -25,10 +25,15 @@ const WordList = () => {
   const arrayMiddle = [];
   const arrayAdvance = [];
 
-  const { wordLists, page, minIndex, maxIndex, pageMiddle } = useSelector(
-    (state) => state.word
-  );
-  let { minIndexMiddle, maxIndexMiddle } = useSelector((state) => state.word);
+  const {
+    wordLists,
+    page,
+    minIndex,
+    maxIndex,
+    pageMiddle,
+    minIndexMiddle,
+    maxIndexMiddle,
+  } = useSelector((state) => state.word);
 
   const onReviseWord = (e) => {
     setId(parseInt(e.target.value));
@@ -122,6 +127,9 @@ const WordList = () => {
                   `${minIndex}` <= index &&
                   index < `${maxIndex}`
                 ) {
+                  // console.log("index", index);
+                  // console.log("minIndex", minIndex);
+                  // console.log("maxIndex", maxIndex);
                   return (
                     <>
                       <div
@@ -240,11 +248,14 @@ const WordList = () => {
               </div>
               {/* item start */}
               {wordLists.map((word, index) => {
-                word.type === "middle";
                 if (
-                  `${minIndexMiddle}` < index &&
-                  index <= `${maxIndexMiddle}`
+                  word.type === "middle" &&
+                  parseInt(minIndexMiddle) < index &&
+                  index <= parseInt(maxIndexMiddle)
                 ) {
+                  console.log("index", index);
+                  console.log("최소값", parseInt(minIndexMiddle));
+                  console.log("최대값", parseInt(maxIndexMiddle));
                   {
                     return (
                       <>

@@ -64,8 +64,6 @@ const WordList = () => {
     }
   });
 
-  console.log("checkedWordList", checkedWordList);
-
   const easyLists = Object.keys(arrayEasy).length - 1;
   // let middleLists = Object.keys(arrayMiddle).length - 1;
 

@@ -19,6 +19,9 @@ import {
   changeStatusWordAllRequest,
   changeStatusWordAllSuccess,
   changeStatusWordAllError,
+  searchWordRequest,
+  searchWordSuccess,
+  searchWordError,
 } from "../feature/wordSlice";
 
 function* addWord(action) {
@@ -120,6 +123,17 @@ function* findWord(action) {
   }
 }
 
+//searchWord
+function* searchWord(action) {
+  try {
+    const data = action.payload;
+    yield put(searchWordSuccess(data));
+  } catch (error) {
+    yield put(searchWordError(error));
+    console.log(error);
+  }
+}
+
 function* add_Word_Req() {
   yield takeLatest(addWordRequest.type, addWord);
 }
@@ -144,6 +158,10 @@ function* change_StatusAll_Req() {
   yield takeLatest(changeStatusWordAllRequest.type, changeStatusAll);
 }
 
+function* search_Word_Req() {
+  yield takeLatest(searchWordRequest.type, searchWord);
+}
+
 export const wordSagas = [
   fork(add_Word_Req),
   fork(revise_Word_Req),
@@ -151,4 +169,5 @@ export const wordSagas = [
   fork(find_Word_Req),
   fork(change_Status_Req),
   fork(change_StatusAll_Req),
+  fork(search_Word_Req),
 ];

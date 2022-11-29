@@ -34,17 +34,20 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
   const onFindResultSubmit = useCallback(() => {
     setModal(false);
     setResultModal(false);
-    console.log(english, korean, type);
-    dispatch(
-      addWordRequest({
-        id: 8,
-        english,
-        korean,
-        type,
-      })
-    );
-    english = "";
-    korean = "";
+    console.log("english", english);
+    console.log("korean", korean);
+    if (!english || !korean || !type) {
+      null;
+    } else {
+      dispatch(
+        addWordRequest({
+          id: 8,
+          english,
+          korean,
+          type,
+        })
+      );
+    }
   }, [english, korean, type]);
 
   const onOpenCloseModal = () => {

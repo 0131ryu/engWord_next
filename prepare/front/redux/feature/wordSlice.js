@@ -11,36 +11,36 @@ const initialState = {
     },
     {
       id: 4,
+      english: "orange",
+      korean: "주황색",
+      type: "easy",
+      status: "A",
+    },
+    {
+      id: 3,
+      english: "yellow",
+      korean: "노랑색",
+      type: "easy",
+      status: "A",
+    },
+    {
+      id: 5,
+      english: "green",
+      korean: "초록색",
+      type: "easy",
+      status: "A",
+    },
+    {
+      id: 7,
       english: "blue",
       korean: "파랑",
       type: "easy",
       status: "A",
     },
     {
-      id: 3,
-      english: "blue2",
-      korean: "파랑2",
-      type: "easy",
-      status: "A",
-    },
-    {
-      id: 5,
-      english: "blue3",
-      korean: "파랑3",
-      type: "easy",
-      status: "A",
-    },
-    {
-      id: 7,
-      english: "blue4",
-      korean: "파랑4",
-      type: "easy",
-      status: "A",
-    },
-    {
       id: 9,
-      english: "blue5",
-      korean: "파랑5",
+      english: "purple",
+      korean: "보라색",
       type: "easy",
       status: "A",
     },
@@ -210,9 +210,12 @@ const initialState = {
   removeWordLoading: false, //단어 삭제
   removeWordComplete: false,
   removeWordError: null,
-  findWordLoading: false, //단어 찾기
+  findWordLoading: false, //단어 찾기(추가)
   findWordComplete: false,
   findWordError: null,
+  searchWordLoading: false, //단어 검색
+  searchWordComplete: false,
+  searchWordError: null,
   changeStatusWordLoading: false, //단어 상태 수정
   changeStatusWordComplete: false,
   changeStatusWordError: null,
@@ -222,6 +225,7 @@ const initialState = {
   pageMiddle: 0, // 페이지 이동
   minIndexMiddle: 0,
   maxIndexMiddle: 3,
+  searchResult: [],
 };
 
 export const wordSlice = createSlice({
@@ -408,6 +412,34 @@ export const wordSlice = createSlice({
       state.changeStatusWordLoading = true;
       state.changeStatusWordError = action.error;
     },
+    //단어 검색
+    searchWordRequest: (state) => {
+      state.searchWordLoading = true;
+      state.searchWordError = null;
+      state.searchWordComplete = false;
+    },
+    searchWordSuccess: (state, action) => {
+      const searchEng = action.payload;
+      state.searchWordLoading = false;
+      state.searchWordComplete = true;
+      // const result = state.wordLists.find(
+      //   (element) => element.english === searchEng
+      // );
+      const result = state.wordLists.filter(
+        (element) => element.english === searchEng
+      );
+      console.log(result.length);
+      state.searchResult.push(result);
+
+      if (state.searchResult.length > 0) {
+        state.searchResult = [];
+        state.searchResult.push(result);
+      }
+    },
+    searchWordError: (state, action) => {
+      state.searchWordLoading = true;
+      state.searchWordError = action.error;
+    },
   },
 });
 
@@ -434,6 +466,9 @@ export const {
   changeStatusWordAllRequest,
   changeStatusWordAllSuccess,
   changeStatusWordAllError,
+  searchWordRequest,
+  searchWordSuccess,
+  searchWordError,
 } = wordSlice.actions;
 
 export default wordSlice.reducer;

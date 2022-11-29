@@ -10,6 +10,7 @@ import { addWordRequest } from "../../redux/feature/wordSlice";
 import { useDispatch } from "react-redux";
 import useInput from "../../hooks/useInput";
 import FindWordModal from "./FindWordModal";
+import SearchWordModal from "./SearchWordModal";
 
 const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
 
@@ -17,14 +18,19 @@ const WordForm = () => {
   const dispatch = useDispatch();
 
   const [modal, setModal] = useState(false);
+  const [modalSearch, setModalSearch] = useState(false);
   const [selected, setSelected] = useState(typesName[0]);
   const [english, onChangeEnglish, setEnglish] = useInput("");
   const [korean, onChangeKorean, setKorean] = useInput("");
 
   const type = selected.name;
 
-  const onSearchModal = () => {
+  const onFindModal = () => {
     setModal(true);
+  };
+
+  const onSearchModal = () => {
+    setModalSearch(true);
   };
 
   const onSubmitWord = useCallback(() => {
@@ -45,13 +51,16 @@ const WordForm = () => {
     <>
       {/* 검색 모달창 */}
       {modal ? <FindWordModal setModal={setModal} /> : null}
+
+      {/* 검색 모달창 */}
+      {modalSearch ? <SearchWordModal setModalSearch={setModalSearch} /> : null}
       <div className="lg:w-full relative">
         <div className=" h-80 place-content-center mx-auto max-w-2xl py-8 px-4 sm:py-20 sm:px-3 lg:max-w-screen-xl">
           <h2 className="text-2xl tracking-tight text-gray-900">
             <span className="text-dark-green font-bold">영어 단어</span>, 만들어
             봅시다!
             <button
-              onClick={onSearchModal}
+              onClick={onFindModal}
               className="bg-light-orange ml-3 h-8 w-20 rounded-lg mb-2"
             >
               <MagnifyingGlassIcon className="w-5 h-5 ml-2" />
@@ -153,6 +162,9 @@ const WordForm = () => {
               Submit
             </button>
             {/* </form> */}
+          </div>
+          <div className="text-center font-bold absolute top-64 inset-x-44 lg:inset-x-96 bg-light-beige border-2 rounded-lg border-light-beige hover:border-light-green hover:text-light-green">
+            <button onClick={onSearchModal}>단어 검색하기</button>
           </div>
         </div>
       </div>

@@ -2,43 +2,34 @@ import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useSelector, useDispatch } from "react-redux";
 import useInput from "../../hooks/useInput";
-import { findWordRequest } from "../../redux/feature/wordSlice";
-import { DocumentMagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import FindResultModal from "./FindResultModal";
+import { searchWordRequest } from "../../redux/feature/wordSlice";
+import { BookOpenIcon } from "@heroicons/react/24/outline";
+import SearchResultModal from "./SearchResultModal";
 
 const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
 
-const FindWordModal = ({ isId, setModal }) => {
+const SearchWordModal = ({ setModalSearch }) => {
   const dispatch = useDispatch();
   const [resultModal, setResultModal] = useState(false);
   const [open, setOpen] = useState(true);
   const [selected, setSelected] = useState(typesName[0]);
 
-  const [korean, onChangeKorean, setKorean] = useInput("");
+  const [english, onChangeKorean, setKorean] = useInput("");
 
   const type = selected.name;
 
-  // console.log("english", wordLists[isId].english);
-  // console.log("korean", wordLists[isId].korean);
-  // console.log("index", isId);
-
-  const onFindWordSubmit = () => {
+  const onSearchWordSubmit = () => {
     setResultModal(true);
-    console.log("korean", korean);
-    if (!korean) {
+    if (!english) {
       setResultModal(false);
     } else {
-      dispatch(findWordRequest(korean));
+      dispatch(searchWordRequest(english));
     }
-  };
-
-  const onFindResultEng = () => {
-    setResultModal(true);
   };
 
   const onOpenCloseModal = () => {
     console.log("open", open);
-    setModal(false);
+    setModalSearch(false);
   };
   const cancelButtonRef = useRef(null);
 
@@ -46,10 +37,10 @@ const FindWordModal = ({ isId, setModal }) => {
     <>
       {/* 검색 결과창 */}
       {resultModal ? (
-        <FindResultModal
-          korean={korean}
+        <SearchResultModal
+          english={english}
           setResultModal={setResultModal}
-          setModal={setModal}
+          setModalSearch={setModalSearch}
         />
       ) : null}
 
@@ -86,9 +77,9 @@ const FindWordModal = ({ isId, setModal }) => {
                 <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                   <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div className="sm:flex sm:items-start">
-                      <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-light-orange sm:mx-0 sm:h-10 sm:w-10">
-                        <DocumentMagnifyingGlassIcon
-                          className="h-6 w-6 text-black"
+                      <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-light-green sm:mx-0 sm:h-10 sm:w-10">
+                        <BookOpenIcon
+                          className="h-6 w-6 text-white"
                           aria-hidden="true"
                         />
                       </div>
@@ -97,42 +88,42 @@ const FindWordModal = ({ isId, setModal }) => {
                           as="h3"
                           className="text-lg font-medium leading-6 text-gray-900"
                         >
-                          단어 만들기
+                          단어 찾기
                           <p className="text-xs">
-                            (한국어기초사전 오픈 API 사용)
+                            (찾고자하는 단어를 입력하세요.)
                           </p>
                         </Dialog.Title>
                         <div className="flex w-96">
                           <div>
                             <input
                               onChange={onChangeKorean}
-                              placeholder="한글 검색"
+                              placeholder="영어 검색"
                               type="text"
-                              name="korean"
+                              name="english"
                               className="ml-8 lg:ml-0 sm:600 w-80 grid grid-cols-2 gap-4 place-content-center
-                          pl-2 h-9  placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-orange group-hover:opacity-80 rounded-full m-2"
+                          pl-2 h-9  placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-full m-2"
                             />
+                            {!english ? (
+                              <p className="absolute inset-x-20 lg:inset-x-36 text-red-500">
+                                영어 단어를 입력하지 않았습니다.
+                              </p>
+                            ) : null}
                           </div>
                         </div>
-                        {!korean ? (
-                          <p className="absolute inset-x-20 lg:inset-x-40 text-red-500">
-                            단어를 입력하지 않았습니다.
-                          </p>
-                        ) : null}
                       </div>
                     </div>
                   </div>
                   <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                     <button
                       type="button"
-                      className="inline-flex w-full justify-center rounded-md border border-transparent bg-light-orange px-4 py-2 text-base font-medium text-black shadow-sm hover:bg-dark-green hover:text-white  sm:ml-3 sm:w-auto sm:text-sm"
-                      onClick={onFindWordSubmit}
+                      className="inline-flex w-full justify-center rounded-md border border-transparent bg-light-green px-4 py-2 text-base font-medium text-black shadow-sm hover:bg-dark-green hover:text-white  sm:ml-3 sm:w-auto sm:text-sm"
+                      onClick={onSearchWordSubmit}
                     >
                       검색
                     </button>
                     <button
                       type="button"
-                      className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                      className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                       onClick={onOpenCloseModal}
                       ref={cancelButtonRef}
                     >
@@ -149,4 +140,4 @@ const FindWordModal = ({ isId, setModal }) => {
   );
 };
 
-export default FindWordModal;
+export default SearchWordModal;

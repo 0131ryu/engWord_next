@@ -13,6 +13,12 @@ import {
   findWordRequest,
   findWordSuccess,
   findWordError,
+  changeStatusWordRequest,
+  changeStatusWordSuccess,
+  changeStatusWordError,
+  changeStatusWordAllRequest,
+  changeStatusWordAllSuccess,
+  changeStatusWordAllError,
 } from "../feature/wordSlice";
 
 function* addWord(action) {
@@ -45,9 +51,28 @@ function* removeWord(action) {
     const data = action.payload;
     console.log("data", data);
     yield put(removeWordSuccess(data));
-    // yield call(addWordSuccess, data);
   } catch (error) {
     yield put(removeWordError(error));
+    console.log(error);
+  }
+}
+
+function* changeStatus(action) {
+  try {
+    const data = action.payload;
+    yield put(changeStatusWordSuccess(data));
+  } catch (error) {
+    yield put(changeStatusWordError(error));
+    console.log(error);
+  }
+}
+
+function* changeStatusAll(action) {
+  try {
+    const data = action.payload;
+    yield put(changeStatusWordAllSuccess(data));
+  } catch (error) {
+    yield put(changeStatusWordAllError(error));
     console.log(error);
   }
 }
@@ -111,9 +136,19 @@ function* find_Word_Req() {
   yield takeLatest(findWordRequest.type, findWord);
 }
 
+function* change_Status_Req() {
+  yield takeLatest(changeStatusWordRequest.type, changeStatus);
+}
+
+function* change_StatusAll_Req() {
+  yield takeLatest(changeStatusWordAllRequest.type, changeStatusAll);
+}
+
 export const wordSagas = [
   fork(add_Word_Req),
   fork(revise_Word_Req),
   fork(remove_Word_Req),
   fork(find_Word_Req),
+  fork(change_Status_Req),
+  fork(change_StatusAll_Req),
 ];

@@ -14,6 +14,8 @@ import {
   decrementEasy,
   incrementMiddle,
   decrementMiddle,
+  changeStatusWordRequest,
+  changeStatusWordAllRequest,
 } from "../../redux/feature/wordSlice";
 
 const WordList = () => {
@@ -21,9 +23,11 @@ const WordList = () => {
   const [modal, setModal] = useState(false);
   const [removeModal, setRemoveModal] = useState(false);
   const [id, setId] = useState(0);
+  const [status, setStatus] = useState("C");
   const arrayEasy = [];
   const arrayMiddle = [];
   const arrayAdvance = [];
+  const checkedWordList = [];
 
   const {
     wordLists,
@@ -52,13 +56,15 @@ const WordList = () => {
     if (word.type === "easy") {
       arrayEasy.push(i);
     }
-  });
-
-  wordLists.map((word, i) => {
     if (word.type === "middle") {
       arrayMiddle.push(i);
     }
+    if (word.status === "C") {
+      checkedWordList.push(word);
+    }
   });
+
+  console.log("checkedWordList", checkedWordList);
 
   const easyLists = Object.keys(arrayEasy).length - 1;
   // let middleLists = Object.keys(arrayMiddle).length - 1;
@@ -91,8 +97,59 @@ const WordList = () => {
     }
   });
 
+  const onClickAllSelected = useCallback((e) => {
+    const checkboxClickedAll = e.target;
+    checkboxClickedAll.classList.toggle(status);
+    const checkboxes = document.querySelectorAll("input[name=checkItem]");
+
+    if (checkboxClickedAll.checked) {
+      dispatch(changeStatusWordAllRequest({ status: status }));
+      for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = checkboxClickedAll.checked;
+      }
+    } else {
+      dispatch(changeStatusWordAllRequest({ status: "A" }));
+      for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = checkboxClickedAll.checked;
+      }
+    }
+  }, []);
+
+  const onClickSelected = useCallback((e) => {
+    const checkboxClicked = e.target;
+    const wordIndex = e.target.value;
+
+    checkboxClicked.classList.toggle(status);
+
+    if (checkboxClicked.checked) {
+      dispatch(changeStatusWordRequest({ id: wordIndex, status: status }));
+    } else if (!checkboxClicked.checked) {
+      dispatch(changeStatusWordRequest({ id: wordIndex, status: "A" }));
+    }
+  }, []);
+
   return (
     <>
+      {/* checkbox */}
+      <div className="absolute top-64 right-0 md:right-20 lg:right-52">
+        <div className="flex items-center mb-2">
+          <input
+            onChange={onClickAllSelected}
+            id="checkboxAll"
+            type="checkbox"
+            className="w-4 h-4 text-light-green bg-gray-900 rounded border-light-green focus:ring-light-green dark:focus:ring-light-green dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+          />
+          <label
+            htmlFor="checkboxAll"
+            className="ml-2 text-sm font-bold text-gray-900 border-light-green"
+          >
+            전체 선택 / 해제
+          </label>
+        </div>
+        <p>
+          체크된 단어 개수 : {checkedWordList.length}/{wordLists.length}
+        </p>
+      </div>
       {/* 수정 모달창 */}
       {modal ? <ReviseWordModal isId={id} setModal={setModal} /> : null}
       {/* 삭제 모달창 */}
@@ -110,7 +167,7 @@ const WordList = () => {
                   🥉 Easy
                 </h1>
               </div>
-              <div className="flex absolute left-32 top-4">
+              {/* <div className="flex absolute left-32 top-4">
                 <button className="hover:bg-gray-100 w-8 h-8 rounded-lg">
                   <ChevronLeftIcon onClick={onClickLeftEasy} />
                 </button>
@@ -119,13 +176,14 @@ const WordList = () => {
                   <ChevronRightIcon onClick={onClickRightEasy} />
                   {minIndex} {maxIndex}
                 </button>
-              </div>
+              </div> */}
               {/* item start */}
               {wordLists.map((word, index) => {
                 if (
-                  word.type === "easy" &&
-                  `${minIndex}` <= index &&
-                  index < `${maxIndex}`
+                  word.type === "easy"
+                  // &&
+                  // `${minIndex}` <= index &&
+                  // index < `${maxIndex}`
                 ) {
                   // console.log("index", index);
                   // console.log("minIndex", minIndex);
@@ -139,8 +197,10 @@ const WordList = () => {
                         <div className="h-24 w-90 sm:600 w-96 lg:w-48">
                           <div className="flex py-5 pl-1">
                             <input
-                              id="comments"
-                              name="comments"
+                              onClick={onClickSelected}
+                              value={index}
+                              id="checkItem"
+                              name="checkItem"
                               type="checkbox"
                               className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                             />
@@ -151,7 +211,7 @@ const WordList = () => {
                                 {word.english} ({index})
                               </p>
                               <p className="text-sm text-slate-900 truncate">
-                                {word.korean} {word.id}
+                                {word.korean} {word.id} {word.status}
                               </p>
                             </div>
                           </li>
@@ -236,7 +296,7 @@ const WordList = () => {
                   🥈 Middle
                 </h1>
               </div>
-              <div className="flex absolute left-32 top-4">
+              {/* <div className="flex absolute left-32 top-4">
                 <button className="hover:bg-gray-100 w-8 h-8 rounded-lg">
                   <ChevronLeftIcon onClick={onClickLeftMiddle} />
                 </button>
@@ -245,17 +305,18 @@ const WordList = () => {
                   <ChevronRightIcon onClick={onClickRightMiddle} />
                   {minIndexMiddle} {maxIndexMiddle}
                 </button>
-              </div>
+              </div> */}
               {/* item start */}
               {wordLists.map((word, index) => {
                 if (
-                  word.type === "middle" &&
-                  parseInt(minIndexMiddle) < index &&
-                  index <= parseInt(maxIndexMiddle)
+                  word.type === "middle"
+                  // &&
+                  // parseInt(minIndexMiddle) < index &&
+                  // index <= parseInt(maxIndexMiddle)
                 ) {
-                  console.log("index", index);
-                  console.log("최소값", parseInt(minIndexMiddle));
-                  console.log("최대값", parseInt(maxIndexMiddle));
+                  // console.log("index", index);
+                  // console.log("최소값", parseInt(minIndexMiddle));
+                  // console.log("최대값", parseInt(maxIndexMiddle));
                   {
                     return (
                       <>
@@ -266,8 +327,10 @@ const WordList = () => {
                           <div className="h-24 w-90 sm:600 w-96 lg:w-48">
                             <div className="flex py-5 pl-1">
                               <input
-                                id="comments"
-                                name="comments"
+                                onClick={onClickSelected}
+                                value={index}
+                                id="checkItem"
+                                name="checkItem"
                                 type="checkbox"
                                 className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                               />
@@ -278,7 +341,7 @@ const WordList = () => {
                                   {word.english} ({index})
                                 </p>
                                 <p className="text-sm text-slate-900 truncate">
-                                  {word.korean} {word.id}
+                                  {word.korean} {word.id} {word.status}
                                 </p>
                               </div>
                             </li>
@@ -373,8 +436,10 @@ const WordList = () => {
                         <div className="h-24 w-90 sm:600 w-96 lg:w-48">
                           <div className="flex py-5 pl-1">
                             <input
-                              id="comments"
-                              name="comments"
+                              onClick={onClickSelected}
+                              value={index}
+                              id="checkItem"
+                              name="checkItem"
                               type="checkbox"
                               className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                             />
@@ -385,7 +450,7 @@ const WordList = () => {
                                 {word.english} ({index})
                               </p>
                               <p className="text-sm text-slate-900 truncate">
-                                {word.korean} {word.id}
+                                {word.korean} {word.id} {word.status}
                               </p>
                             </div>
                           </li>

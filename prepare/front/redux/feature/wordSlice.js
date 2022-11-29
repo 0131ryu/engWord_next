@@ -7,84 +7,98 @@ const initialState = {
       english: "red",
       korean: "빨강",
       type: "easy",
+      status: "A",
     },
     {
       id: 4,
       english: "blue",
       korean: "파랑",
       type: "easy",
+      status: "A",
     },
     {
       id: 3,
       english: "blue2",
       korean: "파랑2",
       type: "easy",
+      status: "A",
     },
     {
       id: 5,
       english: "blue3",
       korean: "파랑3",
       type: "easy",
+      status: "A",
     },
     {
       id: 7,
       english: "blue4",
       korean: "파랑4",
       type: "easy",
+      status: "A",
     },
     {
       id: 9,
       english: "blue5",
       korean: "파랑5",
       type: "easy",
+      status: "A",
     },
     {
       id: 2,
       english: "red",
       korean: "빨강",
       type: "easy",
+      status: "A",
     },
     {
       id: 4,
       english: "blue",
       korean: "파랑",
       type: "easy",
+      status: "A",
     },
     {
       id: 3,
       english: "blue2",
       korean: "파랑2",
       type: "easy",
+      status: "A",
     },
     {
       id: 5,
       english: "blue3",
       korean: "파랑3",
       type: "easy",
+      status: "A",
     },
     {
       id: 7,
       english: "blue4",
       korean: "파랑4",
       type: "easy",
+      status: "A",
     },
     {
       id: 9,
       english: "blue5",
       korean: "파랑5",
       type: "easy",
+      status: "A",
     },
     {
       id: 2,
       english: "red",
       korean: "빨강",
       type: "easy",
+      status: "A",
     },
     {
       id: 4,
       english: "blue",
       korean: "파랑",
       type: "easy",
+      status: "A",
     },
 
     {
@@ -92,48 +106,56 @@ const initialState = {
       english: "yellow",
       korean: "노랑",
       type: "middle",
+      status: "A",
     },
     {
       id: 6,
       english: "yellow",
       korean: "노랑",
       type: "middle",
+      status: "A",
     },
     {
       id: 6,
       english: "yellow",
       korean: "노랑",
       type: "middle",
+      status: "A",
     },
     {
       id: 6,
       english: "yellow",
       korean: "노랑",
       type: "middle",
+      status: "A",
     },
     {
       id: 6,
       english: "yellow",
       korean: "노랑",
       type: "middle",
+      status: "A",
     },
     {
       id: 6,
       english: "yellow",
       korean: "노랑",
       type: "middle",
+      status: "A",
     },
     {
       id: 6,
       english: "yellow",
       korean: "노랑",
       type: "middle",
+      status: "A",
     },
     {
       id: 6,
       english: "yellow",
       korean: "노랑",
       type: "middle",
+      status: "A",
     },
 
     {
@@ -141,36 +163,42 @@ const initialState = {
       english: "green",
       korean: "초록",
       type: "advance",
+      status: "A",
     },
     {
       id: 10,
       english: "purple",
       korean: "보라",
       type: "advance",
+      status: "A",
     },
     {
       id: 12,
       english: "black",
       korean: "검정",
       type: "advance",
+      status: "A",
     },
     {
       id: 14,
       english: "gray",
       korean: "회색",
       type: "advance",
+      status: "A",
     },
     {
       id: 16,
       english: "black2",
       korean: "검정2",
       type: "advance",
+      status: "A",
     },
     {
       id: 18,
       english: "black3",
       korean: "검정3",
       type: "advance",
+      status: "A",
     },
   ],
   addWordLoading: false, //단어 추가
@@ -185,6 +213,9 @@ const initialState = {
   findWordLoading: false, //단어 찾기
   findWordComplete: false,
   findWordError: null,
+  changeStatusWordLoading: false, //단어 상태 수정
+  changeStatusWordComplete: false,
+  changeStatusWordError: null,
   page: 0, // 페이지 이동
   minIndex: 0,
   maxIndex: 3,
@@ -341,6 +372,42 @@ export const wordSlice = createSlice({
         state.maxIndexMiddle -= 3;
       }
     },
+    //개별 status 바꾸기
+    changeStatusWordRequest: (state) => {
+      state.changeStatusWordLoading = true;
+      state.changeStatusWordError = null;
+      state.changeStatusWordComplete = false;
+    },
+    changeStatusWordSuccess: (state, action) => {
+      const wordInfo = action.payload;
+      state.changeStatusWordLoading = false;
+      state.changeStatusWordComplete = true;
+
+      state.wordLists[wordInfo.id].status = wordInfo.status;
+    },
+    changeStatusWordError: (state, action) => {
+      state.changeStatusWordLoading = true;
+      state.changeStatusWordError = action.error;
+    },
+    //전체 status 바꾸기
+    changeStatusWordAllRequest: (state) => {
+      state.changeStatusWordLoading = true;
+      state.changeStatusWordError = null;
+      state.changeStatusWordComplete = false;
+    },
+    changeStatusWordAllSuccess: (state, action) => {
+      const wordInfo = action.payload;
+      state.changeStatusWordLoading = false;
+      state.changeStatusWordComplete = true;
+
+      state.wordLists.map((word) => {
+        word.status = wordInfo.status;
+      });
+    },
+    changeStatusWordAllError: (state, action) => {
+      state.changeStatusWordLoading = true;
+      state.changeStatusWordError = action.error;
+    },
   },
 });
 
@@ -361,6 +428,12 @@ export const {
   decrementEasy,
   incrementMiddle,
   decrementMiddle,
+  changeStatusWordRequest,
+  changeStatusWordSuccess,
+  changeStatusWordError,
+  changeStatusWordAllRequest,
+  changeStatusWordAllSuccess,
+  changeStatusWordAllError,
 } = wordSlice.actions;
 
 export default wordSlice.reducer;

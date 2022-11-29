@@ -41,9 +41,6 @@ const WordForm = () => {
     korean = "";
   }, [english, korean, type]);
 
-  const checkboxChange = () => {
-    console.log("체크박스");
-  };
   return (
     <>
       {/* 검색 모달창 */}
@@ -156,40 +153,6 @@ const WordForm = () => {
               Submit
             </button>
             {/* </form> */}
-          </div>
-
-          {/* checkbox */}
-          <div className="absolute bottom-20 right-5 md:right-20 lg:right-52">
-            <div className="flex items-center mb-2">
-              <input
-                id="default-checkbox"
-                type="checkbox"
-                value=""
-                className="w-4 h-4 text-light-green bg-gray-100 rounded border-light-green focus:ring-light-green dark:focus:ring-light-green dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-              />
-              <label
-                htmlFor="default-checkbox"
-                className="ml-2 text-sm font-bold text-gray-900 border-light-green"
-              >
-                전체 선택
-              </label>
-            </div>
-            <div className="flex items-center">
-              <input
-                checked
-                onChange={checkboxChange}
-                id="default-checkbox"
-                type="checkbox"
-                value=""
-                className="w-4 h-4 text-light-green bg-gray-900 rounded border-light-green focus:ring-light-green dark:focus:ring-light-green dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-              />
-              <label
-                htmlFor="checked-checkbox"
-                className="ml-2 text-sm font-bold text-gray-900 border-light-green"
-              >
-                전체 해제(현재 : 1/20)
-              </label>
-            </div>
           </div>
         </div>
       </div>

@@ -242,7 +242,7 @@ export const wordSlice = createSlice({
       state.addWordLoading = false;
       state.addWordComplete = true;
       console.log("state.wordLists", typeof state.wordLists);
-      state.wordLists.unshift(action.payload);
+      state.wordLists.unshift(action.payload.toLowerCase);
     },
     addWordError: (state, action) => {
       state.addWordLoading = true;
@@ -262,7 +262,7 @@ export const wordSlice = createSlice({
       console.log("slice.id", action.payload.id);
       state.wordLists.splice(wordInfo.id, 1, {
         id: wordInfo.id,
-        english: wordInfo.english,
+        english: wordInfo.english.toLowerCase,
         korean: wordInfo.korean,
         type: wordInfo.type,
       });
@@ -296,7 +296,7 @@ export const wordSlice = createSlice({
     findWordSuccess: (state, action) => {
       state.findWordLoading = false;
       state.findWordComplete = true;
-      // state.wordLists.unshift(action.payload, 1);
+      state.wordLists.unshift(action.payload, 1);
     },
     findWordError: (state, action) => {
       state.findWordLoading = true;
@@ -426,9 +426,10 @@ export const wordSlice = createSlice({
       //   (element) => element.english === searchEng
       // );
       const result = state.wordLists.filter(
-        (element) => element.english === searchEng
+        (element) => element.english === searchEng.toLowerCase()
       );
-      console.log(result.length);
+
+      console.log(result);
       state.searchResult.push(result);
 
       if (state.searchResult.length > 0) {

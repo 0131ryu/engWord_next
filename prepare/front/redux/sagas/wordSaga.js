@@ -81,13 +81,15 @@ function* changeStatusAll(action) {
 }
 
 async function findWordAPI(data) {
-  console.log("api로 전달한 data", data);
+  console.log(data);
+  await axios.get(`http://localhost:8000/word/${data}`);
+  // await axios.get(`/word/${data}`);
+
   //back에서 연결하기
   // try {
   //   await axios
   //     .get(
   //       `${process.env.NEXT_PUBLIC_WORD_URL}?key=${process.env.NEXT_PUBLIC_WORD_API}&q=${data}&advanced=y&method=exact&translated=y&trans_lang=1`
-  //
   //     )
   //     .then((response) => {
   //       if (response.ok) {
@@ -111,12 +113,11 @@ async function findWordAPI(data) {
 
 function* findWord(action) {
   try {
-    console.log("action", action);
     const data = action.payload;
-    console.log("data", data);
+    console.log("Data", data);
     const response = yield call(findWordAPI, data);
-    console.log("Response", response);
-    // yield put(findWordSuccess(data));
+    console.log("response", response);
+    yield put(findWordSuccess(data));
   } catch (error) {
     yield put(findWordError(error));
     console.log(error);

@@ -1,19 +1,15 @@
-import { Fragment, useRef, useState, createRef } from "react";
+import { Fragment, useEffect, useRef, useState, createRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useSelector, useDispatch } from "react-redux";
 import { createPopper } from "@popperjs/core";
 import useInput from "../../hooks/useInput";
-import { addWordRequest } from "../../redux/feature/wordSlice";
+import { findWordRequest } from "../../redux/feature/wordSlice";
 import { DocumentMagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useCallback } from "react";
 
-const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
+import axios from "axios";
 
-const searching = [
-  { result: "recharging" },
-  { result: "refreshment" },
-  { result: "relaxation " },
-];
+const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
 
 const FindResultModal = ({ korean, setModal, setResultModal }) => {
   const dispatch = useDispatch();
@@ -27,31 +23,54 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
   const [english, onChangeEnglish, setEnglish] = useInput("");
   const [type, onChangeType, setType] = useInput(typesName[0]);
 
-  // console.log("english", wordLists[isId].english);
-  // console.log("korean", wordLists[isId].korean);
-  // console.log("index", isId);
+  const [resultEng, setResultEng] = useState("");
+  const [resultExEnglish, setResultExEnglish] = useState("");
 
-  const onFindResultSubmit = useCallback(() => {
-    setModal(false);
-    setResultModal(false);
-    console.log("english", english);
-    console.log("korean", korean);
-    if (!english || !korean || !type) {
-      null;
-    } else {
+  useEffect(() => {
+    async function result() {
+      const response = await axios.get(`http://localhost:8000/word/${korean}`);
+
+      const { english, ex_english } = response.data;
+      setResultEng(english);
+      setResultExEnglish(ex_english);
+    }
+    result();
+  });
+
+  const onFindResultSubmit = useCallback(
+    (e) => {
+      setModal(false);
+      setResultModal(false);
+      console.log("e.target.value", e.target.value);
+      console.log("resultEng", resultEng);
+
       dispatch(
-        addWordRequest({
+        findWordRequest({
           id: 8,
-          english,
-          korean,
-          type,
+          english: resultEng,
+          korean: korean,
+          type: type,
         })
       );
-    }
-  }, [english, korean, type]);
+      // console.log("english", english);
+      // console.log("korean", korean);
+      //   if (!english || !korean || !type) {
+      //     null;
+      //   } else {
+      //     dispatch(
+      //       findWordRequest({
+      //         id: 8,
+      //         resultEng,
+      //         korean,
+      //         type,
+      //       })
+      //     );
+      //   }
+    },
+    [english, korean, type]
+  );
 
   const onOpenCloseModal = () => {
-    console.log("open", open);
     setModal(false);
     setResultModal(false);
   };
@@ -142,24 +161,19 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
                                   "bg-light-beige text-black opacity-75 font-semibold p-3 mb-0 border-b border-solid border-black uppercase rounded-t-lg"
                                 }
                               >
-                                "충전"의 다른 단어
+                                {resultEng}의 다른 단어
                                 <p className="text-xs">
                                   (단어 클릭 시 네이버 사전으로 이동)
                                 </p>
                               </div>
-                              {searching.map((eng, index) => (
-                                <a
-                                  href={`https://en.dict.naver.com/#/search?query=${eng.result}&range=all`}
-                                  target="_blank"
-                                >
-                                  <span
-                                    className="text-dark-green font-bold hover:text-light-orange ml-2 mb-2"
-                                    key={index}
-                                  >
-                                    {eng.result}
-                                  </span>
-                                </a>
-                              ))}
+                              <a
+                                href={`https://en.dict.naver.com/#/search?query=${resultExEnglish}&range=all`}
+                                target="_blank"
+                              >
+                                <span className="text-dark-green font-bold hover:text-light-orange ml-2 mb-2">
+                                  {resultExEnglish}
+                                </span>
+                              </a>
                             </div>
                           </div>
                           {/* </div> */}
@@ -185,7 +199,8 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
                             <p className="mt-3 ml-3 font-bold">영어</p>
                             <input
                               onChange={onChangeEnglish}
-                              placeholder="filling in; filling up"
+                              placeholder={resultEng}
+                              value={resultEng}
                               type="text"
                               name="english"
                               className="sm:600 w-80 grid grid-cols-2 gap-4 place-content-center
@@ -222,6 +237,7 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
                   <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                     <button
                       type="button"
+                      value={resultEng}
                       className="inline-flex w-full justify-center rounded-md border border-transparent bg-light-orange px-4 py-2 text-base font-medium text-black shadow-sm hover:bg-dark-green hover:text-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                       onClick={onFindResultSubmit}
                     >

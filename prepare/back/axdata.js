@@ -36,51 +36,55 @@ const axdata = async (wordName, callback) => {
     const xmlToJson = convert.xml2json(result, { compact: true, spaces: 1 });
 
     const obj = JSON.parse(xmlToJson);
+    const word = obj.channel.item;
     // console.log(obj.channel.item);
     // console.log(Object.keys(obj.channel.item).includes("0"));
 
-    console.log(obj.channel.item);
+    console.log(word);
 
-    if (obj.channel.item === undefined) {
+    //없는 단어 입력 시
+    if (word === undefined) {
       korean = wordName;
       korean_dfn = "사전에 입력되지 않은 단어입니다.";
       english = "잘못 검색한 단어입니다.";
       english_dfn = "값을 찾을 수 없습니다.";
 
-      english = "잘못 검색한 단어";
-      english_dfn = "값을 찾을 수 없습니다.";
-    } else if (obj.channel.item !== undefined) {
-      //단어 뜻이 여러 개인 경우
-      if (obj.channel.item[0].word._text !== undefined) {
-        korean = obj.channel.item[0].word._text;
-        korean_dfn = obj.channel.item[0].sense.definition._text;
-        english = obj.channel.item[0].sense.translation.trans_word._cdata;
-        english_dfn = obj.channel.item[0].sense.translation.trans_dfn._cdata;
+      ex_english = "단어 없음";
+      ex_english_dfn = "단어 뜻 없음";
+    }
+    //단어 존재하는 경우
+    else if (word !== undefined) {
+      if (obj.channel.item[0] === undefined) {
+        //단어가 한 개인 경우
+        korean = word.word._text;
+        //뜻이 한 개인 경우(레몬)
+        if (word.sense.length === undefined) {
+          korean_dfn = word.sense.definition._text;
+          english = word.sense.translation.trans_word._cdata;
+          english_dfn = word.sense.translation.trans_dfn._cdata;
 
-        ex_english = obj.channel.item[1].sense.translation.trans_word._cdata;
-        ex_english_dfn = obj.channel.item[1].sense.translation.trans_dfn._cdata;
-      } else {
-        //단어 뜻이 1개인 경우
-        // console.log(obj.channel.item.sense[1] !== undefined); //값이 한 개면 undefined
-        korean = obj.channel.item.word._text;
-        if (obj.channel.item.sense[1] !== undefined) {
-          //값이 여러 개라면
-          korean_dfn = obj.channel.item.sense[0].definition._text;
-          english = obj.channel.item.sense[0].translation.trans_word._cdata;
-          english_dfn = obj.channel.item.sense[0].translation.trans_dfn._cdata;
-
-          ex_english = obj.channel.item.sense[1].translation.trans_word._cdata;
-          ex_english_dfn =
-            obj.channel.item.sense[1].translation.trans_dfn._cdata;
+          ex_english = "중복된 단어는 없습니다.";
+          ex_english_dfn = "중복된 뜻은 없습니다.";
         } else {
-          //값이 한 개라면
-          korean_dfn = obj.channel.item.sense.definition._text;
-          english = obj.channel.item.sense.translation.trans_word._cdata;
-          english_dfn = obj.channel.item.sense.translation.trans_dfn._cdata;
+          //뜻이 여러 개인 경우(소금)
+          korean_dfn = word.sense[0].definition._text;
+          english = word.sense[0].translation.trans_word._cdata;
+          english_dfn = word.sense[0].translation.trans_dfn._cdata;
+
+          ex_english = word.sense[1].translation.trans_word._cdata;
+          ex_english_dfn = word.sense[1].translation.trans_dfn._cdata;
         }
+      } else {
+        //단어도 뜻도 여러 개인 경우(사과)
+        korean = word[0].word._text;
+        korean_dfn = word[0].sense.definition._text;
+        english = word[0].sense.translation.trans_word._cdata;
+        english_dfn = word[0].sense.translation.trans_dfn._cdata;
+
+        ex_english = word[1].sense.translation.trans_word._cdata;
+        ex_english_dfn = word[1].sense.translation.trans_dfn._cdata;
       }
     }
-
     const wordLists = {
       korean: korean,
       korean_dfn: korean_dfn,

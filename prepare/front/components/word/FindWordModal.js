@@ -13,6 +13,7 @@ const FindWordModal = ({ isId, setModal }) => {
   const [resultModal, setResultModal] = useState(false);
   const [open, setOpen] = useState(true);
   const [selected, setSelected] = useState(typesName[0]);
+  const [koreanError, setKoreanError] = useState(false);
 
   const [korean, onChangeKorean, setKorean] = useInput("");
 
@@ -26,6 +27,7 @@ const FindWordModal = ({ isId, setModal }) => {
     setResultModal(true);
     console.log("korean", korean);
     if (!korean) {
+      setKoreanError(true);
       setResultModal(false);
     } else {
       dispatch(findWordRequest(korean));
@@ -114,7 +116,7 @@ const FindWordModal = ({ isId, setModal }) => {
                             />
                           </div>
                         </div>
-                        {!korean ? (
+                        {koreanError ? (
                           <p className="absolute inset-x-20 lg:inset-x-40 text-red-500">
                             단어를 입력하지 않았습니다.
                           </p>

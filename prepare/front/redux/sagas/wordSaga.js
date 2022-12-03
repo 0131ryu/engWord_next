@@ -85,7 +85,6 @@ async function findWordAPI(data) {
     await axios
       .get(`http://localhost:8000/word/${data}`)
       .then((data) => {
-        // console.log("data", JSON.stringify(data));
         data = JSON.stringify(data);
       })
       .catch((error) => {

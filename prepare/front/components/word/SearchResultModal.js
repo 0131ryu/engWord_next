@@ -3,17 +3,9 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useSelector, useDispatch } from "react-redux";
 import { createPopper } from "@popperjs/core";
 import useInput from "../../hooks/useInput";
-import { addWordRequest } from "../../redux/feature/wordSlice";
 import { BookOpenIcon } from "@heroicons/react/24/outline";
-import { useCallback } from "react";
 
 const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
-
-const searching = [
-  { result: "recharging" },
-  { result: "refreshment" },
-  { result: "relaxation " },
-];
 
 const SearchResultModal = ({ korean, setModalSearch, setResultModal }) => {
   const dispatch = useDispatch();
@@ -98,14 +90,21 @@ const SearchResultModal = ({ korean, setModalSearch, setResultModal }) => {
                             if (result.length > 1) {
                               return (
                                 <div>
-                                  <p>
-                                    중복된 단어가
-                                    <span className="font-bold">
-                                      {" "}
-                                      {result.length}
-                                    </span>
-                                    개 존재합니다.
+                                  <p className="mb-2 bg-gray-300 rounded-lg w-32 relative left-32 md:left-28 md:text-center">
+                                    중복된 단어
                                   </p>
+                                  {result.map((word, i) => {
+                                    return (
+                                      <div className="flex bg-gray-100">
+                                        <p className="items-center">
+                                          english: &nbsp; {result[i].english}
+                                          &nbsp; | &nbsp;
+                                        </p>
+                                        <p>type : {result[i].type}</p>
+                                      </div>
+                                    );
+                                  })}
+
                                   <div className="flex">
                                     <p className="mt-3 ml-3 font-bold">한글</p>
                                     <input

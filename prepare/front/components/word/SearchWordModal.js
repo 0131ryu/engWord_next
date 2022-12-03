@@ -5,6 +5,7 @@ import useInput from "../../hooks/useInput";
 import { searchWordRequest } from "../../redux/feature/wordSlice";
 import { BookOpenIcon } from "@heroicons/react/24/outline";
 import SearchResultModal from "./SearchResultModal";
+import { useCallback } from "react";
 
 const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
 
@@ -13,22 +14,24 @@ const SearchWordModal = ({ setModalSearch }) => {
   const [resultModal, setResultModal] = useState(false);
   const [open, setOpen] = useState(true);
   const [selected, setSelected] = useState(typesName[0]);
+  const [wordError, setWordError] = useState(false);
 
-  const [english, onChangeKorean, setKorean] = useInput("");
+  const [word, onChangeWord] = useInput("");
 
   const type = selected.name;
 
-  const onSearchWordSubmit = () => {
+  const onSearchWordSubmit = useCallback(() => {
     setResultModal(true);
-    if (!english) {
+    if (!word) {
+      setWordError(true);
       setResultModal(false);
-    } else {
-      dispatch(searchWordRequest(english));
+    } else if (word) {
+      setWordError(false);
+      dispatch(searchWordRequest(word));
     }
-  };
+  }, [word]);
 
   const onOpenCloseModal = () => {
-    console.log("open", open);
     setModalSearch(false);
   };
   const cancelButtonRef = useRef(null);
@@ -38,7 +41,7 @@ const SearchWordModal = ({ setModalSearch }) => {
       {/* 검색 결과창 */}
       {resultModal ? (
         <SearchResultModal
-          english={english}
+          word={word}
           setResultModal={setResultModal}
           setModalSearch={setModalSearch}
         />
@@ -96,16 +99,16 @@ const SearchWordModal = ({ setModalSearch }) => {
                         <div className="flex w-96">
                           <div>
                             <input
-                              onChange={onChangeKorean}
-                              placeholder="영어 검색"
+                              onChange={onChangeWord}
+                              placeholder="한글 또는 영어 단어를 입력하세요"
                               type="text"
-                              name="english"
+                              name="word"
                               className="ml-8 lg:ml-0 sm:600 w-80 grid grid-cols-2 gap-4 place-content-center
                           pl-2 h-9  placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-full m-2"
                             />
-                            {!english ? (
+                            {wordError ? (
                               <p className="absolute inset-x-20 lg:inset-x-36 text-red-500">
-                                영어 단어를 입력하지 않았습니다.
+                                단어를 입력하지 않았습니다.
                               </p>
                             ) : null}
                           </div>

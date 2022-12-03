@@ -294,9 +294,39 @@ export const wordSlice = createSlice({
       state.findWordComplete = false;
     },
     findWordSuccess: (state, action) => {
+      const data = action.payload;
+
+      const findEng = data.english;
+      console.log("findEng", findEng);
+      const splitEnglish = findEng.split("; ");
+      console.log("splitEnglish", splitEnglish);
+
       state.findWordLoading = false;
       state.findWordComplete = true;
-      state.wordLists.unshift(action.payload, 1);
+
+      if (findEng.match(/[(;\)]+/g)) {
+        for (let i = 0; i < splitEnglish.length; i++) {
+          state.wordLists.unshift(
+            {
+              id: data.id,
+              english: splitEnglish[i],
+              korean: data.korean,
+              type: data.type,
+            },
+            1
+          );
+        }
+      } else {
+        state.wordLists.unshift(
+          {
+            id: data.id,
+            english: data.english,
+            korean: data.korean,
+            type: data.type,
+          },
+          1
+        );
+      }
     },
     findWordError: (state, action) => {
       state.findWordLoading = true;

@@ -81,34 +81,20 @@ function* changeStatusAll(action) {
 }
 
 async function findWordAPI(data) {
-  console.log(data);
-  await axios.get(`http://localhost:8000/word/${data}`);
-  // await axios.get(`/word/${data}`);
-
-  //back에서 연결하기
-  // try {
-  //   await axios
-  //     .get(
-  //       `${process.env.NEXT_PUBLIC_WORD_URL}?key=${process.env.NEXT_PUBLIC_WORD_API}&q=${data}&advanced=y&method=exact&translated=y&trans_lang=1`
-  //     )
-  //     .then((response) => {
-  //       if (response.ok) {
-  //         return response.json();
-  //       }
-  //       throw new Error("Network response was not ok.");
-  //     })
-  //     .then((data) => {
-  //       console.log(JSON.stringify(data));
-  //     })
-  //     .catch((error) => {
-  //       (error) => {
-  //         alert(error);
-  //         return false;
-  //       };
-  //     });
-  // } catch (error) {
-  //   console.log(error);
-  // }
+  try {
+    await axios
+      .get(`http://localhost:8000/word/${data}`)
+      .then((data) => {
+        // console.log("data", JSON.stringify(data));
+        data = JSON.stringify(data);
+      })
+      .catch((error) => {
+        alert(error);
+        console.error(error);
+      });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 function* findWord(action) {

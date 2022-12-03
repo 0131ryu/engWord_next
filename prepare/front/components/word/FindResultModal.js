@@ -24,18 +24,31 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
   const [type, onChangeType, setType] = useInput(typesName[0]);
 
   const [resultEng, setResultEng] = useState("");
-  const [resultExEnglish, setResultExEnglish] = useState("");
+  const [resultExEnglish, setResultExEnglish] = useState([]);
+  const splitEnglish = [];
 
   useEffect(() => {
     async function result() {
       const response = await axios.get(`http://localhost:8000/word/${korean}`);
 
       const { english, ex_english } = response.data;
+
+      splitEnglish = ex_english.split("; ");
+      console.log("splitEnglish", splitEnglish);
       setResultEng(english);
-      setResultExEnglish(ex_english);
+
+      if (ex_english.match(/[(;\)]+/g)) {
+        for (let i = 0; i < splitEnglish.length; i++) {
+          setResultExEnglish(splitEnglish[0], ...resultExEnglish);
+        }
+      } else {
+        setResultExEnglish(ex_english);
+      }
     }
     result();
   });
+
+  console.log("resultExEnglish", resultExEnglish);
 
   const onFindResultSubmit = useCallback(
     (e) => {
@@ -166,8 +179,12 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
                                   (단어 클릭 시 네이버 사전으로 이동)
                                 </p>
                               </div>
+                              {splitEnglish.map((eng, i) => {
+                                console.log("eng", eng);
+                                console.log("i", i);
+                              })}
                               <a
-                                href={`https://en.dict.naver.com/#/search?query=${resultExEnglish}&range=all`}
+                                href={`https://en.dict.naver.com/#/search?query=${resultExEnglish[0]}&range=all`}
                                 target="_blank"
                               >
                                 <span className="text-dark-green font-bold hover:text-light-orange ml-2 mb-2">

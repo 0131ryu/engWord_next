@@ -149,7 +149,14 @@ const WordList = () => {
         </p>
       </div>
       {/* 수정 모달창 */}
-      {modal ? <ReviseWordModal isId={id} setModal={setModal} /> : null}
+      {modal ? (
+        <ReviseWordModal
+          isId={id}
+          setModal={setModal}
+          showEng={wordLists[id].english}
+          showKor={wordLists[id].korean}
+        />
+      ) : null}
       {/* 삭제 모달창 */}
       {removeModal ? (
         <RemoveWordModal isId={id} setRemoveModal={setRemoveModal} />

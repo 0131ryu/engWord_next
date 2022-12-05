@@ -1,4 +1,4 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useRef, useState, useCallback } from "react";
 import { Dialog, Transition, Listbox } from "@headlessui/react";
 import { useSelector, useDispatch } from "react-redux";
 import useInput from "../../hooks/useInput";
@@ -11,28 +11,32 @@ import {
 
 const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
 
-const ReviseWordModal = ({ isId, setModal }) => {
+const ReviseWordModal = ({ isId, setModal, showEng, showKor }) => {
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(true);
   const [selected, setSelected] = useState(typesName[0]);
 
+  const type = selected.name;
   const { wordLists } = useSelector((state) => state.word);
 
   const [english, onChangeEnglish, setEnglish] = useInput("");
   const [korean, onChangeKorean, setKorean] = useInput("");
 
-  const type = selected.name;
-
-  // console.log("english", wordLists[isId].english);
-  // console.log("korean", wordLists[isId].korean);
-  // console.log("index", isId);
-
-  const onReviseWordSubmit = () => {
+  const onReviseWordSubmit = useCallback(() => {
     setModal(false);
+    // setType(selected.name);
     console.log(english, korean, type, isId);
-    dispatch(reviseWordRequest({ id: isId, english, korean, type }));
-  };
+    // dispatch(reviseWordRequest({ id: isId, english, korean, type }));
+
+    if (!english && !korean) {
+      dispatch(
+        reviseWordRequest({ id: isId, english: showEng, korean: showKor, type })
+      );
+    } else {
+      dispatch(reviseWordRequest({ id: isId, english, korean, type }));
+    }
+  }, [type]);
 
   const onOpenCloseModal = () => {
     console.log("open", open);
@@ -91,8 +95,8 @@ const ReviseWordModal = ({ isId, setModal }) => {
                         <div>
                           <input
                             onChange={onChangeEnglish}
-                            placeholder={wordLists[isId].english}
-                            // placeholder="englsih"
+                            placeholder={`${wordLists[isId].english}`}
+                            // value={wordLists[isId].english}
                             type="text"
                             name="english"
                             className="sm:600 w-52 grid grid-cols-2 gap-4 place-content-center
@@ -100,8 +104,8 @@ const ReviseWordModal = ({ isId, setModal }) => {
                           />
                           <input
                             onChange={onChangeKorean}
-                            placeholder={wordLists[isId].korean}
-                            // placeholder="korean"
+                            placeholder={`${wordLists[isId].korean}`}
+                            // value={wordLists[isId].korean}
                             type="text"
                             name="korean"
                             className="sm:600 w-52 grid grid-cols-2 gap-4 place-content-center

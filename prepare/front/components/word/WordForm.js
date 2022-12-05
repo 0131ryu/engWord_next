@@ -34,6 +34,7 @@ const WordForm = () => {
   };
 
   const onSubmitWord = useCallback(() => {
+    console.log("이거 연결?");
     console.log(english, korean, type);
     dispatch(
       addWordRequest({

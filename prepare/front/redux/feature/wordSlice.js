@@ -258,11 +258,10 @@ export const wordSlice = createSlice({
       const wordInfo = action.payload;
       state.reviseWordLoading = false;
       state.reviseWordComplete = true;
-      console.log("slice", action.payload);
-      console.log("slice.id", action.payload.id);
+      console.log("reviseWordSuccess", wordInfo);
       state.wordLists.splice(wordInfo.id, 1, {
         id: wordInfo.id,
-        english: wordInfo.english.toLowerCase,
+        english: wordInfo.english.toLowerCase(),
         korean: wordInfo.korean,
         type: wordInfo.type,
       });
@@ -309,7 +308,7 @@ export const wordSlice = createSlice({
           state.wordLists.unshift(
             {
               id: data.id,
-              english: splitEnglish[i],
+              english: splitEnglish[i].toLowerCase(),
               korean: data.korean,
               type: data.type,
             },
@@ -320,7 +319,7 @@ export const wordSlice = createSlice({
         state.wordLists.unshift(
           {
             id: data.id,
-            english: data.english,
+            english: data.english.toLowerCase(),
             korean: data.korean,
             type: data.type,
           },

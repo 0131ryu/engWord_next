@@ -2,7 +2,6 @@ import { Fragment, useRef, useState, createRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useSelector, useDispatch } from "react-redux";
 import { createPopper } from "@popperjs/core";
-import useInput from "../../hooks/useInput";
 import { BookOpenIcon } from "@heroicons/react/24/outline";
 
 const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
@@ -11,8 +10,6 @@ const SearchResultModal = ({ korean, setModalSearch, setResultModal }) => {
   const dispatch = useDispatch();
 
   const { searchResult } = useSelector((state) => state.word);
-
-  console.log(searchResult);
 
   const [open, setOpen] = useState(true);
   //popperjs/core 이용
@@ -89,56 +86,88 @@ const SearchResultModal = ({ korean, setModalSearch, setResultModal }) => {
                           {searchResult.map((result, index) => {
                             if (result.length > 1) {
                               return (
-                                <div>
-                                  <p className="mb-2 bg-gray-300 rounded-lg w-32 relative left-32 md:left-28 md:text-center">
-                                    중복된 단어
-                                  </p>
-                                  {result.map((word, i) => {
-                                    return (
-                                      <div className="flex bg-gray-100">
-                                        <p className="items-center">
-                                          english: &nbsp; {result[i].english}
-                                          &nbsp; | &nbsp;
-                                        </p>
-                                        <p>type : {result[i].type}</p>
-                                      </div>
-                                    );
-                                  })}
+                                <Dialog.Panel>
+                                  <Dialog.Title>
+                                    <button
+                                      onClick={() => {
+                                        popoverShow
+                                          ? closePopover()
+                                          : openPopover();
+                                      }}
+                                      className="mb-2 bg-gray-300 rounded-lg w-32 relative left-32 md:left-28 md:text-center"
+                                    >
+                                      중복된 단어
+                                    </button>
+                                    {popoverShow
+                                      ? result.map((word, i) => {
+                                          return (
+                                            <div className="flex bg-gray-100 justify-center">
+                                              <p>
+                                                한글: &nbsp;{" "}
+                                                <span className="font-bold">
+                                                  {result[i].korean}
+                                                </span>
+                                                &nbsp; | &nbsp;
+                                              </p>
+                                              <p>
+                                                영어: &nbsp;{" "}
+                                                <span className="font-bold">
+                                                  {result[i].english}
+                                                </span>
+                                                &nbsp; | &nbsp;
+                                              </p>
+                                              <p>
+                                                타입 :{" "}
+                                                <span className="font-bold">
+                                                  {result[i].type}{" "}
+                                                </span>
+                                              </p>
+                                            </div>
+                                          );
+                                        })
+                                      : null}
 
-                                  <div className="flex">
-                                    <p className="mt-3 ml-3 font-bold">한글</p>
-                                    <input
-                                      readOnly
-                                      placeholder={result[index].korean}
-                                      type="text"
-                                      name="korean"
-                                      className="sm:600 w-80 grid grid-cols-2 gap-4 place-content-center
+                                    <div className="flex">
+                                      <p className="mt-3 ml-3 font-bold">
+                                        한글
+                                      </p>
+                                      <input
+                                        readOnly
+                                        placeholder={result[index].korean}
+                                        type="text"
+                                        name="korean"
+                                        className="sm:600 w-80 grid grid-cols-2 gap-4 place-content-center
                           pl-2 h-8 placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-lg m-2"
-                                    />
-                                  </div>
-                                  <div className="flex">
-                                    <p className="mt-3 ml-3 font-bold">영어</p>
-                                    <input
-                                      readOnly
-                                      placeholder={result[index].english}
-                                      type="text"
-                                      name="english"
-                                      className="sm:600 w-80 grid grid-cols-2 gap-4 place-content-center
+                                      />
+                                    </div>
+                                    <div className="flex">
+                                      <p className="mt-3 ml-3 font-bold">
+                                        영어
+                                      </p>
+                                      <input
+                                        readOnly
+                                        placeholder={result[index].english}
+                                        type="text"
+                                        name="english"
+                                        className="sm:600 w-80 grid grid-cols-2 gap-4 place-content-center
                           pl-2 h-8 placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-lg m-2"
-                                    />
-                                  </div>
-                                  <div className="flex">
-                                    <p className="mt-3 ml-3 font-bold">타입</p>
-                                    <input
-                                      readOnly
-                                      placeholder={result[index].type}
-                                      type="text"
-                                      name="type"
-                                      className="sm:600 w-80 grid grid-cols-2 gap-4 place-content-center
+                                      />
+                                    </div>
+                                    <div className="flex">
+                                      <p className="mt-3 ml-3 font-bold">
+                                        타입
+                                      </p>
+                                      <input
+                                        readOnly
+                                        placeholder={result[index].type}
+                                        type="text"
+                                        name="type"
+                                        className="sm:600 w-80 grid grid-cols-2 gap-4 place-content-center
                           pl-2 h-8 placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-lg m-2"
-                                    />
-                                  </div>
-                                </div>
+                                      />
+                                    </div>
+                                  </Dialog.Title>
+                                </Dialog.Panel>
                               );
                             } else if (result.length === 0) {
                               return (

@@ -184,7 +184,7 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
                                 console.log("i", i);
                               })}
                               <a
-                                href={`https://en.dict.naver.com/#/search?query=${resultExEnglish[0]}&range=all`}
+                                href={`https://en.dict.naver.com/#/search?query=${resultExEnglish}&range=all`}
                                 target="_blank"
                               >
                                 <span className="text-dark-green font-bold hover:text-light-orange ml-2 mb-2">

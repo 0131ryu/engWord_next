@@ -3,6 +3,7 @@ import createSagaMiddleware from "redux-saga";
 import UserReducer from "./feature/userSlice";
 import WordReducer from "./feature/wordSlice";
 import PostReducer from "./feature/postSlice";
+import GameReducer from "./feature/gameSlice";
 import rootSaga from "./sagas/rootSaga";
 
 const sagaMiddleware = createSagaMiddleware();
@@ -12,6 +13,7 @@ const store = configureStore({
     user: UserReducer,
     word: WordReducer,
     post: PostReducer,
+    game: GameReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(sagaMiddleware),

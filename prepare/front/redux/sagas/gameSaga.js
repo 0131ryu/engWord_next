@@ -21,28 +21,33 @@ function* startTimer(action) {
   }
 }
 
-async function findHintAPI(data) {
-  try {
-    await axios
-      .get(`http://localhost:8000/word/${data}`)
-      .then((data) => {
-        data = JSON.stringify(data);
-      })
-      .catch((error) => {
-        alert(error);
-        console.error(error);
-      });
-  } catch (error) {
-    console.error(error);
-  }
+// async function findHintAPI(data) {
+//   try {
+//     const response = await axios
+//       .get(`http://localhost:8000/word/${data}`)
+//       .then((data) => {
+//         data = JSON.stringify(data);
+//       })
+//       .catch((error) => {
+//         alert(error);
+//         console.error(error);
+//       });
+//     return response;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
+
+function findHintAPI(data) {
+  return axios.get(`http://localhost:8000/word/${data}`);
 }
 
 function* findHint(action) {
   try {
     const data = action.payload;
     const response = yield call(findHintAPI, data);
-    console.log("response", response);
-    yield put(findHintSuccess(data));
+    // console.log("response.data", response.data);
+    yield put(findHintSuccess(response.data));
   } catch (error) {
     yield put(findHintError(error));
     console.log(error);

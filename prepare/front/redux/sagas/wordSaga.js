@@ -80,29 +80,31 @@ function* changeStatusAll(action) {
   }
 }
 
-async function findWordAPI(data) {
-  try {
-    await axios
-      .get(`http://localhost:8000/word/${data}`)
-      .then((data) => {
-        data = JSON.stringify(data);
-      })
-      .catch((error) => {
-        alert(error);
-        console.error(error);
-      });
-  } catch (error) {
-    console.error(error);
-  }
+// async function findWordAPI(data) {
+//   try {
+//     const response = await axios
+//       .get(`http://localhost:8000/word/${data}`)
+//       .then((data) => {
+//         console.log("response", data);
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//       });
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
+
+function findWordAPI(data) {
+  return axios.get(`http://localhost:8000/word/${data}`);
 }
 
 function* findWord(action) {
   try {
     const data = action.payload;
-    console.log("Data", data);
-    const response = yield call(findWordAPI, data);
-    console.log("response", response);
-    yield put(findWordSuccess(data));
+    const response = axios.get(`http://localhost:8000/word/${data}`);
+    console.log("response.data", response.data);
+    // yield put(findWordSuccess(data));
   } catch (error) {
     yield put(findWordError(error));
     console.log(error);

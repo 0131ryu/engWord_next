@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
 const initialState = {
   checkedWordLists: [
     { id: 1, english: "green", korean: "초록", type: "advance", status: "C" },
@@ -60,6 +61,34 @@ const initialState = {
       type: "advance",
       status: "C",
     },
+    {
+      id: 11,
+      english: "test1",
+      korean: "테스트1",
+      type: "advance",
+      status: "C",
+    },
+    {
+      id: 12,
+      english: "test2",
+      korean: "테스트2",
+      type: "advance",
+      status: "C",
+    },
+    {
+      id: 13,
+      english: "test3",
+      korean: "테스트3",
+      type: "advance",
+      status: "C",
+    },
+    {
+      id: 14,
+      english: "test4",
+      korean: "테스트4",
+      type: "advance",
+      status: "C",
+    },
   ],
   time: 0,
   startTimerLoading: false,
@@ -68,6 +97,7 @@ const initialState = {
   findHintLoading: false,
   findHintComplete: false,
   findHintError: null,
+  HintLists: [],
 };
 
 export const gameSlice = createSlice({
@@ -97,8 +127,12 @@ export const gameSlice = createSlice({
     findHintSuccess: (state, action) => {
       state.findHintLoading = false;
       state.findHintComplete = true;
-      const data = action.payload;
-      console.log("hint slice data", data);
+      // console.log(action.payload);
+      if (state.HintLists.length > 0) {
+        state.HintLists.length = 0;
+      }
+
+      state.HintLists.push(action.payload);
     },
     findHintError: (state, action) => {
       state.findHintLoading = true;

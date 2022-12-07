@@ -19,20 +19,27 @@ const GameForm = () => {
   const { checkedWordLists, startTimerLoading, startTimerComplete } =
     useSelector((state) => state.game);
 
-  // console.log("checkedWordLists", checkedWordLists);
-  // const checkedWords = { ...checkedWordLists };
+  useEffect(() => {
+    const checkedWords = [...checkedWordLists]
+    const gameWords = [];
 
-  // const shuffleArray = (array) => {
-  //   for (let loop = array.length - 1; loop >= 0; loop--) {
-  //     let randomNum = Math.floor(Math.random() * (loop + 1));
-  //     let randomArrayItem = array[randomNum];
+    console.log("checkedWordLists", checkedWordLists);
 
-  //     array[randomNum] = array[loop];
-  //     array[loop] = randomArrayItem;
-  //   }
-  // };
+    const shuffleArray = (array) => {
+      for (let i = array.length - 1; i > 0; i--) {
+        // 무작위로 index 값 생성 (0 이상 i 미만)
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    };
 
-  // console.log("checkedWords", shuffleArray(checkedWords));
+    shuffleArray(checkedWords)
+    
+    console.log("checkedWords",checkedWords)
+    gameWords = checkedWords.splice(0, 10)
+    console.log("gameWords",gameWords)
+
+  }, []);
 
   //타이머
   useEffect(() => {
@@ -53,9 +60,8 @@ const GameForm = () => {
   }, [sec]);
 
   const onClickHint = (e) => {
-    let korean = e.currentTarget.value;
     setModal(true);
-    console.log("korean", korean);
+    let korean = e.currentTarget.value;
     dispatch(findHintRequest(korean));
   };
 
@@ -66,6 +72,7 @@ const GameForm = () => {
 
   return (
     <>
+    
       {/* 시간초과시 모달 */}
       {/* {sec === 0 ? <TimeoutModal /> : null} */}
       {/* 모든 게임 다 진행 후 모달 */}
@@ -85,16 +92,22 @@ const GameForm = () => {
           {/* score end */}
           {/* time start */}
           <div className="bg-white shadow-lg p-1 rounded-full w-full h-5 mt-4">
-            <div className={`bg-light-green rounded-full w-${sec}/12 h-full`}>
-              {sec}
-            </div>
+            {sec === 0 ? (
+              <div className={`bg-light-green rounded-full w-0 h-full`}>
+                {sec}
+              </div>
+            ) : (
+              <div className={`bg-light-green rounded-full w-${sec}/12 h-full`}>
+                {sec}
+              </div>
+            )}
           </div>
-
           {/* time end */}
           {/* Hint start */}
+          {/* {sec <= 7 && ( */}
           <div>
             <button
-              value={checkedWordLists[1].korean}
+              value={checkedWordLists[0].korean}
               onClick={onClickHint}
               className="bg-light-orange flex rounded-lg m-5 relative left-24"
             >
@@ -102,18 +115,7 @@ const GameForm = () => {
               <p className="py-2 px-1 font-bold">Hint!</p>
             </button>
           </div>
-          {/* {sec <= 7 && (
-            <div>
-              <button
-                onClick={onClickHint}
-                className="bg-light-orange flex rounded-lg m-5 relative left-24"
-              >
-                <HandRaisedIcon className="h-9 h-8" />
-                <p className="py-2 px-1 font-bold">Hint!</p>
-              </button>
-            </div>
-          )} */}
-
+          {/* )} */}
           {/* Hint end */}
 
           <div className="relative z-1">
@@ -121,7 +123,7 @@ const GameForm = () => {
               <div className="bg-white p-5" name="korean">
                 다음 단어와 맞는 영단어를 고르시오
                 <div className="bg-light-beige">
-                  {checkedWordLists[1].korean}
+                  {checkedWordLists[0].korean}
                 </div>
               </div>
             </div>
@@ -143,7 +145,7 @@ const GameForm = () => {
                         </div>
 
                         <div className="rounded-lg font-bold flex ">
-                          <div className="bg-white p-3 rounded-lg">{index}</div>
+                          <div className="bg-white p-3 rounded-lg">0</div>
                           <div
                             onClick={onClickAnswer}
                             className="flex items-center pl-10"

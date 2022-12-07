@@ -1,11 +1,8 @@
 import { Fragment, useEffect, useRef, useState, useCallback } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useSelector, useDispatch } from "react-redux";
-import useInput from "../../hooks/useInput";
-import { searchWordRequest } from "../../redux/feature/wordSlice";
 import { LightBulbIcon } from "@heroicons/react/24/outline";
 import SearchResultModal from "../word/SearchResultModal";
-import axios from "axios";
 
 const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
 
@@ -18,27 +15,23 @@ const HintModal = ({ setModal, korean }) => {
   const [resultModal, setResultModal] = useState(false);
   const [open, setOpen] = useState(true);
 
+  const { HintLists } = useSelector((state) => state.game);
+
   useEffect(() => {
-    async function result() {
-      const response = await axios.get(`http://localhost:8000/word/${korean}`);
-      const { english, english_dfn, ex_english, ex_english_dfn } =
-        response.data;
-
-      setResultEnglish(english);
-      setResultEnglishDfn(english_dfn);
-      if (
-        ex_english === "중복된 단어는 없습니다." &&
-        ex_english_dfn === "중복된 뜻은 없습니다."
-      ) {
-        setResultExEnglish("");
-        setResultExEnglishDfn("");
-      } else {
-        setResultExEnglish(ex_english);
-        setResultExEnglishDfn(ex_english_dfn);
-      }
-    }
-
-    result();
+    console.log(HintLists);
+    // const { english, english_dfn, ex_english, ex_english_dfn } = HintLists[0];
+    // setResultEnglish(english);
+    // setResultEnglishDfn(english_dfn);
+    // if (
+    //   ex_english === "중복된 단어는 없습니다." &&
+    //   ex_english_dfn === "중복된 뜻은 없습니다."
+    // ) {
+    //   setResultExEnglish("");
+    //   setResultExEnglishDfn("");
+    // } else {
+    //   setResultExEnglish(ex_english);
+    //   setResultExEnglishDfn(ex_english_dfn);
+    // }
   }, []);
 
   const onOpenCloseModal = () => {
@@ -48,7 +41,6 @@ const HintModal = ({ setModal, korean }) => {
 
   return (
     <>
-      {/* 검색 결과창 */}
       {resultModal ? (
         <SearchResultModal
           word={word}

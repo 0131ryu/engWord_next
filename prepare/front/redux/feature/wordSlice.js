@@ -201,37 +201,7 @@ const initialState = {
       status: "A",
     },
   ],
-  checkedWordLists: [
-    { id: 1, english: "green", korean: "초록", type: "advance", status: "A" },
-    {
-      id: 3,
-      english: "purple",
-      korean: "보라",
-      type: "advance",
-      status: "C",
-    },
-    {
-      id: 5,
-      english: "yellow",
-      korean: "노랑",
-      type: "advance",
-      status: "C",
-    },
-    {
-      id: 7,
-      english: "red",
-      korean: "빨강",
-      type: "advance",
-      status: "C",
-    },
-    {
-      id: 9,
-      english: "blue",
-      korean: "파랑",
-      type: "advance",
-      status: "C",
-    },
-  ],
+  checkedWordList: [],
   addWordLoading: false, //단어 추가
   addWordComplete: false,
   addWordError: null,
@@ -350,9 +320,9 @@ export const wordSlice = createSlice({
         state.wordLists.unshift(
           {
             id: data.id,
-            english: data.english.toLowerCase(),
-            korean: data.korean,
-            type: data.type,
+            english: data?.english.toLowerCase(),
+            korean: data?.korean,
+            type: data?.type,
           },
           1
         );
@@ -448,6 +418,12 @@ export const wordSlice = createSlice({
       state.changeStatusWordComplete = true;
 
       state.wordLists[wordInfo.id].status = wordInfo.status;
+
+      if (state.wordLists[wordInfo.id].status === "C") {
+        state.checkedWordList.push(state.wordLists[wordInfo.id]);
+      } else if (state.wordLists[wordInfo.id].status === "A") {
+        state.checkedWordList.pop(state.wordLists[wordInfo.id]);
+      }
     },
     changeStatusWordError: (state, action) => {
       state.changeStatusWordLoading = true;
@@ -464,8 +440,15 @@ export const wordSlice = createSlice({
       state.changeStatusWordLoading = false;
       state.changeStatusWordComplete = true;
 
-      state.wordLists.map((word) => {
+      state.checkedWordList.length = 0;
+
+      state.wordLists.map((word, i) => {
         word.status = wordInfo.status;
+        if (word.status === "C") {
+          state.checkedWordList.push(state.wordLists[i]);
+        } else if (word.status === "A") {
+          state.checkedWordList.pop();
+        }
       });
     },
     changeStatusWordAllError: (state, action) => {

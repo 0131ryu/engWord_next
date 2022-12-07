@@ -17,6 +17,7 @@ import {
   changeStatusWordRequest,
   changeStatusWordAllRequest,
 } from "../../redux/feature/wordSlice";
+import { useEffect } from "react";
 
 const WordList = () => {
   const dispatch = useDispatch();
@@ -27,10 +28,10 @@ const WordList = () => {
   const arrayEasy = [];
   const arrayMiddle = [];
   const arrayAdvance = [];
-  const checkedWordList = [];
 
   const {
     wordLists,
+    checkedWordList,
     page,
     minIndex,
     maxIndex,
@@ -52,48 +53,62 @@ const WordList = () => {
     console.log("메인에서 삭제 버튼 클릭 시 modal 2", removeModal);
   };
 
-  wordLists.map((word, i) => {
-    if (word.type === "easy") {
-      arrayEasy.push(i);
-    }
-    if (word.type === "middle") {
-      arrayMiddle.push(i);
-    }
-    if (word.status === "C") {
-      checkedWordList.push(word);
-    }
-  });
+  // useEffect(() => {
+  //   wordLists.map((word, i) => {
+  //     if (word.type === "easy") {
+  //       arrayEasy.push(i);
+  //     }
+  //     if (word.type === "middle") {
+  //       arrayMiddle.push(i);
+  //     }
+  //   });
+  // }, [wordLists]);
 
-  const easyLists = Object.keys(arrayEasy).length - 1;
+  console.log("checkedWordList", checkedWordList);
+  console.log("checkedWordList 길이", checkedWordList.length);
+
+  //중복제거(checkedWordList에는 중복값이 계속남음음)
+  // const filteredArr = checkedWordList.reduce((acc, current) => {
+  //   const x = acc.find((item) => item.english === current.english);
+  //   if (!x) {
+  //     return acc.concat([current]);
+  //   } else {
+  //     return acc;
+  //   }
+  // }, []);
+
+  // console.log("filteredArr", filteredArr);
+
+  // const easyLists = Object.keys(arrayEasy).length - 1;
   // let middleLists = Object.keys(arrayMiddle).length - 1;
 
-  const onClickLeftEasy = useCallback(() => {
-    dispatch(decrementEasy());
-  });
+  // const onClickLeftEasy = useCallback(() => {
+  //   dispatch(decrementEasy());
+  // });
 
-  const onClickRightEasy = useCallback(() => {
-    if (easyLists < maxIndex) {
-      null;
-    } else {
-      dispatch(incrementEasy());
-    }
-  });
+  // const onClickRightEasy = useCallback(() => {
+  //   if (easyLists < maxIndex) {
+  //     null;
+  //   } else {
+  //     dispatch(incrementEasy());
+  //   }
+  // });
 
-  const onClickLeftMiddle = useCallback(() => {
-    if (Math.min.apply(null, arrayMiddle) > minIndexMiddle) {
-      null;
-    } else {
-      dispatch(decrementMiddle());
-    }
-  });
+  // const onClickLeftMiddle = useCallback(() => {
+  //   if (Math.min.apply(null, arrayMiddle) > minIndexMiddle) {
+  //     null;
+  //   } else {
+  //     dispatch(decrementMiddle());
+  //   }
+  // });
 
-  const onClickRightMiddle = useCallback(() => {
-    if (Math.max.apply(null, arrayMiddle) === maxIndexMiddle) {
-      null;
-    } else {
-      dispatch(incrementMiddle());
-    }
-  });
+  // const onClickRightMiddle = useCallback(() => {
+  //   if (Math.max.apply(null, arrayMiddle) === maxIndexMiddle) {
+  //     null;
+  //   } else {
+  //     dispatch(incrementMiddle());
+  //   }
+  // });
 
   const onClickAllSelected = useCallback((e) => {
     const checkboxClickedAll = e.target;

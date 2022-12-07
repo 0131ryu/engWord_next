@@ -2,11 +2,11 @@ import { Fragment, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Dialog, Transition } from "@headlessui/react";
 import { FaceSmileIcon } from "@heroicons/react/24/outline";
-import { removeWordRequest } from "../../redux/feature/wordSlice";
+import { useRouter } from "next/router";
 
-const EndModal = () => {
+const EndModal = ({ score }) => {
   const [open, setOpen] = useState(true);
-
+  const router = useRouter();
   const cancelButtonRef = useRef(null);
 
   const onRestartGame = () => {
@@ -15,6 +15,7 @@ const EndModal = () => {
 
   const onOpenCloseModal = () => {
     setOpen(!open);
+    router.push("/");
   };
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -65,7 +66,8 @@ const EndModal = () => {
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-lg font-bold">
-                          총 점수 :<span className="text-dark-green">60</span>
+                          총 점수 :
+                          <span className="text-dark-green">{score}</span>
                         </p>
                       </div>
                     </div>

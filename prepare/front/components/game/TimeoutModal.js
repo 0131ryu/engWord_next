@@ -2,7 +2,7 @@ import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { FaceFrownIcon } from "@heroicons/react/24/outline";
 
-const TimeoutModal = () => {
+const TimeoutModal = ({ score }) => {
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
 
@@ -62,7 +62,8 @@ const TimeoutModal = () => {
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-lg font-bold">
-                          총 점수 :<span className="text-red-600 ">60</span>
+                          총 점수 :
+                          <span className="text-red-600 ">{score}</span>
                         </p>
                       </div>
                     </div>

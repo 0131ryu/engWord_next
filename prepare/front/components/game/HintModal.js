@@ -19,19 +19,19 @@ const HintModal = ({ setModal, korean }) => {
 
   useEffect(() => {
     console.log(HintLists);
-    // const { english, english_dfn, ex_english, ex_english_dfn } = HintLists[0];
-    // setResultEnglish(english);
-    // setResultEnglishDfn(english_dfn);
-    // if (
-    //   ex_english === "중복된 단어는 없습니다." &&
-    //   ex_english_dfn === "중복된 뜻은 없습니다."
-    // ) {
-    //   setResultExEnglish("");
-    //   setResultExEnglishDfn("");
-    // } else {
-    //   setResultExEnglish(ex_english);
-    //   setResultExEnglishDfn(ex_english_dfn);
-    // }
+    const { english, english_dfn, ex_english, ex_english_dfn } = HintLists[0];
+    setResultEnglish(english);
+    setResultEnglishDfn(english_dfn);
+    if (
+      ex_english === "중복된 단어는 없습니다." &&
+      ex_english_dfn === "중복된 뜻은 없습니다."
+    ) {
+      setResultExEnglish("");
+      setResultExEnglishDfn("");
+    } else {
+      setResultExEnglish(ex_english);
+      setResultExEnglishDfn(ex_english_dfn);
+    }
   }, []);
 
   const onOpenCloseModal = () => {

@@ -19,6 +19,9 @@ const GameForm = () => {
   const [endModal, setEndModal] = useState(false);
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
+
+  const [answers, setAnswers] = useState([false, false, false, false]);
+
   const [gameLists, setGameLists] = useState([]);
 
   const { checkedWordLists } = useSelector((state) => state.game);
@@ -59,40 +62,64 @@ const GameForm = () => {
   const onClickHint = (e) => {
     setModal(true);
     let korean = e.currentTarget.value;
+    console.log("korean", korean);
     dispatch(findHintRequest(korean));
   };
 
   const onClickAnswer = (e) => {
+    let copy = [...answers];
+
     setNum(parseInt(number.current));
     number.current = number.current + 1;
+    const chooseAnswer = parseInt(e.currentTarget.value);
+    setShowScore(false);
 
-    const chooseAnswer = parseInt(e.currentTarget.value) + 1;
-    console.log("chooseAnswer", chooseAnswer);
-    console.log("gameLists[num].answer", gameLists[num].answer);
+    // console.log("chooseAnswer", chooseAnswer);
+    // console.log("gameLists[num].answer", gameLists[num].answer);
     if (chooseAnswer === gameLists[num].answer) {
       setShowScore(true);
+      setScore((score += 10));
       console.log("정답!");
 
-      setScore((score += 10));
+      copy[0] = false;
+      copy[1] = false;
+      copy[2] = false;
+      copy[3] = false;
+
+      if (chooseAnswer === 1) {
+        copy[0] = true;
+        setAnswers(copy);
+      } else if (chooseAnswer === 2) {
+        copy[1] = true;
+        setAnswers(copy);
+      } else if (chooseAnswer === 3) {
+        copy[2] = true;
+        setAnswers(copy);
+      } else if (chooseAnswer === 4) {
+        copy[3] = true;
+        setAnswers(copy);
+      }
     } else {
+      setShowScore(false);
       console.log("오답!");
     }
 
+    console.log("copy", copy);
     console.log("score", score);
     //답이 맞으면 dispatch로 연결
   };
 
   return (
     <>
-      {console.log("num", num)}
+      {/* {console.log("num", num)} */}
       {/* 시간초과시 모달 */}
       {/* {sec === 0 ? <TimeoutModal score={score} /> : null} */}
       {/* 모든 게임 다 진행 후 모달 */}
       {num === 10 ? <EndModal score={score} /> : null}
       {/* 힌트 모달 */}
-      {/* {modal ? (
-        <HintModal setModal={setModal} korean={checkedWords[0].question} />
-      ) : null} */}
+      {modal ? (
+        <HintModal setModal={setModal} korean={gameLists[`${num}`]?.question} />
+      ) : null}
       <div className="flex lg:flex flex h-full my-3 pt-6 items-center justify-center">
         <div className="sm:500px hidden">quiz game</div>
         <div className="w-full max-w-sm overflow-hidden bg-white border-2 border-light-green flex-none relative shadow-lg rounded-lg px-10 py-3">
@@ -116,10 +143,9 @@ const GameForm = () => {
           </div>
           {/* time end */}
           {/* Hint start */}
-          {/* {sec <= 7 && ( */}
           <div>
             <button
-              value={checkedWordLists[0].question}
+              value={gameLists[`${num}`]?.question}
               onClick={onClickHint}
               className="bg-light-orange flex rounded-lg m-5 relative left-24"
             >
@@ -127,70 +153,122 @@ const GameForm = () => {
               <p className="py-2 px-1 font-bold">Hint!</p>
             </button>
           </div>
-          {/* )} */}
           {/* Hint end */}
 
           <div className="relative z-1">
             <div className="rounded-lg bg-light-green p-2 neumorph-1 text-center font-bold text-gray-800 mt-5">
               <div className="bg-white p-5" name="korean">
                 다음 단어와 맞는 영단어를 고르시오
-                {gameLists.map((word, i) => {
-                  {
-                    return (
-                      <div className="bg-light-beige text-lg">
-                        {gameLists[`${num}`]?.question}
-                      </div>
-                    );
-                  }
-                })}
-                {/* {gameLists[0].question} */}
+                <div className="bg-light-beige text-lg">
+                  {gameLists[`${num}`]?.question}
+                </div>
               </div>
             </div>
 
             <div className="mt-5">
               <div>
                 {/* quiz answer start */}
+                {/* {console.log(gameLists[`${num}`]?.answer)} */}
 
-                {gameLists.map((word, i) => {
-                  // console.log("gameLists[0].choices", gameLists[0].choices);
-                  // console.log("첫 번째", gameLists[0].choices[0]);
-                  // console.log("두 번째", gameLists[0].choices[1]);
-                  // console.log("세 번째", gameLists[0].choices[2]);
-                  // console.log("네 번째", gameLists[0].choices[3]);
-                  {
-                    return (
-                      <>
-                        {gameLists[i].choices[i] !== undefined ? (
-                          <button
-                            value={i}
-                            onClick={onClickAnswer}
-                            className="w-full bg-light-beige p-2 rounded-lg mb-3 relative"
-                          >
-                            <div className="rounded-lg font-bold flex ">
-                              <div className="bg-white p-3 rounded-lg">
-                                {i + 1}
-                              </div>
-                              <div
-                                id="point"
-                                className="flex items-center pl-10 w-full bg-gray-100 text-lg"
-                                value={gameLists[0]?.answer}
-                              >
-                                {gameLists[`${num}`]?.choices[i]}
-                                {/* {showScore ? (
-                                  <div className="bg-light-orange pt-2 pl-1 transform rotate-45 rounded-full h-12 w-12 text-white font-bold absolute right-0 bottom-8 shadow-md">
-                                    <p className="transform -rotate-45 text-black text-lg">
-                                      +10
-                                    </p>
-                                  </div>
-                                ) : null} */}
-                              </div>
-                            </div>
-                          </button>
-                        ) : null}
-                      </>
-                    );
-                  }
-                })}
+                <button
+                  value="1"
+                  onClick={onClickAnswer}
+                  className={`w-full bg-light-beige p-2 rounded-lg mb-3 relative`}
+                >
+                  <div className="rounded-lg font-bold flex ">
+                    <div className="bg-white p-3 rounded-lg">1</div>
+                    <div
+                      id="point"
+                      className="flex items-center pl-10 w-full text-lg"
+                      value={gameLists[`${num}`]?.answer}
+                    >
+                      {gameLists[`${num}`]?.choices[0]}
+
+                      {answers[0] ? (
+                        <div className="bg-light-orange pt-2 pl-1 transform rotate-45 rounded-full h-12 w-12 text-white font-bold absolute right-0 bottom-8 shadow-md">
+                          <p className="transform -rotate-45 text-black text-lg">
+                            +10
+                          </p>
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                </button>
+
+                <button
+                  value="2"
+                  onClick={onClickAnswer}
+                  className={`w-full bg-light-beige p-2 rounded-lg mb-3 relative`}
+                >
+                  <div className="rounded-lg font-bold flex ">
+                    <div className="bg-white p-3 rounded-lg">2</div>
+                    <div
+                      id="point"
+                      className="flex items-center pl-10 w-full text-lg"
+                      value={gameLists[`${num}`]?.answer}
+                    >
+                      {gameLists[`${num}`]?.choices[1]}
+
+                      {answers[1] ? (
+                        <div className="bg-light-orange pt-2 pl-1 transform rotate-45 rounded-full h-12 w-12 text-white font-bold absolute right-0 bottom-8 shadow-md">
+                          <p className="transform -rotate-45 text-black text-lg">
+                            +10
+                          </p>
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                </button>
+
+                <button
+                  value="3"
+                  onClick={onClickAnswer}
+                  className={`w-full bg-light-beige p-2 rounded-lg mb-3 relative`}
+                >
+                  <div className="rounded-lg font-bold flex ">
+                    <div className="bg-white p-3 rounded-lg">3</div>
+                    <div
+                      id="point"
+                      className="flex items-center pl-10 w-full text-lg"
+                      value={gameLists[`${num}`]?.answer}
+                    >
+                      {gameLists[`${num}`]?.choices[2]}
+
+                      {answers[2] ? (
+                        <div className="bg-light-orange pt-2 pl-1 transform rotate-45 rounded-full h-12 w-12 text-white font-bold absolute right-0 bottom-8 shadow-md">
+                          <p className="transform -rotate-45 text-black text-lg">
+                            +10
+                          </p>
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                </button>
+
+                <button
+                  value="4"
+                  onClick={onClickAnswer}
+                  className={`w-full bg-light-beige p-2 rounded-lg mb-3 relative`}
+                >
+                  <div className="rounded-lg font-bold flex ">
+                    <div className="bg-white p-3 rounded-lg">4</div>
+                    <div
+                      id="point"
+                      className="flex items-center pl-10 w-full text-lg"
+                      value={gameLists[`${num}`]?.answer}
+                    >
+                      {gameLists[`${num}`]?.choices[3]}
+
+                      {answers[3] ? (
+                        <div className="bg-light-orange pt-2 pl-1 transform rotate-45 rounded-full h-12 w-12 text-white font-bold absolute right-0 bottom-8 shadow-md">
+                          <p className="transform -rotate-45 text-black text-lg">
+                            +10
+                          </p>
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                </button>
 
                 {/* quiz answer end */}
 

@@ -98,7 +98,7 @@ export const gameSlice = createSlice({
     findHintSuccess: (state, action) => {
       state.findHintLoading = false;
       state.findHintComplete = true;
-      // console.log(action.payload);
+      console.log(action.payload);
       if (state.HintLists.length > 0) {
         state.HintLists.length = 0;
       }

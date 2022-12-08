@@ -16,15 +16,34 @@ const HintModal = ({ setModal, korean }) => {
   const [open, setOpen] = useState(true);
 
   const { HintLists } = useSelector((state) => state.game);
-
   useEffect(() => {
-    console.log(HintLists);
-    const { english, english_dfn, ex_english, ex_english_dfn } = HintLists[0];
+    console.log("useEffect 안 HintLists[0]", HintLists[0]);
+
+    const english = HintLists[0]?.english;
+    const english_dfn = HintLists[0]?.english_dfn;
+    const ex_english = HintLists[0]?.ex_english;
+    const ex_english_dfn = HintLists[0]?.ex_english_dfn;
+
     setResultEnglish(english);
     setResultEnglishDfn(english_dfn);
+
+    //없는 단어를 검색한 경우
+    if (english === "잘못 검색한 단어입니다.") {
+      setResultEnglish("한국어기초사전에 없는 단어입니다");
+      setResultEnglishDfn("");
+      setResultExEnglish("");
+      setResultExEnglishDfn("");
+    }
+
     if (
       ex_english === "중복된 단어는 없습니다." &&
       ex_english_dfn === "중복된 뜻은 없습니다."
+    ) {
+      setResultExEnglish("");
+      setResultExEnglishDfn("");
+    } else if (
+      ex_english === "단어 없음" &&
+      ex_english_dfn === "단어 뜻 없음"
     ) {
       setResultExEnglish("");
       setResultExEnglishDfn("");
@@ -32,7 +51,7 @@ const HintModal = ({ setModal, korean }) => {
       setResultExEnglish(ex_english);
       setResultExEnglishDfn(ex_english_dfn);
     }
-  }, []);
+  }, [HintLists]);
 
   const onOpenCloseModal = () => {
     setModal(false);
@@ -99,20 +118,20 @@ const HintModal = ({ setModal, korean }) => {
                           <div>
                             <div className="relative left-16 grid grid-rows-2 grid-flow-col gap-2 place-content-center w-64">
                               <div className="mt-1">
-                                <span className="font-bold">{korean}</span>과
-                                뜻이 비슷한 영어 단어
+                                <span className="font-bold">{korean}</span>와
+                                같은 뜻을 가진 영어 단어
                               </div>
-                              <div className="flex">
+                              <div className="flex w-full">
                                 <div
-                                  className={`w-full text-center bg-light-beige rounded-md font-bold`}
+                                  className={` w-full text-center bg-light-beige rounded-md font-bold`}
                                 >
                                   {resultEnglish}
                                 </div>
-                                {resultExEnglish && (
-                                  <div className="ml-2 bg-light-beige rounded-md font-bold">
+                                {resultExEnglish ? (
+                                  <div className="ml-2 w-1/2 text-center bg-light-beige rounded-md font-bold">
                                     {resultExEnglish}
                                   </div>
-                                )}
+                                ) : null}
                               </div>
                             </div>
                             {resultEnglish && resultEnglishDfn && (

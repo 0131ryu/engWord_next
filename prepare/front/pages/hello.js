@@ -1,69 +1,38 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import useCounter from "../hooks/useCounter";
 
 const hello = () => {
-  const [글제목, 글제목변경] = useState([
-    "남자 코트 추천",
-    "강남 우동 맛집",
-    "파이썬독학",
-  ]);
-  const [따봉, 따봉변경] = useState([0, 0, 0]);
+  const [currentHours, setCurrentHours] = useState(0);
+  const [currentMinutes, setCurrentMinutes] = useState(0);
+  const [currentSeconds, setCurrentSeconds] = useState(0);
+  const { count, start, stop, reset } = useCounter(0, 100);
 
-  const [modal, modal변경] = useState(false);
-  const [누른제목, 누른제목변경] = useState(0);
-  const posts = "강남 고기 맛집";
-
-  const 따봉바꾸기1 = () => {
-    let copy = [...따봉];
-    copy[0]++;
-    따봉변경(copy);
+  const timer = () => {
+    const checkMinutes = Math.floor(count / 60);
+    const hours = Math.floor(count / 3600);
+    const minutes = checkMinutes % 60;
+    const seconds = count % 60;
+    setCurrentHours(hours);
+    setCurrentMinutes(minutes);
+    setCurrentSeconds(seconds);
   };
 
-  const 따봉바꾸기2 = () => {
-    let copy = [...따봉];
-    copy[1]++;
-    따봉변경(copy);
-  };
-
-  const 따봉바꾸기3 = () => {
-    let copy = [...따봉];
-    copy[2]++;
-    따봉변경(copy);
-  };
-
-  const spanChange = () => {
-    let copy = [...따봉];
-    console.log("copy", copy);
-    따봉.map((t, i) => {
-      copy[i]++;
-    });
-
-    따봉변경(copy);
-  };
+  useEffect(timer, [count]);
   return (
     <>
-      {글제목.map((글, i) => {
-        return (
-          <div>
-            <h3 className="cursor-pointer" onClick={() => 누른제목변경(i)}>
-              {글}
-              <span onClick={spanChange}>?</span>
-              {따봉[i]}
-            </h3>
-          </div>
-        );
-      })}
-
-      <button className="bg-gray-100" onClick={따봉바꾸기1}>
-        버튼1
+      <h1>
+        {currentHours < 10 ? `0${currentHours}` : currentHours} :
+        {currentMinutes < 10 ? `0${currentMinutes}` : currentMinutes} :
+        {currentSeconds < 10 ? `0${currentSeconds}` : currentSeconds}
+      </h1>
+      <button className="bg-gray-100 m-1" onClick={start}>
+        시작
       </button>
-      <button className="bg-gray-200" onClick={따봉바꾸기2}>
-        버튼2
+      <button className="bg-gray-200 m-1" onClick={stop}>
+        정지
       </button>
-      <button className="bg-gray-300" onClick={따봉바꾸기3}>
-        버튼3
-      </button>
-      <button className="bg-gray-400" onClick={spanChange}>
-        버튼4
+      <button className="bg-gray-300 m-1" onClick={reset}>
+        초기화
       </button>
     </>
   );

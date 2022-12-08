@@ -131,15 +131,12 @@ const GameForm = () => {
           {/* score end */}
           {/* time start */}
           <div className="bg-white shadow-lg p-1 rounded-full w-full h-5 mt-4">
-            {sec === 0 ? (
-              <div className={`bg-light-green rounded-full w-0 h-full`}>
-                {sec}
-              </div>
-            ) : (
-              <div className={`bg-light-green rounded-full w-${sec}/12 h-full`}>
-                {sec}
-              </div>
-            )}
+            <div
+              className={`bg-light-green rounded-full ${
+                sec > 0 ? `w-${sec}/12` : "w-0"
+              } h-full`}
+            ></div>
+            시간: {sec}
           </div>
           {/* time end */}
           {/* Hint start */}

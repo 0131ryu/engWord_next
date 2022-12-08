@@ -21,7 +21,6 @@ const GameForm = () => {
   const [showScore, setShowScore] = useState(false);
 
   const [answers, setAnswers] = useState([false, false, false, false]);
-
   const [gameLists, setGameLists] = useState([]);
 
   const { checkedWordLists } = useSelector((state) => state.game);
@@ -104,7 +103,11 @@ const GameForm = () => {
       console.log("오답!");
     }
 
+    time.current = 12;
+    setSec(parseInt(time.current));
+
     console.log("copy", copy);
+    console.log("answers", answers);
     console.log("score", score);
     //답이 맞으면 dispatch로 연결
   };
@@ -113,14 +116,18 @@ const GameForm = () => {
     <>
       {/* {console.log("num", num)} */}
       {/* 시간초과시 모달 */}
-      {/* {sec === 0 ? <TimeoutModal score={score} /> : null} */}
+      {sec === 0 ? <TimeoutModal score={score} /> : null}
       {/* 모든 게임 다 진행 후 모달 */}
       {num === 10 ? <EndModal score={score} /> : null}
       {/* 힌트 모달 */}
       {modal ? (
         <HintModal setModal={setModal} korean={gameLists[`${num}`]?.question} />
       ) : null}
-      <div className="flex lg:flex flex h-full my-3 pt-6 items-center justify-center">
+      <div
+        className={`flex lg:flex flex h-full pt-3 ${
+          sec > 7 && "pt-10"
+        } items-center justify-center`}
+      >
         <div className="sm:500px hidden">quiz game</div>
         <div className="w-full max-w-sm overflow-hidden bg-white border-2 border-light-green flex-none relative shadow-lg rounded-lg px-10 py-3">
           {/* score start */}
@@ -132,24 +139,37 @@ const GameForm = () => {
           {/* time start */}
           <div className="bg-white shadow-lg p-1 rounded-full w-full h-5 mt-4">
             <div
-              className={`bg-light-green rounded-full ${
-                sec > 0 ? `w-${sec}/12` : "w-0"
-              } h-full`}
+              className={`bg-light-green rounded-full h-full
+              ${sec === 11 && "w-11/12"}
+              ${sec === 10 && "w-10/12"}
+              ${sec === 9 && "w-9/12"}
+              ${sec === 8 && "w-8/12"}
+              ${sec === 7 && "w-7/12"}
+              ${sec === 6 && "w-6/12"}
+              ${sec === 5 && "w-5/12"}
+              ${sec === 4 && "w-4/12"}
+              ${sec === 3 && "w-3/12"}
+              ${sec === 2 && "w-2/12"}
+              ${sec === 1 && "w-1/12"}
+              ${sec === 0 && "w-0"}`}
             ></div>
             시간: {sec}
           </div>
           {/* time end */}
           {/* Hint start */}
-          <div>
-            <button
-              value={gameLists[`${num}`]?.question}
-              onClick={onClickHint}
-              className="bg-light-orange flex rounded-lg m-5 relative left-24"
-            >
-              <HandRaisedIcon className="h-9 h-8" />
-              <p className="py-2 px-1 font-bold">Hint!</p>
-            </button>
-          </div>
+          {sec < 8 && (
+            <div>
+              <button
+                value={gameLists[`${num}`]?.question}
+                onClick={onClickHint}
+                className="bg-light-orange flex rounded-lg m-5 relative left-24"
+              >
+                <HandRaisedIcon className="h-9 h-8" />
+                <p className="py-2 px-1 font-bold">Hint!</p>
+              </button>
+            </div>
+          )}
+
           {/* Hint end */}
 
           <div className="relative z-1">

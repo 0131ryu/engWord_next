@@ -39,6 +39,7 @@ const NavbarForm = ({ children }) => {
 
   const onGoGame = () => {
     router.push("/game");
+    // window.location.reload();
   };
 
   return (

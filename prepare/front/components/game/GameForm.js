@@ -26,6 +26,26 @@ const GameForm = () => {
   const { checkedWordLists } = useSelector((state) => state.game);
   const checkedWords = [...checkedWordLists];
 
+  const plusPoint = (p, pointName, name) => {
+    let copy = [...answers];
+    copy[p] = true;
+    setAnswers(copy);
+    const pointDivName = document.getElementById(pointName);
+
+    let div = document.createElement("div");
+    div.id = name;
+    div.className =
+      "z-10 absolute right-0 bottom-8 bg-light-orange pt-2 pl-2 transform rotate-0 rounded-full h-12 w-12 text-white font-bold shadow-md transform -rotate-45 text-black text-lg";
+    let text = document.createTextNode("+10");
+    div.appendChild(text);
+    pointDivName.appendChild(div);
+  };
+
+  const removePlusPoint = (name) => {
+    const findPointName = document.getElementById(name);
+    setTimeout(() => findPointName.remove(), 1000);
+  };
+
   useEffect(() => {
     const shuffleArray = (array) => {
       for (let i = array.length - 1; i > 0; i--) {
@@ -47,7 +67,7 @@ const GameForm = () => {
       time.current -= 1;
     }, 1000);
 
-    return () => clearInterval(timerId.current);
+    return () => clearInterval(timerId.current), clearTimeout();
   }, []);
 
   //타임아웃
@@ -68,8 +88,8 @@ const GameForm = () => {
   const onClickAnswer = (e) => {
     let copy = [...answers];
 
-    setNum(parseInt(number.current));
     number.current = number.current + 1;
+    setTimeout(() => setNum(parseInt(number.current)), 1000);
     const chooseAnswer = parseInt(e.currentTarget.value);
     setShowScore(false);
 
@@ -78,7 +98,7 @@ const GameForm = () => {
     if (chooseAnswer === gameLists[num].answer) {
       setShowScore(true);
       setScore((score += 10));
-      console.log("정답!");
+      // console.log("정답!");
 
       copy[0] = false;
       copy[1] = false;
@@ -86,37 +106,40 @@ const GameForm = () => {
       copy[3] = false;
 
       if (chooseAnswer === 1) {
-        copy[0] = true;
-        setAnswers(copy);
+        plusPoint(0, "point1", "tenPoint1");
+        removePlusPoint("tenPoint1");
       } else if (chooseAnswer === 2) {
-        copy[1] = true;
-        setAnswers(copy);
+        plusPoint(1, "point2", "tenPoint2");
+        removePlusPoint("tenPoint2");
       } else if (chooseAnswer === 3) {
-        copy[2] = true;
-        setAnswers(copy);
+        plusPoint(2, "point3", "tenPoint3");
+        removePlusPoint("tenPoint3");
       } else if (chooseAnswer === 4) {
-        copy[3] = true;
-        setAnswers(copy);
+        plusPoint(3, "point4", "tenPoint4");
+        removePlusPoint("tenPoint4");
       }
     } else {
       setShowScore(false);
-      console.log("오답!");
+      // console.log("오답!");
     }
 
     time.current = 12;
-    setSec(parseInt(time.current));
+    setTimeout(() => setNum(parseInt(number.current)), 1000);
 
-    console.log("copy", copy);
-    console.log("answers", answers);
-    console.log("score", score);
+    // console.log("copy", copy);
+    // console.log("answers", answers);
+    // console.log("score", score);
+    // console.log("gameLists", gameLists);
+    // console.log("num", num);
+
+    return clearTimeout();
+
     //답이 맞으면 dispatch로 연결
   };
-
   return (
     <>
-      {/* {console.log("num", num)} */}
       {/* 시간초과시 모달 */}
-      {sec === 0 ? <TimeoutModal score={score} /> : null}
+      {/* {sec === 0 ? <TimeoutModal score={score} /> : null} */}
       {/* 모든 게임 다 진행 후 모달 */}
       {num === 10 ? <EndModal score={score} /> : null}
       {/* 힌트 모달 */}
@@ -157,6 +180,7 @@ const GameForm = () => {
           </div>
           {/* time end */}
           {/* Hint start */}
+
           {sec < 8 && (
             <div>
               <button
@@ -192,22 +216,21 @@ const GameForm = () => {
                   onClick={onClickAnswer}
                   className={`w-full bg-light-beige p-2 rounded-lg mb-3 relative`}
                 >
-                  <div className="rounded-lg font-bold flex ">
+                  <div id="point1" className="rounded-lg font-bold flex ">
                     <div className="bg-white p-3 rounded-lg">1</div>
                     <div
-                      id="point"
                       className="flex items-center pl-10 w-full text-lg"
                       value={gameLists[`${num}`]?.answer}
                     >
                       {gameLists[`${num}`]?.choices[0]}
 
-                      {answers[0] ? (
+                      {/* {answers[0] ? (
                         <div className="bg-light-orange pt-2 pl-1 transform rotate-45 rounded-full h-12 w-12 text-white font-bold absolute right-0 bottom-8 shadow-md">
                           <p className="transform -rotate-45 text-black text-lg">
                             +10
                           </p>
                         </div>
-                      ) : null}
+                      ) : null} */}
                     </div>
                   </div>
                 </button>
@@ -217,22 +240,21 @@ const GameForm = () => {
                   onClick={onClickAnswer}
                   className={`w-full bg-light-beige p-2 rounded-lg mb-3 relative`}
                 >
-                  <div className="rounded-lg font-bold flex ">
+                  <div id="point2" className="rounded-lg font-bold flex ">
                     <div className="bg-white p-3 rounded-lg">2</div>
                     <div
-                      id="point"
                       className="flex items-center pl-10 w-full text-lg"
                       value={gameLists[`${num}`]?.answer}
                     >
                       {gameLists[`${num}`]?.choices[1]}
 
-                      {answers[1] ? (
+                      {/* {answers[1] ? (
                         <div className="bg-light-orange pt-2 pl-1 transform rotate-45 rounded-full h-12 w-12 text-white font-bold absolute right-0 bottom-8 shadow-md">
                           <p className="transform -rotate-45 text-black text-lg">
                             +10
                           </p>
                         </div>
-                      ) : null}
+                      ) : null} */}
                     </div>
                   </div>
                 </button>
@@ -242,22 +264,21 @@ const GameForm = () => {
                   onClick={onClickAnswer}
                   className={`w-full bg-light-beige p-2 rounded-lg mb-3 relative`}
                 >
-                  <div className="rounded-lg font-bold flex ">
+                  <div id="point3" className="rounded-lg font-bold flex ">
                     <div className="bg-white p-3 rounded-lg">3</div>
                     <div
-                      id="point"
                       className="flex items-center pl-10 w-full text-lg"
                       value={gameLists[`${num}`]?.answer}
                     >
                       {gameLists[`${num}`]?.choices[2]}
 
-                      {answers[2] ? (
+                      {/* {answers[2] ? (
                         <div className="bg-light-orange pt-2 pl-1 transform rotate-45 rounded-full h-12 w-12 text-white font-bold absolute right-0 bottom-8 shadow-md">
                           <p className="transform -rotate-45 text-black text-lg">
                             +10
                           </p>
                         </div>
-                      ) : null}
+                      ) : null} */}
                     </div>
                   </div>
                 </button>
@@ -267,22 +288,21 @@ const GameForm = () => {
                   onClick={onClickAnswer}
                   className={`w-full bg-light-beige p-2 rounded-lg mb-3 relative`}
                 >
-                  <div className="rounded-lg font-bold flex ">
+                  <div id="point4" className="rounded-lg font-bold flex ">
                     <div className="bg-white p-3 rounded-lg">4</div>
                     <div
-                      id="point"
                       className="flex items-center pl-10 w-full text-lg"
                       value={gameLists[`${num}`]?.answer}
                     >
                       {gameLists[`${num}`]?.choices[3]}
 
-                      {answers[3] ? (
+                      {/* {answers[3] ? (
                         <div className="bg-light-orange pt-2 pl-1 transform rotate-45 rounded-full h-12 w-12 text-white font-bold absolute right-0 bottom-8 shadow-md">
                           <p className="transform -rotate-45 text-black text-lg">
                             +10
                           </p>
                         </div>
-                      ) : null}
+                      ) : null} */}
                     </div>
                   </div>
                 </button>

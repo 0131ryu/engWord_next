@@ -20,6 +20,10 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
   const btnRef = createRef();
   const popoverRef = createRef();
 
+  const { wordLists } = useSelector((state) => state.word);
+
+  console.log("wordLists", wordLists);
+
   const [english, onChangeEnglish, setEnglish] = useInput("");
   const [type, onChangeType, setType] = useInput(typesName[0]);
 
@@ -27,28 +31,28 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
   const [resultExEnglish, setResultExEnglish] = useState([]);
   const splitEnglish = [];
 
-  useEffect(() => {
-    async function result() {
-      const response = await axios.get(`http://localhost:8000/word/${korean}`);
+  // useEffect(() => {
+  //   async function result() {
+  //     const response = await axios.get(`http://localhost:8000/word/${korean}`);
 
-      const { english, ex_english } = response.data;
+  //     const { english, ex_english } = response.data;
 
-      splitEnglish = ex_english.split("; ");
-      console.log("splitEnglish", splitEnglish);
-      setResultEng(english);
+  //     splitEnglish = ex_english.split("; ");
+  //     console.log("splitEnglish", splitEnglish);
+  //     setResultEng(english);
 
-      if (ex_english.match(/[(;\)]+/g)) {
-        for (let i = 0; i < splitEnglish.length; i++) {
-          setResultExEnglish(splitEnglish[0], ...resultExEnglish);
-        }
-      } else {
-        setResultExEnglish(ex_english);
-      }
-    }
-    result();
-  });
+  //     if (ex_english.match(/[(;\)]+/g)) {
+  //       for (let i = 0; i < splitEnglish.length; i++) {
+  //         setResultExEnglish(splitEnglish[0], ...resultExEnglish);
+  //       }
+  //     } else {
+  //       setResultExEnglish(ex_english);
+  //     }
+  //   }
+  //   result();
+  // });
 
-  console.log("resultExEnglish", resultExEnglish);
+  // console.log("resultExEnglish", resultExEnglish);
 
   const onFindResultSubmit = useCallback(
     (e) => {

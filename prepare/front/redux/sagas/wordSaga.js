@@ -102,9 +102,8 @@ function findWordAPI(data) {
 function* findWord(action) {
   try {
     const data = action.payload;
-    const response = axios.get(`http://localhost:8000/word/${data}`);
-    console.log("response.data", response.data);
-    // yield put(findWordSuccess(data));
+    const response = yield call(findWordAPI, data);
+    yield put(findWordSuccess(response.data));
   } catch (error) {
     yield put(findWordError(error));
     console.log(error);

@@ -60,6 +60,11 @@ const initialState = {
       answer: 4,
       choices: ["sky", "earth", "dark", "sea"],
     },
+    {
+      question: "비디오",
+      answer: 2,
+      choices: ["computer", "video", "audio", "phone"],
+    },
   ],
   time: 0,
   startTimerLoading: false,

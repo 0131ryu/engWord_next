@@ -1,10 +1,12 @@
 import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { FaceFrownIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/router";
 
 const TimeoutModal = ({ score }) => {
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
+  const router = useRouter();
 
   const onRestartGame = () => {
     window.location.reload();
@@ -12,6 +14,7 @@ const TimeoutModal = ({ score }) => {
 
   const onOpenCloseModal = () => {
     setOpen(!open);
+    router.push("/");
   };
   return (
     <Transition.Root show={open} as={Fragment}>

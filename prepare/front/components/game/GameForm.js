@@ -25,6 +25,9 @@ const GameForm = () => {
 
   const { checkedWordLists } = useSelector((state) => state.game);
   const checkedWords = [...checkedWordLists];
+  const timeout = "";
+  const removeTimeout = "";
+  const removeError = "";
 
   const plusPoint = (p, pointName, name) => {
     let copy = [...answers];
@@ -35,15 +38,35 @@ const GameForm = () => {
     let div = document.createElement("div");
     div.id = name;
     div.className =
-      "z-10 absolute right-0 bottom-8 bg-light-orange pt-2 pl-2 transform rotate-0 rounded-full h-12 w-12 text-white font-bold shadow-md transform -rotate-45 text-black text-lg";
+      "z-10 absolute right-0 bottom-8 bg-light-orange pt-2 pl-2 transform rotate-0 rounded-full h-12 w-12 text-white font-bold shadow-md transform  text-black text-lg";
     let text = document.createTextNode("+10");
+    div.appendChild(text);
+    pointDivName.appendChild(div);
+  };
+
+  const errorAnswer = (p, pointName, name) => {
+    let copy = [...answers];
+    copy[p] = true;
+    setAnswers(copy);
+    const pointDivName = document.getElementById(pointName);
+
+    let div = document.createElement("div");
+    div.id = name;
+    div.className =
+      "z-10 text-xl absolute left-0 top-2 text-lg font-bold text-center bg-red-500 pt-2 transform rotate-0 rounded-full h-12 w-12 text-white font-bold shadow-md text-white";
+    let text = document.createTextNode("X");
     div.appendChild(text);
     pointDivName.appendChild(div);
   };
 
   const removePlusPoint = (name) => {
     const findPointName = document.getElementById(name);
-    setTimeout(() => findPointName.remove(), 1000);
+    removeTimeout = setTimeout(() => findPointName.remove(), 1000);
+  };
+
+  const removeErrorAnswer = (name) => {
+    const findPointName = document.getElementById(name);
+    removeError = setTimeout(() => findPointName.remove(), 1000);
   };
 
   useEffect(() => {
@@ -54,10 +77,9 @@ const GameForm = () => {
         [array[i], array[j]] = [array[j], array[i]];
       }
     };
-
     shuffleArray(checkedWords);
     setGameLists(checkedWords);
-    console.log("gameLists", gameLists);
+    console.log("num", num);
   }, []);
 
   //타이머
@@ -67,7 +89,7 @@ const GameForm = () => {
       time.current -= 1;
     }, 1000);
 
-    return () => clearInterval(timerId.current), clearTimeout();
+    return () => clearInterval(timerId.current);
   }, []);
 
   //타임아웃
@@ -91,12 +113,10 @@ const GameForm = () => {
     number.current = number.current + 1;
     setTimeout(() => setNum(parseInt(number.current)), 1000);
     const chooseAnswer = parseInt(e.currentTarget.value);
-    setShowScore(false);
 
     // console.log("chooseAnswer", chooseAnswer);
     // console.log("gameLists[num].answer", gameLists[num].answer);
     if (chooseAnswer === gameLists[num].answer) {
-      setShowScore(true);
       setScore((score += 10));
       // console.log("정답!");
 
@@ -119,29 +139,38 @@ const GameForm = () => {
         removePlusPoint("tenPoint4");
       }
     } else {
-      setShowScore(false);
+      if (chooseAnswer === 1) {
+        errorAnswer(0, "point1", "tenPoint1");
+        removeErrorAnswer("tenPoint1");
+      } else if (chooseAnswer === 2) {
+        errorAnswer(0, "point2", "tenPoint2");
+        removeErrorAnswer("tenPoint2");
+      } else if (chooseAnswer === 3) {
+        errorAnswer(0, "point3", "tenPoint3");
+        removeErrorAnswer("tenPoint3");
+      } else if (chooseAnswer === 4) {
+        errorAnswer(0, "point4", "tenPoint4");
+        removeErrorAnswer("tenPoint4");
+      }
       // console.log("오답!");
     }
 
     time.current = 12;
     setTimeout(() => setNum(parseInt(number.current)), 1000);
-
-    // console.log("copy", copy);
-    // console.log("answers", answers);
-    // console.log("score", score);
-    // console.log("gameLists", gameLists);
-    // console.log("num", num);
-
     return clearTimeout();
 
     //답이 맞으면 dispatch로 연결
   };
+
+  clearTimeout(timeout);
+  clearTimeout(removeTimeout);
+  clearTimeout(removeError);
   return (
     <>
       {/* 시간초과시 모달 */}
-      {/* {sec === 0 ? <TimeoutModal score={score} /> : null} */}
+      {num == !11 && sec === 0 ? <TimeoutModal score={score} /> : null}
       {/* 모든 게임 다 진행 후 모달 */}
-      {num === 10 ? <EndModal score={score} /> : null}
+      {num === 11 ? <EndModal score={score} /> : null}
       {/* 힌트 모달 */}
       {modal ? (
         <HintModal setModal={setModal} korean={gameLists[`${num}`]?.question} />
@@ -176,7 +205,7 @@ const GameForm = () => {
               ${sec === 1 && "w-1/12"}
               ${sec === 0 && "w-0"}`}
             ></div>
-            시간: {sec}
+            {/* 시간: {sec} */}
           </div>
           {/* time end */}
           {/* Hint start */}
@@ -223,14 +252,6 @@ const GameForm = () => {
                       value={gameLists[`${num}`]?.answer}
                     >
                       {gameLists[`${num}`]?.choices[0]}
-
-                      {/* {answers[0] ? (
-                        <div className="bg-light-orange pt-2 pl-1 transform rotate-45 rounded-full h-12 w-12 text-white font-bold absolute right-0 bottom-8 shadow-md">
-                          <p className="transform -rotate-45 text-black text-lg">
-                            +10
-                          </p>
-                        </div>
-                      ) : null} */}
                     </div>
                   </div>
                 </button>
@@ -247,14 +268,6 @@ const GameForm = () => {
                       value={gameLists[`${num}`]?.answer}
                     >
                       {gameLists[`${num}`]?.choices[1]}
-
-                      {/* {answers[1] ? (
-                        <div className="bg-light-orange pt-2 pl-1 transform rotate-45 rounded-full h-12 w-12 text-white font-bold absolute right-0 bottom-8 shadow-md">
-                          <p className="transform -rotate-45 text-black text-lg">
-                            +10
-                          </p>
-                        </div>
-                      ) : null} */}
                     </div>
                   </div>
                 </button>
@@ -271,14 +284,6 @@ const GameForm = () => {
                       value={gameLists[`${num}`]?.answer}
                     >
                       {gameLists[`${num}`]?.choices[2]}
-
-                      {/* {answers[2] ? (
-                        <div className="bg-light-orange pt-2 pl-1 transform rotate-45 rounded-full h-12 w-12 text-white font-bold absolute right-0 bottom-8 shadow-md">
-                          <p className="transform -rotate-45 text-black text-lg">
-                            +10
-                          </p>
-                        </div>
-                      ) : null} */}
                     </div>
                   </div>
                 </button>
@@ -295,14 +300,6 @@ const GameForm = () => {
                       value={gameLists[`${num}`]?.answer}
                     >
                       {gameLists[`${num}`]?.choices[3]}
-
-                      {/* {answers[3] ? (
-                        <div className="bg-light-orange pt-2 pl-1 transform rotate-45 rounded-full h-12 w-12 text-white font-bold absolute right-0 bottom-8 shadow-md">
-                          <p className="transform -rotate-45 text-black text-lg">
-                            +10
-                          </p>
-                        </div>
-                      ) : null} */}
                     </div>
                   </div>
                 </button>

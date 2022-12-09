@@ -200,7 +200,7 @@ const WordList = () => {
               {/* item start */}
               {wordLists.map((word, index) => {
                 if (
-                  word.type === "easy"
+                  word?.type === "easy"
                   // &&
                   // `${minIndex}` <= index &&
                   // index < `${maxIndex}`
@@ -329,7 +329,7 @@ const WordList = () => {
               {/* item start */}
               {wordLists.map((word, index) => {
                 if (
-                  word.type === "middle"
+                  word?.type === "middle"
                   // &&
                   // parseInt(minIndexMiddle) < index &&
                   // index <= parseInt(maxIndexMiddle)
@@ -449,7 +449,7 @@ const WordList = () => {
               </div>
               {/* item start */}
               {wordLists.map((word, index) => {
-                if (word.type === "advance") {
+                if (word?.type === "advance") {
                   return (
                     <>
                       <div className="flex items-start bg-gray-400 group-hover:opacity-80 rounded-lg m-2">

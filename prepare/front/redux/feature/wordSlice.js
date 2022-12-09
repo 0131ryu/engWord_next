@@ -240,10 +240,16 @@ export const wordSlice = createSlice({
       state.addWordComplete = false;
     },
     addWordSuccess: (state, action) => {
+      const data = action.payload;
       state.addWordLoading = false;
       state.addWordComplete = true;
-      console.log("state.wordLists", typeof state.wordLists);
-      state.wordLists.unshift(action.payload.toLowerCase);
+
+      state.wordLists.unshift({
+        id: data.id,
+        english: data.english.toLowerCase(),
+        korean: data.korean,
+        type: data.type,
+      });
     },
     addWordError: (state, action) => {
       state.addWordLoading = true;

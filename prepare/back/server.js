@@ -33,6 +33,6 @@ app.get("/", (req, res) => {
   console.log("연결됨");
 });
 
-app.listen(8000, () => {
+app.listen(3005, () => {
   console.log("The server is running at port 8000");
 });

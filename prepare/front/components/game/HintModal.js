@@ -113,6 +113,9 @@ const HintModal = ({ setModal, korean }) => {
                           className="text-lg font-medium leading-6 text-gray-900"
                         >
                           Hint
+                          <p className="text-sm">
+                            (한국어기초사전 API로 검색한 결과)
+                          </p>
                         </Dialog.Title>
                         <div className="w-96">
                           <div>

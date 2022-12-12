@@ -1,12 +1,12 @@
 import React from "react";
-import GameForm from "../components/game/GameForm";
+import StartModal from "../components/game/StartModal";
 import NavbarForm from "../components/NavbarForm";
 
 const game = () => {
   return (
     <>
       <NavbarForm />
-      <GameForm />
+      <StartModal />
     </>
   );
 };

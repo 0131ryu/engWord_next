@@ -63,6 +63,7 @@ function* removeWord(action) {
 function* changeStatus(action) {
   try {
     const data = action.payload;
+    // console.log("data", data);
     yield put(changeStatusWordSuccess(data));
   } catch (error) {
     yield put(changeStatusWordError(error));

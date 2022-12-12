@@ -1,19 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { HandRaisedIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import GameList from "./GameList";
 import HintModal from "./HintModal";
 import { findHintRequest } from "../../redux/feature/gameSlice";
 import TimeoutModal from "./TimeoutModal";
 import EndModal from "./EndModal";
-import ScoreComponent from "./ScoreComponent";
 
 const GameForm = () => {
   const dispatch = useDispatch();
   const [sec, setSec] = useState(12);
-  const [num, setNum] = useState(1);
+  const [num, setNum] = useState(0);
   const time = useRef(12);
-  const number = useRef(1);
+  const number = useRef(0);
   const timerId = useRef(null);
   const [modal, setModal] = useState(false);
   const [endModal, setEndModal] = useState(false);
@@ -79,8 +77,7 @@ const GameForm = () => {
     };
     shuffleArray(checkedWords);
     setGameLists(checkedWords);
-    console.log("num", num);
-  }, []);
+  }, [num]);
 
   //타이머
   useEffect(() => {
@@ -165,12 +162,13 @@ const GameForm = () => {
   clearTimeout(timeout);
   clearTimeout(removeTimeout);
   clearTimeout(removeError);
+
   return (
     <>
       {/* 시간초과시 모달 */}
-      {num == !11 && sec === 0 ? <TimeoutModal score={score} /> : null}
+      {num !== 10 && sec === 0 ? <TimeoutModal score={score} /> : null}
       {/* 모든 게임 다 진행 후 모달 */}
-      {num === 11 ? <EndModal score={score} /> : null}
+      {num === 10 ? <EndModal score={score} /> : null}
       {/* 힌트 모달 */}
       {modal ? (
         <HintModal setModal={setModal} korean={gameLists[`${num}`]?.question} />
@@ -309,7 +307,7 @@ const GameForm = () => {
                 {/* 1/10 */}
                 <div className="mt-8 text-center">
                   <div className="h-1 w-12 bg-dark-green rounded-full mx-auto"></div>
-                  <p className="font-bold text-dark-green">{num}/10</p>
+                  <p className="font-bold text-dark-green">{num + 1}/10</p>
                 </div>
               </div>
             </div>

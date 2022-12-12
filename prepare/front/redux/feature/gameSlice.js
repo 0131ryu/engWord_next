@@ -10,66 +10,66 @@ const shuffleArray = (array) => {
 
 const initialState = {
   checkedWordLists: [
-    {
-      question: "초록",
-      answer: 1,
-      choices: ["green", "purple", "yellow", "blue"],
-    },
-    {
-      question: "보라",
-      answer: 2,
-      choices: ["red", "purple", "yellow", "blue"],
-    },
-    {
-      question: "노랑",
-      answer: 3,
-      choices: ["orange", "sky blue", "yellow", "blue"],
-    },
-    {
-      question: "파랑",
-      answer: 4,
-      choices: ["black", "white", "pink", "blue"],
-    },
-    {
-      question: "자바",
-      answer: 1,
-      choices: ["Java", "Python", "C", "Jakarta"],
-    },
-    {
-      question: "사과",
-      answer: 3,
-      choices: ["grape", "mango", "apple", "blueberry"],
-    },
-    {
-      question: "노트북",
-      answer: 1,
-      choices: ["labtop", "headphone", "mouse", "microphone"],
-    },
-    {
-      question: "영어",
-      answer: 1,
-      choices: ["english", "korean", "chinese", "japanes"],
-    },
-    {
-      question: "도움",
-      answer: 3,
-      choices: ["happy", "sad", "help", "good"],
-    },
-    {
-      question: "바다",
-      answer: 4,
-      choices: ["sky", "earth", "dark", "sea"],
-    },
-    {
-      question: "비디오",
-      answer: 2,
-      choices: ["computer", "video", "audio", "phone"],
-    },
+    // {
+    //   question: "초록",
+    //   answer: 1,
+    //   choices: ["green", "purple", "yellow", "blue"],
+    // },
+    // {
+    //   question: "보라",
+    //   answer: 2,
+    //   choices: ["red", "purple", "yellow", "blue"],
+    // },
+    // {
+    //   question: "노랑",
+    //   answer: 3,
+    //   choices: ["orange", "sky blue", "yellow", "blue"],
+    // },
+    // {
+    //   question: "파랑",
+    //   answer: 4,
+    //   choices: ["black", "white", "pink", "blue"],
+    // },
+    // {
+    //   question: "자바",
+    //   answer: 1,
+    //   choices: ["Java", "Python", "C", "Jakarta"],
+    // },
+    // {
+    //   question: "사과",
+    //   answer: 3,
+    //   choices: ["grape", "mango", "apple", "blueberry"],
+    // },
+    // {
+    //   question: "노트북",
+    //   answer: 1,
+    //   choices: ["labtop", "headphone", "mouse", "microphone"],
+    // },
+    // {
+    //   question: "영어",
+    //   answer: 1,
+    //   choices: ["english", "korean", "chinese", "japanes"],
+    // },
+    // {
+    //   question: "도움",
+    //   answer: 3,
+    //   choices: ["happy", "sad", "help", "good"],
+    // },
+    // {
+    //   question: "바다",
+    //   answer: 4,
+    //   choices: ["sky", "earth", "dark", "sea"],
+    // },
+    // {
+    //   question: "비디오",
+    //   answer: 2,
+    //   choices: ["computer", "video", "audio", "phone"],
+    // },
   ],
   time: 0,
-  startTimerLoading: false,
-  startTimerComplete: false,
-  startTimerError: null,
+  startGameLoading: false,
+  startGameComplete: false,
+  startGameError: null,
   findHintLoading: false,
   findHintComplete: false,
   findHintError: null,
@@ -80,19 +80,22 @@ export const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
-    //timer
-    startTimerRequest: (state) => {
-      state.startTimerLoading = true;
-      state.startTimerError = null;
-      state.startTimerComplete = false;
+    startGameRequest: (state) => {
+      state.startGameLoading = true;
+      state.startGameError = null;
+      state.startGameComplete = false;
     },
-    startTimerSuccess: (state, action) => {
-      state.startTimerLoading = false;
-      state.startTimerComplete = true;
+    startGameSuccess: (state, action) => {
+      const data = action.payload;
+      state.startGameLoading = false;
+      state.startGameComplete = true;
+      data.map((d) => {
+        state.checkedWordLists.push(d);
+      });
     },
-    startTimerError: (state, action) => {
-      state.startTimerLoading = true;
-      state.startTimerError = action.error;
+    startGameError: (state, action) => {
+      state.startGameLoading = true;
+      state.startGameError = action.error;
     },
     //힌트 찾기
     findHintRequest: (state) => {
@@ -118,9 +121,9 @@ export const gameSlice = createSlice({
 });
 
 export const {
-  startTimerRequest,
-  startTimerSuccess,
-  startTimerError,
+  startGameRequest,
+  startGameSuccess,
+  startGameError,
   findHintRequest,
   findHintSuccess,
   findHintError,

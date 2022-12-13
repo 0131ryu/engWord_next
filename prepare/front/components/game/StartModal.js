@@ -12,15 +12,11 @@ const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
 
 const StartModal = ({ isId, setModal }) => {
   const { wordLists, checkedWordList } = useSelector((state) => state.word);
-  const { checkedWordLists } = useSelector((state) => state.game);
 
   const dispatch = useDispatch();
   const [open, setOpen] = useState(true);
   const [gameStart, setGameStart] = useState(false);
   const [alert, setAlert] = useState(false);
-  const [selected, setSelected] = useState(typesName[0]);
-  const [koreanError, setKoreanError] = useState(false);
-  // const [status, setStatus] = useState("A");
   const checkedData = [...checkedWordList];
   const allData = [...wordLists];
   const numbers = [1, 2, 3, 4];
@@ -125,33 +121,17 @@ const StartModal = ({ isId, setModal }) => {
 
   const onClickSelected = useCallback((e) => {
     const checkboxClicked = e.target;
-    const wordIndex = parseInt(e.target.value);
-    // console.log("checkboxClicked", checkboxClicked);
-    console.log("wordIndex", typeof wordIndex);
-    checkboxClicked.classList.toggle("C");
-    // console.log("checkboxClicked.classList", checkboxClicked.classList);
-    // console.log(
-    //   " checkboxClicked.classList.value",
-    //   checkboxClicked.classList.value
-    // );
+    const wordIndex = e.target.value;
 
-    const condition = checkboxClicked.classList.value.includes("C");
-
-    // console.log("condition", condition);
-    // console.log("wordIndex", wordIndex);
-
-    console.log("wordLists", wordLists);
-
-    if (condition) {
+    if (checkboxClicked.checked) {
       dispatch(changeStatusWordRequest({ id: wordIndex, status: "C" }));
-    } else {
+    } else if (!checkboxClicked.checked) {
       dispatch(changeStatusWordRequest({ id: wordIndex, status: "A" }));
     }
   }, []);
 
   return (
     <>
-      {console.log("alert")}
       {alert ? (
         <AlertModal setAlert={setAlert} words={checkedWordList.length} />
       ) : null}
@@ -218,64 +198,35 @@ const StartModal = ({ isId, setModal }) => {
                             총 추가된 단어 :
                             <span className="font-bold text-red-500 ml-3">
                               {checkedWordList.length}
-                              {console.log("checkedWordList", checkedWordList)}
                             </span>
                           </p>
                         </Dialog.Title>
-                        <div className="group relative flex w-full justify-center flex overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-100 lg:aspect-none">
+                        <div className="group justify-center flex overflow-y-auto max-h-96 overflow-hidden rounded-md">
                           <div>
                             {wordLists.map((word, index) => {
-                              if (word.status === "C") {
-                                {
-                                  return (
-                                    <div className="m-1 flex border-2 border-light-green h-12 w-full rounded-md">
-                                      <button
-                                        value={index}
-                                        onClick={onClickSelected}
-                                        className="my-1.5 ml-2 font-bold text-center bg-red-500 rounded-full h-8 w-8 text-white font-bold shadow-md text-white"
-                                      >
-                                        제외
-                                      </button>
-                                      <li className="my-2.5 flex first:pt-0 last:pb-0">
-                                        <div className="flex relative ml-5 overflow-hidden">
-                                          <p className="text-sm font-medium text-slate-900 bg-gray-200">
-                                            ({index}) 단어: {word.english}
-                                            {/* {word.choices[0]} */}
-                                          </p>
-                                          <p className="ml-3 text-sm font-medium text-slate-900 bg-gray-200">
-                                            뜻: {word.korean}
-                                          </p>
-                                        </div>
-                                      </li>
-                                    </div>
-                                  );
-                                }
-                              } else if (word.status === "A") {
-                                {
-                                  return (
-                                    <div className="m-1 flex border-2 border-light-green h-12 w-full rounded-md">
-                                      <button
-                                        value={index}
-                                        onClick={onClickSelected}
-                                        className="my-1.5 ml-2 font-bold text-center bg-light-green rounded-full h-8 w-8 text-white font-bold shadow-md text-white"
-                                      >
-                                        추가
-                                      </button>
-                                      <li className="my-2.5 flex first:pt-0 last:pb-0">
-                                        <div className="flex relative ml-5 overflow-hidden">
-                                          <p className="text-sm font-medium text-slate-900 bg-gray-200">
-                                            ({index}) 단어: {word.english}
-                                            {/* {word.choices[0]} */}
-                                          </p>
-                                          <p className="ml-3 text-sm font-medium text-slate-900 bg-gray-200">
-                                            뜻: {word.korean}
-                                          </p>
-                                          <p>({word.status})</p>
-                                        </div>
-                                      </li>
-                                    </div>
-                                  );
-                                }
+                              {
+                                return (
+                                  <div className="m-1 flex border-2 border-light-green h-12 w-80 rounded-md">
+                                    <input
+                                      onClick={onClickSelected}
+                                      value={index}
+                                      id="checkItem"
+                                      name="checkItem"
+                                      type="checkbox"
+                                      className="ml-2 mt-3 h-4 w-4 rounded border-light-green text-light-green focus:ring-light-green"
+                                    />
+                                    <li className="my-2.5 flex">
+                                      <div className="flex ml-2">
+                                        <p className="text-sm font-medium text-slate-900  w-32 truncate">
+                                          ({index}) {word.english}
+                                        </p>
+                                        <p className="ml-3 text-sm font-medium text-slate-900 w-32 truncate">
+                                          뜻: {word.korean}
+                                        </p>
+                                      </div>
+                                    </li>
+                                  </div>
+                                );
                               }
                             })}
                           </div>
@@ -283,7 +234,7 @@ const StartModal = ({ isId, setModal }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                  <div className="bg-gray-200 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                     <button
                       type="button"
                       className="inline-flex w-full justify-center rounded-md border border-transparent bg-light-orange px-4 py-2 text-base font-medium text-black shadow-sm hover:bg-dark-green hover:text-white  sm:ml-3 sm:w-auto sm:text-sm"

@@ -431,7 +431,7 @@ export const wordSlice = createSlice({
         status: wordInfo.status,
       });
 
-      console.log("wordInfo", wordInfo);
+      // console.log("wordInfo", wordInfo);
 
       if (wordInfo.status === "C") {
         //  state.checkedWordList.splice()

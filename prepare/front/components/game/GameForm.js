@@ -77,7 +77,7 @@ const GameForm = () => {
     };
     shuffleArray(checkedWords);
     setGameLists(checkedWords);
-  }, [num]);
+  }, []);
 
   //타이머
   useEffect(() => {
@@ -105,14 +105,16 @@ const GameForm = () => {
   };
 
   const onClickAnswer = (e) => {
+    console.log("gameLists", gameLists);
     let copy = [...answers];
 
     number.current = number.current + 1;
     setTimeout(() => setNum(parseInt(number.current)), 1000);
     const chooseAnswer = parseInt(e.currentTarget.value);
 
-    // console.log("chooseAnswer", chooseAnswer);
-    // console.log("gameLists[num].answer", gameLists[num].answer);
+    // console.log("checkedWords", checkedWords);
+    console.log("checkedWords[num].question", checkedWords[num].question);
+
     if (chooseAnswer === gameLists[num].answer) {
       setScore((score += 10));
       // console.log("정답!");

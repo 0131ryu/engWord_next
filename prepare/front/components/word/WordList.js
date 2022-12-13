@@ -24,7 +24,6 @@ const WordList = () => {
   const [modal, setModal] = useState(false);
   const [removeModal, setRemoveModal] = useState(false);
   const [id, setId] = useState(0);
-  const [status, setStatus] = useState("C");
   const arrayEasy = [];
   const arrayMiddle = [];
   const arrayAdvance = [];
@@ -112,11 +111,10 @@ const WordList = () => {
 
   const onClickAllSelected = useCallback((e) => {
     const checkboxClickedAll = e.target;
-    checkboxClickedAll.classList.toggle(status);
     const checkboxes = document.querySelectorAll("input[name=checkItem]");
 
     if (checkboxClickedAll.checked) {
-      dispatch(changeStatusWordAllRequest({ status: status }));
+      dispatch(changeStatusWordAllRequest({ status: "C" }));
       for (let i = 0; i < checkboxes.length; i++) {
         checkboxes[i].checked = checkboxClickedAll.checked;
       }
@@ -132,10 +130,8 @@ const WordList = () => {
     const checkboxClicked = e.target;
     const wordIndex = e.target.value;
 
-    checkboxClicked.classList.toggle(status);
-
     if (checkboxClicked.checked) {
-      dispatch(changeStatusWordRequest({ id: wordIndex, status: status }));
+      dispatch(changeStatusWordRequest({ id: wordIndex, status: "C" }));
     } else if (!checkboxClicked.checked) {
       dispatch(changeStatusWordRequest({ id: wordIndex, status: "A" }));
     }

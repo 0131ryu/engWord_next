@@ -1,31 +1,19 @@
 import React from "react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 const PostSearch = () => {
   return (
-    <div className="flex bg-dark-green m-2 p-2 rounded-lg">
-      <form className="w-full h-full" action="#" method="POST">
-        <div className="flex">
-          <label htmlFor="word" className="sr-only">
-            Email address
-          </label>
-          <input
-            id="word"
-            name="word"
-            type="text"
-            autoComplete="word"
-            required
-            className="group relative w-full justify-center rounded-md border border-transparent bg-white boder border-dark-green py-2 px-4 text-sm font-medium text-black hover:bg-light-green focus:outline-none focus:ring-2 focus:ring-light-green focus:ring-offset-2"
-            placeholder="which one do you find?"
-          />
-
-          <button
-            type="submit"
-            className="group relative flex ml-2 w-20 justify-center rounded-md border border-transparent bg-light-orange py-2 px-4 text-sm font-medium text-white hover:bg-light-orange focus:outline-none focus:ring-2 focus:ring-light-green focus:ring-offset-2"
-          >
-            search
-          </button>
-        </div>
-      </form>
+    <div className="flex mt-2 w-1/2 mx-auto block">
+      <div className="bg-gray-100 border-2 border-light-green flex justify-between rounde-md rounded-md">
+        <input
+          className="flex-grow p-1 w-10 md:w-20 lg:w-40 outline-none text-gray-600 focus:text-blue-600"
+          type="text"
+          placeholder="Search..."
+        />
+        <span>
+          <MagnifyingGlassIcon className="mt-1 h-5 w-5 cursor-pointer" />
+        </span>
+      </div>
     </div>
   );
 };

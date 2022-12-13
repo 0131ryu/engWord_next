@@ -2,40 +2,78 @@ import React from "react";
 
 const UserInfo = () => {
   return (
-    <div className="md:col-span-1 ml-3 mr-3">
-      <div className="bg-white border border-light-green rounded-lg px-4 py-5">
-        <div className="flex w-72 h-8">
+    <>
+      <div className="ml-2 shadow shadow-black-500/40 rounded-xl">
+        <div className="md:flex lg:flex">
           <img
-            className="h-8 w-8 rounded-full"
-            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-            alt=""
+            src="https://i.imgur.com/CeVfZyY.jpg"
+            className="rounded-lg w-14 h-14 mt-2 ml-1"
           />
-          <h3 className="ml-3 text-lg md:text-md font-medium text-gray-900">
-            Tester Name
-          </h3>
-        </div>
-        <div className="flex">
-          <p className="mt-1 max-w-2xl text-sm text-gray-300">
-            가입날짜 : 2022-10-28
-          </p>
-          <div className="ml-4 mt-1">
-            <a href="#">
-              팔로잉 : <span>1</span>
-            </a>
-          </div>
-          <div className="ml-4 mt-1">
-            <a href="#">
-              팔로워 : <span>2</span>
-            </a>
+
+          <div className="ml-1">
+            <p className="font-bold p-1 mt-1">
+              Elliot Thombson Elliot Thombson Elliot Thombson
+            </p>
           </div>
         </div>
-        <p className="mt-1 max-w-2xl text-sm text-gray-500">
-          Personal details and application. Personal details and application.
-          Personal details and application. Personal details and application.
-          Personal details and application. Personal details and application.
-        </p>
+
+        <div className="p-2">
+          <span>
+            test test test test test test test test test test test test test
+            test test
+          </span>
+        </div>
+
+        <div className="lg:flex md:ml-5 lg:ml-10">
+          <div className="flex p-1 items-center">
+            <p className="text-gray-400 block">Article</p>
+            <p className="ml-1 font-bold">34</p>
+          </div>
+          <div className="flex p-1 items-center">
+            <p className="text-gray-400 block">Follower</p>
+            <p className="ml-1 font-bold">940</p>
+          </div>
+          <div className="flex p-1 items-center">
+            <p className="text-gray-400 block">Following</p>
+            <p className="ml-1 font-bold">900</p>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
+    // <div className="md:col-span-1 ml-3 mr-3">
+    //   <div className="bg-white border border-light-green rounded-lg px-4 py-5">
+    //     <div className="flex w-72 h-8">
+    //       <img
+    //         className="h-8 w-8 rounded-full"
+    //         src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+    //         alt=""
+    //       />
+    //       <h3 className="ml-3 text-lg md:text-md font-medium text-gray-900">
+    //         Tester Name
+    //       </h3>
+    //     </div>
+    //     <div className="flex">
+    //       <p className="mt-1 max-w-2xl text-sm text-gray-300">
+    //         가입날짜 : 2022-10-28
+    //       </p>
+    //       <div className="ml-4 mt-1">
+    //         <a href="#">
+    //           팔로잉 : <span>1</span>
+    //         </a>
+    //       </div>
+    //       <div className="ml-4 mt-1">
+    //         <a href="#">
+    //           팔로워 : <span>2</span>
+    //         </a>
+    //       </div>
+    //     </div>
+    //     <p className="mt-1 max-w-2xl text-sm text-gray-500">
+    //       Personal details and application. Personal details and application.
+    //       Personal details and application. Personal details and application.
+    //       Personal details and application. Personal details and application.
+    //     </p>
+    //   </div>
+    // </div>
   );
 };
 

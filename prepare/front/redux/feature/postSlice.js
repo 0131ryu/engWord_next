@@ -5,32 +5,35 @@ const initialState = {
   mainPosts: [
     {
       id: shortId.generate(),
-      content: "첫 게시글",
+      content:
+        "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
       User: {
         id: shortId.generate(),
         nickname: "test",
       },
-      Images: [],
+      Images: ["https://picsum.photos/400"],
       Comments: [],
     },
     {
       id: shortId.generate(),
-      content: "두 번째 게시글",
+      content:
+        "Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose.",
       User: {
         id: shortId.generate(),
         nickname: "test",
       },
-      Images: [],
+      Images: ["https://picsum.photos/500"],
       Comments: [],
     },
     {
       id: shortId.generate(),
-      content: "세 번째 게시글",
+      content:
+        "Contrary to popular belief, Lorem Ipsum is not simply random text.",
       User: {
         id: shortId.generate(),
         nickname: "test",
       },
-      Images: [],
+      Images: ["https://picsum.photos/600"],
       Comments: [],
     },
   ],
@@ -55,7 +58,7 @@ const initialState = {
         id: shortId.generate(),
         nickname: "test3",
       },
-      Images: [],
+      Images: ["https://picsum.photos/500"],
       Comments: [],
     },
     {
@@ -67,7 +70,7 @@ const initialState = {
         id: shortId.generate(),
         nickname: "test3",
       },
-      Images: [],
+      Images: ["https://picsum.photos/500"],
       Comments: [],
     },
   ],

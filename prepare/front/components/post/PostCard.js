@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   ArrowPathRoundedSquareIcon,
   HeartIcon,
@@ -9,25 +9,43 @@ import {
   EllipsisHorizontalIcon,
 } from "@heroicons/react/24/outline";
 
+import { revisePostRequest } from "../../redux/feature/postSlice";
+
 import { Popover, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import CommentForm from "./CommentForm";
 import CommentCard from "./CommentCard";
 import RemovePostModal from "./RemovePostModal";
-import { useEffect } from "react";
+import PostCardContent from "./PostCardContent";
 
 const PostCard = () => {
+  const dispatch = useDispatch();
   const { mainPosts } = useSelector((state) => state.post);
   const [removeModal, setRemoveModal] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+
   const [id, setId] = useState(0);
 
-  useEffect(() => {
-    console.log("mainPosts", mainPosts);
-  }, []);
+  const onClickRevise = useCallback(
+    (e) => {
+      setId(e.target.value);
+      setEditMode(true);
+    },
+    [id]
+  );
 
-  const onRevisePost = useCallback((e) => {
-    setRemoveModal(true);
-    setId(parseInt(e.target.value));
+  const onRevisePost = useCallback(
+    (editText, index) => () => {
+      setEditMode(false);
+      console.log("editText", editText);
+      console.log("onRevisePost index", index);
+      dispatch(revisePostRequest({ id: index, content: editText }));
+    },
+    [mainPosts]
+  );
+
+  const onCancleRevisePost = useCallback(() => {
+    setEditMode(false);
   }, []);
 
   const onRemovePost = useCallback((e) => {
@@ -45,7 +63,7 @@ const PostCard = () => {
       {/* card start */}
       {mainPosts.map((post, index) => {
         return (
-          <section className="flex justify-center mt-8 ">
+          <section key={index} className="flex justify-center mt-8 ">
             <article className="overflow-hidden my-2 shadow shadow-black-500/40 rounded-md">
               <header className="px-4 py-3 flex items-center justify-between">
                 <div className="flex items-center font-bold">
@@ -61,7 +79,7 @@ const PostCard = () => {
                   </span>
                 </div>
                 <div className="float-right">
-                  <span>
+                  {editMode ? null : (
                     <Popover>
                       <>
                         <Popover.Button className="rounded-md px-3 py-2 text-base">
@@ -82,14 +100,14 @@ const PostCard = () => {
                             <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                               <div className="bg-light-beige p-1">
                                 <button
-                                  // value={index}
-                                  onClick={onRevisePost}
+                                  value={index}
+                                  onClick={onClickRevise}
                                   className="flow-root rounded-md px-2 py-2 transition duration-150 ease-in-out hover:bg-light-beige focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                                 >
                                   수정
                                 </button>
                                 <button
-                                  // value={index}
+                                  value={index}
                                   onClick={onRemovePost}
                                   className="flow-root rounded-md px-2 py-2 transition duration-150 ease-in-out hover:bg-light-beige focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                                 >
@@ -101,10 +119,19 @@ const PostCard = () => {
                         </Transition>
                       </>
                     </Popover>
-                  </span>
+                  )}
                 </div>
               </header>
-              <div>
+
+              <PostCardContent
+                editMode={editMode}
+                onCancleRevisePost={onCancleRevisePost}
+                onRevisePost={onRevisePost}
+                image={post.Images}
+                content={post.content}
+                index={index}
+              />
+              {/* <div>
                 <img
                   src={`${post.Images}`}
                   alt="post.Images"
@@ -112,7 +139,7 @@ const PostCard = () => {
                 />
                 <p className="p-4">{post.content}</p>
                 <small className="text-gray-400 m-4">2 hours ago</small>
-              </div>
+              </div> */}
               <div className="pl-4 pr-4">
                 <div className="flex justify-between items-center mb-2">
                   <div className="flex item-center">

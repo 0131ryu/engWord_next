@@ -7,6 +7,9 @@ import {
   removePostRequest,
   removePostSuccess,
   removePostFailure,
+  revisePostRequest,
+  revisePostSuccess,
+  revisePostFailure,
   addCommentRequest,
   addCommentSuccess,
   addCommentFailure,
@@ -43,6 +46,20 @@ function* removePost(action) {
   } catch (err) {
     console.error(err);
     yield put(removePostFailure(err));
+  }
+}
+
+function revisePostAPI(data) {
+  return axios.post("/post", data);
+}
+
+function* revisePost(action) {
+  try {
+    const data = action.payload;
+    yield put(revisePostSuccess(data));
+  } catch (err) {
+    console.error(err);
+    yield put(revisePostFailure(err));
   }
 }
 
@@ -85,6 +102,10 @@ function* removePost_Req() {
   yield takeLatest(removePostRequest.type, removePost);
 }
 
+function* revisePost_Req() {
+  yield takeLatest(revisePostRequest.type, revisePost);
+}
+
 function* addComment_Req() {
   yield takeLatest(addCommentRequest.type, addComment);
 }
@@ -96,6 +117,7 @@ function* removeComment_Req() {
 export const postSagas = [
   fork(addPost_Req),
   fork(removePost_Req),
+  fork(revisePost_Req),
   fork(addComment_Req),
   fork(removeComment_Req),
 ];

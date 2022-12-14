@@ -35,7 +35,6 @@ const WordForm = () => {
 
   const onSubmitWord = useCallback(() => {
     console.log("이거 연결?");
-    console.log(english, korean, type);
     dispatch(
       addWordRequest({
         id: 10,
@@ -44,8 +43,6 @@ const WordForm = () => {
         type,
       })
     );
-    english = "";
-    korean = "";
   }, [english, korean, type]);
 
   return (

@@ -20,8 +20,8 @@ const ReviseWordModal = ({ isId, setModal, showEng, showKor }) => {
   const type = selected.name;
   const { wordLists } = useSelector((state) => state.word);
 
-  const [english, onChangeEnglish, setEnglish] = useInput("");
-  const [korean, onChangeKorean, setKorean] = useInput("");
+  const [english, onChangeEnglish] = useInput("");
+  const [korean, onChangeKorean] = useInput("");
 
   const onReviseWordSubmit = useCallback(() => {
     setModal(false);
@@ -36,7 +36,7 @@ const ReviseWordModal = ({ isId, setModal, showEng, showKor }) => {
     } else {
       dispatch(reviseWordRequest({ id: isId, english, korean, type }));
     }
-  }, [type]);
+  }, [english, korean, type]); //여기 넣어야 함
 
   const onOpenCloseModal = () => {
     console.log("open", open);
@@ -96,18 +96,18 @@ const ReviseWordModal = ({ isId, setModal, showEng, showKor }) => {
                           <input
                             onChange={onChangeEnglish}
                             placeholder={`${wordLists[isId].english}`}
-                            // value={wordLists[isId].english}
                             type="text"
                             name="english"
+                            value={english}
                             className="sm:600 w-52 grid grid-cols-2 gap-4 place-content-center
                           pl-2 h-9  placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-full m-2"
                           />
                           <input
                             onChange={onChangeKorean}
                             placeholder={`${wordLists[isId].korean}`}
-                            // value={wordLists[isId].korean}
                             type="text"
                             name="korean"
+                            value={korean}
                             className="sm:600 w-52 grid grid-cols-2 gap-4 place-content-center
                           pl-2 h-9  placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-full m-2"
                           />

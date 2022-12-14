@@ -43,6 +43,9 @@ const initialState = {
   removePostLoading: false, //게시글 삭제 중
   removePostComplete: false,
   removePostError: null,
+  revisePostLoading: false, //게시글 수정 중
+  revisePostComplete: false,
+  revisePostError: null,
   addCommentLoading: false, //댓글 추가 중
   addCommentComplete: false,
   addCommentError: null,
@@ -74,6 +77,8 @@ const initialState = {
       Comments: [],
     },
   ],
+  updatedImages: [], //이미 업로드할 이미지
+  revisedImages: [], //새로 업로드할 이미지
 };
 
 const dummyPost = (data) => ({
@@ -136,6 +141,31 @@ export const postSlice = createSlice({
       state.removePostLoading = false;
       state.removePostError = action.error;
     },
+    //게시글 수정
+    revisePostRequest: (state) => {
+      state.revisePostLoading = true;
+      state.revisePostError = null;
+      state.revisePostComplete = false;
+    },
+    revisePostSuccess: (state, action) => {
+      const data = action.payload;
+      state.revisePostLoading = false;
+      state.revisePostComplete = true;
+      state.mainPosts.splice(data.id, 1, {
+        id: shortId.generate(),
+        content: data.content,
+        User: {
+          id: shortId.generate(),
+          nickname: "test",
+        },
+        Images: ["https://picsum.photos/500"],
+        Comments: [],
+      });
+    },
+    revisePostFailure: (state, action) => {
+      state.revisePostLoading = false;
+      state.revisePostError = action.error;
+    },
     //댓글 추가
     addCommentRequest: (state) => {
       state.addCommentLoading = true;
@@ -179,6 +209,9 @@ export const {
   removePostRequest,
   removePostSuccess,
   removePostFailure,
+  revisePostRequest,
+  revisePostSuccess,
+  revisePostFailure,
   addCommentRequest,
   addCommentSuccess,
   addCommentFailure,

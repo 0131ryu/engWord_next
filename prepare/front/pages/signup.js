@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import JoinForm from "../components/JoinForm";
 import NavbarForm from "../components/NavbarForm";
@@ -6,10 +6,19 @@ import { useSelector } from "react-redux";
 import SuccessSignup from "../components/SuccessSignup";
 
 const signUp = () => {
-  const { me } = useSelector((state) => state.user);
+  const [showSignUp, setShowSignUp] = useState(false);
+  const { signupComplete } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (signupComplete) {
+      setShowSignUp(true);
+    }
+  }, [signupComplete]);
+
   return (
     <div>
-      <NavbarForm>{me ? <SuccessSignup /> : <JoinForm />}</NavbarForm>
+      <NavbarForm />
+      {showSignUp ? <SuccessSignup /> : <JoinForm />}
     </div>
   );
 };

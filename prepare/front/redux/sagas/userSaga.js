@@ -10,23 +10,31 @@ import {
   signupSuccess,
   signupFailure,
 } from "../feature/userSlice";
+import axios from "axios";
+
+function logInAPI(data) {
+  return axios.post("/user/login", data);
+}
 
 function* logIn(action) {
   try {
     const data = action.payload;
-    console.log("data", data);
-    console.log(action);
-    yield put(loginSuccess({ data: data }));
-    // yield call(loginSuccess, data);
+    const result = yield call(logInAPI, data);
+    console.log("result", result);
+    yield put(loginSuccess(result.data));
   } catch (error) {
     yield put(loginFailure(error));
     console.log(error);
   }
 }
 
+function logOutAPI() {
+  return axios.post("/user/logout");
+}
+
 function* logOut() {
   try {
-    // yield delay(1000);
+    yield call(logOutAPI);
     yield put(logoutSuccess());
   } catch (error) {
     yield put(logoutFailure(error));
@@ -34,12 +42,16 @@ function* logOut() {
   }
 }
 
+function signUpAPI(data) {
+  return axios.post("/user", data);
+}
+
 function* signUp(action) {
-  console.log("Connected?");
   try {
     const data = action.payload;
-    console.log("data", data);
-    yield put(signupSuccess({ data: data }));
+    const result = yield call(signUpAPI, data);
+    console.log("result", result);
+    yield put(signupSuccess());
     // yield call(signupSuccess, data);
   } catch (error) {
     yield put(signupFailure(error));

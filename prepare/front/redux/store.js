@@ -13,11 +13,10 @@ const store = configureStore({
     user: UserReducer,
     word: WordReducer,
     post: PostReducer,
-    game: GameReducer
+    game: GameReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(sagaMiddleware),
-  serializableCheck: false,
+    getDefaultMiddleware({ serializableCheck: false }).concat(sagaMiddleware),
 });
 
 sagaMiddleware.run(rootSaga);

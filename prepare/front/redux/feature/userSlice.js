@@ -36,7 +36,7 @@ export const userSlice = createSlice({
     loginSuccess: (state, action) => {
       state.loginLoading = false;
       state.loginComplete = true;
-      state.me = action.payload; //state.me = testUser(action.data);
+      state.me = action.payload;
       console.log("state.me", state.me);
     },
     loginFailure: (state, action) => {
@@ -49,9 +49,8 @@ export const userSlice = createSlice({
       state.logoutError = null;
       state.logoutComplete = false;
     },
-    logoutSuccess: (state, action) => {
-      state.me = action.payload;
-
+    logoutSuccess: (state) => {
+      state.me = null;
       state.logoutLoading = false;
       state.logoutComplete = true;
     },
@@ -65,8 +64,8 @@ export const userSlice = createSlice({
       state.signupError = null;
       state.signupComplete = false;
     },
-    signupSuccess: (state, action) => {
-      state.me = action.payload;
+    signupSuccess: (state) => {
+      state.me = null;
       state.signupLoading = false;
       state.signupComplete = true;
     },

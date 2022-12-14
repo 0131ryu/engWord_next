@@ -127,7 +127,9 @@ const NavbarForm = ({ children }) => {
                       {me && loginComplete ? (
                         <div className="flex">
                           <p className="text-white mt-1 mr-3">
-                            <span className="text-white font-bold">Tester</span>
+                            <span className="text-white font-bold">
+                              {me?.nickname}
+                            </span>
                             님
                           </p>
                           <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">

@@ -1,6 +1,6 @@
 import React from "react";
 
-const UserInfo = () => {
+const UserInfo = ({ nickname }) => {
   return (
     <>
       <div className="ml-2 shadow shadow-black-500/40 rounded-xl">
@@ -11,9 +11,7 @@ const UserInfo = () => {
           />
 
           <div className="ml-1">
-            <p className="font-bold p-1 mt-1">
-              Elliot Thombson Elliot Thombson Elliot Thombson
-            </p>
+            <p className="font-bold p-1 mt-1">{nickname}</p>
           </div>
         </div>
 

@@ -5,6 +5,7 @@ import {
   Bars3Icon,
   XMarkIcon,
   BookmarkIcon,
+  UserIcon,
 } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutRequest } from "../redux/feature/userSlice";
@@ -132,13 +133,14 @@ const NavbarForm = ({ children }) => {
                             </span>
                             님
                           </p>
-                          <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                          <Menu.Button className="flex rounded-full bg-light-brown text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span className="sr-only">Open user menu</span>
-                            <img
+                            {/* <img
                               className="h-8 w-8 rounded-full"
                               src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                               alt=""
-                            />
+                            /> */}
+                            <UserIcon className="h-8 w-8 rounded-full text-white" />
                           </Menu.Button>
                         </div>
                       ) : (

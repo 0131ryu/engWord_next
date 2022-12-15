@@ -16,18 +16,20 @@ import {
   removeCommentRequest,
   removeCommentSuccess,
   removeCommentFailure,
+  reviseCommentRequest,
+  reviseCommentSuccess,
+  reviseCommentFailure,
 } from "../feature/postSlice";
+import axios from "axios";
 
 function addPostAPI(data) {
-  return axios.post("/post", data);
+  return axios.post("/post", { content: data });
 }
 
 function* addPost(action) {
   try {
-    //   const result = yield call(addPostAPI, action.data);
-    console.log(action.payload);
-    const id = shortId.generate();
-    yield put(addPostSuccess({ data: { id, content: action.payload } }));
+    const result = yield call(addPostAPI, action.payload);
+    yield put(addPostSuccess(result.data));
   } catch (err) {
     console.error(err);
     yield put(addPostFailure(err));
@@ -64,15 +66,15 @@ function* revisePost(action) {
 }
 
 function addCommentAPI(data) {
-  return axios.post("/post", data);
+  return axios.post(`/post/${data.postId}/comment`, data);
 }
 
 function* addComment(action) {
   try {
-    //   const result = yield call(addCommentAPI, action.data);
-    console.log(action.payload);
-    const id = shortId.generate();
-    yield put(addCommentSuccess({ data: { id, content: action.payload } }));
+    console.log("action.payload", action.payload);
+    const result = yield call(addCommentAPI, action.payload);
+    console.log("result", result);
+    yield put(addCommentSuccess(result.data));
   } catch (err) {
     console.error(err);
     yield put(addCommentFailure(err));
@@ -91,6 +93,21 @@ function* removeComment(action) {
   } catch (err) {
     console.error(err);
     yield put(removeCommentFailure(err));
+  }
+}
+
+function reviseCommentAPI(data) {
+  return axios.post("/post", data);
+}
+
+function* reviseComment(action) {
+  try {
+    //   const result = yield call(reviseCommentAPI, action.data);
+    console.log(action.payload);
+    yield put(reviseCommentSuccess(action.payload));
+  } catch (err) {
+    console.error(err);
+    yield put(reviseCommentFailure(err));
   }
 }
 
@@ -114,10 +131,15 @@ function* removeComment_Req() {
   yield takeLatest(removeCommentRequest.type, removeComment);
 }
 
+function* reviseComment_Req() {
+  yield takeLatest(reviseCommentRequest.type, reviseComment);
+}
+
 export const postSagas = [
   fork(addPost_Req),
   fork(removePost_Req),
   fork(revisePost_Req),
   fork(addComment_Req),
   fork(removeComment_Req),
+  fork(reviseComment_Req),
 ];

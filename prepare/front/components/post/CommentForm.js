@@ -1,35 +1,53 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import useInput from "../../hooks/useInput";
+import { PencilIcon } from "@heroicons/react/24/outline";
 import { addCommentRequest } from "../../redux/feature/postSlice";
 
-const CommentForm = () => {
+const CommentForm = ({ post }) => {
   const dispatch = useDispatch();
-  const [text, onChangeText] = useInput("");
+  const id = useSelector((state) => state.user.me?.id);
+  const [commentText, onChangeCommentText] = useInput("");
 
-  const onSubmitCommentForm = (e) => {
-    e.preventDefault();
-    console.log(text);
-    dispatch(addCommentRequest(text));
-  };
+  const onSubmitCommentForm = useCallback(() => {
+    dispatch(
+      addCommentRequest({ content: commentText, postId: post.id, userId: id })
+    );
+  }, [commentText, id]);
   return (
     <>
-      <div className="flex bg-white border-2 border-light-beige m-2 p-2 rounded-lg">
-        <form onSubmit={onSubmitCommentForm}>
-          <div className="flex">
-            <textarea
-              placeholder="댓글 입력"
-              onChange={onChangeText}
-              className="group relative w-full justify-center rounded-md border border-transparent bg-white boder border-dark-green py-2 px-4 text-sm font-medium text-black focus:outline-none focus:ring-2 focus:ring-light-green focus:ring-offset-2"
-            />
-            <button
-              type="submit"
-              className="group relative flex ml-2 w-28 justify-center rounded-md border border-transparent bg-light-orange p-5 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-light-green focus:ring-offset-2"
-            >
-              제출
-            </button>
+      <div className="w-4/5 mx-auto block">
+        <div className="mt-2 shadow shadow-black-500/40 rounded-lg">
+          <div className="p-2 justify-between rounde-md">
+            <div className="flex">
+              <textarea
+                className="w-full"
+                type="text"
+                onChange={onChangeCommentText}
+                placeholder="댓글 입력"
+              />
+              <button onClick={onSubmitCommentForm} className="mt-1 ml-2">
+                <PencilIcon
+                  className="h-8 w-8 md:h-10 md:w-10 lg:h-10 lg:w-10 
+                   hover:bg-light-green hover:text-white hover:rounded-md"
+                />
+              </button>
+            </div>
+            <label className="block">
+              <span className="sr-only">Choose profile photo</span>
+              <input
+                type="file"
+                className="block w-full text-sm text-slate-500
+      file:mr-4 file:py-2 file:px-4
+      file:rounded-full file:border-0
+      file:text-sm file:font-semibold
+      file:bg-light-green file:text-light-beige
+      hover:file:bg-light-green
+    "
+              />
+            </label>
           </div>
-        </form>
+        </div>
       </div>
     </>
   );

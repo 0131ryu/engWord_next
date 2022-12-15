@@ -9,6 +9,10 @@ module.exports = class Post extends Model {
           type: DataTypes.TEXT,
           allowNull: false,
         },
+        nickname: {
+          type: DataTypes.STRING(30),
+          allowNull: false, // 필수
+        },
         // RetweetId
       },
       {

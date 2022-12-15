@@ -175,7 +175,8 @@ router.get("/:userId/posts", async (req, res, next) => {
   }
 });
 
-router.post("/login", isNotLoggedIn, (req, res, next) => {
+//isNotLoggedIn,
+router.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) {
       console.error(err);

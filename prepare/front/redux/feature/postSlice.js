@@ -2,41 +2,7 @@ import shortId from "shortid";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  mainPosts: [
-    {
-      id: shortId.generate(),
-      content:
-        "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
-      User: {
-        id: shortId.generate(),
-        nickname: "test",
-      },
-      Images: ["https://picsum.photos/400"],
-      Comments: [],
-    },
-    {
-      id: shortId.generate(),
-      content:
-        "Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose.",
-      User: {
-        id: shortId.generate(),
-        nickname: "test",
-      },
-      Images: ["https://picsum.photos/500"],
-      Comments: [],
-    },
-    {
-      id: shortId.generate(),
-      content:
-        "Contrary to popular belief, Lorem Ipsum is not simply random text.",
-      User: {
-        id: shortId.generate(),
-        nickname: "test",
-      },
-      Images: ["https://picsum.photos/600"],
-      Comments: [],
-    },
-  ],
+  mainPosts: [],
   addPostLoading: false, //게시글 추가 중
   addPostComplete: false,
   addPostError: null,
@@ -52,56 +18,13 @@ const initialState = {
   removeCommentLoading: false, //댓글 삭제 중
   removeCommentComplete: false,
   removeCommentError: null,
-  Comments: [
-    {
-      id: shortId.generate(),
-      ex_nickname: "test2",
-      content: "incididunt cillum culpa consequat.",
-      User: {
-        id: shortId.generate(),
-        nickname: "test3",
-      },
-      Images: ["https://picsum.photos/500"],
-      Comments: [],
-    },
-    {
-      id: shortId.generate(),
-      ex_nickname: "test2",
-      content:
-        "Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu.",
-      User: {
-        id: shortId.generate(),
-        nickname: "test3",
-      },
-      Images: ["https://picsum.photos/500"],
-      Comments: [],
-    },
-  ],
+  reviseCommentLoading: false, //댓글 수정 중
+  reviseCommentComplete: false,
+  reviseCommentError: null,
+  Comments: [],
   updatedImages: [], //이미 업로드할 이미지
   revisedImages: [], //새로 업로드할 이미지
 };
-
-const dummyPost = (data) => ({
-  id: data.id,
-  content: data.content,
-  User: {
-    id: shortId.generate(),
-    nickname: "test",
-  },
-  Images: [],
-  Comments: [],
-});
-
-// const dummyComment = (data) => ({
-//   id: data.id,
-//   content: data.content,
-//   User: {
-//     id: shortId.generate(),
-//     nickname: "test2",
-//   },
-//   Images: [],
-//   Comments: [],
-// });
 
 export const postSlice = createSlice({
   name: "post",
@@ -115,11 +38,9 @@ export const postSlice = createSlice({
     },
     addPostSuccess: (state, action) => {
       const postInfo = action.payload;
-      console.log(postInfo.data);
-
       state.addPostLoading = false;
       state.addPostComplete = true;
-      state.mainPosts.unshift(dummyPost(postInfo.data));
+      state.mainPosts.unshift(postInfo);
     },
     addPostFailure: (state, action) => {
       state.addPostLoading = false;
@@ -173,11 +94,11 @@ export const postSlice = createSlice({
       state.addCommentComplete = false;
     },
     addCommentSuccess: (state, action) => {
-      const Info = action.payload;
-      console.log(Info.data);
+      const data = action.payload;
+      const post = state.mainPosts.find((v) => v.id === data.PostId);
       state.addCommentLoading = false;
       state.addCommentComplete = true;
-      state.Comments.unshift(Info.data);
+      state.Comments.unshift(data);
     },
     addCommentFailure: (state, action) => {
       state.addCommentLoading = false;
@@ -199,6 +120,31 @@ export const postSlice = createSlice({
       state.removeCommentLoading = false;
       state.removeCommentError = action.error;
     },
+    //댓글 수정
+    reviseCommentRequest: (state) => {
+      state.reviseCommentLoading = true;
+      state.reviseCommentError = null;
+      state.reviseCommentComplete = false;
+    },
+    reviseCommentSuccess: (state, action) => {
+      const data = action.payload;
+      state.reviseCommentLoading = false;
+      state.reviseCommentComplete = true;
+      state.mainPosts.splice(data.id, 1, {
+        id: shortId.generate(),
+        content: data.content,
+        User: {
+          id: shortId.generate(),
+          nickname: "test",
+        },
+        Images: ["https://picsum.photos/500"],
+        Comments: [],
+      });
+    },
+    reviseCommentFailure: (state, action) => {
+      state.reviseCommentLoading = false;
+      state.reviseCommentError = action.error;
+    },
   },
 });
 
@@ -218,6 +164,9 @@ export const {
   removeCommentRequest,
   removeCommentSuccess,
   removeCommentFailure,
+  reviseCommentRequest,
+  reviseCommentSuccess,
+  reviseCommentFailure,
 } = postSlice.actions;
 
 export default postSlice.reducer;

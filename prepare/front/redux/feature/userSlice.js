@@ -37,7 +37,6 @@ export const userSlice = createSlice({
       state.loginLoading = false;
       state.loginComplete = true;
       state.me = action.payload;
-      console.log("state.me", state.me);
     },
     loginFailure: (state, action) => {
       state.loginLoading = false;

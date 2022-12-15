@@ -10,8 +10,10 @@ module.exports = class Comment extends Model {
           type: DataTypes.TEXT,
           allowNull: false,
         },
-        // UserId: 1
-        // PostId: 3
+        nickname: {
+          type: DataTypes.STRING(30),
+          allowNull: false, // 필수
+        },
       },
       {
         modelName: "Comment",

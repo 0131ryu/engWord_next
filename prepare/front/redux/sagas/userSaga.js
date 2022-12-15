@@ -20,7 +20,6 @@ function* logIn(action) {
   try {
     const data = action.payload;
     const result = yield call(logInAPI, data);
-    console.log("result", result);
     yield put(loginSuccess(result.data));
   } catch (error) {
     yield put(loginFailure(error));

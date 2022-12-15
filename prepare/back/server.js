@@ -12,6 +12,7 @@ const helmet = require("helmet");
 const db = require("./models");
 const passportConfig = require("./passport");
 const wordRouter = require("./routes/word");
+const wordsRouter = require("./routes/words");
 const postRouter = require("./routes/post");
 const postsRouter = require("./routes/posts");
 const userRouter = require("./routes/user");
@@ -67,6 +68,7 @@ app.get("/", (req, res) => {
 // app.use("/", express.static(path.join(__dirname, "uploads"))); //업로드 폴더
 
 app.use("/word", wordRouter);
+app.use("/words", wordsRouter);
 app.use("/user", userRouter);
 app.use("/post", postRouter);
 app.use("/posts", postsRouter);

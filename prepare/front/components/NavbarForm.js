@@ -15,16 +15,10 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const navigation = [
-  { name: "EngWord", href: "/", current: true },
-  { name: "SNS", href: "/post", current: false },
-  { name: "WordGame", href: "/game", current: false },
-];
-
 const NavbarForm = ({ children }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { me, loginComplete } = useSelector((state) => state.user);
+  const { me } = useSelector((state) => state.user);
 
   const onLogout = useCallback(() => {
     dispatch(logoutRequest());

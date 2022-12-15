@@ -1,48 +1,32 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import {
-  ChevronDownIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "@heroicons/react/20/solid";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
 import ReviseWordModal from "./ReviseWordModal";
 import RemoveWordModal from "./RemoveWordModal";
 import {
-  incrementEasy,
-  decrementEasy,
-  incrementMiddle,
-  decrementMiddle,
   changeStatusWordRequest,
   changeStatusWordAllRequest,
+  loadWordsRequest,
 } from "../../redux/feature/wordSlice";
-import { useEffect } from "react";
 
-const WordList = () => {
+const WordList = ({ UserId }) => {
   const dispatch = useDispatch();
   const [modal, setModal] = useState(false);
   const [removeModal, setRemoveModal] = useState(false);
   const [id, setId] = useState(0);
-  const arrayEasy = [];
-  const arrayMiddle = [];
-  const arrayAdvance = [];
 
-  const {
-    wordLists,
-    checkedWordList,
-    page,
-    minIndex,
-    maxIndex,
-    pageMiddle,
-    minIndexMiddle,
-    maxIndexMiddle,
-  } = useSelector((state) => state.word);
+  const { wordLists, checkedWordList } = useSelector((state) => state.word);
+
+  useEffect(() => {
+    console.log("UserId", UserId);
+    dispatch(loadWordsRequest());
+  }, []);
 
   const onReviseWord = (e) => {
     setId(parseInt(e.target.value));
     setModal(true);
-    // console.log("버튼 클릭 시 modal 2", modal);
   };
 
   const onRemoveWord = (e) => {
@@ -51,63 +35,6 @@ const WordList = () => {
     console.log(e.target.value, id);
     console.log("메인에서 삭제 버튼 클릭 시 modal 2", removeModal);
   };
-
-  // useEffect(() => {
-  //   wordLists.map((word, i) => {
-  //     if (word.type === "easy") {
-  //       arrayEasy.push(i);
-  //     }
-  //     if (word.type === "middle") {
-  //       arrayMiddle.push(i);
-  //     }
-  //   });
-  // }, [wordLists]);
-
-  console.log("checkedWordList", checkedWordList);
-  console.log("checkedWordList 길이", checkedWordList.length);
-
-  //중복제거(checkedWordList에는 중복값이 계속남음음)
-  // const filteredArr = checkedWordList.reduce((acc, current) => {
-  //   const x = acc.find((item) => item.english === current.english);
-  //   if (!x) {
-  //     return acc.concat([current]);
-  //   } else {
-  //     return acc;
-  //   }
-  // }, []);
-
-  // console.log("filteredArr", filteredArr);
-
-  // const easyLists = Object.keys(arrayEasy).length - 1;
-  // let middleLists = Object.keys(arrayMiddle).length - 1;
-
-  // const onClickLeftEasy = useCallback(() => {
-  //   dispatch(decrementEasy());
-  // });
-
-  // const onClickRightEasy = useCallback(() => {
-  //   if (easyLists < maxIndex) {
-  //     null;
-  //   } else {
-  //     dispatch(incrementEasy());
-  //   }
-  // });
-
-  // const onClickLeftMiddle = useCallback(() => {
-  //   if (Math.min.apply(null, arrayMiddle) > minIndexMiddle) {
-  //     null;
-  //   } else {
-  //     dispatch(decrementMiddle());
-  //   }
-  // });
-
-  // const onClickRightMiddle = useCallback(() => {
-  //   if (Math.max.apply(null, arrayMiddle) === maxIndexMiddle) {
-  //     null;
-  //   } else {
-  //     dispatch(incrementMiddle());
-  //   }
-  // });
 
   const onClickAllSelected = useCallback((e) => {
     const checkboxClickedAll = e.target;
@@ -183,27 +110,10 @@ const WordList = () => {
                   🥉 Easy
                 </h1>
               </div>
-              {/* <div className="flex absolute left-32 top-4">
-                <button className="hover:bg-gray-100 w-8 h-8 rounded-lg">
-                  <ChevronLeftIcon onClick={onClickLeftEasy} />
-                </button>
-                <div className="font-medium mt-1">{page}</div>
-                <button className="hover:bg-gray-100 w-8 h-8 rounded-lg">
-                  <ChevronRightIcon onClick={onClickRightEasy} />
-                  {minIndex} {maxIndex}
-                </button>
-              </div> */}
+
               {/* item start */}
               {wordLists.map((word, index) => {
-                if (
-                  word?.type === "easy"
-                  // &&
-                  // `${minIndex}` <= index &&
-                  // index < `${maxIndex}`
-                ) {
-                  // console.log("index", index);
-                  // console.log("minIndex", minIndex);
-                  // console.log("maxIndex", maxIndex);
+                if (word?.type === "easy" && word.UserId === UserId) {
                   return (
                     <>
                       <div
@@ -312,27 +222,10 @@ const WordList = () => {
                   🥈 Middle
                 </h1>
               </div>
-              {/* <div className="flex absolute left-32 top-4">
-                <button className="hover:bg-gray-100 w-8 h-8 rounded-lg">
-                  <ChevronLeftIcon onClick={onClickLeftMiddle} />
-                </button>
-                <div className="font-medium mt-1">{pageMiddle}</div>
-                <button className="hover:bg-gray-100 w-8 h-8 rounded-lg">
-                  <ChevronRightIcon onClick={onClickRightMiddle} />
-                  {minIndexMiddle} {maxIndexMiddle}
-                </button>
-              </div> */}
+
               {/* item start */}
               {wordLists.map((word, index) => {
-                if (
-                  word?.type === "middle"
-                  // &&
-                  // parseInt(minIndexMiddle) < index &&
-                  // index <= parseInt(maxIndexMiddle)
-                ) {
-                  // console.log("index", index);
-                  // console.log("최소값", parseInt(minIndexMiddle));
-                  // console.log("최대값", parseInt(maxIndexMiddle));
+                if (word?.type === "middle" && word.UserId === UserId) {
                   {
                     return (
                       <>
@@ -445,7 +338,7 @@ const WordList = () => {
               </div>
               {/* item start */}
               {wordLists.map((word, index) => {
-                if (word?.type === "advance") {
+                if (word?.type === "advance" && word.UserId === UserId) {
                   return (
                     <>
                       <div className="flex items-start bg-gray-400 group-hover:opacity-80 rounded-lg m-2">

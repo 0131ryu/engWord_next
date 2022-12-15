@@ -34,10 +34,8 @@ const WordForm = () => {
   };
 
   const onSubmitWord = useCallback(() => {
-    console.log("이거 연결?");
     dispatch(
       addWordRequest({
-        id: 10,
         english,
         korean,
         type,
@@ -65,12 +63,6 @@ const WordForm = () => {
             </button>
           </h2>
           <div className=" flex felx-row place-content-center rounded-lg lg:w-8/12 lg:relative left-48 top-5">
-            {/* <form
-              action="#"
-              method="POST"
-              onSubmit={onSubmitWord}
-              className=" flex felx-row place-content-center rounded-lg lg:w-8/12 lg:relative left-48 top-5"
-            > */}
             {/* english */}
             <input
               onChange={onChangeEnglish}
@@ -159,7 +151,6 @@ const WordForm = () => {
             >
               Submit
             </button>
-            {/* </form> */}
           </div>
           <div className="text-center font-bold absolute top-64 inset-x-44 lg:inset-x-96 bg-light-beige border-2 rounded-lg border-light-beige hover:border-light-green hover:text-light-green">
             <button onClick={onSearchModal}>단어 검색하기</button>

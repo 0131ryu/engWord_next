@@ -22,14 +22,23 @@ import {
   searchWordRequest,
   searchWordSuccess,
   searchWordError,
+  loadWordsRequest,
+  loadWordsSuccess,
+  loadWordsFailure,
 } from "../feature/wordSlice";
+
+function addWordAPI(data) {
+  return axios.post("/word", {
+    english: data.english,
+    korean: data.korean,
+    type: data.type,
+  });
+}
 
 function* addWord(action) {
   try {
-    console.log("action", action);
-    const data = action.payload;
-    console.log("data", data);
-    yield put(addWordSuccess(data));
+    const result = yield call(addWordAPI, action.payload);
+    yield put(addWordSuccess(result.data));
   } catch (error) {
     yield put(addWordError(error));
     console.log(error);
@@ -81,21 +90,6 @@ function* changeStatusAll(action) {
   }
 }
 
-// async function findWordAPI(data) {
-//   try {
-//     const response = await axios
-//       .get(`http://localhost:8000/word/${data}`)
-//       .then((data) => {
-//         console.log("response", data);
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
-
 function findWordAPI(data) {
   return axios.get(`http://localhost:8000/word/${data}`);
 }
@@ -118,6 +112,21 @@ function* searchWord(action) {
     yield put(searchWordSuccess(data));
   } catch (error) {
     yield put(searchWordError(error));
+    console.log(error);
+  }
+}
+
+function loadWordsAPI() {
+  return axios.get("/words");
+}
+
+function* loadWords(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(loadWordsAPI, data);
+    yield put(loadWordsSuccess(result.data));
+  } catch (error) {
+    yield put(loadWordsFailure(error));
     console.log(error);
   }
 }
@@ -150,6 +159,10 @@ function* search_Word_Req() {
   yield takeLatest(searchWordRequest.type, searchWord);
 }
 
+function* load_Words_Req() {
+  yield takeLatest(loadWordsRequest.type, loadWords);
+}
+
 export const wordSagas = [
   fork(add_Word_Req),
   fork(revise_Word_Req),
@@ -158,4 +171,5 @@ export const wordSagas = [
   fork(change_Status_Req),
   fork(change_StatusAll_Req),
   fork(search_Word_Req),
+  fork(load_Words_Req),
 ];

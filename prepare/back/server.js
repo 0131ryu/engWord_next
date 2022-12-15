@@ -13,6 +13,7 @@ const db = require("./models");
 const passportConfig = require("./passport");
 const wordRouter = require("./routes/word");
 const postRouter = require("./routes/post");
+const postsRouter = require("./routes/posts");
 const userRouter = require("./routes/user");
 
 dotenv.config();
@@ -68,6 +69,7 @@ app.get("/", (req, res) => {
 app.use("/word", wordRouter);
 app.use("/user", userRouter);
 app.use("/post", postRouter);
+app.use("/posts", postsRouter);
 
 app.listen(3005, () => {
   console.log("The server is running at port 3005");

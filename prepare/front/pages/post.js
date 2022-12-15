@@ -1,14 +1,24 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import NavbarForm from "../components/NavbarForm";
 import PostCard from "../components/post/PostCard";
 import PostForm from "../components/post/postForm";
 import PostSearch from "../components/post/PostSearch";
 import UserInfo from "../components/UserInfo";
+import { loadPostsRequest } from "../redux/feature/postSlice";
+import { loadMyInfoRequest } from "../redux/feature/userSlice";
 
 const post = () => {
+  const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
   const { mainPosts } = useSelector((state) => state.post);
+
+  useEffect(() => {
+    const lastId = mainPosts[mainPosts.length - 1]?.id;
+    dispatch(loadMyInfoRequest());
+    dispatch(loadPostsRequest());
+  }, []);
+
   return (
     <>
       <NavbarForm />

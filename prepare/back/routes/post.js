@@ -26,76 +26,63 @@ const upload = multer({
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
 });
 
-// router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
-//   try {
-//     const hashtags = req.body.content.match(/#[^\s#]+/g);
-//     const post = await Post.create({
-//       content: req.body.content,
-//       UserId: req.user.id,
-//     });
-//     if (hashtags) {
-//       const result = await Promise.all(
-//         //저장은 소문자만
-//         hashtags.map((tag) =>
-//           Hashtag.findOrCreate({ where: { name: tag.slice(1).toLowerCase() } })
-//         )
-//       ); //[[노드, true], [리액트, true]] 이런 모양이므로 첫 번째 것만 추출하게 함
-//       await post.addHashtags(result.map((v) => v[0]));
-//     }
-//     if (req.body.image) {
-//       if (Array.isArray(req.body.image)) {
-//         //이미지 여러개 올리면 배열
-//         const images = await Promise.all(
-//           req.body.image.map((image) => Image.create({ src: image }))
-//         );
-//         await post.addImages(images);
-//       } else {
-//         //이미지 하나면 image
-//         const image = await Image.create({ src: req.body.image });
-//         await post.addImages(image);
-//       }
-//     }
-//     const fullPost = await Post.findOne({
-//       where: { id: post.id },
-//       include: [
-//         {
-//           model: Image,
-//         },
-//         {
-//           model: Comment,
-//           include: [
-//             {
-//               model: User, //댓글 작성자
-//               attributes: ["id", "nickname"],
-//             },
-//           ],
-//         },
-//         {
-//           model: User, //게시글 작성자
-//           attributes: ["id", "nickname"],
-//         },
-//         {
-//           model: User, //좋아요 누른 사람
-//           as: "Likers", //post.Likers 생성
-//           attributes: ["id"],
-//         },
-//       ],
-//     });
-//     res.status(201).json(fullPost);
-//   } catch (error) {
-//     console.error(error);
-//     next(error);
-//   }
-// });
-
-router.post("/", async (req, res, next) => {
+router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
   try {
+    const hashtags = req.body.content.match(/#[^\s#]+/g);
     const post = await Post.create({
       content: req.body.content,
       UserId: req.user.id,
       nickname: req.user.nickname,
     });
-    res.status(201).json(post);
+    if (hashtags) {
+      const result = await Promise.all(
+        //저장은 소문자만
+        hashtags.map((tag) =>
+          Hashtag.findOrCreate({ where: { name: tag.slice(1).toLowerCase() } })
+        )
+      ); //[[노드, true], [리액트, true]] 이런 모양이므로 첫 번째 것만 추출하게 함
+      await post.addHashtags(result.map((v) => v[0]));
+    }
+    if (req.body.image) {
+      if (Array.isArray(req.body.image)) {
+        //이미지 여러개 올리면 배열
+        const images = await Promise.all(
+          req.body.image.map((image) => Image.create({ src: image }))
+        );
+        await post.addImages(images);
+      } else {
+        //이미지 하나면 image
+        const image = await Image.create({ src: req.body.image });
+        await post.addImages(image);
+      }
+    }
+    const fullPost = await Post.findOne({
+      where: { id: post.id },
+      include: [
+        {
+          model: Image,
+        },
+        {
+          model: Comment,
+          include: [
+            {
+              model: User, //댓글 작성자
+              attributes: ["id", "nickname"],
+            },
+          ],
+        },
+        {
+          model: User, //게시글 작성자
+          attributes: ["id", "nickname"],
+        },
+        {
+          model: User, //좋아요 누른 사람
+          as: "Likers", //post.Likers 생성
+          attributes: ["id"],
+        },
+      ],
+    });
+    res.status(201).json(fullPost);
   } catch (error) {
     console.error(error);
     next(error);

@@ -16,7 +16,7 @@ const CommentForm = ({ post }) => {
   }, [commentText, id]);
   return (
     <>
-      <div className="w-4/5 mx-auto block">
+      <div className="w-full p-1 mx-auto block">
         <div className="mt-2 shadow shadow-black-500/40 rounded-lg">
           <div className="p-2 justify-between rounde-md">
             <div className="flex">

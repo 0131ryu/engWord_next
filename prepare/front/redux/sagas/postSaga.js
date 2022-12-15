@@ -19,6 +19,9 @@ import {
   reviseCommentRequest,
   reviseCommentSuccess,
   reviseCommentFailure,
+  loadPostsRequest,
+  loadPostsSuccess,
+  loadPostsFailure,
 } from "../feature/postSlice";
 import axios from "axios";
 
@@ -111,6 +114,21 @@ function* reviseComment(action) {
   }
 }
 
+function loadPostsAPI() {
+  return axios.get("/posts");
+}
+
+function* loadPosts(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(loadPostsAPI, data);
+    yield put(loadPostsSuccess(result.data));
+  } catch (error) {
+    yield put(loadPostsFailure(error));
+    console.log(error);
+  }
+}
+
 function* addPost_Req() {
   yield takeLatest(addPostRequest.type, addPost);
 }
@@ -135,6 +153,10 @@ function* reviseComment_Req() {
   yield takeLatest(reviseCommentRequest.type, reviseComment);
 }
 
+function* loadPosts_Req() {
+  yield takeLatest(loadPostsRequest.type, loadPosts);
+}
+
 export const postSagas = [
   fork(addPost_Req),
   fork(removePost_Req),
@@ -142,4 +164,5 @@ export const postSagas = [
   fork(addComment_Req),
   fork(removeComment_Req),
   fork(reviseComment_Req),
+  fork(loadPosts_Req),
 ];

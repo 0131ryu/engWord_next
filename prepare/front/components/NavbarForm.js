@@ -125,7 +125,7 @@ const NavbarForm = ({ children }) => {
                   {/* Profile dropdown */}
                   <Menu as="div" className="relative ml-3">
                     <div>
-                      {me && loginComplete ? (
+                      {me ? (
                         <div className="flex">
                           <p className="text-white mt-1 mr-3">
                             <span className="text-white font-bold">

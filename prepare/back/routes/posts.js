@@ -14,10 +14,11 @@ router.get("/", async (req, res, next) => {
     } // 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1
 
     const posts = await Post.findAll({
+      //모든 게시글 가져옴
       where,
       limit: 10,
       order: [
-        ["createdAt", "DESC"],
+        ["createdAt", "DESC"], //최신 게시글부터
         [Comment, "createdAt", "DESC"],
       ],
       include: [
@@ -64,6 +65,27 @@ router.get("/", async (req, res, next) => {
     next(error);
   }
 });
+// router.get("/", async (req, res, next) => {
+//   try {
+//     const posts = await Post.findAll({
+//       limit: 10,
+//       order: [["createdAt", "DESC"]],
+//       include: [
+//         {
+//           model: User,
+//         },
+//         {
+//           model: Image,
+//         },
+//       ],
+//     });
+//     console.log(posts);
+//     res.status(200).json(posts);
+//   } catch {
+//     console.error(error);
+//     next(error);
+//   }
+// });
 
 //팔로잉한 사람의 게시글
 router.get("/related", async (req, res, next) => {

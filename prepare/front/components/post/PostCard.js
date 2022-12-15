@@ -8,7 +8,11 @@ import {
   EllipsisHorizontalIcon,
 } from "@heroicons/react/24/outline";
 
-import { revisePostRequest } from "../../redux/feature/postSlice";
+import {
+  removeCommentRequest,
+  reviseCommentRequest,
+  revisePostRequest,
+} from "../../redux/feature/postSlice";
 import { Popover, Transition } from "@headlessui/react";
 
 import CommentForm from "./CommentForm";
@@ -22,9 +26,12 @@ const PostCard = ({ post, index }) => {
   const [editMode, setEditMode] = useState(false);
 
   const id = useSelector((state) => state.user.me?.id);
-  const { Comments } = useSelector((state) => state.post);
 
-  console.log("Comments", Comments);
+  // console.log("post", post);
+  // console.log("index", index);
+  // console.log("post.Comments", post.Comments);
+
+  useSelector((state) => state.post);
   const onClickRevise = useCallback(
     (e) => {
       setEditMode(true);
@@ -50,6 +57,16 @@ const PostCard = ({ post, index }) => {
     setId(parseInt(e.target.value));
   }, []);
 
+  const onReviseComment = useCallback((e) => {
+    const index = e.target.value;
+    dispatch(reviseCommentRequest(index));
+  }, []);
+
+  const onRemoveComment = useCallback(() => {
+    const index = e.target.value;
+    dispatch(removeCommentRequest(index));
+  }, []);
+
   return (
     <>
       {/* 삭제 포스트 모달창 */}
@@ -58,8 +75,8 @@ const PostCard = ({ post, index }) => {
       ) : null}
 
       {/* card start */}
-      <section className="flex justify-center mt-8 ">
-        <article className="overflow-hidden my-2 shadow shadow-black-500/40 rounded-md">
+      <section className="flex justify-center">
+        <article className="overflow-hidden w-full my-3 shadow shadow-black-500/40 rounded-md">
           <header className="px-4 py-3 flex items-center justify-between">
             <div className="flex items-center font-bold">
               <span className="mr-2">
@@ -142,7 +159,7 @@ const PostCard = ({ post, index }) => {
                 </span>
                 <span className="flex mr-4">
                   <ChatBubbleOvalLeftEllipsisIcon className="h-8 w-8" />
-                  <p className="mt-1">10</p>
+                  <p className="mt-1">{post.Comments.length}</p>
                 </span>
                 <span className="flex mr-1">
                   <ArrowPathRoundedSquareIcon className="h-8 w-8" />
@@ -161,27 +178,12 @@ const PostCard = ({ post, index }) => {
               View all comments
             </a>
           </div>
-          <div className="mx-4">
-            <div className="mt-2">
-              <span className="font-bold">unknown User </span>
-              <span>
-                Lorem Ipsum has been the industry's standard dummy text ever
-                since the 1500s.
-              </span>
-            </div>
-            <div className="mt-2">
-              <span className="font-bold">unknown User </span>
-              <span>
-                when an unknown printer took a galley of type and scrambled it
-                to make a type specimen book.
-              </span>
-            </div>
-          </div>
+          {/* CommentCard start */}
+          {post.Comments.map((comment, i) => {
+            return <CommentCard comment={comment} />;
+          })}
           <div>
             <CommentForm post={post} />
-            {Comments.map((comment, index) => {
-              return <CommentCard key={comment.id} comment={comment} />;
-            })}
           </div>
         </article>
       </section>

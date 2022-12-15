@@ -23,24 +23,17 @@ const CommentCard = ({ comment }) => {
 
   return (
     <>
-      <div className="w-4/5 mx-auto block">
-        <div className="mt-2 shadow shadow-black-500/40 rounded-lg">
+      <div className="w-full px-2 mx-auto block">
+        <div className="mt-1 ">
           <div className="p-2 justify-between rounde-md">
             <div className="flex">
-              {/* <img
-                className="rounded-full h-5 w-5 m-1"
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                alt="profile-img"
-              /> */}
-              <p className="bg-gray-100 p-2 m-1">{comment.nickname}</p>
+              <p className="p-2 m-1 font-bold">{comment.nickname}</p>
               <p
                 id="message"
                 rows="3"
-                className="block p-2.5 w-11/12 h-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-light-green focus:border-light-green"
+                className="block p-2.5 w-11/12 h-full text-sm text-gray-900 bg-white"
                 onChange={onRemoveComment}
               >
-                {/* {post.Comments[index]?.content}
-                    {console.log("post.Comments", post.Comments[0]?.content)} */}
                 {comment.content}
               </p>
               <div className="ml-2">

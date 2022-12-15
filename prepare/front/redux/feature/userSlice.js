@@ -10,6 +10,9 @@ const initialState = {
   signupLoading: false, //회원가입 시도
   signupComplete: false,
   signupError: null,
+  loadMyInfoLoading: false, //내 정보 가져오기
+  loadMyInfoComplete: false,
+  loadMyInfoError: null,
   me: null,
   signUpData: {},
   loginData: {},
@@ -72,6 +75,21 @@ export const userSlice = createSlice({
       state.signupLoading = false;
       state.signupError = action.error;
     },
+    //내정보 불러오기 loadMyInfoRequest
+    loadMyInfoRequest: (state) => {
+      state.loadMyInfoLoading = true;
+      state.loadMyInfoError = null;
+      state.loadMyInfoComplete = false;
+    },
+    loadMyInfoSuccess: (state, action) => {
+      state.loadMyInfoLoading = false;
+      state.loadMyInfoComplete = true;
+      state.me = action.payload;
+    },
+    loadMyInfoFailure: (state, action) => {
+      state.loadMyInfoLoading = false;
+      state.loadMyInfoError = action.error;
+    },
   },
 });
 
@@ -85,6 +103,9 @@ export const {
   signupRequest,
   signupSuccess,
   signupFailure,
+  loadMyInfoRequest,
+  loadMyInfoSuccess,
+  loadMyInfoFailure,
 } = userSlice.actions;
 
 export default userSlice.reducer;

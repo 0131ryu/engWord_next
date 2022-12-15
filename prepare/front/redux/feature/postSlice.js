@@ -21,6 +21,9 @@ const initialState = {
   reviseCommentLoading: false, //댓글 수정 중
   reviseCommentComplete: false,
   reviseCommentError: null,
+  loadPostsLoading: false, //게시글 가져오기
+  loadPostsComplete: false,
+  loadPostsError: null,
   Comments: [],
   updatedImages: [], //이미 업로드할 이미지
   revisedImages: [], //새로 업로드할 이미지
@@ -96,9 +99,11 @@ export const postSlice = createSlice({
     addCommentSuccess: (state, action) => {
       const data = action.payload;
       const post = state.mainPosts.find((v) => v.id === data.PostId);
+      console.log("post", post);
       state.addCommentLoading = false;
       state.addCommentComplete = true;
       state.Comments.unshift(data);
+      // state.Comments = data.concat(state.Comments);
     },
     addCommentFailure: (state, action) => {
       state.addCommentLoading = false;
@@ -145,6 +150,23 @@ export const postSlice = createSlice({
       state.reviseCommentLoading = false;
       state.reviseCommentError = action.error;
     },
+    //게시글 불러오기
+    loadPostsRequest: (state) => {
+      state.loadPostsLoading = true;
+      state.loadPostsError = null;
+      state.loadPostsComplete = false;
+    },
+    loadPostsSuccess: (state, action) => {
+      const data = action.payload;
+      console.log("Data", data);
+      state.loadPostsLoading = false;
+      state.loadPostsComplete = true;
+      state.mainPosts = state.mainPosts.concat(data);
+    },
+    loadPostsFailure: (state, action) => {
+      state.loadPostsLoading = false;
+      state.loadPostsError = action.error;
+    },
   },
 });
 
@@ -167,6 +189,9 @@ export const {
   reviseCommentRequest,
   reviseCommentSuccess,
   reviseCommentFailure,
+  loadPostsRequest,
+  loadPostsSuccess,
+  loadPostsFailure,
 } = postSlice.actions;
 
 export default postSlice.reducer;

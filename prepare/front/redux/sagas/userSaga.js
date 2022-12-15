@@ -9,6 +9,9 @@ import {
   signupRequest,
   signupSuccess,
   signupFailure,
+  loadMyInfoRequest,
+  loadMyInfoSuccess,
+  loadMyInfoFailure,
 } from "../feature/userSlice";
 import axios from "axios";
 
@@ -58,6 +61,22 @@ function* signUp(action) {
   }
 }
 
+function loadMyInfoAPI() {
+  return axios.get("/user");
+}
+
+function* loadMyInfo(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(loadMyInfoAPI, data);
+    // console.log("result", result);
+    yield put(loadMyInfoSuccess(result.data));
+  } catch (error) {
+    yield put(loadMyInfoFailure(error));
+    console.log(error);
+  }
+}
+
 function* login_Req() {
   yield takeLatest(loginRequest.type, logIn);
 }
@@ -70,4 +89,13 @@ function* signup_Req() {
   yield takeLatest(signupRequest.type, signUp);
 }
 
-export const userSagas = [fork(login_Req), fork(logout_Req), fork(signup_Req)];
+function* load_my_info_Req() {
+  yield takeLatest(loadMyInfoRequest.type, loadMyInfo);
+}
+
+export const userSagas = [
+  fork(login_Req),
+  fork(logout_Req),
+  fork(signup_Req),
+  fork(load_my_info_Req),
+];

@@ -12,6 +12,9 @@ import {
   loadMyInfoRequest,
   loadMyInfoSuccess,
   loadMyInfoFailure,
+  changeNicknameRequest,
+  changeNicknameSuccess,
+  changeNicknameFailure,
 } from "../feature/userSlice";
 import axios from "axios";
 
@@ -77,6 +80,22 @@ function* loadMyInfo(action) {
   }
 }
 
+function changeNicknameAPI(data) {
+  return axios.patch("/user/nickname", { nickname: data });
+}
+
+function* changeNickname(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(changeNicknameAPI, data);
+    // console.log("result", result);
+    yield put(changeNicknameSuccess(result.data));
+  } catch (error) {
+    yield put(changeNicknameFailure(error));
+    console.log(error);
+  }
+}
+
 function* login_Req() {
   yield takeLatest(loginRequest.type, logIn);
 }
@@ -89,13 +108,18 @@ function* signup_Req() {
   yield takeLatest(signupRequest.type, signUp);
 }
 
-function* load_my_info_Req() {
+function* loadmyinfo_Req() {
   yield takeLatest(loadMyInfoRequest.type, loadMyInfo);
+}
+
+function* changenickname_Req() {
+  yield takeLatest(changeNicknameRequest.type, changeNickname);
 }
 
 export const userSagas = [
   fork(login_Req),
   fork(logout_Req),
   fork(signup_Req),
-  fork(load_my_info_Req),
+  fork(loadmyinfo_Req),
+  fork(changenickname_Req),
 ];

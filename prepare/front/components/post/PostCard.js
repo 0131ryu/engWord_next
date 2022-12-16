@@ -1,17 +1,19 @@
-import React, { Fragment, useState, useCallback } from "react";
+import React, { Fragment, useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   ArrowPathRoundedSquareIcon,
-  HeartIcon,
   BookmarkIcon,
+  HeartIcon,
   ChatBubbleOvalLeftEllipsisIcon,
   EllipsisHorizontalIcon,
 } from "@heroicons/react/24/outline";
 
 import {
+  likePostRequest,
   removeCommentRequest,
   reviseCommentRequest,
   revisePostRequest,
+  unlikePostRequest,
 } from "../../redux/feature/postSlice";
 import { Popover, Transition } from "@headlessui/react";
 
@@ -26,12 +28,15 @@ const PostCard = ({ post, index }) => {
   const [editMode, setEditMode] = useState(false);
 
   const id = useSelector((state) => state.user.me?.id);
+  const liked = post.Likers?.find((v) => v.id === id);
 
-  // console.log("post", post);
-  // console.log("index", index);
-  // console.log("post.Comments", post.Comments);
+  useEffect(() => {
+    // console.log("post.id", post.id);
+    // post.Likers.find((v) => {
+    //   console.log("v.Like.PostId", v.Like.PostId);
+    // });
+  }, []);
 
-  useSelector((state) => state.post);
   const onClickRevise = useCallback(
     (e) => {
       setEditMode(true);
@@ -40,10 +45,10 @@ const PostCard = ({ post, index }) => {
   );
 
   const onRevisePost = useCallback(
-    (editText, index) => () => {
-      console.log("editText", editText);
-      console.log("onRevisePost index", id);
-      dispatch(revisePostRequest({ id: id, content: editText }));
+    (editText) => () => {
+      const postId = post.id;
+      dispatch(revisePostRequest({ postId, editText }));
+      setEditMode(false);
     },
     [id]
   );
@@ -52,9 +57,8 @@ const PostCard = ({ post, index }) => {
     setEditMode(false);
   }, []);
 
-  const onRemovePost = useCallback((e) => {
+  const onRemovePost = useCallback(() => {
     setRemoveModal(true);
-    setId(parseInt(e.target.value));
   }, []);
 
   const onReviseComment = useCallback((e) => {
@@ -67,11 +71,19 @@ const PostCard = ({ post, index }) => {
     dispatch(removeCommentRequest(index));
   }, []);
 
+  const onLike = useCallback(() => {
+    dispatch(likePostRequest(post.id));
+  }, [id]);
+
+  const onUnLike = useCallback(() => {
+    dispatch(unlikePostRequest(post.id));
+  }, [id]);
+
   return (
     <>
       {/* 삭제 포스트 모달창 */}
       {removeModal ? (
-        <RemovePostModal index={id} setRemoveModal={setRemoveModal} />
+        <RemovePostModal PostIndex={post.id} setRemoveModal={setRemoveModal} />
       ) : null}
 
       {/* card start */}
@@ -117,7 +129,6 @@ const PostCard = ({ post, index }) => {
                               수정
                             </button>
                             <button
-                              value={index}
                               onClick={onRemovePost}
                               className="flow-root rounded-md px-2 py-2 transition duration-150 ease-in-out hover:bg-light-beige focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                             >
@@ -154,7 +165,20 @@ const PostCard = ({ post, index }) => {
             <div className="flex justify-between items-center mb-2">
               <div className="flex item-center">
                 <span className="flex mr-4">
-                  <HeartIcon className="h-8 w-8" />
+                  {liked ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="w-8 h-8"
+                      onClick={onUnLike}
+                    >
+                      <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                    </svg>
+                  ) : (
+                    <HeartIcon onClick={onLike} className="h-8 w-8" />
+                  )}
+
                   <p className="mt-1">10</p>
                 </span>
                 <span className="flex mr-4">

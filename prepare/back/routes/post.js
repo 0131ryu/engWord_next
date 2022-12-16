@@ -150,40 +150,40 @@ router.delete("/:postId/like", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.patch("/:postId", isLoggedIn, async (req, res, next) => {
-  //게시글 수정
-  //해시태그 수정하는 경우
-  const hashtags = req.body.content.match(/#[^\s#]+/g);
+// router.patch("/:postId", isLoggedIn, async (req, res, next) => {
+//   //게시글 수정
+//   //해시태그 수정하는 경우
+//   const hashtags = req.body.content.match(/#[^\s#]+/g);
 
-  try {
-    await Post.update(
-      { content: req.body.content },
-      {
-        where: {
-          id: req.params.postId,
-          UserId: req.user.id,
-        },
-      }
-    );
-    const post = await Post.findOne({ where: { id: req.params.postId } });
-    if (hashtags) {
-      const result = await Promise.all(
-        //저장은 소문자만
-        hashtags.map((tag) =>
-          Hashtag.findOrCreate({ where: { name: tag.slice(1).toLowerCase() } })
-        )
-      ); //[[노드, true], [리액트, true]] 이런 모양이므로 첫 번째 것만 추출하게 함
-      await post.setHashtags(result.map((v) => v[0]));
-    }
-    res.status(200).json({
-      PostId: parseInt(req.params.postId, 10),
-      content: req.body.content,
-    });
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
+//   try {
+//     await Post.update(
+//       { content: req.body.content },
+//       {
+//         where: {
+//           id: req.params.postId,
+//           UserId: req.user.id,
+//         },
+//       }
+//     );
+//     const post = await Post.findOne({ where: { id: req.params.postId } });
+//     if (hashtags) {
+//       const result = await Promise.all(
+//         //저장은 소문자만
+//         hashtags.map((tag) =>
+//           Hashtag.findOrCreate({ where: { name: tag.slice(1).toLowerCase() } })
+//         )
+//       ); //[[노드, true], [리액트, true]] 이런 모양이므로 첫 번째 것만 추출하게 함
+//       await post.setHashtags(result.map((v) => v[0]));
+//     }
+//     res.status(200).json({
+//       PostId: parseInt(req.params.postId, 10),
+//       content: req.body.content,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     next(error);
+//   }
+// });
 
 //게시글 삭제
 router.delete("/:postId", isLoggedIn, async (req, res, next) => {
@@ -192,10 +192,35 @@ router.delete("/:postId", isLoggedIn, async (req, res, next) => {
     await Post.destroy({
       where: {
         id: req.params.postId,
-        UserId: req.user.id,
+        UserId: req.user.id, //작성자가 본인이 맞는지?
       },
     });
     res.status(200).json({ PostId: parseInt(req.params.postId, 10) });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+//게시글 수정
+router.patch("/:postId", isLoggedIn, async (req, res, next) => {
+  // PATCH /post/10
+  try {
+    await Post.update(
+      { content: req.body.editText },
+      {
+        where: {
+          id: req.params.postId,
+          UserId: req.user.id, //작성자가 본인이 맞는지?
+        },
+      }
+    );
+    res
+      .status(200)
+      .json({
+        PostId: parseInt(req.params.postId, 10),
+        content: req.body.editText,
+      });
   } catch (error) {
     console.error(error);
     next(error);

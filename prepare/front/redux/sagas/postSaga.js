@@ -22,6 +22,12 @@ import {
   loadPostsRequest,
   loadPostsSuccess,
   loadPostsFailure,
+  likePostRequest,
+  likePostSuccess,
+  likePostFailure,
+  unlikePostRequest,
+  unlikePostSuccess,
+  unlikePostFailure,
 } from "../feature/postSlice";
 import axios from "axios";
 
@@ -40,14 +46,14 @@ function* addPost(action) {
 }
 
 function removePostAPI(data) {
-  return axios.post("/post", data);
+  return axios.delete(`/post/${data}`, data);
 }
 
 function* removePost(action) {
   try {
-    //   const result = yield call(removePostAPI, action.data);
-    console.log(action.payload);
-    yield put(removePostSuccess(action.payload));
+    const result = yield call(removePostAPI, action.payload);
+    console.log("result.data", result.data);
+    yield put(removePostSuccess(result.data));
   } catch (err) {
     console.error(err);
     yield put(removePostFailure(err));
@@ -55,13 +61,18 @@ function* removePost(action) {
 }
 
 function revisePostAPI(data) {
-  return axios.post("/post", data);
+  return axios.patch(`/post/${data.postId}`, {
+    postId: data.postId,
+    editText: data.editText,
+  });
 }
 
 function* revisePost(action) {
   try {
     const data = action.payload;
-    yield put(revisePostSuccess(data));
+    const result = yield call(revisePostAPI, data);
+    console.log("result", result);
+    yield put(revisePostSuccess(result.data));
   } catch (err) {
     console.error(err);
     yield put(revisePostFailure(err));
@@ -85,14 +96,15 @@ function* addComment(action) {
 }
 
 function removeCommentAPI(data) {
-  return axios.post("/post", data);
+  //PostId
+  return axios.delete(`/post/${data}`);
 }
 
 function* removeComment(action) {
   try {
-    //   const result = yield call(removeCommentAPI, action.data);
-    console.log(action.payload);
-    yield put(removeCommentSuccess(action.payload));
+    const data = action.payload;
+    const result = yield call(removeCommentAPI, data);
+    yield put(removeCommentSuccess(result.data));
   } catch (err) {
     console.error(err);
     yield put(removeCommentFailure(err));
@@ -129,6 +141,37 @@ function* loadPosts(action) {
   }
 }
 
+function likePostAPI(data) {
+  return axios.patch(`/post/${data}/like`);
+}
+
+function* likePost(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(likePostAPI, data);
+    yield put(likePostSuccess(result.data));
+  } catch (error) {
+    yield put(likePostFailure(error));
+    console.log(error);
+  }
+}
+
+function unlikePostAPI(data) {
+  return axios.delete(`/post/${data}/like`);
+}
+
+function* unlikePost(action) {
+  try {
+    const data = action.payload;
+    console.log("data", data);
+    const result = yield call(unlikePostAPI, data);
+    yield put(unlikePostSuccess(result.data));
+  } catch (error) {
+    yield put(unlikePostFailure(error));
+    console.log(error);
+  }
+}
+
 function* addPost_Req() {
   yield takeLatest(addPostRequest.type, addPost);
 }
@@ -157,6 +200,14 @@ function* loadPosts_Req() {
   yield takeLatest(loadPostsRequest.type, loadPosts);
 }
 
+function* likePost_Req() {
+  yield takeLatest(likePostRequest.type, likePost);
+}
+
+function* unlikePost_Req() {
+  yield takeLatest(unlikePostRequest.type, unlikePost);
+}
+
 export const postSagas = [
   fork(addPost_Req),
   fork(removePost_Req),
@@ -165,4 +216,6 @@ export const postSagas = [
   fork(removeComment_Req),
   fork(reviseComment_Req),
   fork(loadPosts_Req),
+  fork(likePost_Req),
+  fork(unlikePost_Req),
 ];

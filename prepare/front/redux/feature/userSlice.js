@@ -13,6 +13,9 @@ const initialState = {
   loadMyInfoLoading: false, //내 정보 가져오기
   loadMyInfoComplete: false,
   loadMyInfoError: null,
+  changeNicknameLoading: false, //닉네임 변경
+  changeNicknameComplete: false,
+  changeNicknameError: null,
   me: null,
   signUpData: {},
   loginData: {},
@@ -90,6 +93,22 @@ export const userSlice = createSlice({
       state.loadMyInfoLoading = false;
       state.loadMyInfoError = action.error;
     },
+    //닉네임 변경
+    changeNicknameRequest: (state) => {
+      state.changeNicknameLoading = true;
+      state.changeNicknameError = null;
+      state.changeNicknameComplete = false;
+    },
+    changeNicknameSuccess: (state, action) => {
+      const data = action.payload;
+      state.changeNicknameLoading = false;
+      state.changeNicknameComplete = true;
+      state.me.nickname = data.nickname;
+    },
+    changeNicknameFailure: (state, action) => {
+      state.changeNicknameLoading = false;
+      state.changeNicknameError = action.error;
+    },
   },
 });
 
@@ -106,6 +125,9 @@ export const {
   loadMyInfoRequest,
   loadMyInfoSuccess,
   loadMyInfoFailure,
+  changeNicknameRequest,
+  changeNicknameSuccess,
+  changeNicknameFailure,
 } = userSlice.actions;
 
 export default userSlice.reducer;

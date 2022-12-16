@@ -37,6 +37,10 @@ const NavbarForm = ({ children }) => {
     // window.location.reload();
   };
 
+  const onYourProfileDetail = () => {
+    router.push("/profile")
+  }
+
   return (
     <>
       <Disclosure as="nav" className="bg-dark-green">
@@ -172,17 +176,17 @@ const NavbarForm = ({ children }) => {
                           <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md  bg-light-brown  py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             <Menu.Item>
                               {({ active }) => (
-                                <a
-                                  href="#"
+                                <button
                                   className={classNames(
                                     active
                                       ? "bg-light-beige text-white font-bold rounded-lg"
                                       : "",
                                     "block  px-4 py-2 text-sm text-black font-bold"
                                   )}
+                                  onClick={onYourProfileDetail}
                                 >
                                   Your Profile
-                                </a>
+                                </button>
                               )}
                             </Menu.Item>
                             <Menu.Item>

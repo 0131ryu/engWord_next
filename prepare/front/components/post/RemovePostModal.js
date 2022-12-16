@@ -1,25 +1,26 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useRef, useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { removePostRequest } from "../../redux/feature/postSlice";
 
-const RemovePostModal = ({ index, setRemoveModal }) => {
+const RemovePostModal = ({ PostIndex, setRemoveModal }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(true);
 
   const cancelButtonRef = useRef(null);
 
-  const onRemovePostModal = () => {
+  const onRemovePostModal = useCallback(() => {
     setRemoveModal(false);
-    dispatch(removePostRequest(index));
-  };
+    dispatch(removePostRequest(PostIndex));
+  }, []);
 
-  const onOpenCloseModal = () => {
+  const onOpenCloseModal = useCallback(() => {
     console.log("open", open);
     setRemoveModal(false);
     setOpen(!open);
-  };
+  }, []);
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog

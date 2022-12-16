@@ -24,6 +24,12 @@ const initialState = {
   loadPostsLoading: false, //게시글 가져오기
   loadPostsComplete: false,
   loadPostsError: null,
+  likePostLoading: false, //like
+  likePostComplete: false,
+  likePostError: null,
+  unlikePostLoading: false, //unlike
+  unlikePostComplete: false,
+  unlikePostError: null,
   Comments: [],
   updatedImages: [], //이미 업로드할 이미지
   revisedImages: [], //새로 업로드할 이미지
@@ -56,10 +62,11 @@ export const postSlice = createSlice({
       state.removePostComplete = false;
     },
     removePostSuccess: (state, action) => {
-      console.log(action.payload);
+      const data = action.payload;
+      console.log("data", data);
       state.removePostLoading = false;
       state.removePostComplete = true;
-      state.mainPosts.splice(action.payload, 1);
+      state.mainPosts = state.mainPosts.filter((v) => v.id !== data.PostId);
     },
     removePostFailure: (state, action) => {
       state.removePostLoading = false;
@@ -73,18 +80,10 @@ export const postSlice = createSlice({
     },
     revisePostSuccess: (state, action) => {
       const data = action.payload;
+      console.log("data", data);
       state.revisePostLoading = false;
       state.revisePostComplete = true;
-      state.mainPosts.splice(data.id, 1, {
-        id: shortId.generate(),
-        content: data.content,
-        User: {
-          id: shortId.generate(),
-          nickname: "test",
-        },
-        Images: ["https://picsum.photos/500"],
-        Comments: [],
-      });
+      state.mainPosts.find((v) => v.id === data.PostId).content = data.content;
     },
     revisePostFailure: (state, action) => {
       state.revisePostLoading = false;
@@ -99,11 +98,9 @@ export const postSlice = createSlice({
     addCommentSuccess: (state, action) => {
       const data = action.payload;
       const post = state.mainPosts.find((v) => v.id === data.PostId);
-      console.log("post", post);
+      post.Comments.unshift(data);
       state.addCommentLoading = false;
       state.addCommentComplete = true;
-      state.Comments.unshift(data);
-      // state.Comments = data.concat(state.Comments);
     },
     addCommentFailure: (state, action) => {
       state.addCommentLoading = false;
@@ -116,10 +113,10 @@ export const postSlice = createSlice({
       state.removeCommentComplete = false;
     },
     removeCommentSuccess: (state, action) => {
-      console.log(action.payload);
+      const data = action.payload;
       state.removeCommentLoading = false;
       state.removeCommentComplete = true;
-      state.Comments.splice(action.payload, 1);
+      state.mainPosts = state.mainPosts.filter((v) => v.id !== data.PostId);
     },
     removeCommentFailure: (state, action) => {
       state.removeCommentLoading = false;
@@ -167,6 +164,40 @@ export const postSlice = createSlice({
       state.loadPostsLoading = false;
       state.loadPostsError = action.error;
     },
+    //like
+    likePostRequest: (state) => {
+      state.likePostLoading = true;
+      state.likePostError = null;
+      state.likePostComplete = false;
+    },
+    likePostSuccess: (state, action) => {
+      const data = action.payload;
+      const post = state.mainPosts.find((v) => v.id === data.PostId);
+      post.Likers.push({ id: data.UserId });
+      state.likePostLoading = false;
+      state.likePostComplete = true;
+    },
+    likePostFailure: (state, action) => {
+      state.likePostLoading = false;
+      state.likePostError = action.error;
+    },
+    //unlike
+    unlikePostRequest: (state) => {
+      state.unlikePostLoading = true;
+      state.unlikePostError = null;
+      state.unlikePostComplete = false;
+    },
+    unlikePostSuccess: (state, action) => {
+      const data = action.payload;
+      const post = state.mainPosts.find((v) => v.id === data.PostId);
+      post.Likers = post.Likers.filter((v) => v.id !== data.UserId);
+      state.unlikePostLoading = false;
+      state.unlikePostComplete = true;
+    },
+    unlikePostFailure: (state, action) => {
+      state.unlikePostLoading = false;
+      state.unlikePostError = action.error;
+    },
   },
 });
 
@@ -192,6 +223,12 @@ export const {
   loadPostsRequest,
   loadPostsSuccess,
   loadPostsFailure,
+  likePostRequest,
+  likePostSuccess,
+  likePostFailure,
+  unlikePostRequest,
+  unlikePostSuccess,
+  unlikePostFailure,
 } = postSlice.actions;
 
 export default postSlice.reducer;

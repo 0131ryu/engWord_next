@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useInput from "../../hooks/useInput";
 import { PencilIcon } from "@heroicons/react/24/outline";
@@ -7,7 +7,14 @@ import { addCommentRequest } from "../../redux/feature/postSlice";
 const CommentForm = ({ post }) => {
   const dispatch = useDispatch();
   const id = useSelector((state) => state.user.me?.id);
-  const [commentText, onChangeCommentText] = useInput("");
+  const { addCommentComplete } = useSelector((state) => state.post);
+  const [commentText, onChangeCommentText, setCommentText] = useInput("");
+
+  useEffect(() => {
+    if (addCommentComplete) {
+      setCommentText("");
+    }
+  }, [addCommentComplete]);
 
   const onSubmitCommentForm = useCallback(() => {
     dispatch(

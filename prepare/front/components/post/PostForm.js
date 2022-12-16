@@ -4,10 +4,6 @@ import useInput from "../../hooks/useInput";
 import { addPostRequest } from "../../redux/feature/postSlice";
 import { PencilIcon } from "@heroicons/react/24/outline";
 
-import UserInfo from "../UserInfo";
-import PostSearch from "./PostSearch";
-import PostCard from "./PostCard";
-
 const PostForm = ({ nickname, id }) => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);

@@ -3,11 +3,9 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useSelector, useDispatch } from "react-redux";
 import { createPopper } from "@popperjs/core";
 import useInput from "../../hooks/useInput";
-import { findWordRequest } from "../../redux/feature/wordSlice";
+import { addWordRequest, findWordRequest } from "../../redux/feature/wordSlice";
 import { DocumentMagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useCallback } from "react";
-
-import axios from "axios";
 
 const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
 
@@ -20,9 +18,9 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
   const btnRef = createRef();
   const popoverRef = createRef();
 
-  const { wordLists } = useSelector((state) => state.word);
+  const { wordLists, findResult } = useSelector((state) => state.word);
 
-  console.log("wordLists", wordLists);
+  // console.log("wordLists", wordLists);
 
   const [english, onChangeEnglish, setEnglish] = useInput("");
   const [type, onChangeType, setType] = useInput(typesName[0]);
@@ -31,58 +29,39 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
   const [resultExEnglish, setResultExEnglish] = useState([]);
   const splitEnglish = [];
 
-  // useEffect(() => {
-  //   async function result() {
-  //     const response = await axios.get(`http://localhost:8000/word/${korean}`);
-
-  //     const { english, ex_english } = response.data;
-
-  //     splitEnglish = ex_english.split("; ");
-  //     console.log("splitEnglish", splitEnglish);
-  //     setResultEng(english);
-
-  //     if (ex_english.match(/[(;\)]+/g)) {
-  //       for (let i = 0; i < splitEnglish.length; i++) {
-  //         setResultExEnglish(splitEnglish[0], ...resultExEnglish);
-  //       }
-  //     } else {
-  //       setResultExEnglish(ex_english);
-  //     }
-  //   }
-  //   result();
-  // });
-
-  // console.log("resultExEnglish", resultExEnglish);
+  useEffect(() => {
+    console.log("findResult", findResult);
+    setResultEng(findResult[0]?.english);
+    setResultExEnglish(findResult[0]?.ex_english);
+  }, [findResult]);
 
   const onFindResultSubmit = useCallback(
     (e) => {
       setModal(false);
       setResultModal(false);
-      console.log("e.target.value", e.target.value);
-      console.log("resultEng", resultEng);
-
-      dispatch(
-        findWordRequest({
-          id: 8,
-          english: resultEng,
-          korean: korean,
-          type: type,
-        })
-      );
-      // console.log("english", english);
-      // console.log("korean", korean);
-      //   if (!english || !korean || !type) {
-      //     null;
-      //   } else {
-      //     dispatch(
-      //       findWordRequest({
-      //         id: 8,
-      //         resultEng,
-      //         korean,
-      //         type,
-      //       })
-      //     );
-      //   }
+      //; 포함?
+      if (resultEng.includes(";")) {
+        const splitEnglish = resultEng?.split("; ");
+        splitEnglish.map((eng) => {
+          const english = eng;
+          dispatch(
+            addWordRequest({
+              english,
+              korean,
+              type,
+            })
+          );
+        });
+      } else {
+        const english = resultEng;
+        dispatch(
+          addWordRequest({
+            english,
+            korean,
+            type,
+          })
+        );
+      }
     },
     [english, korean, type]
   );
@@ -183,16 +162,16 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
                                   (단어 클릭 시 네이버 사전으로 이동)
                                 </p>
                               </div>
-                              {splitEnglish.map((eng, i) => {
+                              {/* {resultExEnglish.map((eng, i) => {
                                 console.log("eng", eng);
                                 console.log("i", i);
-                              })}
+                              })} */}
                               <a
                                 href={`https://en.dict.naver.com/#/search?query=${resultExEnglish}&range=all`}
                                 target="_blank"
                               >
                                 <span className="text-dark-green font-bold hover:text-light-orange ml-2 mb-2">
-                                  {resultExEnglish}
+                                  {}
                                 </span>
                               </a>
                             </div>

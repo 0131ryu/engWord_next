@@ -10,7 +10,7 @@ import {
 } from "../feature/gameSlice";
 
 function findHintAPI(data) {
-  return axios.get(`http://localhost:3005/word/${data}`);
+  return axios.get(`/word/${data}`);
 }
 
 function* startGame(action) {

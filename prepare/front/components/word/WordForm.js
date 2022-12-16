@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useCallback } from "react";
+import React, { Fragment, useState, useCallback, useEffect } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import {
   ArrowDownIcon,
@@ -7,15 +7,16 @@ import {
 } from "@heroicons/react/24/outline";
 import { addWordRequest } from "../../redux/feature/wordSlice";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useInput from "../../hooks/useInput";
 import FindWordModal from "./FindWordModal";
 import SearchWordModal from "./SearchWordModal";
 
 const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
 
-const WordForm = () => {
+const WordForm = ({ UserId }) => {
   const dispatch = useDispatch();
+  const { addWordComplete } = useSelector((state) => state.word);
 
   const [modal, setModal] = useState(false);
   const [modalSearch, setModalSearch] = useState(false);
@@ -25,22 +26,45 @@ const WordForm = () => {
 
   const type = selected.name;
 
-  const onFindModal = () => {
-    setModal(true);
-  };
+  useEffect(() => {
+    if (addWordComplete) {
+      setEnglish("");
+      setKorean("");
+    }
+  }, [addWordComplete]);
 
-  const onSearchModal = () => {
+  const onFindModal = useCallback(() => {
+    setModal(true);
+    // if (!UserId) {
+    //   alert("로그인 후 진행해주세요.");
+    // } else {
+    //   setModal(true);
+    // }
+  }, []);
+
+  const onSearchModal = useCallback(() => {
     setModalSearch(true);
-  };
+  }, []);
 
   const onSubmitWord = useCallback(() => {
-    dispatch(
-      addWordRequest({
-        english,
-        korean,
-        type,
-      })
-    );
+    const validEnglish = /^[a-zA-Z\s.,;,~]+$/;
+    const validKorean = /^[가-힣\s.,;,~]+$/;
+
+    if (!UserId) {
+      alert("로그인 후 진행해주세요.");
+    } else {
+      if (!validEnglish.test(english) || !validKorean.test(korean)) {
+        alert("english는 영어로만, korean은 한글로만 입력하세요");
+      } else {
+        dispatch(
+          addWordRequest({
+            english,
+            korean,
+            type,
+          })
+        );
+      }
+    }
   }, [english, korean, type]);
 
   return (

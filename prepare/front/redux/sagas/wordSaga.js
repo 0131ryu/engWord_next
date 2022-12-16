@@ -37,7 +37,8 @@ function addWordAPI(data) {
 
 function* addWord(action) {
   try {
-    const result = yield call(addWordAPI, action.payload);
+    const data = action.payload;
+    const result = yield call(addWordAPI, data);
     yield put(addWordSuccess(result.data));
   } catch (error) {
     yield put(addWordError(error));
@@ -91,7 +92,7 @@ function* changeStatusAll(action) {
 }
 
 function findWordAPI(data) {
-  return axios.get(`http://localhost:8000/word/${data}`);
+  return axios.get(`/word/${data}`);
 }
 
 function* findWord(action) {

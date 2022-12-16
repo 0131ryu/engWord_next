@@ -17,7 +17,7 @@ const Home = () => {
   return (
     <>
       <NavbarForm />
-      <WordForm />
+      <WordForm UserId={me?.id} />
       <WordList UserId={me?.id} />
     </>
   );

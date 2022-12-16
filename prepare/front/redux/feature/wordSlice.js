@@ -1,204 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  wordLists: [
-    // {
-    //   id: 2,
-    //   english: "red",
-    //   korean: "빨강",
-    //   type: "easy",
-    //   status: "A",
-    // },
-    // {
-    //   id: 4,
-    //   english: "orange",
-    //   korean: "주황색",
-    //   type: "easy",
-    //   status: "A",
-    // },
-    // {
-    //   id: 3,
-    //   english: "yellow",
-    //   korean: "노랑색",
-    //   type: "easy",
-    //   status: "A",
-    // },
-    // {
-    //   id: 5,
-    //   english: "green",
-    //   korean: "초록색",
-    //   type: "easy",
-    //   status: "A",
-    // },
-    // {
-    //   id: 7,
-    //   english: "blue",
-    //   korean: "파랑",
-    //   type: "easy",
-    //   status: "A",
-    // },
-    // {
-    //   id: 9,
-    //   english: "purple",
-    //   korean: "보라색",
-    //   type: "easy",
-    //   status: "A",
-    // },
-    // {
-    //   id: 2,
-    //   english: "ban",
-    //   korean: "금지",
-    //   type: "easy",
-    //   status: "A",
-    // },
-    // {
-    //   id: 4,
-    //   english: "yawn",
-    //   korean: "하품",
-    //   type: "easy",
-    //   status: "A",
-    // },
-    // {
-    //   id: 3,
-    //   english: "topic",
-    //   korean: "주제",
-    //   type: "easy",
-    //   status: "A",
-    // },
-    // {
-    //   id: 5,
-    //   english: "develop",
-    //   korean: "성장하다",
-    //   type: "easy",
-    //   status: "A",
-    // },
-    // {
-    //   id: 7,
-    //   english: "murder",
-    //   korean: "살인",
-    //   type: "easy",
-    //   status: "A",
-    // },
-    // {
-    //   id: 9,
-    //   english: "biology",
-    //   korean: "생물학",
-    //   type: "easy",
-    //   status: "A",
-    // },
-    // {
-    //   id: 2,
-    //   english: "science",
-    //   korean: "과학",
-    //   type: "easy",
-    //   status: "A",
-    // },
-    // {
-    //   id: 4,
-    //   english: "rainbow",
-    //   korean: "무지개",
-    //   type: "easy",
-    //   status: "A",
-    // },
-    // {
-    //   id: 6,
-    //   english: "seed",
-    //   korean: "씨앗",
-    //   type: "middle",
-    //   status: "A",
-    // },
-    // {
-    //   id: 6,
-    //   english: "kidney",
-    //   korean: "신장",
-    //   type: "middle",
-    //   status: "A",
-    // },
-    // {
-    //   id: 6,
-    //   english: "culprit",
-    //   korean: "범인",
-    //   type: "middle",
-    //   status: "A",
-    // },
-    // {
-    //   id: 6,
-    //   english: "pillow",
-    //   korean: "베개",
-    //   type: "middle",
-    //   status: "A",
-    // },
-    // {
-    //   id: 6,
-    //   english: "ability",
-    //   korean: "실력",
-    //   type: "middle",
-    //   status: "A",
-    // },
-    // {
-    //   id: 6,
-    //   english: "solution",
-    //   korean: "해결",
-    //   type: "middle",
-    //   status: "A",
-    // },
-    // {
-    //   id: 6,
-    //   english: "purpose",
-    //   korean: "목적",
-    //   type: "middle",
-    //   status: "A",
-    // },
-    // {
-    //   id: 6,
-    //   english: "arise",
-    //   korean: "일어나다",
-    //   type: "middle",
-    //   status: "A",
-    // },
-    // {
-    //   id: 8,
-    //   english: "interval",
-    //   korean: "(시간적)간격, 사이",
-    //   type: "advance",
-    //   status: "A",
-    // },
-    // {
-    //   id: 10,
-    //   english: "patent",
-    //   korean: "특허(의), 특허권",
-    //   type: "advance",
-    //   status: "A",
-    // },
-    // {
-    //   id: 12,
-    //   english: "term",
-    //   korean: "용어, 학기, 기간",
-    //   type: "advance",
-    //   status: "A",
-    // },
-    // {
-    //   id: 14,
-    //   english: "exceed",
-    //   korean: "넘다, 초과하다",
-    //   type: "advance",
-    //   status: "A",
-    // },
-    // {
-    //   id: 16,
-    //   english: "emit",
-    //   korean: "방출하다, 내뿜다",
-    //   type: "advance",
-    //   status: "A",
-    // },
-    // {
-    //   id: 18,
-    //   english: "contemporary",
-    //   korean: "동시대의, 현대의",
-    //   type: "advance",
-    //   status: "A",
-    // },
-  ],
+  wordLists: [],
   checkedWordList: [],
   addWordLoading: false, //단어 추가
   addWordComplete: false,
@@ -224,6 +27,7 @@ const initialState = {
   loadWordsLoading: false, //단어 가져오기
   loadWordsComplete: false,
   loadWordsError: null,
+  findResult: [],
   searchResult: [],
 };
 
@@ -239,9 +43,12 @@ export const wordSlice = createSlice({
     },
     addWordSuccess: (state, action) => {
       const data = action.payload;
+      console.log("data", data);
       state.addWordLoading = false;
       state.addWordComplete = true;
-      state.wordLists.unshift(data);
+      data.map((d) => {
+        state.wordLists.unshift(d);
+      });
     },
     addWordError: (state, action) => {
       state.addWordLoading = true;
@@ -292,39 +99,11 @@ export const wordSlice = createSlice({
       state.findWordComplete = false;
     },
     findWordSuccess: (state, action) => {
-      const data = action.payload;
-
-      const findEng = data.english;
-      console.log("findEng", findEng);
-      const splitEnglish = findEng.split("; ");
-      console.log("splitEnglish", splitEnglish);
-
       state.findWordLoading = false;
       state.findWordComplete = true;
-
-      if (findEng.match(/[(;\)]+/g)) {
-        for (let i = 0; i < splitEnglish.length; i++) {
-          state.wordLists.unshift(
-            {
-              id: data.id,
-              english: splitEnglish[i].toLowerCase(),
-              korean: data.korean,
-              type: data.type,
-            },
-            1
-          );
-        }
-      } else {
-        state.wordLists.unshift(
-          {
-            id: data.id,
-            english: data?.english.toLowerCase(),
-            korean: data?.korean,
-            type: data?.type,
-          },
-          1
-        );
-      }
+      const data = action.payload;
+      state.findResult.length = 0; //단어 검색할 때마다 초기화
+      state.findResult.unshift(data);
     },
     findWordError: (state, action) => {
       state.findWordLoading = true;

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import NavbarForm from "../components/NavbarForm";
+import LoginForm from "../components/LoginForm";
 import Profile from "../components/Profile";
 import { loadPostsRequest } from "../redux/feature/postSlice";
 import { loadMyInfoRequest } from "../redux/feature/userSlice";
@@ -24,7 +25,11 @@ const profile = () => {
   return (
     <>
       <NavbarForm />
-      <Profile me={me} postResult={postResult} wordResult={wordResult} />
+      {me ? (
+        <Profile me={me} postResult={postResult} wordResult={wordResult} />
+      ) : (
+        <LoginForm />
+      )}
     </>
   );
 };

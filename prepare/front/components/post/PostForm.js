@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useInput from "../../hooks/useInput";
 import { addPostRequest } from "../../redux/feature/postSlice";
@@ -6,15 +6,26 @@ import { PencilIcon } from "@heroicons/react/24/outline";
 
 const PostForm = ({ nickname, id }) => {
   const dispatch = useDispatch();
+  const { addPostComplete } = useSelector((state) => state.post);
   const { me } = useSelector((state) => state.user);
-  const [text, onChangeText] = useInput("");
+  const [text, onChangeText, setText] = useInput("");
 
-  const onSubmitForm = useCallback(
-    (e) => {
+  useEffect(() => {
+    console.log("text", text);
+    console.log("onChangeText", onChangeText);
+    if (addPostComplete) {
+      setText("");
+    }
+  }, [addPostComplete]);
+
+  const onSubmitForm = useCallback(() => {
+    console.log("text", text);
+    if (!text) {
+      alert("게시글에 아무것도 입력되지 않았습니다.");
+    } else {
       dispatch(addPostRequest(text));
-    },
-    [text]
-  );
+    }
+  }, [text]);
   return (
     <>
       <div className="bg-white col-span-2">

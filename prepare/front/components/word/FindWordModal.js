@@ -24,18 +24,19 @@ const FindWordModal = ({ isId, setModal }) => {
   // console.log("index", isId);
 
   const onFindWordSubmit = () => {
-    setResultModal(true);
-    console.log("korean", korean);
-    if (!korean) {
-      setKoreanError(true);
-      setResultModal(false);
-    } else {
-      dispatch(findWordRequest(korean));
-    }
-  };
+    const validKorean = /^[가-힣\s.,;,~]+$/;
 
-  const onFindResultEng = () => {
-    setResultModal(true);
+    if (!validKorean.test(korean)) {
+      alert("검색은 한글만 가능합니다!");
+    } else {
+      setResultModal(true);
+      if (!korean) {
+        setKoreanError(true);
+        setResultModal(false);
+      } else {
+        dispatch(findWordRequest(korean));
+      }
+    }
   };
 
   const onOpenCloseModal = () => {

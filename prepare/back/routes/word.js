@@ -12,9 +12,10 @@ router.post("/", isLoggedIn, async (req, res, next) => {
       type: req.body.type,
       UserId: req.user.id,
     });
-    const fullWord = await Word.findOne({
-      where: { id: word.id },
+    const fullWord = await Word.findAll({
+      where: { korean: word.korean },
     });
+    console.log("fullWord", fullWord);
     res.status(201).json(fullWord);
   } catch (error) {
     console.error(error);

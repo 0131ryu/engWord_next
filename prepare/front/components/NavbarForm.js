@@ -24,22 +24,21 @@ const NavbarForm = ({ children }) => {
     dispatch(logoutRequest());
   }, []);
 
-  const onGoMain = () => {
+  const onGoMain = useCallback(() => {
     router.push("/");
-  };
+  }, []);
 
-  const onGoSNS = () => {
+  const onGoSNS = useCallback(() => {
     router.push("/post");
-  };
+  }, []);
 
-  const onGoGame = () => {
+  const onGoGame = useCallback(() => {
     router.push("/game");
-    // window.location.reload();
-  };
+  }, []);
 
-  const onYourProfileDetail = () => {
-    router.push("/profile")
-  }
+  const onYourProfileDetail = useCallback(() => {
+    router.push("/profile");
+  }, []);
 
   return (
     <>

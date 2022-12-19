@@ -28,7 +28,6 @@ module.exports = class Word extends Sequelize.Model {
         underscored: false,
         modelName: "Word",
         tableName: "words",
-        paranoid: true,
         charset: "utf8",
         collate: "utf8_general_ci",
       }

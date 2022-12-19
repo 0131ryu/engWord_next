@@ -46,24 +46,36 @@ function* addWord(action) {
   }
 }
 
+function reviseWordAPI(data) {
+  return axios.patch(`/word/${data.id}`, {
+    id: data.id,
+    english: data.english,
+    korean: data.korean,
+    type: data.type,
+  });
+}
+
 function* reviseWord(action) {
   try {
-    console.log("action", action);
     const data = action.payload;
-    console.log("data", data);
-    yield put(reviseWordSuccess(data));
+    const result = yield call(reviseWordAPI, data);
+    yield put(reviseWordSuccess(result.data));
   } catch (error) {
     yield put(reviseWordError(error));
     console.log(error);
   }
 }
 
+function removeWordAPI(data) {
+  return axios.delete(`/word/${data}`, data);
+}
+
 function* removeWord(action) {
   try {
-    console.log("action", action);
     const data = action.payload;
-    console.log("data", data);
-    yield put(removeWordSuccess(data));
+    const result = yield call(removeWordAPI, data);
+    console.log("result", result);
+    yield put(removeWordSuccess(result.data));
   } catch (error) {
     yield put(removeWordError(error));
     console.log(error);

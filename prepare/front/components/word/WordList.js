@@ -24,18 +24,6 @@ const WordList = ({ UserId }) => {
     dispatch(loadWordsRequest());
   }, []);
 
-  const onReviseWord = (e) => {
-    setId(parseInt(e.target.value));
-    setModal(true);
-  };
-
-  const onRemoveWord = (e) => {
-    setId(parseInt(e.target.value));
-    setRemoveModal(true);
-    console.log(e.target.value, id);
-    console.log("메인에서 삭제 버튼 클릭 시 modal 2", removeModal);
-  };
-
   const onClickAllSelected = useCallback((e) => {
     const checkboxClickedAll = e.target;
     const checkboxes = document.querySelectorAll("input[name=checkItem]");
@@ -86,19 +74,6 @@ const WordList = ({ UserId }) => {
           체크된 단어 개수 : {checkedWordList.length}/{wordLists.length}
         </p>
       </div>
-      {/* 수정 모달창 */}
-      {modal ? (
-        <ReviseWordModal
-          isId={id}
-          setModal={setModal}
-          showEng={wordLists[id].english}
-          showKor={wordLists[id].korean}
-        />
-      ) : null}
-      {/* 삭제 모달창 */}
-      {removeModal ? (
-        <RemoveWordModal isId={id} setRemoveModal={setRemoveModal} />
-      ) : null}
 
       <div className="lg:w-full relative">
         <div className="h-max mx-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-1">

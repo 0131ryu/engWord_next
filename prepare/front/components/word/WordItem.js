@@ -17,11 +17,6 @@ const WordItem = ({ UserId, word, index }) => {
   const [removeModal, setRemoveModal] = useState(false);
   const [id, setId] = useState(0);
 
-  // useEffect(() => {
-  //   console.log("UserId", UserId);
-  //   console.log("index", index);
-  // }, []);
-
   const onReviseWord = (e) => {
     setId(parseInt(e.target.value));
     setModal(true);
@@ -67,15 +62,16 @@ const WordItem = ({ UserId, word, index }) => {
       {/* 수정 모달창 */}
       {modal ? (
         <ReviseWordModal
-          isId={index}
+          id={word.id}
           setModal={setModal}
           showEng={word.english}
           showKor={word.korean}
+          showType={word.type}
         />
       ) : null}
       {/* 삭제 모달창 */}
       {removeModal ? (
-        <RemoveWordModal isId={id} setRemoveModal={setRemoveModal} />
+        <RemoveWordModal id={word.id} setRemoveModal={setRemoveModal} />
       ) : null}
       {/* item start */}
       <div

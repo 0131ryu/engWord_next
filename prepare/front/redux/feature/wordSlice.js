@@ -61,17 +61,17 @@ export const wordSlice = createSlice({
       state.reviseWordComplete = false;
     },
     reviseWordSuccess: (state, action) => {
-      const wordInfo = action.payload;
+      const data = action.payload;
       state.reviseWordLoading = false;
       state.reviseWordComplete = true;
-      console.log("reviseWordSuccess", wordInfo);
-      state.wordLists.splice(wordInfo.id, 1, {
-        id: wordInfo.id,
-        english: wordInfo.english.toLowerCase(),
-        korean: wordInfo.korean,
-        type: wordInfo.type,
-      });
-      // state.wordLists.splice(action.payload, 1);
+
+      state.wordLists.find(
+        (v) =>
+          v.id === data.id &&
+          ((v.english = data.english),
+          (v.korean = data.korean),
+          (v.type = data.type))
+      );
     },
     reviseWordError: (state, action) => {
       state.reviseWordLoading = true;
@@ -84,9 +84,12 @@ export const wordSlice = createSlice({
       state.removeWordComplete = false;
     },
     removeWordSuccess: (state, action) => {
+      const data = action.payload;
       state.removeWordLoading = false;
       state.removeWordComplete = true;
-      state.wordLists.splice(action.payload, 1);
+
+      const findIndex = state.wordLists.findIndex((w) => w.id === data.id);
+      state.wordLists.splice(findIndex, 1);
     },
     removeWordError: (state, action) => {
       state.removeWordLoading = true;

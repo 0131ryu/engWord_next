@@ -4,7 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { removeWordRequest } from "../../redux/feature/wordSlice";
 
-const RemoveWordModal = ({ isId, setRemoveModal }) => {
+const RemoveWordModal = ({ id, setRemoveModal }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(true);
 
@@ -12,8 +12,7 @@ const RemoveWordModal = ({ isId, setRemoveModal }) => {
 
   const onRemoveWordSubmit = () => {
     setRemoveModal(false);
-    dispatch(removeWordRequest(isId));
-    console.log("최종 삭제 버튼 시 modal 3");
+    dispatch(removeWordRequest(id));
   };
 
   const onOpenCloseModal = () => {

@@ -35,6 +35,7 @@ const PostForm = ({ nickname, id }) => {
               <textarea
                 className="w-full"
                 type="text"
+                value={text}
                 onChange={onChangeText}
                 placeholder="무엇을 입력하시겠습니까?"
               />

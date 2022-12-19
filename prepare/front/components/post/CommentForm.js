@@ -30,6 +30,7 @@ const CommentForm = ({ post }) => {
               <textarea
                 className="w-full"
                 type="text"
+                value={commentText}
                 onChange={onChangeCommentText}
                 placeholder="댓글 입력"
               />

@@ -30,6 +30,7 @@ const WordForm = ({ UserId }) => {
     if (addWordComplete) {
       setEnglish("");
       setKorean("");
+      setSelected(typesName[0]);
     }
   }, [addWordComplete]);
 
@@ -90,6 +91,7 @@ const WordForm = ({ UserId }) => {
             {/* english */}
             <input
               onChange={onChangeEnglish}
+              value={english}
               placeholder="English"
               type="text"
               name="english"
@@ -100,6 +102,7 @@ const WordForm = ({ UserId }) => {
             {/* korean */}
             <input
               onChange={onChangeKorean}
+              value={korean}
               placeholder="한글"
               type="text"
               name="korean"
@@ -108,7 +111,6 @@ const WordForm = ({ UserId }) => {
             pl-2 h-9  placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-full m-2"
             />
             {/* typesName start */}
-            {/* 여기 때문에 전체 길이가 너무 길어짐 */}
             <div className="z-10 w-20 h-48 mt-2 mr-2">
               <Listbox value={selected} onChange={setSelected}>
                 <div className="relative ">

@@ -65,13 +65,13 @@ export const wordSlice = createSlice({
       state.reviseWordLoading = false;
       state.reviseWordComplete = true;
 
-      state.wordLists.find(
-        (v) =>
-          v.id === data.id &&
-          ((v.english = data.english),
-          (v.korean = data.korean),
-          (v.type = data.type))
-      );
+      const findRevise = state.wordLists.find((v) => v.id === data.id);
+
+      if (findRevise) {
+        findRevise.english = data.english;
+        findRevise.korean = data.korean;
+        findRevise.type = data.type;
+      }
     },
     reviseWordError: (state, action) => {
       state.reviseWordLoading = true;
@@ -119,23 +119,14 @@ export const wordSlice = createSlice({
       state.changeStatusWordComplete = false;
     },
     changeStatusWordSuccess: (state, action) => {
-      const wordInfo = action.payload;
+      const data = action.payload;
       state.changeStatusWordLoading = false;
       state.changeStatusWordComplete = true;
 
-      state.wordLists.splice(wordInfo.id, 1, {
-        id: wordInfo.id,
-        english: state.wordLists[wordInfo.id].english,
-        korean: state.wordLists[wordInfo.id].korean,
-        type: state.wordLists[wordInfo.id].type,
-        status: wordInfo.status,
-      });
+      const changeStatus = state.wordLists.find((v) => v.id === data.id);
 
-      if (wordInfo.status === "C") {
-        //  state.checkedWordList.splice()
-        state.checkedWordList.push(state.wordLists[wordInfo.id]);
-      } else if (wordInfo.status === "A") {
-        state.checkedWordList.pop(state.wordLists[wordInfo.id]);
+      if (changeStatus) {
+        changeStatus.status = data.status;
       }
     },
     changeStatusWordError: (state, action) => {
@@ -149,20 +140,27 @@ export const wordSlice = createSlice({
       state.changeStatusWordComplete = false;
     },
     changeStatusWordAllSuccess: (state, action) => {
-      const wordInfo = action.payload;
+      const data = action.payload;
+      console.log("data", data);
       state.changeStatusWordLoading = false;
       state.changeStatusWordComplete = true;
 
       state.checkedWordList.length = 0;
 
-      state.wordLists.map((word, i) => {
-        word.status = wordInfo.status;
-        if (word.status === "C") {
-          state.checkedWordList.push(state.wordLists[i]);
-        } else if (word.status === "A") {
-          state.checkedWordList.pop();
-        }
-      });
+      const changeStatus = state.wordLists.find((v) => v.id === data.id);
+
+      if (changeStatus) {
+        changeStatus.status = data.status;
+      }
+
+      // state.wordLists.map((word, i) => {
+      //   word.status = wordInfo.status;
+      //   if (word.status === "C") {
+      //     state.checkedWordList.push(state.wordLists[i]);
+      //   } else if (word.status === "A") {
+      //     state.checkedWordList.pop();
+      //   }
+      // });
     },
     changeStatusWordAllError: (state, action) => {
       state.changeStatusWordLoading = true;

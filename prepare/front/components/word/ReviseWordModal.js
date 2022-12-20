@@ -19,11 +19,13 @@ const ReviseWordModal = ({ id, setModal, showEng, showKor, showType }) => {
 
   const type = selected.name;
 
-  // useEffect(() => {
-  //   console.log("showEng", showEng);
-  //   console.log("showKor", showKor);
-  //   console.log("showType", showType);
-  // }, []);
+  useEffect(() => {
+    if (showType === "middle") {
+      setSelected(typesName[1]);
+    } else if (showType === "advance") {
+      setSelected(typesName[2]);
+    }
+  }, []);
 
   const [english, onChangeEnglish] = useInput("");
   const [korean, onChangeKorean] = useInput("");
@@ -125,6 +127,8 @@ const ReviseWordModal = ({ id, setModal, showEng, showKor, showType }) => {
                           <Listbox value={selected} onChange={setSelected}>
                             <div className="relative ">
                               <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-2 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm border-2 border-light-green">
+                                {/* <span className="block">{selected.name}</span> */}
+
                                 <span className="block">{selected.name}</span>
                                 <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                                   <ArrowDownIcon

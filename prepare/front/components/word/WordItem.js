@@ -5,17 +5,23 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
 import ReviseWordModal from "./ReviseWordModal";
 import RemoveWordModal from "./RemoveWordModal";
-import {
-  changeStatusWordRequest,
-  changeStatusWordAllRequest,
-  loadWordsRequest,
-} from "../../redux/feature/wordSlice";
+import { changeStatusWordRequest } from "../../redux/feature/wordSlice";
 
 const WordItem = ({ UserId, word, index }) => {
   const dispatch = useDispatch();
   const [modal, setModal] = useState(false);
   const [removeModal, setRemoveModal] = useState(false);
   const [id, setId] = useState(0);
+  const [checkedItem, setCheckedItems] = useState(new Set());
+  const [bChecked, setBChecked] = useState(false);
+
+  useEffect(() => {
+    if (word.status === "C") {
+      setBChecked(true);
+    } else if (word.status === "A") {
+      setBChecked(false);
+    }
+  }, [word.status]);
 
   const onReviseWord = (e) => {
     setId(parseInt(e.target.value));
@@ -26,33 +32,17 @@ const WordItem = ({ UserId, word, index }) => {
     setId(parseInt(e.target.value));
     setRemoveModal(true);
     console.log(e.target.value, id);
-    console.log("메인에서 삭제 버튼 클릭 시 modal 2", removeModal);
   };
 
-  const onClickAllSelected = useCallback((e) => {
-    const checkboxClickedAll = e.target;
-    const checkboxes = document.querySelectorAll("input[name=checkItem]");
-
-    if (checkboxClickedAll.checked) {
-      dispatch(changeStatusWordAllRequest({ status: "C" }));
-      for (let i = 0; i < checkboxes.length; i++) {
-        checkboxes[i].checked = checkboxClickedAll.checked;
-      }
-    } else {
-      dispatch(changeStatusWordAllRequest({ status: "A" }));
-      for (let i = 0; i < checkboxes.length; i++) {
-        checkboxes[i].checked = checkboxClickedAll.checked;
-      }
-    }
-  }, []);
-
-  const onClickSelected = useCallback((e) => {
+  const onChangeSelected = useCallback((e) => {
     const checkboxClicked = e.target;
     const wordIndex = e.target.value;
 
     if (checkboxClicked.checked) {
+      setBChecked(true);
       dispatch(changeStatusWordRequest({ id: wordIndex, status: "C" }));
     } else if (!checkboxClicked.checked) {
+      setBChecked(false);
       dispatch(changeStatusWordRequest({ id: wordIndex, status: "A" }));
     }
   }, []);
@@ -81,9 +71,9 @@ const WordItem = ({ UserId, word, index }) => {
         <div className="bg-gary-400 h-24 w-90 sm:600 w-96 lg:w-48">
           <div className="flex py-5 pl-1">
             <input
-              onClick={onClickSelected}
-              value={index}
-              id="checkItem"
+              checked={bChecked}
+              onChange={onChangeSelected}
+              value={word.id}
               name="checkItem"
               type="checkbox"
               className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
@@ -92,7 +82,7 @@ const WordItem = ({ UserId, word, index }) => {
           <li className="flex first:pt-0 last:pb-0">
             <div className="relative bottom-10 ml-9 overflow-hidden">
               <p className="text-sm font-medium text-slate-900">
-                {word.english} ({index})
+                {word.english} ({word.id})
               </p>
               <p className="text-sm text-slate-900 truncate">
                 {word.korean} {word.id} {word.status}

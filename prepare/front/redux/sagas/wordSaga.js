@@ -74,7 +74,6 @@ function* removeWord(action) {
   try {
     const data = action.payload;
     const result = yield call(removeWordAPI, data);
-    console.log("result", result);
     yield put(removeWordSuccess(result.data));
   } catch (error) {
     yield put(removeWordError(error));
@@ -82,21 +81,40 @@ function* removeWord(action) {
   }
 }
 
+function changeStatusAPI(data) {
+  return axios.patch(`/word/${data.id}/${data.status}`, {
+    id: data.id,
+    status: data.status,
+  });
+}
+
 function* changeStatus(action) {
   try {
     const data = action.payload;
-    // console.log("data", data);
-    yield put(changeStatusWordSuccess(data));
+    console.log("data", data);
+    const result = yield call(changeStatusAPI, data);
+    yield put(changeStatusWordSuccess(result.data));
   } catch (error) {
     yield put(changeStatusWordError(error));
     console.log(error);
   }
 }
 
+function changeStatusAllAPI(data) {
+  return axios.patch(`/word/${data.userId}/${data.status}`, {
+    status: data.status,
+    userId: data.userId,
+  });
+}
+
 function* changeStatusAll(action) {
   try {
     const data = action.payload;
-    yield put(changeStatusWordAllSuccess(data));
+    console.log("data", data);
+    const result = yield call(changeStatusAllAPI, data);
+    console.log("result", result);
+    console.log("result.data", result.data);
+    // yield put(changeStatusWordAllSuccess(result.data));
   } catch (error) {
     yield put(changeStatusWordAllError(error));
     console.log(error);

@@ -1,12 +1,6 @@
 import React, { useCallback, useState, useEffect } from "react";
-import { Fragment } from "react";
-import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
-import ReviseWordModal from "./ReviseWordModal";
-import RemoveWordModal from "./RemoveWordModal";
 import {
-  changeStatusWordRequest,
   changeStatusWordAllRequest,
   loadWordsRequest,
 } from "../../redux/feature/wordSlice";
@@ -14,41 +8,36 @@ import WordItem from "./WordItem";
 
 const WordList = ({ UserId }) => {
   const dispatch = useDispatch();
-  const [modal, setModal] = useState(false);
-  const [removeModal, setRemoveModal] = useState(false);
-  const [id, setId] = useState(0);
-
-  const { wordLists, checkedWordList } = useSelector((state) => state.word);
+  UserId;
+  const [bChecked, setBChecked] = useState(false);
+  const { wordLists } = useSelector((state) => state.word);
 
   useEffect(() => {
+    // if (word.status === "C") {
+    //   setBChecked(true);
+    // } else if (word.status === "A") {
+    //   setBChecked(false);
+    // }
     dispatch(loadWordsRequest());
+    // const UserWord = wordLists.filter((word) => word.UserId === UserId);
+    // console.log("UserWord", UserWord);
+    // if (UserWord.status === "C") {
+    //   setBChecked(true);
+    // } else if (UserWord.status === "A") {
+    //   setBChecked(false);
+    // }
   }, []);
 
-  const onClickAllSelected = useCallback((e) => {
-    const checkboxClickedAll = e.target;
-    const checkboxes = document.querySelectorAll("input[name=checkItem]");
-
-    if (checkboxClickedAll.checked) {
-      dispatch(changeStatusWordAllRequest({ status: "C" }));
-      for (let i = 0; i < checkboxes.length; i++) {
-        checkboxes[i].checked = checkboxClickedAll.checked;
-      }
-    } else {
-      dispatch(changeStatusWordAllRequest({ status: "A" }));
-      for (let i = 0; i < checkboxes.length; i++) {
-        checkboxes[i].checked = checkboxClickedAll.checked;
-      }
-    }
-  }, []);
-
-  const onClickSelected = useCallback((e) => {
+  const onChangeAllSelected = useCallback((e) => {
     const checkboxClicked = e.target;
-    const wordIndex = e.target.value;
+    const userId = e.target.value;
 
     if (checkboxClicked.checked) {
-      dispatch(changeStatusWordRequest({ id: wordIndex, status: "C" }));
+      setBChecked(true);
+      dispatch(changeStatusWordAllRequest({ status: "C", userId: userId }));
     } else if (!checkboxClicked.checked) {
-      dispatch(changeStatusWordRequest({ id: wordIndex, status: "A" }));
+      setBChecked(false);
+      dispatch(changeStatusWordAllRequest({ status: "A", userId: userId }));
     }
   }, []);
 
@@ -58,20 +47,23 @@ const WordList = ({ UserId }) => {
       <div className="absolute top-64 right-0 md:right-20 lg:right-52">
         <div className="flex items-center mb-2">
           <input
-            onChange={onClickAllSelected}
-            id="checkboxAll"
+            checked={bChecked}
+            onChange={onChangeAllSelected}
+            value={UserId}
+            name="checkItem"
             type="checkbox"
-            className="w-4 h-4 text-light-green bg-gray-900 rounded border-light-green focus:ring-light-green dark:focus:ring-light-green dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
           />
-          <label
-            htmlFor="checkboxAll"
-            className="ml-2 text-sm font-bold text-gray-900 border-light-green"
-          >
-            전체 선택 / 해제
-          </label>
+          전체 선택 / 해제
         </div>
         <p>
-          체크된 단어 개수 : {checkedWordList.length}/{wordLists.length}
+          체크된 단어 개수 :{" "}
+          {
+            wordLists.filter(
+              (word) => word.status === "C" && word.UserId === UserId
+            ).length
+          }
+          /{wordLists.filter((word) => word.UserId === UserId).length}
         </p>
       </div>
 

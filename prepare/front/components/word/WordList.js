@@ -11,6 +11,8 @@ const WordList = ({ UserId }) => {
   UserId;
   const [bChecked, setBChecked] = useState(false);
   const { wordLists } = useSelector((state) => state.word);
+  // const data = { ...wordLists };
+  // const [result, setResult] = useState([]);
 
   useEffect(() => {
     // if (word.status === "C") {
@@ -29,6 +31,10 @@ const WordList = ({ UserId }) => {
   }, []);
 
   const onChangeAllSelected = useCallback((e) => {
+    // const idArray = [];
+    // wordLists.forEach((word) => idArray.push(word.id));
+    // setResult(idArray);
+    // console.log("result", result);
     const checkboxClicked = e.target;
     const userId = e.target.value;
 

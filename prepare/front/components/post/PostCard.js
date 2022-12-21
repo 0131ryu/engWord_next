@@ -21,14 +21,16 @@ import CommentForm from "./CommentForm";
 import CommentCard from "./CommentCard";
 import RemovePostModal from "./RemovePostModal";
 import PostCardContent from "./PostCardContent";
+import { followRequest, unfollowRequest } from "../../redux/feature/userSlice";
 
-const PostCard = ({ post, index }) => {
+const PostCard = ({ post, index, me }) => {
   const dispatch = useDispatch();
   const [removeModal, setRemoveModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
   const id = useSelector((state) => state.user.me?.id);
   const liked = post.Likers?.find((v) => v.id === id);
+  const isFollowing = me?.Followings.find((v) => v.id === post.User.id);
 
   useEffect(() => {
     // console.log("post.id", post.id);
@@ -79,6 +81,14 @@ const PostCard = ({ post, index }) => {
     dispatch(unlikePostRequest(post.id));
   }, [id]);
 
+  const onClickFollow = useCallback(() => {
+    if (isFollowing) {
+      dispatch(unfollowRequest(post.User.id));
+    } else {
+      dispatch(followRequest(post.User.id));
+    }
+  }, [isFollowing]);
+
   return (
     <>
       {/* 삭제 포스트 모달창 */}
@@ -99,6 +109,18 @@ const PostCard = ({ post, index }) => {
                 />
               </span>
               <span>{post.nickname}</span>
+              <button
+                onClick={onClickFollow}
+                className={`ml-2 ${
+                  isFollowing ? "bg-red-500" : "bg-light-green"
+                } rounded w-20 text-white ${
+                  isFollowing
+                    ? "hover:bg-light-beige hover:text-red-500"
+                    : "hover:bg-light-beige hover:text-light-green"
+                }  `}
+              >
+                <p className="text-sm">{isFollowing ? "언팔로우" : "팔로우"}</p>
+              </button>
             </div>
             <div className="float-right">
               {editMode ? null : (
@@ -179,7 +201,7 @@ const PostCard = ({ post, index }) => {
                     <HeartIcon onClick={onLike} className="h-8 w-8" />
                   )}
 
-                  <p className="mt-1">10</p>
+                  <p className="mt-1">{post.Likers.length}</p>
                 </span>
                 <span className="flex mr-4">
                   <ChatBubbleOvalLeftEllipsisIcon className="h-8 w-8" />

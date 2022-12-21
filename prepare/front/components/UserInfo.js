@@ -1,6 +1,7 @@
 import React from "react";
+import Link from "next/link";
 
-const UserInfo = ({ nickname }) => {
+const UserInfo = ({ nickname, me, postResult }) => {
   return (
     <>
       <div className="ml-2 shadow shadow-black-500/40 rounded-xl">
@@ -25,15 +26,23 @@ const UserInfo = ({ nickname }) => {
         <div className="lg:flex md:ml-5 lg:ml-10">
           <div className="flex p-1 items-center">
             <p className="text-gray-400 block">Article</p>
-            <p className="ml-1 font-bold">34</p>
+            <p className="ml-1 font-bold">{postResult.length}</p>
           </div>
           <div className="flex p-1 items-center">
             <p className="text-gray-400 block">Follower</p>
-            <p className="ml-1 font-bold">940</p>
+            <p className="ml-1 font-bold">
+              <Link href={`/profile`}>
+                <a>{me?.Followers.length}</a>
+              </Link>
+            </p>
           </div>
           <div className="flex p-1 items-center">
             <p className="text-gray-400 block">Following</p>
-            <p className="ml-1 font-bold">900</p>
+            <p className="ml-1 font-bold">
+              <Link href={`/profile`}>
+                <a>{me?.Followings.length}</a>
+              </Link>
+            </p>
           </div>
         </div>
       </div>

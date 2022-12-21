@@ -95,21 +95,21 @@ router.patch("/:id/:status", isLoggedIn, async (req, res, next) => {
 router.patch("/:userId/:status", isLoggedIn, async (req, res, next) => {
   // (전체 수정) PATCH /word/status/1(userId)
   try {
-    // const word = await Word.findAll({
-    //   where: { UserId: req.params.userId },
-    // });
-    const fullWord = await Word.update(
-      {
-        status: req.body.status,
-      },
-      {
-        where: {
-          // id: { [Op.gt]: 0 },
-          id: req.params.id,
-          [Op.or]: [{ UserId: req.params.id }, { UserId: req.user.id }],
-        },
-      }
-    );
+    const word = await Word.findAll({
+      where: { UserId: req.params.userId },
+    });
+    // const fullWord = await Word.update(
+    //   {
+    //     status: req.body.status,
+    //   },
+    //   {
+    //     where: {
+    //       // id: { [Op.gt]: 0 },
+    //       id: req.params.id,
+    //       [Op.or]: [{ UserId: req.params.id }, { UserId: req.user.id }],
+    //     },
+    //   }
+    // );
     // await Word.update(
     //   {
     //     status: req.body.status,
@@ -121,7 +121,7 @@ router.patch("/:userId/:status", isLoggedIn, async (req, res, next) => {
     //     },
     //   }
     // );
-    res.status(200).json({ fullWord });
+    res.status(200).json(word);
   } catch (error) {
     console.error(error);
     next(error);

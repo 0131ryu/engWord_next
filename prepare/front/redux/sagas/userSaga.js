@@ -15,6 +15,18 @@ import {
   changeNicknameRequest,
   changeNicknameSuccess,
   changeNicknameFailure,
+  followRequest,
+  followSuccess,
+  followFailure,
+  unfollowRequest,
+  unfollowSuccess,
+  unfollowFailure,
+  loadFollowingsRequest,
+  loadFollowingsSuccess,
+  loadFollowingsFailure,
+  loadFollowersRequest,
+  loadFollowersSuccess,
+  loadFollowersFailure,
 } from "../feature/userSlice";
 import axios from "axios";
 
@@ -96,6 +108,69 @@ function* changeNickname(action) {
   }
 }
 
+function followAPI(data) {
+  return axios.patch(`/user/${data}/follow`);
+}
+
+function* follow(action) {
+  try {
+    const data = action.payload;
+    console.log("data", data);
+    const result = yield call(followAPI, data);
+    yield put(followSuccess(result.data));
+  } catch (error) {
+    yield put(followFailure(error));
+    console.log(error);
+  }
+}
+
+function unfollowAPI(data) {
+  return axios.delete(`/user/${data}/follow`);
+}
+
+function* unfollow(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(unfollowAPI, data);
+    yield put(unfollowSuccess(result.data));
+  } catch (error) {
+    yield put(unfollowFailure(error));
+    console.log(error);
+  }
+}
+
+function loadFollowersAPI(data) {
+  return axios.get("/user/followers", data);
+}
+
+function* loadFollowers(action) {
+  try {
+    const data = action.payload;
+    console.log("data", data);
+    const result = yield call(loadFollowersAPI, data);
+    yield put(loadFollowersSuccess(result.data));
+  } catch (error) {
+    yield put(loadFollowersFailure(error));
+    console.log(error);
+  }
+}
+
+function loadFollowingsAPI(data) {
+  return axios.get("/user/followings", data);
+}
+
+function* loadFollowings(action) {
+  try {
+    const data = action.payload;
+    console.log("data", data);
+    const result = yield call(loadFollowingsAPI, data);
+    yield put(loadFollowingsSuccess(result.data));
+  } catch (error) {
+    yield put(loadFollowingsFailure(error));
+    console.log(error);
+  }
+}
+
 function* login_Req() {
   yield takeLatest(loginRequest.type, logIn);
 }
@@ -116,10 +191,30 @@ function* changenickname_Req() {
   yield takeLatest(changeNicknameRequest.type, changeNickname);
 }
 
+function* follow_Req() {
+  yield takeLatest(followRequest.type, follow);
+}
+
+function* unfollow_Req() {
+  yield takeLatest(unfollowRequest.type, unfollow);
+}
+
+function* loadFollowers_Req() {
+  yield takeLatest(loadFollowersRequest.type, loadFollowers);
+}
+
+function* loadFollowings_Req() {
+  yield takeLatest(loadFollowingsRequest.type, loadFollowings);
+}
+
 export const userSagas = [
   fork(login_Req),
   fork(logout_Req),
   fork(signup_Req),
   fork(loadmyinfo_Req),
   fork(changenickname_Req),
+  fork(follow_Req),
+  fork(unfollow_Req),
+  fork(loadFollowers_Req),
+  fork(loadFollowings_Req),
 ];

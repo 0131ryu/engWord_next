@@ -4,13 +4,18 @@ import useInput from "../hooks/useInput";
 import { changeNicknameRequest } from "../redux/feature/userSlice";
 import { loadWordsRequest } from "../redux/feature/wordSlice";
 import NicknameEditForm from "./NicknameEditForm";
-// import { loadPostsRequest } from "../redux/feature/postSlice";
+import Link from "next/link";
+import FollowModal from "./FollowingModal";
+import FollowingModal from "./FollowingModal";
+import FollowerModal from "./FollowerModal";
 
 const Profile = ({ me, postResult, wordResult }) => {
   const dispatch = useDispatch();
   const id = useSelector((state) => state.user.me?.id);
   const [nickname, onChangeNickname] = useInput(me?.nickname || "");
   const [editMode, setEditMode] = useState(false);
+  const [followerModal, setFollowerModal] = useState(false);
+  const [followingModal, setFollowingModal] = useState(false);
 
   const onCancleChangeNickname = useCallback(() => {}, []);
 
@@ -23,6 +28,7 @@ const Profile = ({ me, postResult, wordResult }) => {
   );
 
   useEffect(() => {
+    console.log("me", me);
     dispatch(loadWordsRequest(nickname));
     // dispatch(loadPostsRequest());
   }, []);
@@ -30,8 +36,31 @@ const Profile = ({ me, postResult, wordResult }) => {
   const onChangeEdit = useCallback(() => {
     setEditMode(true);
   }, [id]);
+
+  const onClickFollowerModal = useCallback(() => {
+    setFollowerModal(true);
+  }, []);
+
+  const onClickFollowingModal = useCallback(() => {
+    setFollowingModal(true);
+  }, []);
+
   return (
     <>
+      {followingModal ? (
+        <FollowingModal
+          id={id}
+          setFollowingModal={setFollowingModal}
+          followingsInfo={me?.Followings}
+        />
+      ) : null}
+      {followerModal ? (
+        <FollowerModal
+          id={id}
+          setFollowerModal={setFollowerModal}
+          followerInfo={me?.Followers}
+        />
+      ) : null}
       <div className="mt-10 lg:mt-20">
         <section className="flex flex-wrap justify-center">
           <div className="container mx-auto px-4">
@@ -61,23 +90,35 @@ const Profile = ({ me, postResult, wordResult }) => {
                     <div className="flex justify-center py-4 lg:pt-4 pt-8">
                       <div className="mr-4 p-3 text-center">
                         <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                          {postResult.length}
+                          <Link href={`/post`}>
+                            <a> {postResult.length}</a>
+                          </Link>
                         </span>
                         <span className="text-sm text-blueGray-400">
                           게시글
                         </span>
                       </div>
                       <div className="mr-4 p-3 text-center">
-                        <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                          10
+                        <span
+                          onClick={onClickFollowerModal}
+                          className="text-xl font-bold block uppercase tracking-wide text-blueGray-600"
+                        >
+                          <a className="hover:text-sky-500">
+                            {me?.Followers.length}
+                          </a>
                         </span>
                         <span className="text-sm text-blueGray-400">
                           팔로워
                         </span>
                       </div>
                       <div className="lg:mr-4 p-3 text-center">
-                        <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                          89
+                        <span
+                          onClick={onClickFollowingModal}
+                          className="text-xl font-bold block uppercase tracking-wide text-blueGray-600"
+                        >
+                          <a className="hover:text-sky-500">
+                            {me?.Followings.length}
+                          </a>
                         </span>
                         <span className="text-sm text-blueGray-400">
                           팔로잉
@@ -96,8 +137,10 @@ const Profile = ({ me, postResult, wordResult }) => {
                   <div className="w-full lg:text-center lg:mt-3 px-4 lg:order-1">
                     <div className="flex justify-center py-4 lg:pt-4 pt-8">
                       <div className="mr-4 p-3 text-center">
-                        <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                          {wordResult.length}
+                        <span className="text-xl font-bold block uppercase tracking-wide">
+                          <Link href={`/index`}>
+                            <a>{wordResult.length}</a>
+                          </Link>
                         </span>
                         <span className="text-sm text-blueGray-400">
                           작성한 단어 개수

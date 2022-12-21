@@ -12,6 +12,8 @@ const post = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
   const { mainPosts } = useSelector((state) => state.post);
+  const id = useSelector((state) => state.user.me?.id);
+  const postResult = mainPosts.filter((post) => post.UserId === id);
 
   useEffect(() => {
     const lastId = mainPosts[mainPosts.length - 1]?.id;
@@ -26,12 +28,20 @@ const post = () => {
       <div className="h-full mt-5">
         <div className="grid grid-cols-4 gap-6">
           <div className="col-span-1">
-            {me && <UserInfo nickname={me?.nickname} />}
+            {me && (
+              <UserInfo
+                nickname={me?.nickname}
+                me={me}
+                postResult={postResult}
+              />
+            )}
           </div>
           <div className="col-span-2">
             {me && <PostForm />}
             {mainPosts.map((post, index) => {
-              return <PostCard key={post.id} post={post} index={index} />;
+              return (
+                <PostCard key={post.id} post={post} index={index} me={me} />
+              );
             })}
           </div>
           <div className="col-span-1">

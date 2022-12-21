@@ -16,6 +16,18 @@ const initialState = {
   changeNicknameLoading: false, //닉네임 변경
   changeNicknameComplete: false,
   changeNicknameError: null,
+  followLoading: false, //팔로우
+  followComplete: false,
+  followError: null,
+  unfollowLoading: false, //언팔로우
+  unfollowComplete: false,
+  unfollowError: null,
+  loadFollowersLoading: false, //팔로워 가져오기
+  loadFollowersComplete: false,
+  loadFollowersError: null,
+  loadFollowingsLoading: false, //팔로잉 가져오기
+  loadFollowingsComplete: false,
+  loadFollowingsError: null,
   me: null,
   signUpData: {},
   loginData: {},
@@ -109,6 +121,68 @@ export const userSlice = createSlice({
       state.changeNicknameLoading = false;
       state.changeNicknameError = action.error;
     },
+    followRequest: (state) => {
+      state.followLoading = true;
+      state.followError = null;
+      state.followComplete = false;
+    },
+    followSuccess: (state, action) => {
+      const data = action.payload;
+      state.followLoading = false;
+      state.followComplete = true;
+      state.me.Followings.push({ id: data.UserId });
+    },
+    followFailure: (state, action) => {
+      state.followLoading = false;
+      state.followError = action.error;
+    },
+    unfollowRequest: (state) => {
+      state.unfollowLoading = true;
+      state.unfollowError = null;
+      state.unfollowComplete = false;
+    },
+    unfollowSuccess: (state, action) => {
+      const data = action.payload;
+      state.unfollowLoading = false;
+      state.unfollowComplete = true;
+      state.me.Followings = state.me.Followings.filter(
+        (v) => v.id !== data.UserId
+      );
+    },
+    unfollowFailure: (state, action) => {
+      state.unfollowLoading = false;
+      state.unfollowError = action.error;
+    },
+    loadFollowingsRequest: (state) => {
+      state.loadFollowingsLoading = true;
+      state.loadFollowingsError = null;
+      state.loadFollowingsComplete = false;
+    },
+    loadFollowingsSuccess: (state, action) => {
+      const data = action.payload;
+      state.loadFollowingsLoading = false;
+      state.loadFollowingsComplete = true;
+      state.me.Followings = data;
+    },
+    loadFollowingsFailure: (state, action) => {
+      state.loadFollowingsLoading = false;
+      state.loadFollowingsError = action.error;
+    },
+    loadFollowersRequest: (state) => {
+      state.loadFollowersLoading = true;
+      state.loadFollowersError = null;
+      state.loadFollowersComplete = false;
+    },
+    loadFollowersSuccess: (state, action) => {
+      const data = action.payload;
+      state.loadFollowersLoading = false;
+      state.loadFollowersComplete = true;
+      state.me.Followers = data;
+    },
+    loadFollowersFailure: (state, action) => {
+      state.loadFollowersLoading = false;
+      state.loadFollowersError = action.error;
+    },
   },
 });
 
@@ -128,6 +202,18 @@ export const {
   changeNicknameRequest,
   changeNicknameSuccess,
   changeNicknameFailure,
+  followRequest,
+  followSuccess,
+  followFailure,
+  unfollowRequest,
+  unfollowSuccess,
+  unfollowFailure,
+  loadFollowingsRequest,
+  loadFollowingsSuccess,
+  loadFollowingsFailure,
+  loadFollowersRequest,
+  loadFollowersSuccess,
+  loadFollowersFailure,
 } = userSlice.actions;
 
 export default userSlice.reducer;

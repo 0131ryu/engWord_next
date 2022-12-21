@@ -30,7 +30,6 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
   const splitEnglish = [];
 
   useEffect(() => {
-    console.log("findResult", findResult);
     setResultEng(findResult[0]?.english);
     setResultExEnglish(findResult[0]?.ex_english);
   }, [findResult]);

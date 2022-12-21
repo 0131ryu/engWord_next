@@ -9,40 +9,25 @@ import WordItem from "./WordItem";
 const WordList = ({ UserId }) => {
   const dispatch = useDispatch();
   UserId;
-  const [bChecked, setBChecked] = useState(false);
   const { wordLists } = useSelector((state) => state.word);
-  // const data = { ...wordLists };
-  // const [result, setResult] = useState([]);
+
+  const showStatus = wordLists.filter(
+    (word) => word.status === "C" && word.UserId === UserId
+  ).length;
+
+  const allWord = wordLists.filter((word) => word.UserId === UserId).length;
 
   useEffect(() => {
-    // if (word.status === "C") {
-    //   setBChecked(true);
-    // } else if (word.status === "A") {
-    //   setBChecked(false);
-    // }
     dispatch(loadWordsRequest());
-    // const UserWord = wordLists.filter((word) => word.UserId === UserId);
-    // console.log("UserWord", UserWord);
-    // if (UserWord.status === "C") {
-    //   setBChecked(true);
-    // } else if (UserWord.status === "A") {
-    //   setBChecked(false);
-    // }
   }, []);
 
   const onChangeAllSelected = useCallback((e) => {
-    // const idArray = [];
-    // wordLists.forEach((word) => idArray.push(word.id));
-    // setResult(idArray);
-    // console.log("result", result);
     const checkboxClicked = e.target;
     const userId = e.target.value;
 
     if (checkboxClicked.checked) {
-      setBChecked(true);
       dispatch(changeStatusWordAllRequest({ status: "C", userId: userId }));
     } else if (!checkboxClicked.checked) {
-      setBChecked(false);
       dispatch(changeStatusWordAllRequest({ status: "A", userId: userId }));
     }
   }, []);
@@ -53,7 +38,7 @@ const WordList = ({ UserId }) => {
       <div className="absolute top-64 right-0 md:right-20 lg:right-52">
         <div className="flex items-center mb-2">
           <input
-            checked={bChecked}
+            checked={showStatus > 0 ? true : false}
             onChange={onChangeAllSelected}
             value={UserId}
             name="checkItem"
@@ -63,13 +48,7 @@ const WordList = ({ UserId }) => {
           전체 선택 / 해제
         </div>
         <p>
-          체크된 단어 개수 :{" "}
-          {
-            wordLists.filter(
-              (word) => word.status === "C" && word.UserId === UserId
-            ).length
-          }
-          /{wordLists.filter((word) => word.UserId === UserId).length}
+          체크된 단어 개수 :{showStatus}/{allWord}
         </p>
       </div>
 

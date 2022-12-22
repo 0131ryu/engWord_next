@@ -119,7 +119,11 @@ const PostCard = ({ post, index, me }) => {
                     : "hover:bg-light-beige hover:text-light-green"
                 }  `}
               >
-                <p className="text-sm">{isFollowing ? "언팔로우" : "팔로우"}</p>
+                {id === post.UserId ? null : (
+                  <p className="text-sm">
+                    {isFollowing ? "언팔로우" : "팔로우"}
+                  </p>
+                )}
               </button>
             </div>
             <div className="float-right">
@@ -128,7 +132,9 @@ const PostCard = ({ post, index, me }) => {
                   <>
                     <Popover.Button className="rounded-md px-3 py-2 text-base">
                       <div>
-                        <EllipsisHorizontalIcon className="h-9 w-9" />
+                        {id === post.UserId ? (
+                          <EllipsisHorizontalIcon className="h-9 w-9" />
+                        ) : null}
                       </div>
                     </Popover.Button>
                     <Transition

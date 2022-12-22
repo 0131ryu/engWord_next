@@ -5,7 +5,6 @@ import { changeNicknameRequest } from "../redux/feature/userSlice";
 import { loadWordsRequest } from "../redux/feature/wordSlice";
 import NicknameEditForm from "./NicknameEditForm";
 import Link from "next/link";
-import FollowModal from "./FollowingModal";
 import FollowingModal from "./FollowingModal";
 import FollowerModal from "./FollowerModal";
 
@@ -49,16 +48,15 @@ const Profile = ({ me, postResult, wordResult }) => {
     <>
       {followingModal ? (
         <FollowingModal
-          id={id}
           setFollowingModal={setFollowingModal}
           followingsInfo={me?.Followings}
         />
       ) : null}
       {followerModal ? (
         <FollowerModal
-          id={id}
           setFollowerModal={setFollowerModal}
-          followerInfo={me?.Followers}
+          followersInfo={me?.Followers}
+          followingsInfo={me?.Followings}
         />
       ) : null}
       <div className="mt-10 lg:mt-20">

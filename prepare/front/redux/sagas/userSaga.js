@@ -146,7 +146,6 @@ function loadFollowersAPI(data) {
 function* loadFollowers(action) {
   try {
     const data = action.payload;
-    console.log("data", data);
     const result = yield call(loadFollowersAPI, data);
     yield put(loadFollowersSuccess(result.data));
   } catch (error) {

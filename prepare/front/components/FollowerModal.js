@@ -1,22 +1,29 @@
-import React, { useEffect, Fragment, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, {
+  useEffect,
+  Fragment,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Dialog, Transition } from "@headlessui/react";
 import { UserPlusIcon } from "@heroicons/react/24/outline";
-import { loadFollowersRequest } from "../redux/feature/userSlice";
+import {
+  followRequest,
+  loadFollowersRequest,
+} from "../redux/feature/userSlice";
 
-const FollowerModal = ({ id, setFollowerModal, followerInfo }) => {
+const FollowerModal = ({ setFollowerModal, followersInfo, followingsInfo }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
 
   useEffect(() => {
-    console.log("followerInfo", followerInfo);
-    dispatch(loadFollowersRequest(id));
+    dispatch(loadFollowersRequest());
   }, []);
 
-  const onRemoveWordSubmit = () => {
-    setFollowerModal(false);
-    // dispatch(removeWordRequest(id));
+  const onClickFollowUp = (id) => () => {
+    dispatch(followRequest(id));
   };
 
   const onOpenCloseModal = () => {
@@ -69,10 +76,11 @@ const FollowerModal = ({ id, setFollowerModal, followerInfo }) => {
                         팔로워 목록
                       </Dialog.Title>
                       {/* 팔로잉 목록 start */}
+
                       <div className="mt-3 w-96 p-4 border rounded-lg shadow-md">
                         <div className="flex items-center justify-between mb-4">
                           <h5 className="text-xl font-bold leading-none text-gray-900">
-                            팔로워 수 : {followerInfo.length}
+                            팔로워 수 : {followersInfo.length}
                           </h5>
                           <a
                             href="#"
@@ -86,27 +94,43 @@ const FollowerModal = ({ id, setFollowerModal, followerInfo }) => {
                             role="list"
                             className="divide-y divide-gray-200 dark:divide-gray-700"
                           >
-                            <li className="py-3 sm:py-4">
-                              <div className="flex items-center space-x-4">
-                                <div className="flex-shrink-0">
-                                  <img
-                                    className="w-8 h-8 rounded-full"
-                                    src="/docs/images/people/profile-picture-1.jpg"
-                                    alt="Neil image"
-                                  />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <p className="text-sm font-medium text-gray-900 truncate">
-                                    Neil Sims
-                                  </p>
-                                  <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                                    email@windster.com
-                                  </p>
-                                </div>
-                                <button className="bg-red-500 text-white hover:bg-light-beige hover:text-red-500 rounded inline-flex items-center text-base font-semibold text-gray-900">
-                                  언팔로우
-                                </button>
-                              </div>
+                            <li className="py-3">
+                              {followersInfo.map((follower) => {
+                                return (
+                                  <div
+                                    key={follower.id}
+                                    className="mt-3 flex items-center space-x-4"
+                                  >
+                                    <div className="flex-shrink-0">
+                                      <img
+                                        className="ml-2 w-8 h-8 rounded-full"
+                                        src="/docs/images/people/profile-picture-1.jpg"
+                                        alt="Neil image"
+                                      />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <p className="text-sm font-medium text-gray-900 truncate">
+                                        {follower.nickname}
+                                      </p>
+                                      <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                                        {follower.email}
+                                      </p>
+                                    </div>
+
+                                    {followingsInfo.find(
+                                      (following) =>
+                                        following.id === follower.id
+                                    ) ? null : (
+                                      <button
+                                        onClick={onClickFollowUp(follower.id)}
+                                        className="bg-light-green text-white hover:bg-light-beige hover:text-red-500 rounded inline-flex items-center text-base font-semibold text-gray-900"
+                                      >
+                                        맞팔로우
+                                      </button>
+                                    )}
+                                  </div>
+                                );
+                              })}
                             </li>
                           </ul>
                         </div>
@@ -118,18 +142,11 @@ const FollowerModal = ({ id, setFollowerModal, followerInfo }) => {
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-light-orange px-4 py-2 font-medium shadow-sm hover:bg-light-beige hover:text-light-orange  focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={onRemoveWordSubmit}
-                  >
-                    <p className="font-bold">삭제</p>
-                  </button>
-                  <button
-                    type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={onOpenCloseModal}
                     ref={cancelButtonRef}
                   >
-                    취소
+                    닫기
                   </button>
                 </div>
               </Dialog.Panel>

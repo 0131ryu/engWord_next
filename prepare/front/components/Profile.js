@@ -98,19 +98,6 @@ const Profile = ({ me, postResult, wordResult }) => {
                       </div>
                       <div className="mr-4 p-3 text-center">
                         <span
-                          onClick={onClickFollowerModal}
-                          className="text-xl font-bold block uppercase tracking-wide text-blueGray-600"
-                        >
-                          <a className="hover:text-sky-500">
-                            {me?.Followers.length}
-                          </a>
-                        </span>
-                        <span className="text-sm text-blueGray-400">
-                          팔로워
-                        </span>
-                      </div>
-                      <div className="lg:mr-4 p-3 text-center">
-                        <span
                           onClick={onClickFollowingModal}
                           className="text-xl font-bold block uppercase tracking-wide text-blueGray-600"
                         >
@@ -120,6 +107,19 @@ const Profile = ({ me, postResult, wordResult }) => {
                         </span>
                         <span className="text-sm text-blueGray-400">
                           팔로잉
+                        </span>
+                      </div>
+                      <div className="lg:mr-4 p-3 text-center">
+                        <span
+                          onClick={onClickFollowerModal}
+                          className="text-xl font-bold block uppercase tracking-wide text-blueGray-600"
+                        >
+                          <a className="hover:text-sky-500">
+                            {me?.Followers.length}
+                          </a>
+                        </span>
+                        <span className="text-sm text-blueGray-400">
+                          팔로워
                         </span>
                       </div>
                     </div>

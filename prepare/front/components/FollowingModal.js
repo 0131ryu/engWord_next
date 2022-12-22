@@ -14,6 +14,7 @@ const FollowingModal = ({ setFollowingModal, followingsInfo }) => {
 
   useEffect(() => {
     dispatch(loadFollowingsRequest());
+    console.log("followingsInfo", followingsInfo);
   }, []);
 
   const onClickUnFollow = (id) => () => {
@@ -89,7 +90,10 @@ const FollowingModal = ({ setFollowingModal, followingsInfo }) => {
                             <li className="py-3">
                               {followingsInfo.map((following) => {
                                 return (
-                                  <div className="flex items-center space-x-4">
+                                  <div
+                                    key={following.id}
+                                    className="flex items-center space-x-4"
+                                  >
                                     <div className="flex-shrink-0">
                                       <img
                                         className="ml-2 w-8 h-8 rounded-full"

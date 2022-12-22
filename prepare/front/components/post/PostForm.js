@@ -11,8 +11,6 @@ const PostForm = ({ nickname, id }) => {
   const [text, onChangeText, setText] = useInput("");
 
   useEffect(() => {
-    console.log("text", text);
-    console.log("onChangeText", onChangeText);
     if (addPostComplete) {
       setText("");
     }

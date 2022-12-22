@@ -28,18 +28,16 @@ const initialState = {
   loadFollowingsLoading: false, //팔로잉 가져오기
   loadFollowingsComplete: false,
   loadFollowingsError: null,
+  blockfollowLoading: false,
+  blockfollowComplete: false,
+  blockfollowError: null,
+  loadBlockFollowingLoading: false, //차단 가져오기 loadBlockFollowingLoading
+  loadBlockFollowingComplete: false,
+  loadBlockFollowingError: null,
   me: null,
   signUpData: {},
   loginData: {},
 };
-
-const testUser = (data) => ({
-  nickname: "tester",
-  id: 1,
-  Posts: [{ id: 1 }],
-  Followings: [],
-  Followers: [],
-});
 
 export const userSlice = createSlice({
   name: "user",
@@ -183,6 +181,40 @@ export const userSlice = createSlice({
       state.loadFollowersLoading = false;
       state.loadFollowersError = action.error;
     },
+    //blockFollowRequest
+    blockfollowRequest: (state) => {
+      state.blockfollowLoading = true;
+      state.blockfollowError = null;
+      state.blockfollowComplete = false;
+    },
+    blockfollowSuccess: (state, action) => {
+      const data = action.payload;
+      console.log("data", data);
+      state.blockfollowLoading = false;
+      state.blockfollowComplete = true;
+      state.me.Followers = state.me.Followers.filter(
+        (v) => v.id !== data.UserId
+      );
+    },
+    blockfollowFailure: (state, action) => {
+      state.blockfollowLoading = false;
+      state.blockfollowError = action.error;
+    },
+    loadBlockFollowingRequest: (state) => {
+      state.loadBlockFollowingLoading = true;
+      state.loadBlockFollowingError = null;
+      state.loadBlockFollowingComplete = false;
+    },
+    loadBlockFollowingSuccess: (state, action) => {
+      const data = action.payload;
+      state.loadBlockFollowingLoading = false;
+      state.loadBlockFollowingComplete = true;
+      state.me.BlockFollowing = data;
+    },
+    loadBlockFollowingFailure: (state, action) => {
+      state.loadBlockFollowingLoading = false;
+      state.loadBlockFollowingError = action.error;
+    },
   },
 });
 
@@ -214,6 +246,12 @@ export const {
   loadFollowersRequest,
   loadFollowersSuccess,
   loadFollowersFailure,
+  blockfollowRequest,
+  blockfollowSuccess,
+  blockfollowFailure,
+  loadBlockFollowingRequest,
+  loadBlockFollowingSuccess,
+  loadBlockFollowingFailure,
 } = userSlice.actions;
 
 export default userSlice.reducer;

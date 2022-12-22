@@ -32,6 +32,11 @@ router.get("/", async (req, res, next) => {
             as: "Followers",
             attributes: ["id"],
           },
+          {
+            model: User,
+            as: "Blockings",
+            attributes: ["id"],
+          },
         ],
       });
       res.status(200).json(fullUserWithoutPassword);
@@ -72,6 +77,27 @@ router.get("/followings", isLoggedIn, async (req, res, next) => {
       // limit: parseInt(req.query.limit, 10),
     });
     res.status(200).json(followings);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.get("/blockfollowing", isLoggedIn, async (req, res, next) => {
+  // GET /user/blockfollowing
+  try {
+    const user = await User.findOne({ where: { id: req.user.id } });
+    if (!user) {
+      res.status(403).send("차단한 사람이 없습니다.");
+    }
+    // const blockFollowing = await user.getBlockings({
+    //   // limit: parseInt(req.query.limit, 10),
+    // });
+    const blockFollowing = await user.getBlockings({
+      // limit: parseInt(req.query.limit, 10),
+    });
+    console.log("blockFollowing 결과들", blockFollowing);
+    res.status(200).json(blockFollowing);
   } catch (error) {
     console.error(error);
     next(error);
@@ -307,6 +333,7 @@ router.delete("/follower/:userId", isLoggedIn, async (req, res, next) => {
       res.status(403).send("없는 사람을 차단하려고 하시네요?");
     }
     await user.removeFollowings(req.user.id);
+    await user.addBlockings(req.user.id);
     res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
   } catch (error) {
     console.error(error);

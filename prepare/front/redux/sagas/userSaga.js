@@ -27,6 +27,12 @@ import {
   loadFollowersRequest,
   loadFollowersSuccess,
   loadFollowersFailure,
+  blockfollowRequest,
+  blockfollowSuccess,
+  blockfollowFailure,
+  loadBlockFollowingRequest,
+  loadBlockFollowingSuccess,
+  loadBlockFollowingFailure,
 } from "../feature/userSlice";
 import axios from "axios";
 
@@ -84,7 +90,6 @@ function* loadMyInfo(action) {
   try {
     const data = action.payload;
     const result = yield call(loadMyInfoAPI, data);
-    // console.log("result", result);
     yield put(loadMyInfoSuccess(result.data));
   } catch (error) {
     yield put(loadMyInfoFailure(error));
@@ -146,6 +151,7 @@ function loadFollowersAPI(data) {
 function* loadFollowers(action) {
   try {
     const data = action.payload;
+    console.log("data", data);
     const result = yield call(loadFollowersAPI, data);
     yield put(loadFollowersSuccess(result.data));
   } catch (error) {
@@ -161,11 +167,41 @@ function loadFollowingsAPI(data) {
 function* loadFollowings(action) {
   try {
     const data = action.payload;
-    console.log("data", data);
     const result = yield call(loadFollowingsAPI, data);
     yield put(loadFollowingsSuccess(result.data));
   } catch (error) {
     yield put(loadFollowingsFailure(error));
+    console.log(error);
+  }
+}
+
+//blockFollow
+function blockFollowAPI(data) {
+  return axios.delete(`/user/follower/${data}`);
+}
+
+function* blockFollow(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(blockFollowAPI, data);
+    yield put(blockfollowSuccess(result.data));
+  } catch (error) {
+    yield put(blockfollowFailure(error));
+    console.log(error);
+  }
+}
+
+function loadBlockFollowingAPI(data) {
+  return axios.get("/user/blockfollowing", data);
+}
+
+function* loadBlockFollowing(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(loadBlockFollowingAPI, data);
+    yield put(loadBlockFollowingSuccess(result.data));
+  } catch (error) {
+    yield put(loadBlockFollowingFailure(error));
     console.log(error);
   }
 }
@@ -206,6 +242,14 @@ function* loadFollowings_Req() {
   yield takeLatest(loadFollowingsRequest.type, loadFollowings);
 }
 
+function* blockFollow_Req() {
+  yield takeLatest(blockfollowRequest.type, blockFollow);
+}
+
+function* loadBlockFollowing_Req() {
+  yield takeLatest(loadBlockFollowingRequest.type, loadBlockFollowing);
+}
+
 export const userSagas = [
   fork(login_Req),
   fork(logout_Req),
@@ -216,4 +260,6 @@ export const userSagas = [
   fork(unfollow_Req),
   fork(loadFollowers_Req),
   fork(loadFollowings_Req),
+  fork(blockFollow_Req),
+  fork(loadBlockFollowing_Req),
 ];

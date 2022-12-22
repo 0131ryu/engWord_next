@@ -21,7 +21,11 @@ import CommentForm from "./CommentForm";
 import CommentCard from "./CommentCard";
 import RemovePostModal from "./RemovePostModal";
 import PostCardContent from "./PostCardContent";
-import { followRequest, unfollowRequest } from "../../redux/feature/userSlice";
+import {
+  followRequest,
+  loadBlockFollowingRequest,
+  unfollowRequest,
+} from "../../redux/feature/userSlice";
 
 const PostCard = ({ post, index, me }) => {
   const dispatch = useDispatch();
@@ -31,12 +35,19 @@ const PostCard = ({ post, index, me }) => {
   const id = useSelector((state) => state.user.me?.id);
   const liked = post.Likers?.find((v) => v.id === id);
   const isFollowing = me?.Followings.find((v) => v.id === post.User.id);
+  // const isblockedUser = me?.BlockFollowing.find((v) => v.id === post.User.id);
+  // const blockingUser = me?.BlockFollowing.find
 
   useEffect(() => {
-    // console.log("post.id", post.id);
-    // post.Likers.find((v) => {
-    //   console.log("v.Like.PostId", v.Like.PostId);
-    // });
+    if (me) {
+      dispatch(loadBlockFollowingRequest());
+    }
+    console.log("me", me);
+
+    // console.log("isFollowing", isFollowing);
+    // console.log("isblockedUser", isblockedUser);
+    // console.log("me?.BlockFollowing.length", me?.BlockFollowing.length);
+    // console.log("me.Followings", me.Followings);
   }, []);
 
   const onClickRevise = useCallback(
@@ -109,6 +120,7 @@ const PostCard = ({ post, index, me }) => {
                 />
               </span>
               <span>{post.nickname}</span>
+
               <button
                 onClick={onClickFollow}
                 className={`ml-2 ${
@@ -125,6 +137,7 @@ const PostCard = ({ post, index, me }) => {
                   </p>
                 )}
               </button>
+              {/* {isblockedUser ? <div>true</div> : <div>false</div>} */}
             </div>
             <div className="float-right">
               {editMode ? null : (

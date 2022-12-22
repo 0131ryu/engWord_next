@@ -6,9 +6,13 @@ import React, {
   useCallback,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Dialog, Transition } from "@headlessui/react";
-import { UserPlusIcon } from "@heroicons/react/24/outline";
+import { Dialog, Transition, Popover } from "@headlessui/react";
 import {
+  UserPlusIcon,
+  EllipsisHorizontalIcon,
+} from "@heroicons/react/24/outline";
+import {
+  blockfollowRequest,
   followRequest,
   loadFollowersRequest,
 } from "../redux/feature/userSlice";
@@ -24,6 +28,11 @@ const FollowerModal = ({ setFollowerModal, followersInfo, followingsInfo }) => {
 
   const onClickFollowUp = (id) => () => {
     dispatch(followRequest(id));
+  };
+
+  const onBlockFollowing = (id) => () => {
+    console.log("id", id);
+    dispatch(blockfollowRequest(id));
   };
 
   const onOpenCloseModal = () => {
@@ -121,12 +130,47 @@ const FollowerModal = ({ setFollowerModal, followersInfo, followingsInfo }) => {
                                       (following) =>
                                         following.id === follower.id
                                     ) ? null : (
-                                      <button
-                                        onClick={onClickFollowUp(follower.id)}
-                                        className="bg-light-green text-white hover:bg-light-beige hover:text-red-500 rounded inline-flex items-center text-base font-semibold text-gray-900"
-                                      >
-                                        맞팔로우
-                                      </button>
+                                      <>
+                                        <button
+                                          onClick={onClickFollowUp(follower.id)}
+                                          className="bg-light-green text-white hover:bg-light-beige hover:text-red-500 rounded inline-flex items-center text-base font-semibold text-gray-900"
+                                        >
+                                          맞팔로우
+                                        </button>
+                                        <Popover>
+                                          <>
+                                            <Popover.Button className="rounded-md px-2 py-2 text-base">
+                                              <div>
+                                                <EllipsisHorizontalIcon className="h-5 w-5" />
+                                              </div>
+                                            </Popover.Button>
+                                            <Transition
+                                              as={Fragment}
+                                              enter="transition ease-out duration-200"
+                                              enterFrom="opacity-0 translate-y-1"
+                                              enterTo="opacity-100 translate-y-0"
+                                              leave="transition ease-in duration-150"
+                                              leaveFrom="opacity-100 translate-y-0"
+                                              leaveTo="opacity-0 translate-y-1"
+                                            >
+                                              <Popover.Panel className="absolute mt-1 w-16 h-10">
+                                                <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                                                  <div className="bg-light-beige p-1">
+                                                    <button
+                                                      onClick={onBlockFollowing(
+                                                        follower.id
+                                                      )}
+                                                      className="flow-root rounded-md px-2 py-2 transition duration-150 ease-in-out hover:bg-light-beige focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                                                    >
+                                                      차단
+                                                    </button>
+                                                  </div>
+                                                </div>
+                                              </Popover.Panel>
+                                            </Transition>
+                                          </>
+                                        </Popover>
+                                      </>
                                     )}
                                   </div>
                                 );

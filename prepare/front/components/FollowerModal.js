@@ -31,7 +31,7 @@ const FollowerModal = ({ setFollowerModal, followersInfo, followingsInfo }) => {
   };
 
   const onBlockFollowing = (id) => () => {
-    console.log("id", id);
+    console.log("id", id); //차단하는 아이디
     dispatch(blockfollowRequest(id));
   };
 

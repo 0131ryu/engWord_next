@@ -30,9 +30,12 @@ import {
   blockfollowRequest,
   blockfollowSuccess,
   blockfollowFailure,
-  loadBlockFollowingRequest,
-  loadBlockFollowingSuccess,
-  loadBlockFollowingFailure,
+  loadBlockingRequest,
+  loadBlockingSuccess,
+  loadBlockingFailure,
+  loadBlockedRequest,
+  loadBlockedSuccess,
+  loadBlockedFailure,
 } from "../feature/userSlice";
 import axios from "axios";
 
@@ -175,9 +178,8 @@ function* loadFollowings(action) {
   }
 }
 
-//blockFollow
 function blockFollowAPI(data) {
-  return axios.delete(`/user/follower/${data}`);
+  return axios.post(`/user/block/${data}`);
 }
 
 function* blockFollow(action) {
@@ -191,17 +193,32 @@ function* blockFollow(action) {
   }
 }
 
-function loadBlockFollowingAPI(data) {
-  return axios.get("/user/blockfollowing", data);
+function loadBlockingAPI(data) {
+  return axios.get("/user/blockings", data);
 }
 
-function* loadBlockFollowing(action) {
+function* loadBlocking(action) {
   try {
     const data = action.payload;
-    const result = yield call(loadBlockFollowingAPI, data);
-    yield put(loadBlockFollowingSuccess(result.data));
+    const result = yield call(loadBlockingAPI, data);
+    yield put(loadBlockingSuccess(result.data));
   } catch (error) {
-    yield put(loadBlockFollowingFailure(error));
+    yield put(loadBlockingFailure(error));
+    console.log(error);
+  }
+}
+
+function loadBlockedAPI(data) {
+  return axios.get("/user/blockeds", data);
+}
+
+function* loadBlocked(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(loadBlockedAPI, data);
+    yield put(loadBlockedSuccess(result.data));
+  } catch (error) {
+    yield put(loadBlockedFailure(error));
     console.log(error);
   }
 }
@@ -246,8 +263,12 @@ function* blockFollow_Req() {
   yield takeLatest(blockfollowRequest.type, blockFollow);
 }
 
-function* loadBlockFollowing_Req() {
-  yield takeLatest(loadBlockFollowingRequest.type, loadBlockFollowing);
+function* loadBlocking_Req() {
+  yield takeLatest(loadBlockingRequest.type, loadBlocking);
+}
+
+function* loadBlocked_Req() {
+  yield takeLatest(loadBlockedRequest.type, loadBlocked);
 }
 
 export const userSagas = [
@@ -261,5 +282,6 @@ export const userSagas = [
   fork(loadFollowers_Req),
   fork(loadFollowings_Req),
   fork(blockFollow_Req),
-  fork(loadBlockFollowing_Req),
+  fork(loadBlocking_Req),
+  fork(loadBlocked_Req),
 ];

@@ -45,6 +45,11 @@ module.exports = class User extends Model {
     });
     db.User.belongsToMany(db.User, {
       through: "BlockFollow",
+      as: "Blockeds",
+      foreignKey: "BlockingId",
+    });
+    db.User.belongsToMany(db.User, {
+      through: "BlockFollow",
       as: "Blockings",
       foreignKey: "BlockedId",
     });

@@ -31,9 +31,12 @@ const initialState = {
   blockfollowLoading: false,
   blockfollowComplete: false,
   blockfollowError: null,
-  loadBlockFollowingLoading: false, //차단 가져오기 loadBlockFollowingLoading
-  loadBlockFollowingComplete: false,
-  loadBlockFollowingError: null,
+  loadBlockingLoading: false, //차단한 경우 가져오기 loadBlockings
+  loadBlockingComplete: false,
+  loadBlockingError: null,
+  loadBlockedLoading: false, //차단된 경우 가져오기 loadBlockings
+  loadBlockedComplete: false,
+  loadBlockedError: null,
   me: null,
   signUpData: {},
   loginData: {},
@@ -181,7 +184,6 @@ export const userSlice = createSlice({
       state.loadFollowersLoading = false;
       state.loadFollowersError = action.error;
     },
-    //blockFollowRequest
     blockfollowRequest: (state) => {
       state.blockfollowLoading = true;
       state.blockfollowError = null;
@@ -189,31 +191,55 @@ export const userSlice = createSlice({
     },
     blockfollowSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data", data);
+      console.log("data.blockingUser", data.blockingUser);
+      console.log("data.blockedUser", data.blockedUser);
       state.blockfollowLoading = false;
       state.blockfollowComplete = true;
+      //내 팔로워 목록에서 줄어들음
       state.me.Followers = state.me.Followers.filter(
-        (v) => v.id !== data.UserId
+        (v) => v.id !== data.blockingUser
       );
+      //내가 차단한 경우
+      state.me.Blockeds.push({ id: data.blockingUser });
+
+      //내가 차단된 경우
+      state.me.Blockings.push({ id: data.blockedUser });
     },
     blockfollowFailure: (state, action) => {
       state.blockfollowLoading = false;
       state.blockfollowError = action.error;
     },
-    loadBlockFollowingRequest: (state) => {
-      state.loadBlockFollowingLoading = true;
-      state.loadBlockFollowingError = null;
-      state.loadBlockFollowingComplete = false;
+    loadBlockingRequest: (state) => {
+      state.loadBlockingLoading = true;
+      state.loadBlockingError = null;
+      state.loadBlockingComplete = false;
     },
-    loadBlockFollowingSuccess: (state, action) => {
+    loadBlockingSuccess: (state, action) => {
       const data = action.payload;
-      state.loadBlockFollowingLoading = false;
-      state.loadBlockFollowingComplete = true;
-      state.me.BlockFollowing = data;
+      console.log("data", data);
+      state.loadBlockingLoading = false;
+      state.loadBlockingComplete = true;
+      state.me.Blockings = data;
     },
-    loadBlockFollowingFailure: (state, action) => {
-      state.loadBlockFollowingLoading = false;
-      state.loadBlockFollowingError = action.error;
+    loadBlockingFailure: (state, action) => {
+      state.loadBlockingLoading = false;
+      state.loadBlockingError = action.error;
+    },
+    loadBlockedRequest: (state) => {
+      state.loadBlockedLoading = true;
+      state.loadBlockedError = null;
+      state.loadBlockedComplete = false;
+    },
+    loadBlockedSuccess: (state, action) => {
+      const data = action.payload;
+      console.log("data", data);
+      state.loadBlockedLoading = false;
+      state.loadBlockedComplete = true;
+      state.me.Blockeds = data;
+    },
+    loadBlockedFailure: (state, action) => {
+      state.loadBlockedLoading = false;
+      state.loadBlockedError = action.error;
     },
   },
 });
@@ -249,9 +275,12 @@ export const {
   blockfollowRequest,
   blockfollowSuccess,
   blockfollowFailure,
-  loadBlockFollowingRequest,
-  loadBlockFollowingSuccess,
-  loadBlockFollowingFailure,
+  loadBlockingRequest,
+  loadBlockingSuccess,
+  loadBlockingFailure,
+  loadBlockedRequest,
+  loadBlockedSuccess,
+  loadBlockedFailure,
 } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -23,7 +23,8 @@ import RemovePostModal from "./RemovePostModal";
 import PostCardContent from "./PostCardContent";
 import {
   followRequest,
-  loadBlockFollowingRequest,
+  loadBlockingRequest,
+  loadBlockedRequest,
   unfollowRequest,
 } from "../../redux/feature/userSlice";
 
@@ -35,19 +36,18 @@ const PostCard = ({ post, index, me }) => {
   const id = useSelector((state) => state.user.me?.id);
   const liked = post.Likers?.find((v) => v.id === id);
   const isFollowing = me?.Followings.find((v) => v.id === post.User.id);
-  // const isblockedUser = me?.BlockFollowing.find((v) => v.id === post.User.id);
-  // const blockingUser = me?.BlockFollowing.find
+  const blockingLists = me?.Blockings;
+  const blockedLists = me?.Blockeds;
 
   useEffect(() => {
     if (me) {
-      dispatch(loadBlockFollowingRequest());
+      dispatch(loadBlockedRequest());
+      dispatch(loadBlockingRequest());
     }
-    console.log("me", me);
+    // console.log("me", me);
 
-    // console.log("isFollowing", isFollowing);
-    // console.log("isblockedUser", isblockedUser);
-    // console.log("me?.BlockFollowing.length", me?.BlockFollowing.length);
-    // console.log("me.Followings", me.Followings);
+    // console.log("blockingLists", blockingLists);
+    // console.log("blockedLists", blockedLists);
   }, []);
 
   const onClickRevise = useCallback(
@@ -119,25 +119,32 @@ const PostCard = ({ post, index, me }) => {
                   alt="profile-img"
                 />
               </span>
-              <span>{post.nickname}</span>
 
-              <button
-                onClick={onClickFollow}
-                className={`ml-2 ${
-                  isFollowing ? "bg-red-500" : "bg-light-green"
-                } rounded w-20 text-white ${
-                  isFollowing
-                    ? "hover:bg-light-beige hover:text-red-500"
-                    : "hover:bg-light-beige hover:text-light-green"
-                }  `}
-              >
-                {id === post.UserId ? null : (
-                  <p className="text-sm">
-                    {isFollowing ? "언팔로우" : "팔로우"}
-                  </p>
-                )}
-              </button>
-              {/* {isblockedUser ? <div>true</div> : <div>false</div>} */}
+              <span>{post.nickname}</span>
+              {blockingLists.map((block) =>
+                block.id === post.UserId ? (
+                  <div className="ml-2 bg-gray-100 rounded w-20">
+                    차단한 유저
+                  </div>
+                ) : (
+                  <button
+                    onClick={onClickFollow}
+                    className={`ml-2 ${
+                      isFollowing ? "bg-red-500" : "bg-light-green"
+                    } rounded w-20 text-white ${
+                      isFollowing
+                        ? "hover:bg-light-beige hover:text-red-500"
+                        : "hover:bg-light-beige hover:text-light-green"
+                    }  `}
+                  >
+                    {id === post.UserId ? null : (
+                      <p className="text-sm">
+                        {isFollowing ? "언팔로우" : "팔로우"}
+                      </p>
+                    )}
+                  </button>
+                )
+              )}
             </div>
             <div className="float-right">
               {editMode ? null : (
@@ -184,15 +191,21 @@ const PostCard = ({ post, index, me }) => {
               )}
             </div>
           </header>
+          {blockedLists.map((block) =>
+            block.id === post.UserId ? (
+              <p className="ml-3 p-2 text-red-500">게시글을 볼 수 없습니다.</p>
+            ) : (
+              <PostCardContent
+                editMode={editMode}
+                onCancleRevisePost={onCancleRevisePost}
+                onRevisePost={onRevisePost}
+                image={post?.Images}
+                content={post.content}
+                index={index}
+              />
+            )
+          )}
 
-          <PostCardContent
-            editMode={editMode}
-            onCancleRevisePost={onCancleRevisePost}
-            onRevisePost={onRevisePost}
-            image={post?.Images}
-            content={post.content}
-            index={index}
-          />
           {/* <div>
                 <img
                   src={`${post.Images}`}

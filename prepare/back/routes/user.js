@@ -29,12 +29,17 @@ router.get("/", async (req, res, next) => {
           },
           {
             model: User,
+            as: "Blockings",
+            attributes: ["id"],
+          },
+          {
+            model: User,
             as: "Followers",
             attributes: ["id"],
           },
           {
             model: User,
-            as: "Blockings",
+            as: "Blockeds",
             attributes: ["id"],
           },
         ],
@@ -83,21 +88,36 @@ router.get("/followings", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/blockfollowing", isLoggedIn, async (req, res, next) => {
-  // GET /user/blockfollowing
+router.get("/blockings", isLoggedIn, async (req, res, next) => {
+  // GET /user/blocking
   try {
     const user = await User.findOne({ where: { id: req.user.id } });
     if (!user) {
       res.status(403).send("차단한 사람이 없습니다.");
     }
-    // const blockFollowing = await user.getBlockings({
-    //   // limit: parseInt(req.query.limit, 10),
-    // });
-    const blockFollowing = await user.getBlockings({
+    const blockings = await user.getBlockings({
       // limit: parseInt(req.query.limit, 10),
     });
-    console.log("blockFollowing 결과들", blockFollowing);
-    res.status(200).json(blockFollowing);
+    console.log("blockings 결과들", blockings);
+    res.status(200).json(blockings);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.get("/blockeds", isLoggedIn, async (req, res, next) => {
+  // GET /user/blockfollowed
+  try {
+    const user = await User.findOne({ where: { id: req.user.id } });
+    if (!user) {
+      res.status(403).send("차단된 경우가 없습니다.");
+    }
+    const blockeds = await user.getBlockeds({
+      // limit: parseInt(req.query.limit, 10),
+    });
+    console.log("blockeds 결과들", blockeds);
+    res.status(200).json(blockeds);
   } catch (error) {
     console.error(error);
     next(error);
@@ -325,16 +345,19 @@ router.delete("/:userId/follow", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.delete("/follower/:userId", isLoggedIn, async (req, res, next) => {
-  // DELETE /user/follower/2
+router.post("/block/:userId", isLoggedIn, async (req, res, next) => {
+  // post /user/block/2
   try {
-    const user = await User.findOne({ where: { id: req.params.userId } });
+    const user = await User.findOne({ where: { id: req.user.id } });
     if (!user) {
-      res.status(403).send("없는 사람을 차단하려고 하시네요?");
+      res.status(403).send("로그인이 필요합니다.");
     }
-    await user.removeFollowings(req.user.id);
-    await user.addBlockings(req.user.id);
-    res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+    await user.removeFollowers(req.params.userId);
+    await user.addBlocking(req.params.userId);
+    res.status(200).json({
+      blockedUser: parseInt(req.user.id),
+      blockingUser: parseInt(req.params.userId, 10),
+    });
   } catch (error) {
     console.error(error);
     next(error);

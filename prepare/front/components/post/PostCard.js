@@ -43,11 +43,8 @@ const PostCard = ({ post, index, me }) => {
     if (me) {
       dispatch(loadBlockedRequest());
       dispatch(loadBlockingRequest());
+      dispatch(loadBlockedRequest());
     }
-    // console.log("me", me);
-
-    // console.log("blockingLists", blockingLists);
-    // console.log("blockedLists", blockedLists);
   }, []);
 
   const onClickRevise = useCallback(
@@ -121,29 +118,27 @@ const PostCard = ({ post, index, me }) => {
               </span>
 
               <span>{post.nickname}</span>
-              {blockingLists.map((block) =>
-                block.id === post.UserId ? (
-                  <div className="ml-2 bg-gray-100 rounded w-20">
-                    차단한 유저
-                  </div>
-                ) : (
-                  <button
-                    onClick={onClickFollow}
-                    className={`ml-2 ${
-                      isFollowing ? "bg-red-500" : "bg-light-green"
-                    } rounded w-20 text-white ${
-                      isFollowing
-                        ? "hover:bg-light-beige hover:text-red-500"
-                        : "hover:bg-light-beige hover:text-light-green"
-                    }  `}
-                  >
-                    {id === post.UserId ? null : (
-                      <p className="text-sm">
-                        {isFollowing ? "언팔로우" : "팔로우"}
-                      </p>
-                    )}
-                  </button>
-                )
+
+              {id === undefined ? null : blockingLists &&
+                blockingLists?.find((block) => block.id === post.UserId) ? (
+                <div className="ml-2 bg-gray-100 rounded w-20">차단한 유저</div>
+              ) : (
+                <button
+                  onClick={onClickFollow}
+                  className={`ml-2 ${
+                    isFollowing ? "bg-red-500" : "bg-light-green"
+                  } rounded w-20 text-white ${
+                    isFollowing
+                      ? "hover:bg-light-beige hover:text-red-500"
+                      : "hover:bg-light-beige hover:text-light-green"
+                  }  `}
+                >
+                  {id === post.UserId ? null : (
+                    <p className="text-sm">
+                      {isFollowing ? "언팔로우" : "팔로우"}
+                    </p>
+                  )}
+                </button>
               )}
             </div>
             <div className="float-right">
@@ -191,30 +186,32 @@ const PostCard = ({ post, index, me }) => {
               )}
             </div>
           </header>
-          {blockedLists.map((block) =>
-            block.id === post.UserId ? (
-              <p className="ml-3 p-2 text-red-500">게시글을 볼 수 없습니다.</p>
-            ) : (
-              <PostCardContent
-                editMode={editMode}
-                onCancleRevisePost={onCancleRevisePost}
-                onRevisePost={onRevisePost}
-                image={post?.Images}
-                content={post.content}
-                index={index}
-              />
-            )
+
+          {id === undefined ? (
+            <PostCardContent
+              editMode={editMode}
+              onCancleRevisePost={onCancleRevisePost}
+              onRevisePost={onRevisePost}
+              image={post?.Images}
+              content={post.content}
+              index={index}
+            />
+          ) : null}
+
+          {blockedLists &&
+          blockedLists.find((block) => block.id === post.UserId) ? (
+            <p className="ml-3 p-2 text-red-500">게시글을 볼 수 없습니다.</p>
+          ) : (
+            <PostCardContent
+              editMode={editMode}
+              onCancleRevisePost={onCancleRevisePost}
+              onRevisePost={onRevisePost}
+              image={post?.Images}
+              content={post.content}
+              index={index}
+            />
           )}
 
-          {/* <div>
-                <img
-                  src={`${post.Images}`}
-                  alt="post.Images"
-                  className="w-1/2 mx-auto block"
-                />
-                <p className="p-4">{post.content}</p>
-                <small className="text-gray-400 m-4">2 hours ago</small>
-              </div> */}
           <div className="pl-4 pr-4">
             <div className="flex justify-between items-center mb-2">
               <div className="flex item-center">

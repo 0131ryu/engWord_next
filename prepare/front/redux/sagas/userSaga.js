@@ -36,6 +36,9 @@ import {
   loadBlockedRequest,
   loadBlockedSuccess,
   loadBlockedFailure,
+  cancleBlockRequest,
+  cancleBlockSuccess,
+  cancleBlockFailure,
 } from "../feature/userSlice";
 import axios from "axios";
 
@@ -223,6 +226,21 @@ function* loadBlocked(action) {
   }
 }
 
+function cancleBlockAPI(data) {
+  return axios.delete(`/user/${data}/block`, data);
+}
+
+function* cancleBlock(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(cancleBlockAPI, data);
+    yield put(cancleBlockSuccess(result.data));
+  } catch (error) {
+    yield put(cancleBlockFailure(error));
+    console.log(error);
+  }
+}
+
 function* login_Req() {
   yield takeLatest(loginRequest.type, logIn);
 }
@@ -271,6 +289,10 @@ function* loadBlocked_Req() {
   yield takeLatest(loadBlockedRequest.type, loadBlocked);
 }
 
+function* cancleBlock_Req() {
+  yield takeLatest(cancleBlockRequest.type, cancleBlock);
+}
+
 export const userSagas = [
   fork(login_Req),
   fork(logout_Req),
@@ -284,4 +306,5 @@ export const userSagas = [
   fork(blockFollow_Req),
   fork(loadBlocking_Req),
   fork(loadBlocked_Req),
+  fork(cancleBlock_Req),
 ];

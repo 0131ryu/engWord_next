@@ -34,9 +34,12 @@ const initialState = {
   loadBlockingLoading: false, //차단한 경우 가져오기 loadBlockings
   loadBlockingComplete: false,
   loadBlockingError: null,
-  loadBlockedLoading: false, //차단된 경우 가져오기 loadBlockings
+  loadBlockedLoading: false, //차단된 경우 가져오기 loadBlockeds
   loadBlockedComplete: false,
   loadBlockedError: null,
+  cancleBlockLoading: false, //차단 취소
+  cancleBlockComplete: false,
+  cancleBlockError: null,
   me: null,
   signUpData: {},
   loginData: {},
@@ -216,7 +219,6 @@ export const userSlice = createSlice({
     },
     loadBlockingSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data", data);
       state.loadBlockingLoading = false;
       state.loadBlockingComplete = true;
       state.me.Blockings = data;
@@ -232,7 +234,6 @@ export const userSlice = createSlice({
     },
     loadBlockedSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data", data);
       state.loadBlockedLoading = false;
       state.loadBlockedComplete = true;
       state.me.Blockeds = data;
@@ -240,6 +241,25 @@ export const userSlice = createSlice({
     loadBlockedFailure: (state, action) => {
       state.loadBlockedLoading = false;
       state.loadBlockedError = action.error;
+    },
+    cancleBlockRequest: (state) => {
+      state.cancleBlockLoading = true;
+      state.cancleBlockError = null;
+      state.cancleBlockComplete = false;
+    },
+    cancleBlockSuccess: (state, action) => {
+      const data = action.payload;
+      console.log("data", data);
+      state.cancleBlockLoading = false;
+      state.cancleBlockComplete = true;
+      state.me.Blockings = state.me.Blockings.filter(
+        (v) => v.id !== data.UserId
+      );
+      state.me.Followers.push({ id: data.UserId });
+    },
+    cancleBlockFailure: (state, action) => {
+      state.cancleBlockLoading = false;
+      state.cancleBlockError = action.error;
     },
   },
 });
@@ -281,6 +301,9 @@ export const {
   loadBlockedRequest,
   loadBlockedSuccess,
   loadBlockedFailure,
+  cancleBlockRequest,
+  cancleBlockSuccess,
+  cancleBlockFailure,
 } = userSlice.actions;
 
 export default userSlice.reducer;

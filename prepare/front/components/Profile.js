@@ -1,12 +1,17 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useInput from "../hooks/useInput";
-import { changeNicknameRequest } from "../redux/feature/userSlice";
+import {
+  changeNicknameRequest,
+  loadBlockedFailure,
+  loadBlockingRequest,
+} from "../redux/feature/userSlice";
 import { loadWordsRequest } from "../redux/feature/wordSlice";
 import NicknameEditForm from "./NicknameEditForm";
 import Link from "next/link";
 import FollowingModal from "./FollowingModal";
 import FollowerModal from "./FollowerModal";
+import BlockFollowModal from "./BlockFollowModal";
 
 const Profile = ({ me, postResult, wordResult }) => {
   const dispatch = useDispatch();
@@ -15,6 +20,7 @@ const Profile = ({ me, postResult, wordResult }) => {
   const [editMode, setEditMode] = useState(false);
   const [followerModal, setFollowerModal] = useState(false);
   const [followingModal, setFollowingModal] = useState(false);
+  const [blockFollowModal, setBlockFollowModal] = useState(false);
 
   const onCancleChangeNickname = useCallback(() => {}, []);
 
@@ -29,6 +35,8 @@ const Profile = ({ me, postResult, wordResult }) => {
   useEffect(() => {
     console.log("me", me);
     dispatch(loadWordsRequest(nickname));
+    dispatch(loadBlockedFailure());
+    dispatch(loadBlockingRequest());
     // dispatch(loadPostsRequest());
   }, []);
 
@@ -44,6 +52,10 @@ const Profile = ({ me, postResult, wordResult }) => {
     setFollowingModal(true);
   }, []);
 
+  const onClickBlockFollowModal = useCallback(() => {
+    setBlockFollowModal(true);
+  }, []);
+
   return (
     <>
       {followingModal ? (
@@ -57,6 +69,12 @@ const Profile = ({ me, postResult, wordResult }) => {
           setFollowerModal={setFollowerModal}
           followersInfo={me?.Followers}
           followingsInfo={me?.Followings}
+        />
+      ) : null}
+      {blockFollowModal ? (
+        <BlockFollowModal
+          setBlockFollowModal={setBlockFollowModal}
+          blockInfo={me?.Blockings}
         />
       ) : null}
       <div className="mt-10 lg:mt-20">
@@ -120,6 +138,19 @@ const Profile = ({ me, postResult, wordResult }) => {
                         </span>
                         <span className="text-sm text-blueGray-400">
                           팔로워
+                        </span>
+                      </div>
+                      <div className="lg:mr-4 p-3 text-center">
+                        <span
+                          onClick={onClickBlockFollowModal}
+                          className="text-xl font-bold block uppercase tracking-wide text-blueGray-600"
+                        >
+                          <a className="hover:text-sky-500">
+                            {me?.Blockings?.length}
+                          </a>
+                        </span>
+                        <span className="text-sm text-blueGray-400">
+                          차단한 사람
                         </span>
                       </div>
                     </div>

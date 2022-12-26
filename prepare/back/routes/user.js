@@ -364,4 +364,20 @@ router.post("/block/:userId", isLoggedIn, async (req, res, next) => {
   }
 });
 
+router.delete("/:userId/block", isLoggedIn, async (req, res, next) => {
+  // DELETE /user/1/block
+  try {
+    const user = await User.findOne({ where: { id: req.user.id } });
+    if (!user) {
+      res.status(403).send("없는 사람을 차단해제 하려고 하시네요?");
+    }
+    await user.removeBlockings(req.params.userId);
+    await user.addFollowers(req.params.userId);
+    res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 module.exports = router;

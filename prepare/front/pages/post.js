@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import NavbarForm from "../components/NavbarForm";
 import PostCard from "../components/post/PostCard";
-import PostForm from "../components/post/postForm";
+import PostForms from "../components/post/PostForms";
 import PostSearch from "../components/post/PostSearch";
 import UserInfo from "../components/UserInfo";
 import { loadPostsRequest } from "../redux/feature/postSlice";
@@ -16,7 +16,7 @@ const post = () => {
   const postResult = mainPosts.filter((post) => post.UserId === id);
 
   useEffect(() => {
-    const lastId = mainPosts[mainPosts.length - 1]?.id;
+    // const lastId = mainPosts[mainPosts.length - 1]?.id;
     dispatch(loadMyInfoRequest());
     dispatch(loadPostsRequest());
   }, []);
@@ -24,7 +24,6 @@ const post = () => {
   return (
     <>
       <NavbarForm />
-      {/* <PostForm nickname={me?.nickname} id={me?.id} /> */}
       <div className="h-full mt-5">
         <div className="grid grid-cols-4 gap-6">
           <div className="col-span-1">
@@ -37,7 +36,7 @@ const post = () => {
             )}
           </div>
           <div className="col-span-2">
-            {me && <PostForm />}
+            {me && <PostForms />}
             {mainPosts.map((post, index) => {
               return (
                 <PostCard key={post.id} post={post} index={index} me={me} />

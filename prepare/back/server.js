@@ -65,7 +65,8 @@ app.use(passport.session());
 app.get("/", (req, res) => {
   res.send("hello express");
 });
-// app.use("/", express.static(path.join(__dirname, "uploads"))); //업로드 폴더
+
+app.use("/", express.static(path.join(__dirname, "uploads"))); //업로드 폴더
 
 app.use("/word", wordRouter);
 app.use("/words", wordsRouter);

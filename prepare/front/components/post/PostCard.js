@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import Link from "next/link";
 import {
   ArrowPathRoundedSquareIcon,
   BookmarkIcon,
@@ -27,6 +28,7 @@ import {
   loadBlockedRequest,
   unfollowRequest,
 } from "../../redux/feature/userSlice";
+import PostImages from "./PostImages";
 
 const PostCard = ({ post, index, me }) => {
   const dispatch = useDispatch();
@@ -45,6 +47,7 @@ const PostCard = ({ post, index, me }) => {
       dispatch(loadBlockingRequest());
       dispatch(loadBlockedRequest());
     }
+    console.log("post.Images", post.Images);
   }, []);
 
   const onClickRevise = useCallback(
@@ -110,11 +113,13 @@ const PostCard = ({ post, index, me }) => {
           <header className="px-4 py-3 flex items-center justify-between">
             <div className="flex items-center font-bold">
               <span className="mr-2">
-                <img
-                  className="rounded-full h-10 w-10"
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  alt="profile-img"
-                />
+                <Link href={`/profile`}>
+                  <img
+                    className="rounded-full h-10 w-10"
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    alt="profile-img"
+                  />
+                </Link>
               </span>
 
               <span>{post.nickname}</span>
@@ -188,14 +193,17 @@ const PostCard = ({ post, index, me }) => {
           </header>
 
           {id === undefined ? (
-            <PostCardContent
-              editMode={editMode}
-              onCancleRevisePost={onCancleRevisePost}
-              onRevisePost={onRevisePost}
-              image={post?.Images}
-              content={post.content}
-              index={index}
-            />
+            <>
+              <PostImages images={post.Images} />
+              {/* <PostCardContent
+                editMode={editMode}
+                onCancleRevisePost={onCancleRevisePost}
+                onRevisePost={onRevisePost}
+                images={post.Images}
+                content={post.content}
+                index={index}
+              /> */}
+            </>
           ) : null}
 
           {blockedLists &&

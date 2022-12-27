@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
 
 const PostCardContent = ({
-  image,
+  images,
   content,
   editMode,
   onRevisePost,
@@ -12,13 +12,14 @@ const PostCardContent = ({
   const [editText, setEditText] = useState(content);
   const onChangeText = useCallback((e) => {
     setEditText(e.target.value);
-  });
+  }, []);
+
+  // console.log("images", images);
 
   return (
     <>
       {editMode ? (
         <div>
-          <img src={image} alt="post.Images" className="w-1/2 mx-auto block" />
           <textarea
             id="message"
             rows="4"
@@ -45,7 +46,6 @@ const PostCardContent = ({
         </div>
       ) : (
         <div>
-          <img src={image} alt="post.Images" className="w-1/2 mx-auto block" />
           <p className="p-4">{content}</p>
           <small className="text-gray-400 m-4">2 hours ago</small>
         </div>

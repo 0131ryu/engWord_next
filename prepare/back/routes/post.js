@@ -3,24 +3,43 @@ const multer = require("multer");
 const path = require("path");
 const multerS3 = require("multer-s3");
 const AWS = require("aws-sdk");
+const fs = require("fs");
 
 const { Post, Image, Comment, User, Hashtag } = require("../models");
 const { isLoggedIn } = require("./middlewares");
 
 const router = express.Router();
 
-AWS.config.update({
-  accessKeyId: process.env.S3_ACCESS_KEY_ID,
-  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
-  region: "ap-northeast-2",
-});
+try {
+  fs.accessSync("uploads");
+} catch (error) {
+  console.log("uploads 폴더가 없으므로 새로 생성합니다.");
+  fs.mkdirSync("uploads");
+}
+
+// AWS.config.update({
+//   accessKeyId: process.env.S3_ACCESS_KEY_ID,
+//   secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+//   region: "ap-northeast-2",
+// });
 
 const upload = multer({
-  storage: multerS3({
-    s3: new AWS.S3(),
-    bucket: "nodebird-seongong", //이 부분 주의할 것
-    key(req, file, cb) {
-      cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`);
+  // storage: multerS3({
+  //   s3: new AWS.S3(),
+  //   bucket: "nodebird-seongong", //이 부분 주의할 것
+  //   key(req, file, cb) {
+  //     cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`);
+  //   },
+  // }),
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, "uploads");
+    },
+    filename(req, file, done) {
+      //파일이미지.png
+      const ext = path.extname(file.originalname); //확장자 추출(.png)
+      const basename = path.basename(file.originalname, ext); //파일이미지
+      done(null, basename + "_" + new Date().getTime() + ext); //파일이미지1234849.png
     },
   }),
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
@@ -215,12 +234,10 @@ router.patch("/:postId", isLoggedIn, async (req, res, next) => {
         },
       }
     );
-    res
-      .status(200)
-      .json({
-        PostId: parseInt(req.params.postId, 10),
-        content: req.body.editText,
-      });
+    res.status(200).json({
+      PostId: parseInt(req.params.postId, 10),
+      content: req.body.editText,
+    });
   } catch (error) {
     console.error(error);
     next(error);
@@ -234,10 +251,8 @@ router.post(
   isLoggedIn,
   upload.array("image"),
   async (req, res, next) => {
-    console.log(req.files);
-    res.json(
-      req.files.map((v) => v.location.replace(/\/original\//, "/thumb/"))
-    );
+    console.log("req.files", req.files);
+    res.json(req.files.map((v) => v.filename));
   }
 );
 

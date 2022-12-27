@@ -1,9 +1,12 @@
-import { Fragment, useRef, useState, useCallback } from "react";
+import { Fragment, useRef, useState, useCallback, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useSelector, useDispatch } from "react-redux";
 import useInput from "../../hooks/useInput";
 import { BookmarkSquareIcon } from "@heroicons/react/24/outline";
-import { changeStatusWordRequest } from "../../redux/feature/wordSlice";
+import {
+  changeStatusWordRequest,
+  loadWordsRequest,
+} from "../../redux/feature/wordSlice";
 import { startGameRequest } from "../../redux/feature/gameSlice";
 import GameForm from "./GameForm";
 import AlertModal from "./AlertModal";
@@ -21,6 +24,10 @@ const StartModal = ({ isId, setModal }) => {
   const allData = [...wordLists];
   const numbers = [1, 2, 3, 4];
   const result = [];
+
+  useEffect(() => {
+    loadWordsRequest();
+  }, []);
 
   const onStartGame = useCallback(() => {
     if (checkedWordList.length < 10) {
@@ -218,7 +225,8 @@ const StartModal = ({ isId, setModal }) => {
                                     <li className="my-2.5 flex">
                                       <div className="flex ml-2">
                                         <p className="text-sm font-medium text-slate-900  w-32 truncate">
-                                          ({index}) {word.english}
+                                          ({index}) {word.english} (
+                                          {word.status})
                                         </p>
                                         <p className="ml-3 text-sm font-medium text-slate-900 w-32 truncate">
                                           뜻: {word.korean}

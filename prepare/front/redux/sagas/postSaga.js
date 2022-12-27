@@ -28,11 +28,14 @@ import {
   unlikePostRequest,
   unlikePostSuccess,
   unlikePostFailure,
+  uploadImagesRequest,
+  uploadImagesSuccess,
+  uploadImagesFailure,
 } from "../feature/postSlice";
 import axios from "axios";
 
 function addPostAPI(data) {
-  return axios.post("/post", { content: data });
+  return axios.post("/post", data);
 }
 
 function* addPost(action) {
@@ -172,6 +175,23 @@ function* unlikePost(action) {
   }
 }
 
+//uploadImages
+function uploadImagesAPI(data) {
+  return axios.post("/post/images", data);
+}
+
+function* uploadImages(action) {
+  try {
+    const data = action.payload;
+    console.log("data", data);
+    const result = yield call(uploadImagesAPI, data);
+    yield put(uploadImagesSuccess(result.data));
+  } catch (error) {
+    yield put(uploadImagesFailure(error));
+    console.log(error);
+  }
+}
+
 function* addPost_Req() {
   yield takeLatest(addPostRequest.type, addPost);
 }
@@ -208,6 +228,10 @@ function* unlikePost_Req() {
   yield takeLatest(unlikePostRequest.type, unlikePost);
 }
 
+function* uploadImages_Req() {
+  yield takeLatest(uploadImagesRequest.type, uploadImages);
+}
+
 export const postSagas = [
   fork(addPost_Req),
   fork(removePost_Req),
@@ -218,4 +242,5 @@ export const postSagas = [
   fork(loadPosts_Req),
   fork(likePost_Req),
   fork(unlikePost_Req),
+  fork(uploadImages_Req),
 ];

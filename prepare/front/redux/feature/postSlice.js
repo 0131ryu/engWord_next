@@ -30,7 +30,11 @@ const initialState = {
   unlikePostLoading: false, //unlike
   unlikePostComplete: false,
   unlikePostError: null,
+  uploadImagesLoading: false, //uploadImagesRequest
+  uploadImagesComplete: false,
+  uploadImagesError: null,
   Comments: [],
+  imagePaths: [],
   updatedImages: [], //이미 업로드할 이미지
   revisedImages: [], //새로 업로드할 이미지
 };
@@ -198,6 +202,27 @@ export const postSlice = createSlice({
       state.unlikePostLoading = false;
       state.unlikePostError = action.error;
     },
+    //uploadImages
+    uploadImagesRequest: (state) => {
+      state.uploadImagesLoading = true;
+      state.uploadImagesError = null;
+      state.uploadImagesComplete = false;
+    },
+    uploadImagesSuccess: (state, action) => {
+      const data = action.payload;
+      state.imagePaths = data;
+      state.uploadImagesLoading = false;
+      state.uploadImagesComplete = true;
+    },
+    uploadImagesFailure: (state, action) => {
+      state.uploadImagesLoading = false;
+      state.uploadImagesError = action.error;
+    },
+    removeImage: (state, action) => {
+      state.imagePaths = state.imagePaths.filter(
+        (v, i) => i !== action.payload
+      );
+    },
   },
 });
 
@@ -229,6 +254,10 @@ export const {
   unlikePostRequest,
   unlikePostSuccess,
   unlikePostFailure,
+  uploadImagesRequest,
+  uploadImagesSuccess,
+  uploadImagesFailure,
+  removeImage,
 } = postSlice.actions;
 
 export default postSlice.reducer;

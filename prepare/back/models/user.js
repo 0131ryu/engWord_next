@@ -18,6 +18,10 @@ module.exports = class User extends Model {
           type: DataTypes.STRING(100),
           allowNull: false, // 필수
         },
+        profileImg: {
+          type: DataTypes.TEXT,
+          allowNull: true,
+        },
       },
       {
         modelName: "User",

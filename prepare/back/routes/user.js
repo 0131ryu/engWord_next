@@ -1,12 +1,22 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
+const multer = require("multer");
 const { Op } = require("sequelize");
+const fs = require("fs");
+const path = require("path");
 
 const { User, Post, Image, Comment } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 
 const router = express.Router();
+
+try {
+  fs.accessSync("uploads");
+} catch (error) {
+  console.log("uploads 폴더가 없으므로 새로 생성합니다.");
+  fs.mkdirSync("uploads");
+}
 
 router.get("/", async (req, res, next) => {
   // GET /user
@@ -48,6 +58,45 @@ router.get("/", async (req, res, next) => {
     } else {
       res.status(200).json(null);
     }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+//프로필 이미지
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, "uploads");
+    },
+    filename(req, file, done) {
+      //파일이미지.png
+      const ext = path.extname(file.originalname); //확장자 추출(.png)
+      const basename = path.basename(file.originalname, ext); //파일이미지
+      done(null, basename + "_" + new Date().getTime() + ext); //파일이미지1234849.png
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
+});
+
+router.post(
+  "/image",
+  isLoggedIn,
+  upload.array("image"),
+  async (req, res, next) => {
+    console.log("req.files", req.files);
+    res.json(req.files.map((v) => v.filename));
+  }
+);
+
+router.patch("/profile", isLoggedIn, upload.none(), async (req, res, next) => {
+  try {
+    await User.update(
+      { profileImg: req.body.image },
+      { where: { id: req.user.id } }
+    );
+    res.status(201).json({ profileImg: req.body.image });
   } catch (error) {
     console.error(error);
     next(error);

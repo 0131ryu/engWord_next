@@ -15,11 +15,6 @@ const UserInfo = ({ nickname, me, postResult }) => {
             <p className="font-bold p-1 mt-1">{nickname}</p>
           </div>
         </div>
-
-        <div className="p-2">
-          <span>테스트입니다.</span>
-        </div>
-
         <div className="lg:flex md:ml-5 lg:ml-10">
           <div className="flex p-1 items-center">
             <p className="text-gray-400 block">Article</p>

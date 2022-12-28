@@ -12,6 +12,7 @@ const PostForms = () => {
   const dispatch = useDispatch();
   const [text, onChangeText, setText] = useInput("");
   const { addPostComplete, imagePaths } = useSelector((state) => state.post);
+  const imageInput = useRef();
 
   useEffect(() => {
     if (addPostComplete) {
@@ -35,19 +36,14 @@ const PostForms = () => {
         formData.append("image", p);
       });
       formData.append("content", text);
-
-      // console.log("formData.getAll('image')", formData.getAll("image"));
-      // console.log("formData.getAll('content')", formData.getAll("content"));
       dispatch(addPostRequest(formData));
     },
     [text, imagePaths]
   );
 
-  const imageInput = useRef();
-
   const onClickImageUpload = useCallback(() => {
-    console.log("클릭?");
     imageInput.current.click();
+    console.log("imageInput.current", imageInput.current);
   }, [imageInput.current]);
 
   const onChangeImages = useCallback((e) => {

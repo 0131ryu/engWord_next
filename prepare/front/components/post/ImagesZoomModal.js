@@ -6,11 +6,30 @@ const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
 
 const ImagesZoomModal = ({ images, onClose }) => {
   const [open, setOpen] = useState(true);
+  const [id, setId] = useState(1);
+  const totalSlides = useRef(null);
+
+  console.log("images", images);
 
   const cancelButtonRef = useRef(null);
 
+  const leftButton = () => {
+    if (id > 1) {
+      setId(id - 1);
+    }
+  };
+
+  const rightButton = () => {
+    const innerElements = totalSlides.current.innerHTML;
+    let count = (innerElements.match(/<li/g) || []).length;
+    if (id < count) {
+      setId(id + 1);
+    }
+  };
+
   return (
     <>
+      {console.log("id", id)}
       <Transition.Root show={open} as={Fragment}>
         <Dialog
           as="div"
@@ -52,93 +71,46 @@ const ImagesZoomModal = ({ images, onClose }) => {
                           이미지 결과
                         </Dialog.Title>
                         <div className=" w-full h-full">
-                          {/* start */}
-                          {/*  {images.length === 2 &&
-                                images.map((v) => (
-                                  <div
-                                    key={v.src}
-                                    className="hidden duration-700 ease-in-out"
-                                    data-carousel-item="active"
+                          {/* start - carousel  */}
+                          <section>
+                            <div className="relative">
+                              <ul id="slider" ref={totalSlides}>
+                                {images.map((v, i) => (
+                                  <li
+                                    name="slide"
+                                    className={`h-[50vh] relative ${
+                                      id === i + 1 ? null : "hidden"
+                                    }`}
+                                    key={v.id}
                                   >
                                     <img
-                                      src={`http://localhost:3005/${v?.src}`}
+                                      className="h-full w-full object-cover"
+                                      src={`http://localhost:3005/${v.src}`}
                                       alt={v?.src}
-                                      className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
                                     />
+                                  </li>
+                                ))}
+                              </ul>
+                              {images.length === 1 ? null : (
+                                <div className="absolute px-5 flex h-full w-full top-0 left-0">
+                                  <div className="my-auto w-full flex justify-between">
+                                    <button className="bg-white p-2 rounded-full bg-opacity-80 shadow-lg">
+                                      <ChevronLeftIcon
+                                        onClick={leftButton}
+                                        className="w-5 h-5"
+                                      />
+                                    </button>
+                                    <button className="bg-white p-2 rounded-full bg-opacity-80 shadow-lg">
+                                      <ChevronRightIcon
+                                        onClick={rightButton}
+                                        className="w-5 h-5"
+                                      />
+                                    </button>
                                   </div>
-                                ))} */}
-                          <div
-                            id="default-carousel"
-                            className="relative"
-                            data-carousel="static"
-                          >
-                            {/* <!-- Carousel wrapper --> */}
-                            <div className="relative overflow-hidden rounded-lg">
-                              {images.map((v) => (
-                                <>
-                                  <div key={v?.src}>
-                                    <img
-                                      src={`http://localhost:3005/${v?.src}`}
-                                    />
-                                  </div>
-                                </>
-                              ))}
+                                </div>
+                              )}
                             </div>
-                            {/* <!-- Slider indicators --> */}
-                            <div className="bg-gray-100 absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
-                              {images.map((v) => (
-                                <>
-                                  <button
-                                    type="button"
-                                    className="w-3 h-3 rounded-full bg-gray-200 hover:bg-gray-400"
-                                    aria-current="false"
-                                    aria-label={`${v}`}
-                                    data-carousel-slide-to="0"
-                                  ></button>
-                                </>
-                              ))}
-                            </div>
-
-                            {/* <!-- Slider controls --> */}
-                            <button
-                              type="button"
-                              className="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-                              data-carousel-prev
-                            >
-                              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                                <svg
-                                  aria-hidden="true"
-                                  className="w-5 h-5 text-white sm:w-6 sm:h-6 dark:text-gray-800"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <ChevronLeftIcon className="w-5 h-5 text-white" />
-                                </svg>
-                                <span className="sr-only">Previous</span>
-                              </span>
-                            </button>
-                            <button
-                              type="button"
-                              className="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-                              data-carousel-next
-                            >
-                              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                                <svg
-                                  aria-hidden="true"
-                                  className="w-5 h-5 text-white sm:w-6 sm:h-6 dark:text-gray-800"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <ChevronRightIcon className="w-5 h-5 text-white" />
-                                </svg>
-                                <span className="sr-only">Next</span>
-                              </span>
-                            </button>
-                          </div>
+                          </section>
 
                           {/* end */}
                         </div>

@@ -54,6 +54,7 @@ export const postSlice = createSlice({
       state.addPostLoading = false;
       state.addPostComplete = true;
       state.mainPosts.unshift(postInfo);
+      state.imagePaths = [];
     },
     addPostFailure: (state, action) => {
       state.addPostLoading = false;

@@ -31,21 +31,58 @@ const PostImages = ({ images }) => {
   if (images.length === 2) {
     return (
       <>
-        <div className="cursor-pointer w-1/2 inline-block">
-          <img
-            src={`http://localhost:3005/${images[0]?.src}`}
-            alt={images[0]?.src}
-            className="rounded-lg h-44"
-            onClick={onZoom}
-          />
+        <div className="flex justify-center">
+          <div className="cursor-pointer inline-block m-1">
+            <img
+              src={`http://localhost:3005/${images[0]?.src}`}
+              alt={images[0]?.src}
+              className="rounded-lg h-44"
+              onClick={onZoom}
+            />
+          </div>
+          <div className="cursor-pointer inline-block m-1">
+            <img
+              src={`http://localhost:3005/${images[1]?.src}`}
+              alt={images[0]?.src}
+              className="rounded-lg h-44"
+              onClick={onZoom}
+            />
+          </div>
         </div>
-        <div className="cursor-pointer w-1/2 inline-block">
-          <img
-            src={`http://localhost:3005/${images[1]?.src}`}
-            alt={images[0]?.src}
-            className="rounded-lg h-44"
-            onClick={onZoom}
-          />
+        {showImagesZoom && (
+          <ImagesZoomModal images={images} onClose={onClose} />
+        )}
+      </>
+    );
+  }
+  if (images.length > 2) {
+    return (
+      <>
+        <div className="flex justify-center">
+          <div className="cursor-pointer inline-block m-1">
+            <img
+              src={`http://localhost:3005/${images[0]?.src}`}
+              alt={images[0]?.src}
+              className="rounded-lg h-44"
+              onClick={onZoom}
+            />
+          </div>
+          <div className="cursor-pointer inline-block m-1">
+            <img
+              src={`http://localhost:3005/${images[1]?.src}`}
+              alt={images[1]?.src}
+              className="rounded-lg h-44"
+              onClick={onZoom}
+            />
+          </div>
+          <div className="cursor-pointer inline-block m-1">
+            <img
+              src={`http://localhost:3005/${images[2]?.src}`}
+              alt={images[2]?.src}
+              className="rounded-lg h-44"
+              onClick={onZoom}
+            />
+          </div>
         </div>
         {showImagesZoom && (
           <ImagesZoomModal images={images} onClose={onClose} />

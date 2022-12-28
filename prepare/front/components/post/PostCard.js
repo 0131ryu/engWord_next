@@ -47,7 +47,6 @@ const PostCard = ({ post, index, me }) => {
       dispatch(loadBlockingRequest());
       dispatch(loadBlockedRequest());
     }
-    console.log("post.Images", post.Images);
   }, []);
 
   const onClickRevise = useCallback(
@@ -195,14 +194,13 @@ const PostCard = ({ post, index, me }) => {
           {id === undefined ? (
             <>
               <PostImages images={post.Images} />
-              {/* <PostCardContent
+              <PostCardContent
                 editMode={editMode}
                 onCancleRevisePost={onCancleRevisePost}
                 onRevisePost={onRevisePost}
-                images={post.Images}
                 content={post.content}
                 index={index}
-              /> */}
+              />
             </>
           ) : null}
 
@@ -210,14 +208,18 @@ const PostCard = ({ post, index, me }) => {
           blockedLists.find((block) => block.id === post.UserId) ? (
             <p className="ml-3 p-2 text-red-500">게시글을 볼 수 없습니다.</p>
           ) : (
-            <PostCardContent
-              editMode={editMode}
-              onCancleRevisePost={onCancleRevisePost}
-              onRevisePost={onRevisePost}
-              image={post?.Images}
-              content={post.content}
-              index={index}
-            />
+            me && (
+              <>
+                <PostImages images={post.Images} />
+                <PostCardContent
+                  editMode={editMode}
+                  onCancleRevisePost={onCancleRevisePost}
+                  onRevisePost={onRevisePost}
+                  content={post.content}
+                  index={index}
+                />
+              </>
+            )
           )}
 
           <div className="pl-4 pr-4">

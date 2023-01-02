@@ -3,13 +3,17 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { BookmarkSquareIcon } from "@heroicons/react/24/outline";
-import { loadWordsRequest } from "../../redux/feature/wordSlice";
+import {
+  loadWordsRequest,
+  loadCheckedRequest,
+  changeStatusWordAllRequest,
+} from "../../redux/feature/wordSlice";
 import { startGameRequest } from "../../redux/feature/gameSlice";
 import GameForm from "./GameForm";
 import AlertModal from "./AlertModal";
 import StartWordList from "./StartWordList";
 
-const StartModal = () => {
+const StartModal = ({ UserId }) => {
   const { wordLists, checkedWordList } = useSelector((state) => state.word);
 
   const dispatch = useDispatch();
@@ -22,8 +26,25 @@ const StartModal = () => {
   const numbers = [1, 2, 3, 4];
   const result = [];
 
+  const showStatus = wordLists.filter(
+    (word) => word.status === "C" && word.UserId === UserId
+  ).length;
+
   useEffect(() => {
     dispatch(loadWordsRequest());
+    dispatch(loadCheckedRequest());
+    console.log("checkedWordList", checkedWordList);
+  }, []);
+
+  const onChangeAllSelected = useCallback((e) => {
+    const checkboxClicked = e.target;
+    const userId = e.target.value;
+
+    if (checkboxClicked.checked) {
+      dispatch(changeStatusWordAllRequest({ status: "C", userId: userId }));
+    } else if (!checkboxClicked.checked) {
+      dispatch(changeStatusWordAllRequest({ status: "A", userId: userId }));
+    }
   }, []);
 
   const onStartGame = useCallback(() => {
@@ -188,12 +209,27 @@ const StartModal = () => {
                             </span>
                             )
                           </p>
-                          <p>
-                            총 추가된 단어 :
-                            <span className="font-bold text-red-500 ml-3">
-                              {checkedWordList.length}
-                            </span>
-                          </p>
+                          <div className="flex">
+                            <p className="w-1/2">
+                              총 추가된 단어 :
+                              <span className="font-bold text-red-500 ml-3">
+                                {checkedWordList.length}
+                              </span>
+                            </p>
+                            <div className="w-1/2 bg-gray-100">
+                              <input
+                                checked={showStatus > 0 ? true : false}
+                                onChange={onChangeAllSelected}
+                                value={UserId}
+                                name="checkItem"
+                                type="checkbox"
+                                className="mr-1 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                              />
+                              <span className="font-bold">
+                                전체 선택 / 해제
+                              </span>
+                            </div>
+                          </div>
                         </Dialog.Title>
                         <div className="group justify-center flex overflow-y-auto max-h-96 overflow-hidden rounded-md">
                           <div>

@@ -82,10 +82,10 @@ router.patch("/:id/:status", isLoggedIn, async (req, res, next) => {
         },
       }
     );
-
-    res
-      .status(201)
-      .json({ id: parseInt(req.params.id), status: req.params.status });
+    const fullWord = await Word.findOne({
+      where: { id: req.params.id },
+    });
+    res.status(201).json(fullWord);
   } catch (error) {
     console.error(error);
     next(error);
@@ -106,6 +106,10 @@ router.patch("/:userId/:status", isLoggedIn, async (req, res, next) => {
         },
       }
     );
+    const fullWord = await Word.findAll({
+      where: { status: req.params.status },
+    });
+    console.log("fullWord", fullWord);
     res
       .status(200)
       .json({ id: parseInt(req.params.id), status: req.params.status });

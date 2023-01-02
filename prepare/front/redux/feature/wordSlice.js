@@ -27,6 +27,9 @@ const initialState = {
   loadWordsLoading: false, //단어 가져오기
   loadWordsComplete: false,
   loadWordsError: null,
+  loadCheckedLoading: false, //체크한 단어 가져오기
+  loadCheckedComplete: false,
+  loadCheckedError: null,
   findResult: [],
   searchResult: [],
 };
@@ -120,13 +123,29 @@ export const wordSlice = createSlice({
     },
     changeStatusWordSuccess: (state, action) => {
       const data = action.payload;
+      console.log("data", data);
       state.changeStatusWordLoading = false;
       state.changeStatusWordComplete = true;
 
       const changeStatus = state.wordLists.find((v) => v.id === data.id);
+      const showStatus = state.wordLists.find(
+        (v) => v.id === data.id && v.status === "C"
+      );
 
       if (changeStatus) {
         changeStatus.status = data.status;
+        state.checkedWordList = state.checkedWordList.concat(data);
+      }
+      if (showStatus) {
+        //C -> A로 바꾸는 경우
+        const index = state.checkedWordList.findIndex(
+          (word) => word.id === data.id
+        );
+        console.log("index", index);
+        state.checkedWordList.splice(index, 1);
+        state.checkedWordList = state.checkedWordList.filter(
+          (word) => word.id !== data.id
+        );
       }
     },
     changeStatusWordError: (state, action) => {
@@ -202,11 +221,29 @@ export const wordSlice = createSlice({
       console.log("Data", data);
       state.loadWordsLoading = false;
       state.loadWordsComplete = true;
+      state.wordLists.length = 0;
       state.wordLists = state.wordLists.concat(data);
     },
     loadWordsFailure: (state, action) => {
       state.loadWordsLoading = false;
       state.loadWordsError = action.error;
+    },
+    loadCheckedRequest: (state) => {
+      state.loadCheckedLoading = true;
+      state.loadCheckedError = null;
+      state.loadCheckedComplete = false;
+    },
+    loadCheckedSuccess: (state, action) => {
+      const data = action.payload;
+      console.log("Data", data);
+      state.loadCheckedLoading = false;
+      state.loadCheckedComplete = true;
+      state.checkedWordList.length = 0;
+      state.checkedWordList = state.checkedWordList.concat(data);
+    },
+    loadCheckedFailure: (state, action) => {
+      state.loadCheckedLoading = false;
+      state.loadCheckedError = action.error;
     },
   },
 });
@@ -240,6 +277,9 @@ export const {
   loadWordsRequest,
   loadWordsSuccess,
   loadWordsFailure,
+  loadCheckedRequest,
+  loadCheckedSuccess,
+  loadCheckedFailure,
 } = wordSlice.actions;
 
 export default wordSlice.reducer;

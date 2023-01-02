@@ -25,6 +25,9 @@ import {
   loadWordsRequest,
   loadWordsSuccess,
   loadWordsFailure,
+  loadCheckedRequest,
+  loadCheckedSuccess,
+  loadCheckedFailure,
 } from "../feature/wordSlice";
 
 function addWordAPI(data) {
@@ -91,7 +94,6 @@ function changeStatusAPI(data) {
 function* changeStatus(action) {
   try {
     const data = action.payload;
-    console.log("data", data);
     const result = yield call(changeStatusAPI, data);
     yield put(changeStatusWordSuccess(result.data));
   } catch (error) {
@@ -111,6 +113,7 @@ function* changeStatusAll(action) {
   try {
     const data = action.payload;
     const result = yield call(changeStatusAllAPI, data);
+    console.log("result.data", result.data);
     yield put(changeStatusWordAllSuccess(result.data));
   } catch (error) {
     yield put(changeStatusWordAllError(error));
@@ -159,6 +162,23 @@ function* loadWords(action) {
   }
 }
 
+//loadChecked
+function loadCheckedAPI() {
+  return axios.get("/words/checked");
+}
+
+function* loadChecked(action) {
+  try {
+    console.log("연결?");
+    const data = action.payload;
+    const result = yield call(loadCheckedAPI, data);
+    yield put(loadCheckedSuccess(result.data));
+  } catch (error) {
+    yield put(loadCheckedFailure(error));
+    console.log(error);
+  }
+}
+
 function* add_Word_Req() {
   yield takeLatest(addWordRequest.type, addWord);
 }
@@ -191,6 +211,10 @@ function* load_Words_Req() {
   yield takeLatest(loadWordsRequest.type, loadWords);
 }
 
+function* load_Checked_Req() {
+  yield takeLatest(loadCheckedRequest.type, loadChecked);
+}
+
 export const wordSagas = [
   fork(add_Word_Req),
   fork(revise_Word_Req),
@@ -200,4 +224,5 @@ export const wordSagas = [
   fork(change_StatusAll_Req),
   fork(search_Word_Req),
   fork(load_Words_Req),
+  fork(load_Checked_Req),
 ];

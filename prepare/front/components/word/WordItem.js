@@ -12,7 +12,6 @@ const WordItem = ({ UserId, word, index }) => {
   const [modal, setModal] = useState(false);
   const [removeModal, setRemoveModal] = useState(false);
   const [id, setId] = useState(0);
-  const [checkedItem, setCheckedItems] = useState(new Set());
   const [bChecked, setBChecked] = useState(false);
 
   useEffect(() => {

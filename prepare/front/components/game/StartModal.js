@@ -1,22 +1,19 @@
 import { Fragment, useRef, useState, useCallback, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useSelector, useDispatch } from "react-redux";
-import useInput from "../../hooks/useInput";
+import { useRouter } from "next/router";
 import { BookmarkSquareIcon } from "@heroicons/react/24/outline";
-import {
-  changeStatusWordRequest,
-  loadWordsRequest,
-} from "../../redux/feature/wordSlice";
+import { loadWordsRequest } from "../../redux/feature/wordSlice";
 import { startGameRequest } from "../../redux/feature/gameSlice";
 import GameForm from "./GameForm";
 import AlertModal from "./AlertModal";
+import StartWordList from "./StartWordList";
 
-const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
-
-const StartModal = ({ isId, setModal }) => {
+const StartModal = () => {
   const { wordLists, checkedWordList } = useSelector((state) => state.word);
 
   const dispatch = useDispatch();
+  const router = useRouter();
   const [open, setOpen] = useState(true);
   const [gameStart, setGameStart] = useState(false);
   const [alert, setAlert] = useState(false);
@@ -26,7 +23,7 @@ const StartModal = ({ isId, setModal }) => {
   const result = [];
 
   useEffect(() => {
-    loadWordsRequest();
+    dispatch(loadWordsRequest());
   }, []);
 
   const onStartGame = useCallback(() => {
@@ -123,19 +120,9 @@ const StartModal = ({ isId, setModal }) => {
   const onOpenCloseModal = () => {
     console.log("open", open);
     setOpen(false);
+    router.push("/");
   };
   const cancelButtonRef = useRef(null);
-
-  const onClickSelected = useCallback((e) => {
-    const checkboxClicked = e.target;
-    const wordIndex = e.target.value;
-
-    if (checkboxClicked.checked) {
-      dispatch(changeStatusWordRequest({ id: wordIndex, status: "C" }));
-    } else if (!checkboxClicked.checked) {
-      dispatch(changeStatusWordRequest({ id: wordIndex, status: "A" }));
-    }
-  }, []);
 
   return (
     <>
@@ -213,27 +200,7 @@ const StartModal = ({ isId, setModal }) => {
                             {wordLists.map((word, index) => {
                               {
                                 return (
-                                  <div className="m-1 flex border-2 border-light-green h-12 w-80 rounded-md">
-                                    <input
-                                      onClick={onClickSelected}
-                                      value={index}
-                                      id="checkItem"
-                                      name="checkItem"
-                                      type="checkbox"
-                                      className="ml-2 mt-3 h-4 w-4 rounded border-light-green text-light-green focus:ring-light-green"
-                                    />
-                                    <li className="my-2.5 flex">
-                                      <div className="flex ml-2">
-                                        <p className="text-sm font-medium text-slate-900  w-32 truncate">
-                                          ({index}) {word.english} (
-                                          {word.status})
-                                        </p>
-                                        <p className="ml-3 text-sm font-medium text-slate-900 w-32 truncate">
-                                          뜻: {word.korean}
-                                        </p>
-                                      </div>
-                                    </li>
-                                  </div>
+                                  <StartWordList word={word} index={index} />
                                 );
                               }
                             })}

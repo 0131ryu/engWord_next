@@ -21,8 +21,8 @@ const GameForm = () => {
   const [answers, setAnswers] = useState([false, false, false, false]);
   const [gameLists, setGameLists] = useState([]);
 
-  const { checkedWordLists } = useSelector((state) => state.game);
-  const checkedWords = [...checkedWordLists];
+  const { gameWordLists } = useSelector((state) => state.game);
+  const checkedWords = [...gameWordLists];
   const timeout = "";
   const removeTimeout = "";
   const removeError = "";

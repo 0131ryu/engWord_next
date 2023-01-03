@@ -9,63 +9,7 @@ const shuffleArray = (array) => {
 };
 
 const initialState = {
-  checkedWordLists: [
-    // {
-    //   question: "초록",
-    //   answer: 1,
-    //   choices: ["green", "purple", "yellow", "blue"],
-    // },
-    // {
-    //   question: "보라",
-    //   answer: 2,
-    //   choices: ["red", "purple", "yellow", "blue"],
-    // },
-    // {
-    //   question: "노랑",
-    //   answer: 3,
-    //   choices: ["orange", "sky blue", "yellow", "blue"],
-    // },
-    // {
-    //   question: "파랑",
-    //   answer: 4,
-    //   choices: ["black", "white", "pink", "blue"],
-    // },
-    // {
-    //   question: "자바",
-    //   answer: 1,
-    //   choices: ["Java", "Python", "C", "Jakarta"],
-    // },
-    // {
-    //   question: "사과",
-    //   answer: 3,
-    //   choices: ["grape", "mango", "apple", "blueberry"],
-    // },
-    // {
-    //   question: "노트북",
-    //   answer: 1,
-    //   choices: ["labtop", "headphone", "mouse", "microphone"],
-    // },
-    // {
-    //   question: "영어",
-    //   answer: 1,
-    //   choices: ["english", "korean", "chinese", "japanes"],
-    // },
-    // {
-    //   question: "도움",
-    //   answer: 3,
-    //   choices: ["happy", "sad", "help", "good"],
-    // },
-    // {
-    //   question: "바다",
-    //   answer: 4,
-    //   choices: ["sky", "earth", "dark", "sea"],
-    // },
-    // {
-    //   question: "비디오",
-    //   answer: 2,
-    //   choices: ["computer", "video", "audio", "phone"],
-    // },
-  ],
+  gameWordLists: [],
   time: 0,
   startGameLoading: false,
   startGameComplete: false,
@@ -89,9 +33,7 @@ export const gameSlice = createSlice({
       const data = action.payload;
       state.startGameLoading = false;
       state.startGameComplete = true;
-      data.map((d) => {
-        state.checkedWordLists.push(d);
-      });
+      state.gameWordLists = state.gameWordLists.concat(data);
     },
     startGameError: (state, action) => {
       state.startGameLoading = true;

@@ -227,7 +227,6 @@ export const wordSlice = createSlice({
     },
     loadWordsSuccess: (state, action) => {
       const data = action.payload;
-      console.log("Data", data);
       state.loadWordsLoading = false;
       state.loadWordsComplete = true;
       state.wordLists.length = 0;
@@ -244,7 +243,6 @@ export const wordSlice = createSlice({
     },
     loadCheckedSuccess: (state, action) => {
       const data = action.payload;
-      console.log("Data", data);
       state.loadCheckedLoading = false;
       state.loadCheckedComplete = true;
       state.checkedWordList.length = 0;

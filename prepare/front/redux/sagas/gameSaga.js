@@ -13,17 +13,6 @@ function findHintAPI(data) {
   return axios.get(`/word/${data}`);
 }
 
-function* startGame(action) {
-  try {
-    const data = action.payload;
-    console.log("data", data);
-    yield put(startGameSuccess(data));
-  } catch (error) {
-    yield put(startGameError(error));
-    console.log(error);
-  }
-}
-
 function* findHint(action) {
   try {
     const data = action.payload;
@@ -32,6 +21,20 @@ function* findHint(action) {
     yield put(findHintSuccess(response.data));
   } catch (error) {
     yield put(findHintError(error));
+    console.log(error);
+  }
+}
+
+// function startGameAPI() {
+//   return axios.get("/game");
+// }
+
+function* startGame(action) {
+  try {
+    const data = action.payload;
+    yield put(startGameSuccess(data));
+  } catch (error) {
+    yield put(startGameError(error));
     console.log(error);
   }
 }

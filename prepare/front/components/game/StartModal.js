@@ -23,7 +23,7 @@ const StartModal = ({ UserId }) => {
   const [alert, setAlert] = useState(false);
   const checkedData = [...checkedWordList];
   const allData = [...wordLists];
-  const numbers = [1, 2, 3, 4];
+  const answer = [1, 2, 3, 4];
   const result = [];
 
   const showStatus = wordLists.filter(
@@ -49,23 +49,10 @@ const StartModal = ({ UserId }) => {
 
   const onStartGame = useCallback(() => {
     if (checkedWordList.length < 10) {
-      console.log("10개 미만!");
       setAlert(true);
       setGameStart(false);
       setOpen(true);
     } else {
-      const remainderData = allData.filter((data) => data.status === "A");
-      const remainderEnglish = [];
-      const remainderIndex = [];
-
-      remainderData.map((data, i) => {
-        remainderEnglish.push(data.english);
-        remainderIndex.push(i);
-        // remainderIndex(0, 5);
-      });
-
-      remainderIndex.splice(0, 5);
-
       const shuffleArray = (array) => {
         for (let i = array.length - 1; i > 0; i--) {
           // 무작위로 index 값 생성 (0 이상 i 미만)
@@ -73,68 +60,72 @@ const StartModal = ({ UserId }) => {
           [array[i], array[j]] = [array[j], array[i]];
         }
       };
-
-      shuffleArray(remainderEnglish);
-      shuffleArray(remainderIndex);
+      shuffleArray(allData);
+      shuffleArray(checkedData);
+      checkedData.splice(10, checkedData.length); //10개만 남기기
 
       checkedData.map((data, i) => {
-        shuffleArray(numbers); //랜덤 1, 2, 3, 4
-        const randomIdx1 = remainderIndex[0];
-        const randomIdx2 = remainderIndex[1];
-        const randomIdx3 = remainderIndex[2];
-        if (numbers[0] === 1) {
+        shuffleArray(answer);
+        if (answer[0] === 1 && i < 10) {
           result.push({
             question: data.korean,
             answer: 1,
-            choices: [
-              data.english,
-              remainderEnglish[randomIdx1],
-              remainderEnglish[randomIdx2],
-              remainderEnglish[randomIdx3],
-            ],
+            choices: Array.from(
+              new Set([
+                data.english,
+                allData[i].english,
+                i < allData.length - 2 && allData[i + 1].english,
+                i < allData.length - 2 && allData[i + 2].english,
+              ])
+            ),
           });
-        } else if (numbers[0] === 2) {
+        } else if (answer[0] === 2 && i < 10) {
           result.push({
             question: data.korean,
             answer: 2,
-            choices: [
-              remainderEnglish[randomIdx1],
-              data.english,
-              remainderEnglish[randomIdx2],
-              remainderEnglish[randomIdx3],
-            ],
+            choices: Array.from(
+              new Set([
+                allData[i].english,
+                data.english,
+                i < allData.length - 2 && allData[i + 1].english,
+                i < allData.length - 2 && allData[i + 2].english,
+              ])
+            ),
           });
-        } else if (numbers[0] === 3) {
+        } else if (answer[0] === 3 && i < 10) {
           result.push({
             question: data.korean,
             answer: 3,
-            choices: [
-              remainderEnglish[randomIdx1],
-              remainderEnglish[randomIdx2],
-              data.english,
-              remainderEnglish[randomIdx3],
-            ],
+            choices: Array.from(
+              new Set([
+                allData[i].english,
+                i < allData.length - 2 && allData[i + 1].english,
+                data.english,
+                i < allData.length - 2 && allData[i + 2].english,
+              ])
+            ),
           });
-        } else if (numbers[0] === 4) {
+        } else if (answer[0] === 4 && i < 10) {
           result.push({
             question: data.korean,
             answer: 4,
-            choices: [
-              remainderEnglish[randomIdx1],
-              remainderEnglish[randomIdx2],
-              remainderEnglish[randomIdx3],
-              data.english,
-            ],
+            choices: Array.from(
+              new Set([
+                allData[i].english,
+                i < allData.length - 2 && allData[i + 1].english,
+                i < allData.length - 2 && allData[i + 2].english,
+                data.english,
+              ])
+            ),
           });
         }
       });
-      // console.log("checkedData", checkedData);
+
       console.log("result", result);
 
       dispatch(startGameRequest(result));
       setGameStart(true);
       setOpen(false);
-      console.log("gameStart", gameStart);
     }
   }, [result]);
 

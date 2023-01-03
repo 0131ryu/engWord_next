@@ -13,7 +13,7 @@ const StartWordList = ({ word, index }) => {
     } else if (word.status === "A") {
       setBChecked(false);
     }
-    console.log("checkedWordList", checkedWordList);
+    // console.log("checkedWordList", checkedWordList);
   }, [word.status]);
 
   const onChangeSelected = useCallback((e) => {

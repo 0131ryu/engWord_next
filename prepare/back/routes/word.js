@@ -92,7 +92,7 @@ router.patch("/:id/:status", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.patch("/:userId/:status", isLoggedIn, async (req, res, next) => {
+router.patch("/all/:userId/:status", isLoggedIn, async (req, res, next) => {
   // (전체 수정) PATCH /word/status/1(userId)
   try {
     await Word.update(
@@ -101,7 +101,7 @@ router.patch("/:userId/:status", isLoggedIn, async (req, res, next) => {
       },
       {
         where: {
-          [Op.or]: [{ id: { [Op.gt]: 0 } }, { id: req.params.id }],
+          [Op.or]: [{ id: { [Op.gt]: 0 } }, { id: req.params.userId }],
           UserId: req.user.id,
         },
       }
@@ -110,9 +110,7 @@ router.patch("/:userId/:status", isLoggedIn, async (req, res, next) => {
       where: { status: req.params.status },
     });
     console.log("fullWord", fullWord);
-    res
-      .status(200)
-      .json({ id: parseInt(req.params.id), status: req.params.status });
+    res.status(200).json(fullWord);
   } catch (error) {
     console.error(error);
     next(error);

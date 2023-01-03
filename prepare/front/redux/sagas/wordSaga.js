@@ -103,7 +103,7 @@ function* changeStatus(action) {
 }
 
 function changeStatusAllAPI(data) {
-  return axios.patch(`/word/${data.userId}/${data.status}`, {
+  return axios.patch(`/word/all/${data.userId}/${data.status}`, {
     status: data.status,
     userId: data.userId,
   });
@@ -113,7 +113,6 @@ function* changeStatusAll(action) {
   try {
     const data = action.payload;
     const result = yield call(changeStatusAllAPI, data);
-    console.log("result.data", result.data);
     yield put(changeStatusWordAllSuccess(result.data));
   } catch (error) {
     yield put(changeStatusWordAllError(error));
@@ -169,7 +168,6 @@ function loadCheckedAPI() {
 
 function* loadChecked(action) {
   try {
-    console.log("연결?");
     const data = action.payload;
     const result = yield call(loadCheckedAPI, data);
     yield put(loadCheckedSuccess(result.data));

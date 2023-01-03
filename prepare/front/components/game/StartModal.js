@@ -259,7 +259,7 @@ const StartModal = ({ UserId }) => {
                       onClick={onOpenCloseModal}
                       ref={cancelButtonRef}
                     >
-                      취소
+                      단어로 이동
                     </button>
                   </div>
                 </Dialog.Panel>

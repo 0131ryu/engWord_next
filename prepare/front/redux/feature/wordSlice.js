@@ -160,15 +160,24 @@ export const wordSlice = createSlice({
     },
     changeStatusWordAllSuccess: (state, action) => {
       const data = action.payload;
+
       state.changeStatusWordLoading = false;
       state.changeStatusWordComplete = true;
 
-      const changeStatus = state.wordLists.find((v) => v.UserId === data.id);
+      const changeStatus = state.wordLists.find((v) => v.UserId === data[0].id);
+      const showStatus = state.wordLists.find(
+        (v) => v.UserId === data[0].UserId && v.status === "C"
+      );
 
       if (changeStatus) {
         state.wordLists.map((word) => {
-          word.status = data.status;
+          word.status = data[0].status;
+          state.checkedWordList.length = 0;
+          state.checkedWordList = state.checkedWordList.concat(data);
         });
+      }
+      if (showStatus) {
+        state.checkedWordList.length = 0;
       }
     },
     changeStatusWordAllError: (state, action) => {

@@ -1,8 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { HandRaisedIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import HintModal from "./HintModal";
-import { findHintRequest } from "../../redux/feature/gameSlice";
+import {
+  addResultGameRequest,
+  findHintRequest,
+} from "../../redux/feature/gameSlice";
 import TimeoutModal from "./TimeoutModal";
 import EndModal from "./EndModal";
 
@@ -14,12 +17,9 @@ const GameForm = () => {
   const number = useRef(0);
   const timerId = useRef(null);
   const [modal, setModal] = useState(false);
-  const [endModal, setEndModal] = useState(false);
   const [score, setScore] = useState(0);
-  const [showScore, setShowScore] = useState(false);
 
   const [answers, setAnswers] = useState([false, false, false, false]);
-  const [gameLists, setGameLists] = useState([]);
 
   const { gameWordLists } = useSelector((state) => state.game);
   const checkedWords = [...gameWordLists];
@@ -68,15 +68,12 @@ const GameForm = () => {
   };
 
   useEffect(() => {
-    const shuffleArray = (array) => {
-      for (let i = array.length - 1; i > 0; i--) {
-        // 무작위로 index 값 생성 (0 이상 i 미만)
-        let j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-    };
-    shuffleArray(checkedWords);
-    setGameLists(checkedWords);
+    console.log("gameWordLists", gameWordLists);
+    console.log("checkedWords[num]", checkedWords[num]);
+    // console.log("checkedWords[num]?.choices[0]", checkedWords[num]?.choices[0]);
+    // console.log("checkedWords[num]?.choices[1]", checkedWords[num]?.choices[1]);
+    // console.log("checkedWords[num]?.choices[2]", checkedWords[num]?.choices[2]);
+    // console.log("checkedWords[num]?.choices[3]", checkedWords[num]?.choices[3]);
   }, []);
 
   //타이머
@@ -104,62 +101,121 @@ const GameForm = () => {
     dispatch(findHintRequest(korean));
   };
 
-  const onClickAnswer = (e) => {
-    console.log("gameLists", gameLists);
-    let copy = [...answers];
+  const onClickAnswer = useCallback(
+    (e) => {
+      let copy = [...answers];
 
-    number.current = number.current + 1;
-    setTimeout(() => setNum(parseInt(number.current)), 1000);
-    const chooseAnswer = parseInt(e.currentTarget.value);
+      number.current = number.current + 1;
+      setTimeout(() => setNum(parseInt(number.current)), 1000);
+      const chooseAnswer = parseInt(e.currentTarget.value);
 
-    // console.log("checkedWords", checkedWords);
-    console.log("checkedWords[num].question", checkedWords[num].question);
+      // console.log("checkedWords", checkedWords);
+      // console.log("gameLists", gameLists);
+      // console.log("num", num);
+      // console.log("chooseAnswer", chooseAnswer);
+      // console.log("checkedWords[num]", checkedWords[num]);
+      // console.log("checkedWords[num]?.answer", checkedWords[num]?.answer);
+      // console.log("score", score);
 
-    if (chooseAnswer === gameLists[num].answer) {
-      setScore((score += 10));
-      // console.log("정답!");
+      if (chooseAnswer === checkedWords[num].answer) {
+        setScore((score += 10));
 
-      copy[0] = false;
-      copy[1] = false;
-      copy[2] = false;
-      copy[3] = false;
+        copy[0] = false;
+        copy[1] = false;
+        copy[2] = false;
+        copy[3] = false;
 
-      if (chooseAnswer === 1) {
-        plusPoint(0, "point1", "tenPoint1");
-        removePlusPoint("tenPoint1");
-      } else if (chooseAnswer === 2) {
-        plusPoint(1, "point2", "tenPoint2");
-        removePlusPoint("tenPoint2");
-      } else if (chooseAnswer === 3) {
-        plusPoint(2, "point3", "tenPoint3");
-        removePlusPoint("tenPoint3");
-      } else if (chooseAnswer === 4) {
-        plusPoint(3, "point4", "tenPoint4");
-        removePlusPoint("tenPoint4");
+        if (chooseAnswer === 1) {
+          plusPoint(0, "point1", "tenPoint1");
+          removePlusPoint("tenPoint1");
+          dispatch(
+            addResultGameRequest({
+              answer: checkedWords[num]?.choices[0],
+              wrongAnswer: "",
+              score: 10,
+            })
+          );
+        } else if (chooseAnswer === 2) {
+          plusPoint(1, "point2", "tenPoint2");
+          removePlusPoint("tenPoint2");
+          dispatch(
+            addResultGameRequest({
+              answer: checkedWords[num]?.choices[1],
+              wrongAnswer: "",
+              score: 10,
+            })
+          );
+        } else if (chooseAnswer === 3) {
+          plusPoint(2, "point3", "tenPoint3");
+          removePlusPoint("tenPoint3");
+          dispatch(
+            addResultGameRequest({
+              answer: checkedWords[num]?.choices[2],
+              wrongAnswer: "",
+              score: 10,
+            })
+          );
+        } else if (chooseAnswer === 4) {
+          plusPoint(3, "point4", "tenPoint4");
+          removePlusPoint("tenPoint4");
+          dispatch(
+            addResultGameRequest({
+              answer: checkedWords[num]?.choices[3],
+              wrongAnswer: "",
+              score: 10,
+            })
+          );
+        }
+      } else {
+        if (chooseAnswer === 1) {
+          errorAnswer(0, "point1", "tenPoint1");
+          removeErrorAnswer("tenPoint1");
+          dispatch(
+            addResultGameRequest({
+              answer: "",
+              wrongAnswer: checkedWords[num]?.choices[0],
+              score: 0,
+            })
+          );
+        } else if (chooseAnswer === 2) {
+          errorAnswer(0, "point2", "tenPoint2");
+          removeErrorAnswer("tenPoint2");
+          dispatch(
+            addResultGameRequest({
+              answer: "",
+              wrongAnswer: checkedWords[num]?.choices[1],
+              score: 0,
+            })
+          );
+        } else if (chooseAnswer === 3) {
+          errorAnswer(0, "point3", "tenPoint3");
+          removeErrorAnswer("tenPoint3");
+          dispatch(
+            addResultGameRequest({
+              answer: "",
+              wrongAnswer: checkedWords[num]?.choices[2],
+              score: 0,
+            })
+          );
+        } else if (chooseAnswer === 4) {
+          errorAnswer(0, "point4", "tenPoint4");
+          removeErrorAnswer("tenPoint4");
+          dispatch(
+            addResultGameRequest({
+              answer: "",
+              wrongAnswer: checkedWords[num]?.choices[3],
+              score: 0,
+            })
+          );
+        }
       }
-    } else {
-      if (chooseAnswer === 1) {
-        errorAnswer(0, "point1", "tenPoint1");
-        removeErrorAnswer("tenPoint1");
-      } else if (chooseAnswer === 2) {
-        errorAnswer(0, "point2", "tenPoint2");
-        removeErrorAnswer("tenPoint2");
-      } else if (chooseAnswer === 3) {
-        errorAnswer(0, "point3", "tenPoint3");
-        removeErrorAnswer("tenPoint3");
-      } else if (chooseAnswer === 4) {
-        errorAnswer(0, "point4", "tenPoint4");
-        removeErrorAnswer("tenPoint4");
-      }
-      // console.log("오답!");
-    }
 
-    time.current = 12;
-    setTimeout(() => setNum(parseInt(number.current)), 1000);
-    return clearTimeout();
-
-    //답이 맞으면 dispatch로 연결
-  };
+      time.current = 12;
+      setTimeout(() => setNum(parseInt(number.current)), 1000);
+      return clearTimeout();
+    },
+    [num]
+  );
 
   clearTimeout(timeout);
   clearTimeout(removeTimeout);
@@ -168,16 +224,16 @@ const GameForm = () => {
   return (
     <>
       {/* 시간초과시 모달 */}
-      {num !== 10 && sec === 0 ? <TimeoutModal score={score} /> : null}
+      {/* {num !== 10 && sec === 0 ? <TimeoutModal score={score} /> : null} */}
       {/* 모든 게임 다 진행 후 모달 */}
       {num === 10 ? <EndModal score={score} /> : null}
       {/* 힌트 모달 */}
       {modal ? (
-        <HintModal setModal={setModal} korean={gameLists[`${num}`]?.question} />
+        <HintModal setModal={setModal} korean={checkedWords[num]?.question} />
       ) : null}
       <div
-        className={`flex lg:flex flex h-full pt-3 ${
-          sec > 7 && "pt-10"
+        className={`flex lg:flex flex h-full pt-12 ${
+          sec > 7 && "pt-20"
         } items-center justify-center`}
       >
         <div className="sm:500px hidden">quiz game</div>
@@ -213,7 +269,7 @@ const GameForm = () => {
           {sec < 8 && (
             <div>
               <button
-                value={gameLists[`${num}`]?.question}
+                value={checkedWords[num]?.question}
                 onClick={onClickHint}
                 className="bg-light-orange flex rounded-lg m-5 relative left-24"
               >
@@ -230,7 +286,7 @@ const GameForm = () => {
               <div className="bg-white p-5" name="korean">
                 다음 단어와 맞는 영단어를 고르시오
                 <div className="bg-light-beige text-lg">
-                  {gameLists[`${num}`]?.question}
+                  {checkedWords[num]?.question}
                 </div>
               </div>
             </div>
@@ -238,8 +294,6 @@ const GameForm = () => {
             <div className="mt-5">
               <div>
                 {/* quiz answer start */}
-                {/* {console.log(gameLists[`${num}`]?.answer)} */}
-
                 <button
                   value="1"
                   onClick={onClickAnswer}
@@ -249,9 +303,9 @@ const GameForm = () => {
                     <div className="bg-white p-3 rounded-lg">1</div>
                     <div
                       className="flex items-center pl-10 w-full text-lg"
-                      value={gameLists[`${num}`]?.answer}
+                      value={checkedWords[num]?.answer}
                     >
-                      {gameLists[`${num}`]?.choices[0]}
+                      {checkedWords[num]?.choices[0]}
                     </div>
                   </div>
                 </button>
@@ -265,9 +319,9 @@ const GameForm = () => {
                     <div className="bg-white p-3 rounded-lg">2</div>
                     <div
                       className="flex items-center pl-10 w-full text-lg"
-                      value={gameLists[`${num}`]?.answer}
+                      value={checkedWords[num]?.answer}
                     >
-                      {gameLists[`${num}`]?.choices[1]}
+                      {checkedWords[num]?.choices[1]}
                     </div>
                   </div>
                 </button>
@@ -281,9 +335,9 @@ const GameForm = () => {
                     <div className="bg-white p-3 rounded-lg">3</div>
                     <div
                       className="flex items-center pl-10 w-full text-lg"
-                      value={gameLists[`${num}`]?.answer}
+                      value={checkedWords[num]?.answer}
                     >
-                      {gameLists[`${num}`]?.choices[2]}
+                      {checkedWords[num]?.choices[2]}
                     </div>
                   </div>
                 </button>
@@ -297,9 +351,9 @@ const GameForm = () => {
                     <div className="bg-white p-3 rounded-lg">4</div>
                     <div
                       className="flex items-center pl-10 w-full text-lg"
-                      value={gameLists[`${num}`]?.answer}
+                      value={checkedWords[num]?.answer}
                     >
-                      {gameLists[`${num}`]?.choices[3]}
+                      {checkedWords[num]?.choices[3]}
                     </div>
                   </div>
                 </button>

@@ -7,6 +7,9 @@ import {
   findHintRequest,
   findHintSuccess,
   findHintError,
+  addResultGameRequest,
+  addResultGameSuccess,
+  addResultGameError,
 } from "../feature/gameSlice";
 
 function findHintAPI(data) {
@@ -25,10 +28,6 @@ function* findHint(action) {
   }
 }
 
-// function startGameAPI() {
-//   return axios.get("/game");
-// }
-
 function* startGame(action) {
   try {
     const data = action.payload;
@@ -39,7 +38,28 @@ function* startGame(action) {
   }
 }
 
-function* start_game_Req() {
+function addResultGameAPI(data) {
+  return axios.post("/game", {
+    answer: data.answer,
+    wrongAnswer: data.wrongAnswer,
+    score: data.score,
+  });
+}
+
+function* addResultGame(action) {
+  try {
+    const data = action.payload;
+    console.log("data", data);
+    const result = yield call(addResultGameAPI, data);
+    console.log("result.data", result.data);
+    // yield put(addResultGameSuccess(result.data));
+  } catch (error) {
+    yield put(addResultGameError(error));
+    console.log(error);
+  }
+}
+
+function* start_Game_Req() {
   yield takeLatest(startGameRequest.type, startGame);
 }
 
@@ -47,4 +67,12 @@ function* find_Hint_Req() {
   yield takeLatest(findHintRequest.type, findHint);
 }
 
-export const gameSaga = [fork(start_game_Req), fork(find_Hint_Req)];
+function* add_Result_Game_Req() {
+  yield takeLatest(addResultGameRequest.type, addResultGame);
+}
+
+export const gameSaga = [
+  fork(start_Game_Req),
+  fork(find_Hint_Req),
+  fork(add_Result_Game_Req),
+];

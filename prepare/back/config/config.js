@@ -9,6 +9,8 @@ module.exports = {
     database: "next_engword",
     host: "127.0.0.2",
     dialect: "mysql",
+    timestamps: true,
+    timezone: "Asia/Seoul",
   },
   test: {
     username: "root",
@@ -16,6 +18,8 @@ module.exports = {
     database: "next_engword",
     host: "127.0.0.2",
     dialect: "mysql",
+    timestamps: true,
+    timezone: "Asia/Seoul",
   },
   production: {
     username: "root",
@@ -23,5 +27,7 @@ module.exports = {
     database: "next_engword",
     host: "127.0.0.2",
     dialect: "mysql",
+    timestamps: true,
+    timezone: "Asia/Seoul",
   },
 };

@@ -1,13 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const shuffleArray = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    // 무작위로 index 값 생성 (0 이상 i 미만)
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-};
-
 const initialState = {
   gameWordLists: [],
   time: 0,
@@ -17,6 +9,9 @@ const initialState = {
   findHintLoading: false,
   findHintComplete: false,
   findHintError: null,
+  addResultGameLoading: false,
+  addResultGameComplete: false,
+  addResultGameError: null,
   HintLists: [],
 };
 
@@ -31,8 +26,10 @@ export const gameSlice = createSlice({
     },
     startGameSuccess: (state, action) => {
       const data = action.payload;
+      console.log("data", data);
       state.startGameLoading = false;
       state.startGameComplete = true;
+      state.gameWordLists.length = 0;
       state.gameWordLists = state.gameWordLists.concat(data);
     },
     startGameError: (state, action) => {
@@ -59,6 +56,21 @@ export const gameSlice = createSlice({
       state.findHintLoading = true;
       state.findHintError = action.error;
     },
+    addResultGameRequest: (state) => {
+      state.addResultGameLoading = true;
+      state.addResultGameError = null;
+      state.addResultGameComplete = false;
+    },
+    addResultGameSuccess: (state, action) => {
+      const data = action.payload;
+      state.addResultGameLoading = false;
+      state.addResultGameComplete = true;
+      state.gameWordLists = state.gameWordLists.concat(data);
+    },
+    addResultGameError: (state, action) => {
+      state.addResultGameLoading = true;
+      state.addResultGameError = action.error;
+    },
   },
 });
 
@@ -69,6 +81,9 @@ export const {
   findHintRequest,
   findHintSuccess,
   findHintError,
+  addResultGameRequest,
+  addResultGameSuccess,
+  addResultGameError,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

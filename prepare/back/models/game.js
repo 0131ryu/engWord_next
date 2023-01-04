@@ -6,15 +6,15 @@ module.exports = class Game extends Sequelize.Model {
       {
         answer: {
           type: Sequelize.STRING(100),
-          allowNull: false,
+          allowNull: true,
         },
         wrongAnswer: {
           type: Sequelize.STRING(100),
-          allowNull: false,
+          allowNull: true,
         },
         score: {
           type: Sequelize.INTEGER(30),
-          allowNull: false,
+          allowNull: true,
         },
       },
       {

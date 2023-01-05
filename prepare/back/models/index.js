@@ -6,6 +6,7 @@ const post = require("./post");
 const user = require("./user");
 const word = require("./word");
 const game = require("./game");
+const result = require("./result");
 
 const env = process.env.NODE_ENV || "development";
 const config = require("../config/config")[env];
@@ -25,6 +26,7 @@ db.Post = post;
 db.User = user;
 db.Word = word;
 db.Game = game;
+db.Result = result;
 
 Object.keys(db).forEach((modelName) => {
   db[modelName].init(sequelize);

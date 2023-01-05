@@ -7,7 +7,7 @@ const router = express.Router();
 //전체 단어들
 router.get("/", async (req, res, next) => {
   try {
-    const where = {};
+    const where = { UserId: req.user.id };
     // if (parseInt(req.query.lastId, 10)) {
     //   // 초기 로딩이 아닐 때
     //   where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };

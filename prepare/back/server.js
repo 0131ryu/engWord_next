@@ -21,6 +21,7 @@ const gameRouter = require("./routes/game");
 dotenv.config();
 const app = express();
 
+db.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
 db.sequelize
   .sync({ force: false })
   .then(() => {

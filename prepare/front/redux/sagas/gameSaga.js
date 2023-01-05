@@ -10,6 +10,15 @@ import {
   addResultGameRequest,
   addResultGameSuccess,
   addResultGameError,
+  loadGamesRequest,
+  loadGamesSuccess,
+  loadGamesFailure,
+  loadGameRequest,
+  loadGameSuccess,
+  loadGameFailure,
+  addScoreRequest,
+  addScoreSuccess,
+  addScoreFailure,
 } from "../feature/gameSlice";
 
 function findHintAPI(data) {
@@ -52,9 +61,59 @@ function* addResultGame(action) {
     console.log("data", data);
     const result = yield call(addResultGameAPI, data);
     console.log("result.data", result.data);
-    // yield put(addResultGameSuccess(result.data));
+    yield put(addResultGameSuccess(result.data));
   } catch (error) {
     yield put(addResultGameError(error));
+    console.log(error);
+  }
+}
+
+//loadGames
+function loadGamesAPI() {
+  return axios.get("/games");
+}
+
+function* loadGames(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(loadGamesAPI, data);
+    // console.log("result.data", result.data);
+    yield put(loadGamesSuccess(result.data));
+  } catch (error) {
+    yield put(loadGamesFailure(error));
+    console.log(error);
+  }
+}
+
+function loadGameAPI() {
+  return axios.get("/games/now");
+}
+
+function* loadGame(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(loadGameAPI, data);
+    yield put(loadGameSuccess(result.data));
+  } catch (error) {
+    yield put(loadGameFailure(error));
+    console.log(error);
+  }
+}
+
+// addScore
+function addScoreAPI(data) {
+  return axios.post("/game/score", data);
+}
+
+function* addScore(action) {
+  try {
+    const data = action.payload;
+    console.log("data", data);
+    const result = yield call(addScoreAPI, data);
+    console.log("result.data", result.data);
+    // yield put(addScoreSuccess(result.data));
+  } catch (error) {
+    yield put(addScoreFailure(error));
     console.log(error);
   }
 }
@@ -71,8 +130,23 @@ function* add_Result_Game_Req() {
   yield takeLatest(addResultGameRequest.type, addResultGame);
 }
 
+function* load_Games_Req() {
+  yield takeLatest(loadGamesRequest.type, loadGames);
+}
+
+function* load_Game_Req() {
+  yield takeLatest(loadGameRequest.type, loadGame);
+}
+
+function* add_Score_Req() {
+  yield takeLatest(addScoreRequest.type, addScore);
+}
+
 export const gameSaga = [
   fork(start_Game_Req),
   fork(find_Hint_Req),
   fork(add_Result_Game_Req),
+  fork(load_Games_Req),
+  fork(load_Game_Req),
+  fork(add_Score_Req),
 ];

@@ -1,12 +1,25 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useCallback, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { FaceFrownIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
+import { addScoreRequest } from "../../redux/feature/gameSlice";
+import { useDispatch } from "react-redux";
 
 const TimeoutModal = ({ score }) => {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(true);
+  const [showResult, setShowResult] = useState(false);
   const cancelButtonRef = useRef(null);
   const router = useRouter();
+
+  const onAddResultGame = useCallback(() => {
+    if (showResult === false) {
+      dispatch(addScoreRequest({ score: score }));
+      setShowResult(true);
+    } else {
+      alert("이미 저장되었습니다!");
+    }
+  }, []);
 
   const onRestartGame = () => {
     window.location.reload();
@@ -63,12 +76,24 @@ const TimeoutModal = ({ score }) => {
                       >
                         시간이 초과되었습니다.
                       </Dialog.Title>
-                      <div className="mt-2">
+                      <div className="mt-2 flex">
                         <p className="text-lg font-bold">
                           총 점수 :
-                          <span className="text-red-600 ">{score}</span>
+                          <span className="text-red-600 ml-3">{score}</span>
                         </p>
+                        <button
+                          type="button"
+                          className="ml-5 w-32 justify-center rounded-md border border-transparent bg-light-orange px-4 py-2 text-base font-medium shadow-sm hover:bg-light-orange focus:outline-none focus:ring-2 focus:ring-light-orange focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                          onClick={onAddResultGame}
+                        >
+                          결과 저장
+                        </button>
                       </div>
+                      {showResult ? (
+                        <p className="mt-2 text-red-500">
+                          결과가 저장되었습니다!
+                        </p>
+                      ) : null}
                     </div>
                   </div>
                 </div>
@@ -86,7 +111,7 @@ const TimeoutModal = ({ score }) => {
                     onClick={onOpenCloseModal}
                     ref={cancelButtonRef}
                   >
-                    끝내기
+                    단어장으로 돌아가기
                   </button>
                 </div>
               </Dialog.Panel>

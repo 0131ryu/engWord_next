@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   gameWordLists: [],
+  gameResultLists: [],
+  gameScoreLists: [],
   time: 0,
   startGameLoading: false,
   startGameComplete: false,
@@ -13,6 +15,15 @@ const initialState = {
   addResultGameComplete: false,
   addResultGameError: null,
   HintLists: [],
+  loadGamesLoading: false, //모든 게임 정보 가져오기
+  loadGamesComplete: false,
+  loadGamesError: null,
+  loadGameLoading: false, //개별 게임 score 가져오기
+  loadGameComplete: false,
+  loadGameError: null,
+  addScoreLoading: false, //개별 게임 score 저장하기
+  addScoreComplete: false,
+  addScoreError: null,
 };
 
 export const gameSlice = createSlice({
@@ -65,11 +76,61 @@ export const gameSlice = createSlice({
       const data = action.payload;
       state.addResultGameLoading = false;
       state.addResultGameComplete = true;
-      state.gameWordLists = state.gameWordLists.concat(data);
+      state.gameResultLists = state.gameResultLists.concat(data);
     },
     addResultGameError: (state, action) => {
       state.addResultGameLoading = true;
       state.addResultGameError = action.error;
+    },
+    loadGamesRequest: (state) => {
+      state.loadGamesLoading = true;
+      state.loadGamesError = null;
+      state.loadGamesComplete = false;
+    },
+    loadGamesSuccess: (state, action) => {
+      const data = action.payload;
+      state.loadGamesLoading = false;
+      state.loadGamesComplete = true;
+      // state.gameResultLists.length = 0;
+      state.gameResultLists = state.gameResultLists.concat(data);
+    },
+    loadGamesFailure: (state, action) => {
+      state.loadGamesLoading = false;
+      state.loadGamesError = action.error;
+    },
+    loadGameRequest: (state) => {
+      state.loadGameLoading = true;
+      state.loadGameError = null;
+      state.loadGameComplete = false;
+    },
+    loadGameSuccess: (state, action) => {
+      const data = action.payload;
+      console.log("data[0].score", data[0].score);
+      state.loadGameLoading = false;
+      state.loadGameComplete = true;
+      state.gameResultLists.length = 0;
+      state.gameScoreLists.push(data[0].score);
+    },
+    loadGameFailure: (state, action) => {
+      state.loadGameLoading = false;
+      state.loadGameError = action.error;
+    },
+    addScoreRequest: (state) => {
+      state.addScoreLoading = true;
+      state.addScoreError = null;
+      state.addScoreComplete = false;
+    },
+    addScoreSuccess: (state, action) => {
+      const data = action.payload;
+      console.log("data", data);
+      state.addScoreLoading = false;
+      state.addScoreComplete = true;
+      state.gameScoreLists.length = 0;
+      state.gameScoreLists = state.gameScoreLists.concat(data);
+    },
+    addScoreFailure: (state, action) => {
+      state.addScoreLoading = false;
+      state.addScoreError = action.error;
     },
   },
 });
@@ -84,6 +145,15 @@ export const {
   addResultGameRequest,
   addResultGameSuccess,
   addResultGameError,
+  loadGamesRequest,
+  loadGamesSuccess,
+  loadGamesFailure,
+  loadGameRequest,
+  loadGameSuccess,
+  loadGameFailure,
+  addScoreRequest,
+  addScoreSuccess,
+  addScoreFailure,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

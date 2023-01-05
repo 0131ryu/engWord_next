@@ -17,6 +17,7 @@ const postRouter = require("./routes/post");
 const postsRouter = require("./routes/posts");
 const userRouter = require("./routes/user");
 const gameRouter = require("./routes/game");
+const gamesRouter = require("./routes/games");
 
 dotenv.config();
 const app = express();
@@ -76,6 +77,7 @@ app.use("/user", userRouter);
 app.use("/post", postRouter);
 app.use("/posts", postsRouter);
 app.use("/game", gameRouter);
+app.use("/games", gamesRouter);
 
 app.listen(3005, () => {
   console.log("The server is running at port 3005");

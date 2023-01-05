@@ -23,6 +23,5 @@ module.exports = class Result extends Model {
 
   static associate(db) {
     db.Result.belongsTo(db.User);
-    db.Result.belongsTo(db.Game);
   }
 };

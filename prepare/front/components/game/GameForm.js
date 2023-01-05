@@ -224,8 +224,9 @@ const GameForm = () => {
   return (
     <>
       {/* 시간초과시 모달 */}
-      {/* {num !== 10 && sec === 0 ? <TimeoutModal score={score} /> : null} */}
+      {num !== 10 && sec === 0 ? <TimeoutModal score={score} /> : null}
       {/* 모든 게임 다 진행 후 모달 */}
+      {/* <EndModal score={score} /> */}
       {num === 10 ? <EndModal score={score} /> : null}
       {/* 힌트 모달 */}
       {modal ? (

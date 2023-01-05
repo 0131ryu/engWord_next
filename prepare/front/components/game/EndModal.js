@@ -1,13 +1,26 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useCallback, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Dialog, Transition } from "@headlessui/react";
 import { FaceSmileIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
+import { addScoreRequest } from "../../redux/feature/gameSlice";
 
 const EndModal = ({ score }) => {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(true);
+  const [showResult, setShowResult] = useState(false);
   const router = useRouter();
   const cancelButtonRef = useRef(null);
+
+  const onAddResultGame = useCallback(() => {
+    console.log("showResult", showResult);
+    if (showResult === false) {
+      dispatch(addScoreRequest({ score: score }));
+      setShowResult(true);
+    } else {
+      alert("이미 저장되었습니다!");
+    }
+  }, []);
 
   const onRestartGame = () => {
     window.location.reload();
@@ -64,12 +77,24 @@ const EndModal = ({ score }) => {
                       >
                         모든 게임을 완료하였습니다.
                       </Dialog.Title>
-                      <div className="mt-2">
+                      <div className="mt-2 flex">
                         <p className="text-lg font-bold">
                           총 점수 :
-                          <span className="text-dark-green">{score}</span>
+                          <span className="text-dark-green ml-1">{score}</span>
                         </p>
+                        <button
+                          type="button"
+                          className="ml-5 w-32 justify-center rounded-md border border-transparent bg-light-orange px-4 py-2 text-base font-medium shadow-sm hover:bg-light-orange focus:outline-none focus:ring-2 focus:ring-light-orange focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                          onClick={onAddResultGame}
+                        >
+                          결과 저장
+                        </button>
                       </div>
+                      {showResult ? (
+                        <p className="mt-2 text-red-500">
+                          결과가 저장되었습니다!
+                        </p>
+                      ) : null}
                     </div>
                   </div>
                 </div>
@@ -87,7 +112,7 @@ const EndModal = ({ score }) => {
                     onClick={onOpenCloseModal}
                     ref={cancelButtonRef}
                   >
-                    끝내기
+                    단어장으로 돌아가기
                   </button>
                 </div>
               </Dialog.Panel>

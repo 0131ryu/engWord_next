@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { FaceFrownIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
@@ -7,10 +7,15 @@ import { useDispatch } from "react-redux";
 
 const TimeoutModal = ({ score }) => {
   const dispatch = useDispatch();
+
   const [open, setOpen] = useState(true);
   const [showResult, setShowResult] = useState(false);
   const cancelButtonRef = useRef(null);
   const router = useRouter();
+
+  const onGoProfile = useCallback(() => {
+    router.push("/profile");
+  }, []);
 
   const onAddResultGame = useCallback(() => {
     if (showResult === false) {
@@ -19,16 +24,25 @@ const TimeoutModal = ({ score }) => {
     } else {
       alert("이미 저장되었습니다!");
     }
-  }, []);
+  }, [showResult]);
 
-  const onRestartGame = () => {
-    window.location.reload();
-  };
+  const onRestartGame = useCallback(() => {
+    if (showResult) {
+      window.location.reload();
+    } else {
+      alert("결과를 저장해주세요!");
+    }
+  }, [showResult]);
 
-  const onOpenCloseModal = () => {
-    setOpen(!open);
-    router.push("/");
-  };
+  const onOpenCloseModal = useCallback(() => {
+    if (showResult) {
+      setOpen(!open);
+      router.push("/");
+    } else {
+      alert("결과를 저장해주세요!");
+    }
+  }, [showResult]);
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
@@ -81,13 +95,23 @@ const TimeoutModal = ({ score }) => {
                           총 점수 :
                           <span className="text-red-600 ml-3">{score}</span>
                         </p>
-                        <button
-                          type="button"
-                          className="ml-5 w-32 justify-center rounded-md border border-transparent bg-light-orange px-4 py-2 text-base font-medium shadow-sm hover:bg-light-orange focus:outline-none focus:ring-2 focus:ring-light-orange focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                          onClick={onAddResultGame}
-                        >
-                          결과 저장
-                        </button>
+                        {showResult ? (
+                          <button
+                            type="button"
+                            className="ml-5 w-32 justify-center rounded-md border border-transparent bg-light-orange px-4 py-2 text-base font-medium shadow-sm hover:bg-light-orange focus:outline-none focus:ring-2 focus:ring-light-orange focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                            onClick={onGoProfile}
+                          >
+                            게임 결과들 보기
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="ml-5 w-32 justify-center rounded-md border border-transparent bg-light-orange px-4 py-2 text-base font-medium shadow-sm hover:bg-light-orange focus:outline-none focus:ring-2 focus:ring-light-orange focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                            onClick={onAddResultGame}
+                          >
+                            결과 저장
+                          </button>
+                        )}
                       </div>
                       {showResult ? (
                         <p className="mt-2 text-red-500">

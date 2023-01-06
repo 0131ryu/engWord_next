@@ -108,7 +108,7 @@ export const gameSlice = createSlice({
       console.log("data[0].score", data[0].score);
       state.loadGameLoading = false;
       state.loadGameComplete = true;
-      state.gameResultLists.length = 0;
+      state.gameScoreLists.length = 0;
       state.gameScoreLists.push(data[0].score);
     },
     loadGameFailure: (state, action) => {

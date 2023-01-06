@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
+import { useRouter } from "next/router";
 
 const PostCardContent = ({
   images,
@@ -9,12 +10,22 @@ const PostCardContent = ({
   onCancleRevisePost,
   index,
 }) => {
+  const router = useRouter();
   const [editText, setEditText] = useState(content);
   const onChangeText = useCallback((e) => {
     setEditText(e.target.value);
   }, []);
 
   // console.log("images", images);
+
+  const onGoHashtags = useCallback(() => {
+    content.split(/(#[^\s#]+)/g).map((v, i) => {
+      if (v.match(/(#[^\s#]+)/)) {
+        router.push(`/hashtag/${v.slice(1)}`); //수정 필요
+      }
+    });
+    console.log("눌름?");
+  }, []);
 
   return (
     <>
@@ -46,7 +57,25 @@ const PostCardContent = ({
         </div>
       ) : (
         <div>
-          <p className="p-4">{content}</p>
+          {content.includes("#") ? (
+            content.split(/(#[^\s#]+)/g).map((v, i) => {
+              if (v.match(/(#[^\s#]+)/)) {
+                return (
+                  <>
+                    <p
+                      className="m-4 text-sky-500 cursor-pointer"
+                      onClick={onGoHashtags}
+                    >
+                      {v}
+                    </p>
+                  </>
+                );
+              }
+            })
+          ) : (
+            <p className="p-4">{content}</p>
+          )}
+
           <small className="text-gray-400 m-4">2 hours ago</small>
         </div>
       )}

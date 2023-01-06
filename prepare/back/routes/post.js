@@ -55,11 +55,12 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
     });
     if (hashtags) {
       const result = await Promise.all(
-        //저장은 소문자만
         hashtags.map((tag) =>
-          Hashtag.findOrCreate({ where: { name: tag.slice(1).toLowerCase() } })
+          Hashtag.findOrCreate({
+            where: { name: tag.slice(1).toLowerCase() },
+          })
         )
-      ); //[[노드, true], [리액트, true]] 이런 모양이므로 첫 번째 것만 추출하게 함
+      ); // [[노드, true], [리액트, true]]
       await post.addHashtags(result.map((v) => v[0]));
     }
     if (req.body.image) {

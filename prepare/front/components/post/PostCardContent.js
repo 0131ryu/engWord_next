@@ -17,6 +17,7 @@ const PostCardContent = ({
   }, []);
 
   // console.log("images", images);
+  // console.log("content", content);
 
   const onGoHashtags = useCallback(() => {
     content.split(/(#[^\s#]+)/g).map((v, i) => {
@@ -57,25 +58,23 @@ const PostCardContent = ({
         </div>
       ) : (
         <div>
-          {content.includes("#") ? (
-            content.split(/(#[^\s#]+)/g).map((v, i) => {
-              if (v.match(/(#[^\s#]+)/)) {
-                return (
-                  <>
-                    <p
-                      className="m-4 text-sky-500 cursor-pointer"
-                      onClick={onGoHashtags}
-                    >
-                      {v}
-                    </p>
-                  </>
-                );
-              }
-            })
-          ) : (
-            <p className="p-4">{content}</p>
-          )}
-
+          {content.split(/(#[^\s#]+)/g).map((v, i) => {
+            if (v.match(/(#[^\s#]+)/)) {
+              return (
+                <>
+                  <p
+                    key={i}
+                    className="ml-4 text-sky-500 cursor-pointer"
+                    onClick={onGoHashtags}
+                  >
+                    {v}
+                  </p>
+                </>
+              );
+            } else {
+              return <p className="ml-4">{v}</p>;
+            }
+          })}
           <small className="text-gray-400 m-4">2 hours ago</small>
         </div>
       )}

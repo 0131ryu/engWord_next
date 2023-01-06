@@ -17,15 +17,16 @@ import { CameraIcon, PhotoIcon } from "@heroicons/react/24/outline";
 import FollowingModal from "./FollowingModal";
 import FollowerModal from "./FollowerModal";
 import BlockFollowModal from "./BlockFollowModal";
-import { loadGameRequest, loadGamesRequest } from "../redux/feature/gameSlice";
+import { loadGameRequest } from "../redux/feature/gameSlice";
 import AlertLoginModal from "./AletrtLoginModal";
+import TodayChart from "./profile/TodayChart";
 
 const Profile = ({ me, postResult, wordResult }) => {
   const dispatch = useDispatch();
   const { imagePaths, uploadProfileImageComplete } = useSelector(
     (state) => state.user
   );
-  const { gameScoreLists } = useSelector((state) => state.game);
+  const { gameScore } = useSelector((state) => state.game);
   const id = useSelector((state) => state.user.me?.id);
 
   const [nickname, onChangeNickname] = useInput(me?.nickname || "");
@@ -84,9 +85,7 @@ const Profile = ({ me, postResult, wordResult }) => {
     dispatch(loadWordsRequest(nickname));
     dispatch(loadBlockedFailure());
     dispatch(loadBlockingRequest());
-    dispatch(loadGamesRequest());
     dispatch(loadGameRequest());
-    console.log("gameScoreLists", gameScoreLists);
   }, []);
 
   const onChangeEdit = useCallback(() => {
@@ -281,9 +280,7 @@ const Profile = ({ me, postResult, wordResult }) => {
                         </div>
                         <div className="mr-4 p-3 text-center">
                           <span className="flex text-xl font-bold block uppercase tracking-wide">
-                            <p className="text-light-orange">
-                              {gameScoreLists[0]}
-                            </p>
+                            <p className="text-light-orange">{gameScore[0]}</p>
                             /100
                           </span>
                           <span className="text-sm text-blueGray-400">
@@ -291,6 +288,9 @@ const Profile = ({ me, postResult, wordResult }) => {
                           </span>
                         </div>
                       </div>
+                    </div>
+                    <div className="w-full mb-3">
+                      <TodayChart />
                     </div>
                   </div>
                 </div>

@@ -58,9 +58,9 @@ function addResultGameAPI(data) {
 function* addResultGame(action) {
   try {
     const data = action.payload;
-    console.log("data", data);
+    // console.log("data", data);
     const result = yield call(addResultGameAPI, data);
-    console.log("result.data", result.data);
+    // console.log("result.data", result.data);
     yield put(addResultGameSuccess(result.data));
   } catch (error) {
     yield put(addResultGameError(error));
@@ -77,7 +77,6 @@ function* loadGames(action) {
   try {
     const data = action.payload;
     const result = yield call(loadGamesAPI, data);
-    // console.log("result.data", result.data);
     yield put(loadGamesSuccess(result.data));
   } catch (error) {
     yield put(loadGamesFailure(error));

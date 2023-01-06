@@ -4,6 +4,7 @@ const initialState = {
   gameWordLists: [],
   gameResultLists: [],
   gameScoreLists: [],
+  gameScore: [],
   time: 0,
   startGameLoading: false,
   startGameComplete: false,
@@ -89,10 +90,13 @@ export const gameSlice = createSlice({
     },
     loadGamesSuccess: (state, action) => {
       const data = action.payload;
+      console.log("data", data);
       state.loadGamesLoading = false;
       state.loadGamesComplete = true;
-      // state.gameResultLists.length = 0;
-      state.gameResultLists = state.gameResultLists.concat(data);
+      if (state.gameScoreLists.length > 0) {
+        state.gameScoreLists.length = 0;
+      }
+      state.gameScoreLists = state.gameScoreLists.concat(data);
     },
     loadGamesFailure: (state, action) => {
       state.loadGamesLoading = false;
@@ -108,8 +112,8 @@ export const gameSlice = createSlice({
       console.log("data[0].score", data[0].score);
       state.loadGameLoading = false;
       state.loadGameComplete = true;
-      state.gameScoreLists.length = 0;
-      state.gameScoreLists.push(data[0].score);
+      state.gameScore.length = 0;
+      state.gameScore.push(data[0].score);
     },
     loadGameFailure: (state, action) => {
       state.loadGameLoading = false;
@@ -125,8 +129,8 @@ export const gameSlice = createSlice({
       console.log("data", data);
       state.addScoreLoading = false;
       state.addScoreComplete = true;
-      state.gameScoreLists.length = 0;
-      state.gameScoreLists = state.gameScoreLists.concat(data);
+      state.gameScore.length = 0;
+      state.gameScore = state.gameScore.concat(data);
     },
     addScoreFailure: (state, action) => {
       state.addScoreLoading = false;

@@ -16,10 +16,11 @@ const post = () => {
   const postResult = mainPosts.filter((post) => post.UserId === id);
 
   useEffect(() => {
-    // const lastId = mainPosts[mainPosts.length - 1]?.id;
+    const lastId = mainPosts[mainPosts.length - 1]?.id;
+    // console.log("lastId", lastId);
     dispatch(loadMyInfoRequest());
-    dispatch(loadPostsRequest());
-  }, []);
+    dispatch(loadPostsRequest(lastId));
+  }, [mainPosts]);
 
   return (
     <>
@@ -38,9 +39,7 @@ const post = () => {
           <div className="col-span-2">
             {me && <PostForms />}
             {mainPosts.map((post, index) => {
-              return (
-                <PostCard key={post.id} post={post} index={index} me={me} />
-              );
+              return <PostCard key={index} post={post} index={index} me={me} />;
             })}
           </div>
           <div className="col-span-1">

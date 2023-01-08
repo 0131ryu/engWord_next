@@ -77,6 +77,7 @@ function* loadGames(action) {
   try {
     const data = action.payload;
     const result = yield call(loadGamesAPI, data);
+    console.log("result.data", result.data);
     yield put(loadGamesSuccess(result.data));
   } catch (error) {
     yield put(loadGamesFailure(error));

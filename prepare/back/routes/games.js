@@ -1,27 +1,28 @@
 const express = require("express");
 const { Op } = require("sequelize");
+const moment = require("moment");
 const { User, Word, Game, Result } = require("../models");
-const TODAY_START = new Date().setHours(0, 0, 0, 0);
-const NOW = new Date();
+const TODAY_START = moment().format("YYYY-MM-DD 00:00");
+const NOW = moment().format("YYYY-MM-DD 23:59");
 
 const router = express.Router();
 
-//전체 단어들
+// 1.1 0:00 ~ 23:59까지 정보들 불러오기
 router.get("/", async (req, res, next) => {
   try {
     const games = await Result.findAll({
+      raw: true,
       UserId: req.user.id,
-      createdAt: {
-        [Op.gt]: TODAY_START,
-        [Op.lt]: NOW,
+      where: {
+        createdAt: {
+          [Op.between]: [TODAY_START, NOW],
+        },
       },
       order: [
-        ["createdAt", "DESC"], //최신 게시글부터
+        ["createdAt", "DESC"], //최신 것부터
       ],
     });
-    const scores = games.map((g) => g.score);
-
-    res.status(200).json(scores);
+    res.status(200).json(games);
   } catch (error) {
     console.error(error);
     next(error);

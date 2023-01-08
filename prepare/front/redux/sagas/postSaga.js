@@ -129,13 +129,14 @@ function* reviseComment(action) {
   }
 }
 
-function loadPostsAPI() {
-  return axios.get("/posts");
+function loadPostsAPI(data) {
+  return axios.get(`/posts?lastId=${data || 0}`); //data로 넘어갔으므로 req.query.data?
 }
 
 function* loadPosts(action) {
   try {
     const data = action.payload;
+    // console.log("data", data);
     const result = yield call(loadPostsAPI, data);
     yield put(loadPostsSuccess(result.data));
   } catch (error) {

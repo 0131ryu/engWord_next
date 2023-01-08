@@ -11,6 +11,11 @@ module.exports = {
     dialect: "mysql",
     timestamps: true,
     timezone: "Asia/Seoul",
+    dialectOptions: {
+      charset: "utf8mb4",
+      dateStrings: true,
+      typeCast: true,
+    },
   },
   test: {
     username: "root",
@@ -20,6 +25,11 @@ module.exports = {
     dialect: "mysql",
     timestamps: true,
     timezone: "Asia/Seoul",
+    dialectOptions: {
+      charset: "utf8mb4",
+      dateStrings: true,
+      typeCast: true,
+    },
   },
   production: {
     username: "root",
@@ -29,5 +39,10 @@ module.exports = {
     dialect: "mysql",
     timestamps: true,
     timezone: "Asia/Seoul",
+    dialectOptions: {
+      charset: "utf8mb4",
+      dateStrings: true,
+      typeCast: true,
+    },
   },
 };

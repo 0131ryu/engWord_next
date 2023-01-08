@@ -90,7 +90,6 @@ export const gameSlice = createSlice({
     },
     loadGamesSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data", data);
       state.loadGamesLoading = false;
       state.loadGamesComplete = true;
       if (state.gameScoreLists.length > 0) {

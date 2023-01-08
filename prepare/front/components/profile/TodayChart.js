@@ -22,36 +22,38 @@ const TodayChart = () => {
     dispatch(loadGamesRequest());
   }, []);
 
-  console.log("gameScoreLists", gameScoreLists);
   const ResultArray = [];
 
-  gameScoreLists.map((score, i) => {
-    // console.log("결과", `"[${parseInt(score)}]"`);
-    ResultArray.push(`[${parseInt(score)}]`);
+  gameScoreLists.map((lists, i) => {
+    const splitTimes = lists.createdAt.split(" ");
+    const time = splitTimes[1].split(":");
+    const result = time[0] + "시" + time[1] + "분" + time[2] + "초";
+    ResultArray.push({
+      score: `[${parseInt(lists.score)}]`,
+      time: result,
+    });
   });
 
   console.log("ResultArray", ResultArray);
 
   var lineChartData = {
-      labels: [""],
-      datasets: [],
-    },
-    array = ResultArray;
-
-  //console.log("array type", typeof array[0]); //string
-
-  array.forEach((a, i) => {
+    labels: [""],
+    datasets: [],
+  };
+  ResultArray.forEach((a) => {
     lineChartData.datasets.push({
-      label: i + 1 + "번째",
+      label: `${a.time}`,
       fillColor: "#4E6C50",
       strokeColor: "#4E6C50",
       pointColor: "#4E6C50",
       pointStrokeColor: "#fff",
       pointHighlightFill: "#fff",
       pointHighlightStroke: "#4E6C50",
-      data: JSON.parse(a),
+      data: JSON.parse(a.score),
     });
   });
+
+  console.log("lineChartData.datasets", lineChartData.datasets);
 
   const data = {
     labels: lineChartData.labels,
@@ -73,6 +75,7 @@ const TodayChart = () => {
   return (
     <div>
       <h1 className="font-bold">오늘의 결과</h1>
+      <p>(점수가 0인 경우 표에 표시되지 않습니다.)</p>
       <div>
         <Bar data={data} options={options}></Bar>
       </div>

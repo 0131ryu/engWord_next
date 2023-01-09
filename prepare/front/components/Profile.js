@@ -200,7 +200,7 @@ const Profile = ({ me, postResult, wordResult }) => {
                       <div className="grid grid-cols-1 place-items-end sm:mt-0">
                         <button
                           onClick={onChangeEdit}
-                          className="bg-light-orange active:bg-light-orange uppercase font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded "
+                          className="font-bold bg-light-orange hover:bg-gray-100 hover:text-light-orange px-4 py-2 rounded"
                         >
                           닉네임 수정
                         </button>

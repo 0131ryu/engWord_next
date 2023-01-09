@@ -108,7 +108,6 @@ export const gameSlice = createSlice({
     },
     loadGameSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data[0].score", data[0].score);
       state.loadGameLoading = false;
       state.loadGameComplete = true;
       state.gameScore.length = 0;

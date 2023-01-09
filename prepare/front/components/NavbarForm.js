@@ -172,15 +172,15 @@ const NavbarForm = ({ children }) => {
                           leaveFrom="transform opacity-100 scale-100"
                           leaveTo="transform opacity-0 scale-95"
                         >
-                          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md  bg-light-brown  py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-light-brown text-white  py-1">
                             <Menu.Item>
                               {({ active }) => (
                                 <button
                                   className={classNames(
                                     active
-                                      ? "bg-light-beige text-white font-bold rounded-lg"
+                                      ? "w-full bg-light-beige text-white font-bold rounded-lg cursor-pointer"
                                       : "",
-                                    "block  px-4 py-2 text-sm text-black font-bold"
+                                    "w-full block px-4 py-2 text-sm text-black font-bold cursor-pointer"
                                   )}
                                   onClick={onYourProfileDetail}
                                 >
@@ -194,9 +194,9 @@ const NavbarForm = ({ children }) => {
                                   onClick={onLogout}
                                   className={classNames(
                                     active
-                                      ? "bg-light-beige text-white font-bold rounded-lg"
+                                      ? "w-full bg-light-beige text-white font-bold rounded-lg cursor-pointer"
                                       : "",
-                                    "block px-4 py-2 text-sm text-black font-bold"
+                                    "w-full text-center block px-4 py-2 text-sm text-black font-bold cursor-pointer"
                                   )}
                                 >
                                   Sign out

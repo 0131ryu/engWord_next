@@ -160,7 +160,6 @@ export const wordSlice = createSlice({
     },
     changeStatusWordAllSuccess: (state, action) => {
       const data = action.payload;
-
       state.changeStatusWordLoading = false;
       state.changeStatusWordComplete = true;
 
@@ -178,6 +177,7 @@ export const wordSlice = createSlice({
       }
       if (showStatus) {
         state.checkedWordList.length = 0;
+        state.checkedWordList = state.checkedWordList.concat(data);
       }
     },
     changeStatusWordAllError: (state, action) => {
@@ -209,8 +209,11 @@ export const wordSlice = createSlice({
     },
     loadWordsSuccess: (state, action) => {
       const data = action.payload;
+      console.log("data", data);
       state.loadWordsLoading = false;
       state.loadWordsComplete = true;
+
+      //전체 word
       state.wordLists.length = 0;
       state.wordLists = state.wordLists.concat(data);
     },

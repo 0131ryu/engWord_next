@@ -112,7 +112,9 @@ function changeStatusAllAPI(data) {
 function* changeStatusAll(action) {
   try {
     const data = action.payload;
+    console.log("Data", data);
     const result = yield call(changeStatusAllAPI, data);
+    console.log("result.data", result.data);
     yield put(changeStatusWordAllSuccess(result.data));
   } catch (error) {
     yield put(changeStatusWordAllError(error));

@@ -107,7 +107,10 @@ router.patch("/all/:userId/:status", isLoggedIn, async (req, res, next) => {
       }
     );
     const fullWord = await Word.findAll({
-      where: { status: req.params.status },
+      where: { status: req.params.status, UserId: req.user.id },
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
     });
     console.log("fullWord", fullWord);
     res.status(200).json(fullWord);
@@ -138,7 +141,7 @@ router.get("/search/:word", async (req, res, next) => {
         UserId: req.user.id,
         english: { [Op.like]: "%" + searchWord + "%" },
       },
-      attributes: { exclude: ["status", "createdAt", "updatedAt", "status"] },
+      attributes: { exclude: ["status", "createdAt", "updatedAt"] },
     });
     console.log("(eng) result", result);
     console.log("(eng) result type", typeof result);

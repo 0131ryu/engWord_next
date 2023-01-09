@@ -190,7 +190,7 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
                               placeholder={korean}
                               type="text"
                               name="korean"
-                              className="sm:600 w-80 grid grid-cols-2 gap-4 place-content-center
+                              className="sm:600 w-80 lg:w-96 grid grid-cols-2 gap-4 place-content-center
                           pl-2 h-8 placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-lg m-2"
                             />
                           </div>
@@ -202,7 +202,7 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
                               value={resultEng}
                               type="text"
                               name="english"
-                              className="sm:600 w-80 grid grid-cols-2 gap-4 place-content-center
+                              className="sm:600 w-80 lg:w-96 grid grid-cols-2 gap-4 place-content-center
                           pl-2 h-8 placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-lg m-2"
                             />
                           </div>

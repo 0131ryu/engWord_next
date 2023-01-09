@@ -4,6 +4,7 @@ import {
   ArrowDownIcon,
   CheckIcon,
   MagnifyingGlassIcon,
+  MagnifyingGlassPlusIcon,
 } from "@heroicons/react/24/outline";
 import { addWordRequest } from "../../redux/feature/wordSlice";
 
@@ -36,11 +37,6 @@ const WordForm = ({ UserId }) => {
 
   const onFindModal = useCallback(() => {
     setModal(true);
-    // if (!UserId) {
-    //   alert("로그인 후 진행해주세요.");
-    // } else {
-    //   setModal(true);
-    // }
   }, []);
 
   const onSearchModal = useCallback(() => {
@@ -83,6 +79,12 @@ const WordForm = ({ UserId }) => {
             <button
               onClick={onFindModal}
               className="bg-light-orange ml-3 h-8 w-20 rounded-lg mb-2"
+            >
+              <MagnifyingGlassPlusIcon className="w-5 h-5 ml-2" />
+            </button>
+            <button
+              className="ml-5 h-8 w-20 font-bold bg-light-beige border-2 rounded-lg border-light-beige"
+              onClick={onSearchModal}
             >
               <MagnifyingGlassIcon className="w-5 h-5 ml-2" />
             </button>
@@ -177,9 +179,6 @@ const WordForm = ({ UserId }) => {
             >
               Submit
             </button>
-          </div>
-          <div className="text-center font-bold absolute top-64 inset-x-44 lg:inset-x-96 bg-light-beige border-2 rounded-lg border-light-beige hover:border-light-green hover:text-light-green">
-            <button onClick={onSearchModal}>단어 검색하기</button>
           </div>
         </div>
       </div>

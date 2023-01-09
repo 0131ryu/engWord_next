@@ -117,6 +117,35 @@ router.patch("/all/:userId/:status", isLoggedIn, async (req, res, next) => {
   }
 });
 
+//입력했던 단어 검색
+router.get("/search/:word", async (req, res, next) => {
+  const searchWord = req.params.word;
+  console.log("searchWord", searchWord);
+
+  if (searchWord.match(/^[가-힣]*$/g)) {
+    const result = await Word.findAll({
+      where: {
+        UserId: req.user.id,
+        korean: { [Op.like]: "%" + searchWord + "%" },
+      },
+      attributes: { exclude: ["status", "createdAt", "updatedAt", "status"] },
+    });
+    res.status(200).json(result);
+  }
+  if (searchWord.match(/^[a-zA-Z]*$/g)) {
+    const result = await Word.findAll({
+      where: {
+        UserId: req.user.id,
+        english: { [Op.like]: "%" + searchWord + "%" },
+      },
+      attributes: { exclude: ["status", "createdAt", "updatedAt", "status"] },
+    });
+    console.log("(eng) result", result);
+    console.log("(eng) result type", typeof result);
+    res.status(200).json(result);
+  }
+});
+
 //API로 단어 검색
 router.get("/:korean", async (req, res, next) => {
   await axdata(req.params.korean, (error, { wordLists } = {}) => {

@@ -103,11 +103,11 @@ const SearchWordModal = ({ setModalSearch }) => {
                               placeholder="한글 또는 영어 단어를 입력하세요"
                               type="text"
                               name="word"
-                              className="ml-8 lg:ml-0 sm:600 w-80 grid grid-cols-2 gap-4 place-content-center
+                              className="ml-8 lg:ml-0 sm:600 w-80 lg:w-96 grid grid-cols-2 gap-4 place-content-center
                           pl-2 h-9  placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-full m-2"
                             />
                             {wordError ? (
-                              <p className="absolute inset-x-20 lg:inset-x-36 text-red-500">
+                              <p className="text-center font-bold text-red-500">
                                 단어를 입력하지 않았습니다.
                               </p>
                             ) : null}

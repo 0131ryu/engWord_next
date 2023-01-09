@@ -127,19 +127,23 @@ function findWordAPI(data) {
 function* findWord(action) {
   try {
     const data = action.payload;
-    const response = yield call(findWordAPI, data);
-    yield put(findWordSuccess(response.data));
+    const result = yield call(findWordAPI, data);
+    yield put(findWordSuccess(result.data));
   } catch (error) {
     yield put(findWordError(error));
     console.log(error);
   }
 }
 
-//searchWord
+function searchWordAPI(data) {
+  return axios.get(`/word/search/${data}`);
+}
+
 function* searchWord(action) {
   try {
     const data = action.payload;
-    yield put(searchWordSuccess(data));
+    const result = yield call(searchWordAPI, data);
+    yield put(searchWordSuccess(result.data));
   } catch (error) {
     yield put(searchWordError(error));
     console.log(error);

@@ -191,30 +191,12 @@ export const wordSlice = createSlice({
       state.searchWordComplete = false;
     },
     searchWordSuccess: (state, action) => {
-      const searchWord = action.payload;
-      const result = "";
+      const data = action.payload;
+      console.log("Data", data);
       state.searchWordLoading = false;
       state.searchWordComplete = true;
-      // const result = state.wordLists.filter(
-      //   (element) => element.english === searchWord.toLowerCase()
-      // );
-
-      if (searchWord.match(/^[가-힣]*$/g)) {
-        result = state.wordLists.filter(
-          (element) => element.korean === searchWord
-        );
-      } else if (searchWord.match(/^[a-zA-Z]*$/g)) {
-        result = state.wordLists.filter(
-          (element) => element.english === searchWord.toLowerCase()
-        );
-      }
-
-      console.log(result);
-      state.searchResult.push(result);
-      if (state.searchResult.length > 0) {
-        state.searchResult = []; //검색 시 빈칸으로 시작
-        state.searchResult.push(result);
-      }
+      state.searchResult.length = 0;
+      state.searchResult = state.searchResult.concat(data);
     },
     searchWordError: (state, action) => {
       state.searchWordLoading = true;

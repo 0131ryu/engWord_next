@@ -17,17 +17,15 @@ const FindWordModal = ({ isId, setModal }) => {
 
   const [korean, onChangeKorean, setKorean] = useInput("");
 
-  const type = selected.name;
-
-  // console.log("english", wordLists[isId].english);
-  // console.log("korean", wordLists[isId].korean);
-  // console.log("index", isId);
-
   const onFindWordSubmit = () => {
     const validKorean = /^[가-힣\s.,;,~]+$/;
 
-    if (!validKorean.test(korean)) {
-      alert("검색은 한글만 가능합니다!");
+    if (
+      !validKorean.test(korean) ||
+      korean.length === 0 ||
+      korean.length === 1
+    ) {
+      alert("검색은 2글자 이상, 한글만 가능합니다!");
     } else {
       setResultModal(true);
       if (!korean) {
@@ -112,11 +110,18 @@ const FindWordModal = ({ isId, setModal }) => {
                               placeholder="한글 검색"
                               type="text"
                               name="korean"
-                              className="ml-8 lg:ml-0 sm:600 w-80 grid grid-cols-2 gap-4 place-content-center
+                              className="ml-8 lg:ml-0 sm:600 w-80 lg:w-96 grid grid-cols-2 gap-4 place-content-center
                           pl-2 h-9  placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-orange group-hover:opacity-80 rounded-full m-2"
                             />
                           </div>
                         </div>
+                        <p className="text-center">
+                          단어는{" "}
+                          <span className="text-red-500 font-bold">
+                            최소 2글자 이상, 한글만
+                          </span>{" "}
+                          입력하세요.
+                        </p>
                         {koreanError ? (
                           <p className="absolute inset-x-20 lg:inset-x-40 text-red-500">
                             단어를 입력하지 않았습니다.

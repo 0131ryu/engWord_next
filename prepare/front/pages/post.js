@@ -11,16 +11,23 @@ import { loadMyInfoRequest } from "../redux/feature/userSlice";
 const post = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  const { mainPosts } = useSelector((state) => state.post);
+  const { mainPosts, loadPostsLoading, hasMorePosts } = useSelector(
+    (state) => state.post
+  );
   const id = useSelector((state) => state.user.me?.id);
   const postResult = mainPosts.filter((post) => post.UserId === id);
 
   useEffect(() => {
-    const lastId = mainPosts[mainPosts.length - 1]?.id;
-    // console.log("lastId", lastId);
+    if (hasMorePosts && !loadPostsLoading) {
+      const lastId = mainPosts[mainPosts.length - 1]?.id;
+
+      dispatch(loadPostsRequest(lastId));
+    }
+  }, [hasMorePosts, mainPosts]);
+
+  useEffect(() => {
     dispatch(loadMyInfoRequest());
-    dispatch(loadPostsRequest(lastId));
-  }, [mainPosts]);
+  }, []);
 
   return (
     <>

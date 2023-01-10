@@ -88,7 +88,7 @@ const PostForms = () => {
             <button
               type="button"
               onClick={onClickImageUpload}
-              className="ml-2 bg-gray-100"
+              className="ml-2 mb-1 hover:font-bold hover:text-light-orange"
             >
               이미지 추가
             </button>

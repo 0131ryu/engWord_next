@@ -10,8 +10,12 @@ import { loadWordsRequest } from "../redux/feature/wordSlice";
 const profile = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  const { mainPosts } = useSelector((state) => state.post);
-  const { wordLists } = useSelector((state) => state.word);
+  const { mainPosts, loadPostsLoading, hasMorePosts } = useSelector(
+    (state) => state.post
+  );
+  const { wordLists, loadWordsLoading, hasMoreWords } = useSelector(
+    (state) => state.word
+  );
 
   const id = useSelector((state) => state.user.me?.id);
   const { imagePaths } = useSelector((state) => state.user);
@@ -19,9 +23,12 @@ const profile = () => {
   const wordResult = wordLists.filter((word) => word.UserId === id);
 
   useEffect(() => {
-    dispatch(loadPostsRequest());
-    dispatch(loadWordsRequest());
-  }, []);
+    if (hasMorePosts && !loadPostsLoading) {
+      const lastId = mainPosts[mainPosts.length - 1]?.id;
+      dispatch(loadPostsRequest(lastId));
+      dispatch(loadWordsRequest());
+    }
+  }, [hasMorePosts, mainPosts]);
 
   useEffect(() => {
     dispatch(loadMyInfoRequest());

@@ -136,7 +136,6 @@ function loadPostsAPI(data) {
 function* loadPosts(action) {
   try {
     const data = action.payload;
-    // console.log("data", data);
     const result = yield call(loadPostsAPI, data);
     yield put(loadPostsSuccess(result.data));
   } catch (error) {

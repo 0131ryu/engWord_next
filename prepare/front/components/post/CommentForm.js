@@ -41,19 +41,6 @@ const CommentForm = ({ post }) => {
                 />
               </button>
             </div>
-            <label className="block">
-              <span className="sr-only">Choose profile photo</span>
-              <input
-                type="file"
-                className="block w-full text-sm text-slate-500
-      file:mr-4 file:py-2 file:px-4
-      file:rounded-full file:border-0
-      file:text-sm file:font-semibold
-      file:bg-light-green file:text-light-beige
-      hover:file:bg-light-green
-    "
-              />
-            </label>
           </div>
         </div>
       </div>

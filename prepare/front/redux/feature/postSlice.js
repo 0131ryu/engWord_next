@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   mainPosts: [],
+  hasMorePosts: true,
   addPostLoading: false, //게시글 추가 중
   addPostComplete: false,
   addPostError: null,
@@ -163,6 +164,7 @@ export const postSlice = createSlice({
       state.loadPostsLoading = false;
       state.loadPostsComplete = true;
       state.mainPosts = state.mainPosts.concat(data);
+      state.hasMorePosts = data.length === 10;
     },
     loadPostsFailure: (state, action) => {
       state.loadPostsLoading = false;

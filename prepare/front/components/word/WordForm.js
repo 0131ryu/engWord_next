@@ -89,6 +89,13 @@ const WordForm = ({ UserId }) => {
               <MagnifyingGlassIcon className="w-5 h-5 ml-2" />
             </button>
           </h2>
+          <div className="text-center">
+            <h4>
+              <span className="text-light-orange font-bold">검색</span>에서
+              단어를 찾을 수 없다면{" "}
+              <span className="text-red-500 font-bold">직접 입력해보세요!</span>
+            </h4>
+          </div>
           <div className=" flex felx-row place-content-center rounded-lg lg:w-8/12 lg:relative left-48 top-5">
             {/* english */}
             <input

@@ -165,7 +165,7 @@ const PostCard = ({ post, index, me }) => {
                       leaveFrom="opacity-100 translate-y-0"
                       leaveTo="opacity-0 translate-y-1"
                     >
-                      <Popover.Panel className="absolute mt-1 w-16 h-10">
+                      <Popover.Panel className="z-50 absolute mt-1 w-16 h-10">
                         <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                           <div className="bg-light-beige p-1">
                             <button

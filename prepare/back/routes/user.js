@@ -12,13 +12,29 @@ const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 const router = express.Router();
 
 try {
-  fs.accessSync("uploads");
+  fs.accessSync("uploads/profile");
 } catch (error) {
-  console.log("uploads 폴더가 없으므로 새로 생성합니다.");
-  fs.mkdirSync("uploads");
+  console.log("uploads/profile 폴더가 없으므로 새로 생성합니다.");
+  fs.mkdirSync("uploads/profile");
 }
 
-router.get("/", async (req, res, next) => {
+//프로필 이미지
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, "uploads/profile");
+    },
+    filename(req, file, done) {
+      //파일이미지.png
+      const ext = path.extname(file.originalname); //확장자 추출(.png)
+      const basename = path.basename(file.originalname, ext); //파일이미지
+      done(null, basename + "_" + new Date().getTime() + ext); //파일이미지1234849.png
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
+});
+
+router.get("/", upload.none(), async (req, res, next) => {
   // GET /user
   try {
     if (req.user) {
@@ -64,44 +80,19 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-//프로필 이미지
-const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, done) {
-      done(null, "uploads");
-    },
-    filename(req, file, done) {
-      //파일이미지.png
-      const ext = path.extname(file.originalname); //확장자 추출(.png)
-      const basename = path.basename(file.originalname, ext); //파일이미지
-      done(null, basename + "_" + new Date().getTime() + ext); //파일이미지1234849.png
-    },
-  }),
-  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
-});
-
 router.post(
   "/image",
   isLoggedIn,
-  upload.array("image"),
+  upload.single("image"),
   async (req, res, next) => {
-    console.log("req.files", req.files);
-    res.json(req.files.map((v) => v.filename));
-  }
-);
-
-router.patch("/profile", isLoggedIn, upload.none(), async (req, res, next) => {
-  try {
     await User.update(
-      { profileImg: req.body.image },
+      { profileImg: req.file.filename },
       { where: { id: req.user.id } }
     );
-    res.status(201).json({ profileImg: req.body.image });
-  } catch (error) {
-    console.error(error);
-    next(error);
+    res.json(req.file);
+    console.log("req.file", req.file);
   }
-});
+);
 
 router.get("/followers", isLoggedIn, async (req, res, next) => {
   // GET /user/followers

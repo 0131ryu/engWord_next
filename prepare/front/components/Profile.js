@@ -2,17 +2,14 @@ import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useInput from "../hooks/useInput";
 import {
-  addProfileImageRequest,
   changeNicknameRequest,
   loadBlockedFailure,
   loadBlockingRequest,
   uploadProfileImageRequest,
-  removeProfileImage,
 } from "../redux/feature/userSlice";
 import { loadWordsRequest } from "../redux/feature/wordSlice";
 import NicknameEditForm from "./NicknameEditForm";
 import Link from "next/link";
-import { CameraIcon, PhotoIcon } from "@heroicons/react/24/outline";
 
 import FollowingModal from "./FollowingModal";
 import FollowerModal from "./FollowerModal";
@@ -23,9 +20,7 @@ import TodayChart from "./profile/TodayChart";
 
 const Profile = ({ me, postResult, wordResult }) => {
   const dispatch = useDispatch();
-  const { imagePaths, uploadProfileImageComplete } = useSelector(
-    (state) => state.user
-  );
+  const { imagePaths } = useSelector((state) => state.user);
   const { gameScore } = useSelector((state) => state.game);
   const id = useSelector((state) => state.user.me?.id);
 
@@ -34,12 +29,10 @@ const Profile = ({ me, postResult, wordResult }) => {
   const [followerModal, setFollowerModal] = useState(false);
   const [followingModal, setFollowingModal] = useState(false);
   const [blockFollowModal, setBlockFollowModal] = useState(false);
-
   const imageInput = useRef();
 
   const onClickImageUpload = useCallback(() => {
     imageInput.current.click();
-    console.log("imageInput.current", imageInput.current);
   }, [imageInput.current]);
 
   const onChangeImages = useCallback((e) => {
@@ -51,27 +44,6 @@ const Profile = ({ me, postResult, wordResult }) => {
     dispatch(uploadProfileImageRequest(imageFormData));
   }, []);
 
-  const onSubmitProfileImg = useCallback(
-    (e) => {
-      e.preventDefault();
-
-      const formData = new FormData();
-
-      imagePaths.forEach((p) => {
-        formData.append("image", p);
-      });
-      dispatch(addProfileImageRequest(formData));
-    },
-    [imagePaths]
-  );
-
-  const onRemoveImage = useCallback(
-    (index) => () => {
-      dispatch(removeProfileImage(index));
-    },
-    []
-  );
-
   const onChangeNicknameEdit = useCallback(
     (editNickname) => () => {
       setEditMode(false);
@@ -81,7 +53,6 @@ const Profile = ({ me, postResult, wordResult }) => {
   );
 
   useEffect(() => {
-    // console.log("me", me);
     dispatch(loadWordsRequest(nickname));
     dispatch(loadBlockedFailure());
     dispatch(loadBlockingRequest());
@@ -134,38 +105,22 @@ const Profile = ({ me, postResult, wordResult }) => {
                   <div className="flex flex-wrap justify-center">
                     <div className=" w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
                       <div className="relative">
-                        {imagePaths.length === 0 ? (
+                        {me.profileImg === "" ? (
                           <img
                             alt="profile-img"
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                             className="rounded-full h-40 w-40"
                           />
                         ) : (
-                          imagePaths?.map((v, i) => (
-                            <div key={v} className="flex justify-center">
-                              <div>
-                                <img
-                                  className="rounded-full h-40 w-40"
-                                  src={`http://localhost:3005/${v}`}
-                                  alt={v}
-                                />
-                              </div>
-                              <button
-                                type="button"
-                                onClick={onRemoveImage(i)}
-                                className="bg-red-500 text-white rounded-md mt-1 pb-2 pl-1 pr-1 w-10 h-5"
-                              >
-                                X
-                              </button>
-                            </div>
-                          ))
+                          <img
+                            className="rounded-full h-40 w-40"
+                            src={`http://localhost:3005/profile/${me.profileImg}`}
+                            alt={me.profileImg}
+                          />
                         )}
 
                         <div className="flex">
-                          <form
-                            encType="multipart/form-data"
-                            onSubmit={onSubmitProfileImg}
-                          >
+                          <form encType="multipart/form-data">
                             <input
                               type="file"
                               name="image"
@@ -174,24 +129,15 @@ const Profile = ({ me, postResult, wordResult }) => {
                               ref={imageInput}
                               onChange={onChangeImages}
                             />
-                            {uploadProfileImageComplete ? (
+                            <div className="flex">
                               <button
-                                type="submit"
-                                className="bg-gray-100 rounded-full w-20 h-5 relative left-32 bottom-10 cursor-pointer font-bold"
+                                type="button"
+                                className="bg-gray-100 rounded-full w-28 h-5 relative left-32 bottom-10 cursor-pointer "
+                                onClick={onClickImageUpload}
                               >
-                                <p className="font-bold">변경 완료</p>
+                                <p className="font-bold">프로필 변경</p>
                               </button>
-                            ) : (
-                              <div className="flex">
-                                <button
-                                  type="button"
-                                  className="bg-gray-100 rounded-full w-28 h-5 relative left-32 bottom-10 cursor-pointer "
-                                  onClick={onClickImageUpload}
-                                >
-                                  <p className="font-bold">프로필 변경</p>
-                                </button>
-                              </div>
-                            )}
+                            </div>
                           </form>
                         </div>
                       </div>

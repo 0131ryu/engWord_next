@@ -24,29 +24,32 @@ const post = () => {
 
   return (
     <>
-      <NavbarForm />
-      <div className="h-full mt-5">
-        <div className="grid grid-cols-4 gap-6">
-          <div className="col-span-1">
-            {me && (
-              <UserInfo
-                nickname={me?.nickname}
-                me={me}
-                postResult={postResult}
-              />
-            )}
-          </div>
-          <div className="col-span-2">
-            {me && <PostForms />}
-            {mainPosts.map((post, index) => {
-              return <PostCard key={index} post={post} index={index} me={me} />;
-            })}
-          </div>
-          <div className="col-span-1">
-            <PostSearch />
+      <NavbarForm me={me}>
+        <div className="h-full mt-5">
+          <div className="grid grid-cols-4 gap-6">
+            <div className="col-span-1">
+              {me && (
+                <UserInfo
+                  nickname={me?.nickname}
+                  me={me}
+                  postResult={postResult}
+                />
+              )}
+            </div>
+            <div className="col-span-2">
+              {me && <PostForms />}
+              {mainPosts.map((post, index) => {
+                return (
+                  <PostCard key={index} post={post} index={index} me={me} />
+                );
+              })}
+            </div>
+            <div className="col-span-1">
+              <PostSearch />
+            </div>
           </div>
         </div>
-      </div>
+      </NavbarForm>
     </>
   );
 };

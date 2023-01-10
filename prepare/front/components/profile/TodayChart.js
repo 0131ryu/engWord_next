@@ -75,8 +75,6 @@ const TodayChart = () => {
     datasets: lineChartData.datasets,
   };
 
-  console.log("data", data);
-
   const options = {
     scales: {
       y: {

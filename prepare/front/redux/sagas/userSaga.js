@@ -42,9 +42,6 @@ import {
   uploadProfileImageRequest,
   uploadProfileImageSuccess,
   uploadProfileImageFailure,
-  addProfileImageRequest,
-  addProfileImageSuccess,
-  addProfileImageFailure,
 } from "../feature/userSlice";
 import axios from "axios";
 
@@ -254,30 +251,11 @@ function uploadProfileImageAPI(data) {
 function* uploadProfileImage(action) {
   try {
     const data = action.payload;
-    console.log("data", data);
     const result = yield call(uploadProfileImageAPI, data);
     yield put(uploadProfileImageSuccess(result.data));
   } catch (error) {
     yield put(uploadProfileImageFailure(error));
     console.log(error);
-  }
-}
-
-//addProfileImage
-function addProfileImageAPI(data) {
-  return axios.patch("/user/profile", data);
-}
-
-function* addProfileImage(action) {
-  try {
-    const data = action.payload;
-    console.log("data", data);
-    const result = yield call(addProfileImageAPI, data);
-    console.log("result.data", result.data);
-    yield put(addProfileImageSuccess(result.data));
-  } catch (err) {
-    console.error(err);
-    yield put(addProfileImageFailure(err));
   }
 }
 
@@ -337,10 +315,6 @@ function* uploadProfileImage_Req() {
   yield takeLatest(uploadProfileImageRequest.type, uploadProfileImage);
 }
 
-function* addProfileImage_Req() {
-  yield takeLatest(addProfileImageRequest.type, addProfileImage);
-}
-
 export const userSagas = [
   fork(login_Req),
   fork(logout_Req),
@@ -356,5 +330,4 @@ export const userSagas = [
   fork(loadBlocked_Req),
   fork(cancleBlock_Req),
   fork(uploadProfileImage_Req),
-  fork(addProfileImage_Req),
 ];

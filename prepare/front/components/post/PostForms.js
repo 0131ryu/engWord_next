@@ -18,7 +18,6 @@ const PostForms = () => {
     if (addPostComplete) {
       setText("");
     }
-    console.log("imagePaths", imagePaths);
   }, [addPostComplete]);
 
   const onSubmitForm = useCallback(
@@ -35,6 +34,7 @@ const PostForms = () => {
       imagePaths.forEach((p) => {
         formData.append("image", p);
       });
+      console.log("formData", formData);
       formData.append("content", text);
       dispatch(addPostRequest(formData));
     },
@@ -43,7 +43,6 @@ const PostForms = () => {
 
   const onClickImageUpload = useCallback(() => {
     imageInput.current.click();
-    console.log("imageInput.current", imageInput.current);
   }, [imageInput.current]);
 
   const onChangeImages = useCallback((e) => {

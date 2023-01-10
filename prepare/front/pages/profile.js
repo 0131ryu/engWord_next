@@ -14,22 +14,28 @@ const profile = () => {
   const { wordLists } = useSelector((state) => state.word);
 
   const id = useSelector((state) => state.user.me?.id);
+  const { imagePaths } = useSelector((state) => state.user);
   const postResult = mainPosts.filter((post) => post.UserId === id);
   const wordResult = wordLists.filter((word) => word.UserId === id);
 
   useEffect(() => {
-    dispatch(loadMyInfoRequest());
     dispatch(loadPostsRequest());
     dispatch(loadWordsRequest());
   }, []);
+
+  useEffect(() => {
+    dispatch(loadMyInfoRequest());
+  }, [imagePaths]);
+
   return (
     <>
-      <NavbarForm />
-      {me ? (
-        <Profile me={me} postResult={postResult} wordResult={wordResult} />
-      ) : (
-        <LoginForm />
-      )}
+      <NavbarForm me={me}>
+        {me ? (
+          <Profile me={me} postResult={postResult} wordResult={wordResult} />
+        ) : (
+          <LoginForm />
+        )}
+      </NavbarForm>
     </>
   );
 };

@@ -12,8 +12,9 @@ const game = () => {
   }, []);
   return (
     <>
-      <NavbarForm />
-      <StartModal UserId={me?.id} />
+      <NavbarForm me={me}>
+        <StartModal UserId={me?.id} />
+      </NavbarForm>
     </>
   );
 };

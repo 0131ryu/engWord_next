@@ -43,9 +43,6 @@ const initialState = {
   uploadProfileImageLoading: false, //uploadImagesRequest
   uploadProfileImageComplete: false,
   uploadProfileImageError: null,
-  addProfileImageLoading: false, //addImagesRequest
-  addProfileImageComplete: false,
-  addProfileImageError: null,
   me: null,
   imagePaths: [],
   signUpData: {},
@@ -283,26 +280,6 @@ export const userSlice = createSlice({
       state.uploadProfileImageLoading = false;
       state.uploadProfileImageError = action.error;
     },
-    addProfileImageRequest: (state) => {
-      state.addProfileImageLoading = true;
-      state.addProfileImageError = null;
-      state.addProfileImageComplete = false;
-    },
-    addProfileImageSuccess: (state, action) => {
-      const data = action.payload;
-      state.imagePaths = data.profileImg;
-      state.addProfileImageLoading = false;
-      state.addProfileImageComplete = true;
-    },
-    addProfileImageFailure: (state, action) => {
-      state.addProfileImageLoading = false;
-      state.addProfileImageError = action.error;
-    },
-    removeProfileImage: (state, action) => {
-      state.imagePaths = state.imagePaths.filter(
-        (v, i) => i !== action.payload
-      );
-    },
   },
 });
 
@@ -349,9 +326,6 @@ export const {
   uploadProfileImageRequest,
   uploadProfileImageSuccess,
   uploadProfileImageFailure,
-  addProfileImageRequest,
-  addProfileImageSuccess,
-  addProfileImageFailure,
   removeProfileImage,
 } = userSlice.actions;
 

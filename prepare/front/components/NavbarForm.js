@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
@@ -8,17 +8,22 @@ import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutRequest } from "../redux/feature/userSlice";
+import { loadMyInfoRequest, logoutRequest } from "../redux/feature/userSlice";
 import { useRouter } from "next/router";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const NavbarForm = ({ children }) => {
+const NavbarForm = ({ me, children }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { me } = useSelector((state) => state.user);
+  // const { me } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(loadMyInfoRequest());
+    console.log("navbar me?.profileImg", me);
+  }, []);
 
   const onLogout = useCallback(() => {
     dispatch(logoutRequest());
@@ -137,7 +142,20 @@ const NavbarForm = ({ children }) => {
                               src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                               alt=""
                             /> */}
-                            <UserIcon className="h-8 w-8 rounded-full text-white" />
+                            {/* <UserIcon className="h-8 w-8 rounded-full text-white" /> */}
+                            {me.profileImg === "" ? (
+                              <img
+                                alt="profile-img"
+                                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                                className="h-8 w-8 rounded-full"
+                              />
+                            ) : (
+                              <img
+                                className="h-8 w-8 rounded-full"
+                                src={`http://localhost:3005/profile/${me.profileImg}`}
+                                alt={me.profileImg}
+                              />
+                            )}
                           </Menu.Button>
                         </div>
                       ) : (

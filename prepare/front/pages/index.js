@@ -16,9 +16,10 @@ const Home = () => {
   }, []);
   return (
     <>
-      <NavbarForm />
-      <WordForm UserId={me?.id} />
-      <WordList UserId={me?.id} />
+      <NavbarForm me={me}>
+        <WordForm UserId={me?.id} />
+        <WordList UserId={me?.id} />
+      </NavbarForm>
     </>
   );
 };

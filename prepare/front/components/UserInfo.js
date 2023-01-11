@@ -6,7 +6,7 @@ const UserInfo = ({ nickname, me, postResult }) => {
     <>
       <div className="ml-2 shadow shadow-black-500/40 rounded-xl">
         <div className="md:flex lg:flex">
-          {me.profileImg === "" ? (
+          {me.profileImg === "" || me.profileImg === null ? (
             <img
               alt="profile-img"
               src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"

@@ -105,7 +105,7 @@ const Profile = ({ me, postResult, wordResult }) => {
                   <div className="flex flex-wrap justify-center">
                     <div className=" w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
                       <div className="relative">
-                        {me.profileImg === "" ? (
+                        {me.profileImg === "" || me.profileImg === null ? (
                           <img
                             alt="profile-img"
                             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"

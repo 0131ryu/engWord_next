@@ -10,7 +10,8 @@ import { loadMyInfoRequest } from "../redux/feature/userSlice";
 
 const post = () => {
   const dispatch = useDispatch();
-  const { me } = useSelector((state) => state.user);
+  const { me, changeNicknameComplete, uploadProfileImageComplete } =
+    useSelector((state) => state.user);
   const { mainPosts, loadPostsLoading, hasMorePosts } = useSelector(
     (state) => state.post
   );
@@ -18,16 +19,18 @@ const post = () => {
   const postResult = mainPosts.filter((post) => post.UserId === id);
 
   useEffect(() => {
-    if (hasMorePosts && !loadPostsLoading) {
-      const lastId = mainPosts[mainPosts.length - 1]?.id;
-
-      dispatch(loadPostsRequest(lastId));
-    }
-  }, [hasMorePosts, mainPosts]);
-
-  useEffect(() => {
     dispatch(loadMyInfoRequest());
   }, []);
+
+  useEffect(() => {
+    if (hasMorePosts && !loadPostsLoading) {
+      const lastId = mainPosts[mainPosts.length - 1]?.id;
+      dispatch(loadPostsRequest(lastId));
+    }
+    if (changeNicknameComplete || uploadProfileImageComplete) {
+      window.location.reload();
+    }
+  }, [hasMorePosts, mainPosts]);
 
   return (
     <>

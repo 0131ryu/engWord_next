@@ -18,11 +18,9 @@ function classNames(...classes) {
 const NavbarForm = ({ me, children }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  // const { me } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(loadMyInfoRequest());
-    console.log("navbar me?.profileImg", me);
   }, []);
 
   const onLogout = useCallback(() => {
@@ -143,7 +141,7 @@ const NavbarForm = ({ me, children }) => {
                               alt=""
                             /> */}
                             {/* <UserIcon className="h-8 w-8 rounded-full text-white" /> */}
-                            {me.profileImg === "" ? (
+                            {me.profileImg === "" || me.profileImg === null ? (
                               <img
                                 alt="profile-img"
                                 src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"

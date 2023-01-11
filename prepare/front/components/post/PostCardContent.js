@@ -3,7 +3,6 @@ import { useCallback } from "react";
 import { useRouter } from "next/router";
 
 const PostCardContent = ({
-  images,
   content,
   editMode,
   onRevisePost,

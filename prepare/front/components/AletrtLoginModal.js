@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Dialog } from "@headlessui/react";
 import { useRouter } from "next/router";
 import { LockClosedIcon } from "@heroicons/react/24/outline";
@@ -6,9 +6,9 @@ import { LockClosedIcon } from "@heroicons/react/24/outline";
 const AlertLoginModal = () => {
   const router = useRouter();
 
-  const onGoLogin = () => {
+  const onGoLogin = useCallback(() => {
     router.push("/signin");
-  };
+  }, []);
 
   return (
     <>

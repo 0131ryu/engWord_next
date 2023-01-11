@@ -65,8 +65,13 @@ export const userSlice = createSlice({
       state.me = action.payload;
     },
     loginFailure: (state, action) => {
+      console.log("action", action);
+      console.log("action.payload", action.payload);
+      console.log("action.payload.response", action.payload.response);
+      console.log("action.payload.response.data", action.payload.response.data);
+
       state.loginLoading = false;
-      state.loginError = action.error;
+      state.loginError = action.payload.response.data;
     },
     //로그아웃
     logoutRequest: (state) => {
@@ -96,7 +101,7 @@ export const userSlice = createSlice({
     },
     signupFailure: (state, action) => {
       state.signupLoading = false;
-      state.signupError = action.error;
+      state.signupError = action.payload.response.data;
     },
     //내정보 불러오기 loadMyInfoRequest
     loadMyInfoRequest: (state) => {

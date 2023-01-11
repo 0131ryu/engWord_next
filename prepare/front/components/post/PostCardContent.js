@@ -53,7 +53,7 @@ const PostCardContent = ({
               취소
             </button>
           </div>
-          <small className="text-gray-400 m-4">2 hours ago</small>
+          <small className="text-gray-400 m-5 float-right">2 hours ago</small>
         </div>
       ) : (
         <div>
@@ -71,10 +71,16 @@ const PostCardContent = ({
                 </>
               );
             } else {
-              return <p className="ml-4">{v}</p>;
+              return (
+                <>
+                  <p className="ml-5">{v}</p>
+                  <small className="text-gray-400 m-5 float-right">
+                    2 hours ago
+                  </small>
+                </>
+              );
             }
           })}
-          <small className="text-gray-400 m-4">2 hours ago</small>
         </div>
       )}
     </>

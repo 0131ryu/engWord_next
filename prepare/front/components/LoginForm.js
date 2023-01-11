@@ -1,15 +1,22 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { LockClosedIcon, BookmarkIcon } from "@heroicons/react/20/solid";
 import useInput from "../hooks/useInput";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "../redux/feature/userSlice";
-// import { loginAction } from "../store/userSlice";
+import { useRouter } from "next/router";
 
 const LoginForm = () => {
+  const { loginError } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
+  const router = useRouter();
   const [email, onChangeEmail] = useInput("");
   const [password, onChangePassword] = useInput("");
+
+  useEffect(() => {
+    if (loginError) {
+      alert(loginError);
+    }
+  }, [loginError]);
 
   const onSubmitForm = useCallback(() => {
     dispatch(
@@ -19,6 +26,10 @@ const LoginForm = () => {
       })
     );
   }, [email, password]);
+
+  const onSignup = useCallback(() => {
+    router.push("/signup");
+  }, []);
 
   return (
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -71,24 +82,13 @@ const LoginForm = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <a
-              href="#"
-              className="font-medium text-light-brown hover:text-dark-green font-bold"
-            >
-              카카오 로그인
-            </a>
-          </div>
-
-          <div className="text-sm">
-            <a
-              href="/signup"
-              className="font-medium text-dark-green hover:text-light-green font-bold"
-            >
-              회원가입
-            </a>
-          </div>
+        <div className="float-right">
+          <p
+            onClick={onSignup}
+            className="mb-5 cursor-pointer text-gray-400 hover:text-light-green font-bold"
+          >
+            회원가입
+          </p>
         </div>
 
         <div>

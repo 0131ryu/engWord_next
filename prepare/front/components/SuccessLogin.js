@@ -1,9 +1,10 @@
 import React, { useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutRequest } from "../redux/feature/userSlice";
 import { useRouter } from "next/router";
 
-const SuccessLogin = ({ nickname }) => {
+const SuccessLogin = ({ me }) => {
+  const { loginComplete } = useSelector((state) => state.user);
   const router = useRouter();
   const dispatch = useDispatch();
   const onLogout = useCallback(() => {
@@ -17,12 +18,26 @@ const SuccessLogin = ({ nickname }) => {
     <>
       <div className=" flex min-h-full items-center justify-center py-48 px-4 sm:px-6 lg:px-6">
         <div className="bg-gray-100 mx-auto max-w-7xl py-12 px-8 sm:px-6 lg:items-center lg:justify-between lg:py-16 lg:px-8">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            <span className="block text-center mb-2">{nickname}님</span>
-            <span className="block text-dark-green">
-              로그인이 완료되었습니다!
-            </span>
-          </h2>
+          {loginComplete ? (
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              <span className="block text-center mb-2 text-light-orange">
+                {me.nickname}님
+              </span>
+              <span className="block text-dark-green">
+                로그인이 완료되었습니다!
+              </span>
+            </h2>
+          ) : (
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              <span className="block text-center mb-2 text-light-orange">
+                {me?.nickname}님은
+              </span>
+              <span className="block text-dark-green">
+                이미 로그인한 상태입니다.
+              </span>
+            </h2>
+          )}
+
           <div className="mt-8 flex ">
             <div className="inline-flex rounded-md shadow">
               <button

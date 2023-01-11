@@ -12,15 +12,20 @@ const post = () => {
   const dispatch = useDispatch();
   const { me, changeNicknameComplete, uploadProfileImageComplete } =
     useSelector((state) => state.user);
-  const { mainPosts, loadPostsLoading, hasMorePosts } = useSelector(
-    (state) => state.post
-  );
+  const { mainPosts, loadPostsLoading, hasMorePosts, retweetError } =
+    useSelector((state) => state.post);
   const id = useSelector((state) => state.user.me?.id);
   const postResult = mainPosts.filter((post) => post.UserId === id);
 
   useEffect(() => {
     dispatch(loadMyInfoRequest());
   }, []);
+
+  useEffect(() => {
+    if (retweetError) {
+      alert(retweetError);
+    }
+  }, [retweetError]);
 
   useEffect(() => {
     if (hasMorePosts && !loadPostsLoading) {
@@ -34,7 +39,7 @@ const post = () => {
 
   return (
     <>
-      <NavbarForm me={me}>
+      <NavbarForm>
         <div className="h-full mt-5">
           <div className="grid grid-cols-4 gap-6">
             <div className="col-span-1">

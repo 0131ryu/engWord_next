@@ -87,7 +87,6 @@ function* signUp(action) {
     // yield call(signupSuccess, data);
   } catch (error) {
     yield put(signupFailure(error));
-    console.log(error);
   }
 }
 

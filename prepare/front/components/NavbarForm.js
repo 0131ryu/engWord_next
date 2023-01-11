@@ -15,9 +15,10 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const NavbarForm = ({ me, children }) => {
+const NavbarForm = ({ children }) => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { me } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(loadMyInfoRequest());
@@ -41,6 +42,14 @@ const NavbarForm = ({ me, children }) => {
 
   const onYourProfileDetail = useCallback(() => {
     router.push("/profile");
+  }, []);
+
+  const onLogin = useCallback(() => {
+    router.push("/signin");
+  }, []);
+
+  const onSignup = useCallback(() => {
+    router.push("/signup");
   }, []);
 
   return (
@@ -85,21 +94,6 @@ const NavbarForm = ({ me, children }) => {
                   </div>
                   <div className="hidden sm:ml-6 sm:block">
                     <div className="flex space-x-4">
-                      {/* {navigation.map((item, i) => (
-                        <a
-                          key={i}
-                          href={item.href}
-                          className={classNames(
-                            item.current
-                              ? "bg-light-brown text-white  underline hover:text-white"
-                              : "text-white hover:bg-light-beige hover:text-black",
-                            "px-3 py-2 rounded-md text-sm font-medium"
-                          )}
-                          aria-current={item.current ? "page" : undefined}
-                        >
-                          {item.name}
-                        </a>
-                      ))} */}
                       <button
                         onClick={onGoMain}
                         className="px-3 py-2 font-medium rounded-lg bg-light-brown text-white hover:bg-light-beige hover:text-black"
@@ -135,12 +129,6 @@ const NavbarForm = ({ me, children }) => {
                           </p>
                           <Menu.Button className="flex rounded-full bg-light-brown text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span className="sr-only">Open user menu</span>
-                            {/* <img
-                              className="h-8 w-8 rounded-full"
-                              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                              alt=""
-                            /> */}
-                            {/* <UserIcon className="h-8 w-8 rounded-full text-white" /> */}
                             {me.profileImg === "" || me.profileImg === null ? (
                               <img
                                 alt="profile-img"
@@ -158,21 +146,17 @@ const NavbarForm = ({ me, children }) => {
                         </div>
                       ) : (
                         <div className="flex">
-                          <div>
-                            <a
-                              href="/signin"
-                              className="px-3 py-2 rounded-md text-sm font-medium bg-light-beige text-black hover:bg-light-brown hover:text-white"
-                            >
-                              LogIn
-                            </a>
+                          <div
+                            onClick={onLogin}
+                            className="cursor-pointer px-3 py-2 rounded-md text-sm font-medium bg-light-beige text-black hover:bg-light-brown hover:text-white"
+                          >
+                            LogIn
                           </div>
-                          <div>
-                            <a
-                              href="/signup"
-                              className="ml-3 px-3 py-2 rounded-md text-sm font-medium bg-light-orange text-black hover:bg-light-brown hover:text-white"
-                            >
-                              Sign Up
-                            </a>
+                          <div
+                            onClick={onSignup}
+                            className="cursor-pointer ml-3 px-3 py-2 rounded-md text-sm font-medium bg-light-orange text-black hover:bg-light-brown hover:text-white"
+                          >
+                            Sign Up
                           </div>
                         </div>
                       )}

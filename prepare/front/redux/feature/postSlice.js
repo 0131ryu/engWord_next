@@ -34,6 +34,9 @@ const initialState = {
   uploadImagesLoading: false, //uploadImagesRequest
   uploadImagesComplete: false,
   uploadImagesError: null,
+  retweetLoading: false, //retweet
+  retweetComplete: false,
+  retweetError: null,
   Comments: [],
   imagePaths: [],
   updatedImages: [], //이미 업로드할 이미지
@@ -225,6 +228,21 @@ export const postSlice = createSlice({
         (v, i) => i !== action.payload
       );
     },
+    retweetRequest: (state) => {
+      state.retweetLoading = true;
+      state.retweetError = null;
+      state.retweetComplete = false;
+    },
+    retweetSuccess: (state, action) => {
+      const data = action.payload;
+      state.retweetLoading = false;
+      state.retweetComplete = true;
+      state.mainPosts.unshift(data);
+    },
+    retweetFailure: (state, action) => {
+      state.retweetLoading = false;
+      state.retweetError = action.payload.response.data;
+    },
   },
 });
 
@@ -260,6 +278,9 @@ export const {
   uploadImagesSuccess,
   uploadImagesFailure,
   removeImage,
+  retweetRequest,
+  retweetSuccess,
+  retweetFailure,
 } = postSlice.actions;
 
 export default postSlice.reducer;

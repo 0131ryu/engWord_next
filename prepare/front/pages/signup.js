@@ -7,7 +7,9 @@ import SuccessSignup from "../components/SuccessSignup";
 
 const signUp = () => {
   const [showSignUp, setShowSignUp] = useState(false);
-  const { signupComplete } = useSelector((state) => state.user);
+  const { me, signupComplete, signupError } = useSelector(
+    (state) => state.user
+  );
 
   useEffect(() => {
     if (signupComplete) {
@@ -15,10 +17,17 @@ const signUp = () => {
     }
   }, [signupComplete]);
 
+  useEffect(() => {
+    if (signupError) {
+      alert(signupError);
+    }
+  }, [signupError]);
+
   return (
     <div>
-      <NavbarForm />
-      {showSignUp ? <SuccessSignup /> : <JoinForm />}
+      <NavbarForm>
+        {me || showSignUp ? <SuccessSignup me={me} /> : <JoinForm />}
+      </NavbarForm>
     </div>
   );
 };

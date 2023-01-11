@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import LoginForm from "../components/LoginForm";
 import SuccessLogin from "../components/SuccessLogin";
@@ -8,14 +8,12 @@ import { useSelector } from "react-redux";
 
 const signIn = () => {
   const { me, loginComplete } = useSelector((state) => state.user);
+
   return (
     <div>
-      <NavbarForm nikcname={me?.nickname} />
-      {me && loginComplete ? (
-        <SuccessLogin nickname={me?.nickname} />
-      ) : (
-        <LoginForm />
-      )}
+      <NavbarForm>
+        {me || loginComplete ? <SuccessLogin me={me} /> : <LoginForm />}
+      </NavbarForm>
     </div>
   );
 };

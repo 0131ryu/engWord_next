@@ -31,6 +31,9 @@ import {
   uploadImagesRequest,
   uploadImagesSuccess,
   uploadImagesFailure,
+  retweetRequest,
+  retweetSuccess,
+  retweetFailure,
 } from "../feature/postSlice";
 import axios from "axios";
 
@@ -175,7 +178,6 @@ function* unlikePost(action) {
   }
 }
 
-//uploadImages
 function uploadImagesAPI(data) {
   return axios.post("/post/images", data);
 }
@@ -183,13 +185,28 @@ function uploadImagesAPI(data) {
 function* uploadImages(action) {
   try {
     const data = action.payload;
-    console.log("data", data);
     const result = yield call(uploadImagesAPI, data);
-    console.log("result.data", result.data);
     yield put(uploadImagesSuccess(result.data));
   } catch (error) {
     yield put(uploadImagesFailure(error));
     console.log(error);
+  }
+}
+
+function retweetAPI(data) {
+  return axios.post(`/post/${data}/retweet`);
+}
+
+function* retweet(action) {
+  try {
+    const data = action.payload;
+    console.log("data", data);
+    const result = yield call(retweetAPI, data);
+    console.log("result.data", result.data);
+    yield put(retweetSuccess(result.data));
+  } catch (error) {
+    yield put(retweetFailure(error));
+  
   }
 }
 
@@ -233,6 +250,10 @@ function* uploadImages_Req() {
   yield takeLatest(uploadImagesRequest.type, uploadImages);
 }
 
+function* retweet_Req() {
+  yield takeLatest(retweetRequest.type, retweet);
+}
+
 export const postSagas = [
   fork(addPost_Req),
   fork(removePost_Req),
@@ -244,4 +265,6 @@ export const postSagas = [
   fork(likePost_Req),
   fork(unlikePost_Req),
   fork(uploadImages_Req),
+  fork(uploadImages_Req),
+  fork(retweet_Req),
 ];

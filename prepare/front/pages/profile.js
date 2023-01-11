@@ -36,7 +36,7 @@ const profile = () => {
 
   return (
     <>
-      <NavbarForm me={me}>
+      <NavbarForm>
         {me ? (
           <Profile me={me} postResult={postResult} wordResult={wordResult} />
         ) : (

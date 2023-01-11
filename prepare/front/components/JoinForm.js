@@ -19,11 +19,10 @@ const JoinForm = () => {
   const [passwordError, setPasswordError] = useState(false);
   const [termError, setTermError] = useState(false);
 
-  // useEffect(() => {
-  //   if (signupComplete) {
-  //     <SuccessSignup />;
-  //   }
-  // }, [signupComplete]);
+  const emailRule =
+    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+  const passwordRule = /^[A-Za-z0-9]{6,12}$/;
+  const nicknameRule = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/;
 
   const onChangePasswordCheck = useCallback(
     (e) => {
@@ -39,26 +38,34 @@ const JoinForm = () => {
   }, []);
 
   const onSubmitUserForm = useCallback(() => {
+    if (
+      !emailRule.test(email) ||
+      !passwordRule.test(password) ||
+      !nicknameRule.test(nickname)
+    ) {
+      alert("회원가입 기준에 맞지 않습니다. 다시 확인하세요.");
+    } else {
+      dispatch(
+        signupRequest({
+          email,
+          password,
+          nickname,
+        })
+      );
+    }
+
     if (password !== passwordCheck) {
       return setPasswordError(true);
     }
     if (!term) {
       return setTermError(true);
     }
-    console.log(email, password, nickname);
-    dispatch(
-      signupRequest({
-        email,
-        password,
-        nickname,
-      })
-    );
   }, [email, password, passwordCheck, term]);
   return (
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
         <div>
-          <div className="mt-20 mx-auto w-auto bg-light-beige rounded-md h-10 w-10">
+          <div className="mx-auto w-auto bg-light-beige rounded-md h-10 w-10">
             <BookmarkIcon className="w-10 h-10" />
           </div>
           <h4 className="mt-8 text-center text-3xl font-bold tracking-tight text-gray-900">
@@ -87,6 +94,12 @@ const JoinForm = () => {
               onChange={onChangeEmail}
             />
           </div>
+          {emailRule.test(email) ? null : (
+            <p className="ml-3 text-red-500">
+              이메일 형식(ex) test.gmail.com)에 맞게 입력하세요.
+            </p>
+          )}
+
           <div>
             <label htmlFor="nickname" className="sr-only">
               nickname
@@ -103,6 +116,12 @@ const JoinForm = () => {
               onChange={onChangeNickname}
             />
           </div>
+          {nicknameRule.test(nickname) ? null : (
+            <p className="ml-3 text-red-500">
+              닉네임은 한글, 영문, 숫자 포함 가능합니다.
+            </p>
+          )}
+
           <div>
             <label htmlFor="password" className="sr-only">
               Password
@@ -119,6 +138,11 @@ const JoinForm = () => {
               onChange={onChangePassword}
             />
           </div>
+          {passwordRule.test(password) ? null : (
+            <p className="ml-3 text-red-500">
+              비밀번호는 숫자, 영문포함 6자리 이상 12자리 이하로 입력하세요.
+            </p>
+          )}
           <div>
             <label htmlFor="passwordCheck" className="sr-only">
               Password Check

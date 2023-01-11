@@ -282,7 +282,9 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
       return next(err);
     }
     if (info) {
-      return res.status(401).send(info.reason);
+      return res
+        .status(401)
+        .send("로그인이 되지 않았습니다. 이메일과 비밀번호를 다시 확인하세요.");
     }
     return req.login(user, async (loginErr) => {
       if (loginErr) {

@@ -17,25 +17,30 @@ const Test3 = () => {
       labels: ["1/6"],
       datasets: [],
     },
-    array = ["[50]", "[100]", "[30]", "[70]", "[80]"];
+    // array = ["[50]", "[100]", "[30]", "[70]", "[80]"];
+
+    array = [
+      ["A", "[5]"],
+      ["B", "[1]"],
+      ["C", "[3]"],
+    ];
 
   //console.log("array type", typeof array[0]); //string
 
   array.forEach(function (a, i) {
+    console.log("a[0]", a[0]);
+    console.log("a[1]", a[1]);
     lineChartData.datasets.push({
-      label: i + 1 + "번째",
+      label: a[0],
       fillColor: "rgba(220,220,220,0.2)",
       strokeColor: "rgba(220,220,220,1)",
       pointColor: "rgba(220,220,220,1)",
       pointStrokeColor: "#fff",
       pointHighlightFill: "#fff",
       pointHighlightStroke: "rgba(220,220,220,1)",
-      data: JSON.parse(a),
+      data: JSON.parse(a[1]),
     });
   });
-
-  const labels = ["1번째", "2번째", "3번째", "4번째", "5번째"];
-  const datas = [5, 4, 10, 8, 2];
 
   const data = {
     labels: lineChartData.labels,

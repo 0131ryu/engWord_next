@@ -4,9 +4,11 @@ import NavbarForm from "../components/NavbarForm";
 import PostCard from "../components/post/PostCard";
 import PostForms from "../components/post/PostForms";
 import PostSearch from "../components/post/PostSearch";
+import WeekendWordChart from "../components/post/WeekendWordChart";
 import UserInfo from "../components/UserInfo";
 import { loadPostsRequest } from "../redux/feature/postSlice";
 import { loadMyInfoRequest } from "../redux/feature/userSlice";
+import { loadWordsWeekendRequest } from "../redux/feature/wordSlice";
 
 const post = () => {
   const dispatch = useDispatch();
@@ -14,12 +16,17 @@ const post = () => {
     useSelector((state) => state.user);
   const { mainPosts, loadPostsLoading, hasMorePosts, retweetError } =
     useSelector((state) => state.post);
+  const { weekendResult, wordLists } = useSelector((state) => state.word);
   const id = useSelector((state) => state.user.me?.id);
   const postResult = mainPosts.filter((post) => post.UserId === id);
 
   useEffect(() => {
     dispatch(loadMyInfoRequest());
   }, []);
+
+  useEffect(() => {
+    dispatch(loadWordsWeekendRequest());
+  }, [wordLists]);
 
   useEffect(() => {
     if (retweetError) {
@@ -50,6 +57,7 @@ const post = () => {
                   postResult={postResult}
                 />
               )}
+              <PostSearch />
             </div>
             <div className="col-span-2">
               {me && <PostForms />}
@@ -60,7 +68,9 @@ const post = () => {
               })}
             </div>
             <div className="col-span-1">
-              <PostSearch />
+              <div className="mt-10">
+                <WeekendWordChart weekendResult={weekendResult} />
+              </div>
             </div>
           </div>
         </div>

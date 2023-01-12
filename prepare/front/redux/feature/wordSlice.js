@@ -30,8 +30,12 @@ const initialState = {
   loadCheckedLoading: false, //체크한 단어 가져오기
   loadCheckedComplete: false,
   loadCheckedError: null,
+  loadWordsWeekendLoading: false, //일주일간 단어 가져오기
+  loadWordsWeekendComplete: false,
+  loadWordsWeekendError: null,
   findResult: [],
   searchResult: [],
+  weekendResult: [],
 };
 
 export const wordSlice = createSlice({
@@ -211,7 +215,6 @@ export const wordSlice = createSlice({
       const data = action.payload;
       state.loadWordsLoading = false;
       state.loadWordsComplete = true;
-
       //전체 word
       state.wordLists.length = 0;
       state.wordLists = state.wordLists.concat(data);
@@ -235,6 +238,23 @@ export const wordSlice = createSlice({
     loadCheckedFailure: (state, action) => {
       state.loadCheckedLoading = false;
       state.loadCheckedError = action.error;
+    },
+    loadWordsWeekendRequest: (state) => {
+      state.loadWordsWeekendLoading = true;
+      state.loadWordsWeekendError = null;
+      state.loadWordsWeekendComplete = false;
+    },
+    loadWordsWeekendSuccess: (state, action) => {
+      const data = action.payload;
+      state.loadWordsWeekendLoading = false;
+      state.loadWordsWeekendComplete = true;
+      //전체 word
+      state.weekendResult.length = 0;
+      state.weekendResult = state.weekendResult.concat(data);
+    },
+    loadWordsWeekendFailure: (state, action) => {
+      state.loadWordsWeekendLoading = false;
+      state.loadWordsWeekendError = action.error;
     },
   },
 });
@@ -271,6 +291,9 @@ export const {
   loadCheckedRequest,
   loadCheckedSuccess,
   loadCheckedFailure,
+  loadWordsWeekendRequest,
+  loadWordsWeekendSuccess,
+  loadWordsWeekendFailure,
 } = wordSlice.actions;
 
 export default wordSlice.reducer;

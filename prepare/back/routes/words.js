@@ -1,10 +1,14 @@
 const express = require("express");
 const { Op } = require("sequelize");
 const { User, Word } = require("../models");
+const moment = require("moment");
+
+dateTo = moment().format("YYYY-MM-DD");
+dateFrom = moment().subtract(7, "d").format("YYYY-MM-DD");
 
 const router = express.Router();
 
-//전체 단어들
+//개별 유저들의 전체 단어들
 router.get("/", async (req, res, next) => {
   try {
     const words = await Word.findAll({
@@ -45,7 +49,36 @@ router.get("/checked", async (req, res, next) => {
         ["createdAt", "DESC"], //최신 게시글부터
       ],
     });
-    console.log(words);
+    res.status(200).json(words);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.get("/weekend", async (req, res, next) => {
+  try {
+    const words = await Word.findAll({
+      where: {
+        createdAt: {
+          [Op.between]: [dateFrom, dateTo], //일주일 동안의 값
+        },
+      },
+      order: [
+        ["createdAt"], //날짜 순
+      ],
+      attributes: {
+        exclude: [
+          "id",
+          "english",
+          "korean",
+          "type",
+          "status",
+          "updatedAt",
+          "UserId",
+        ],
+      },
+    });
     res.status(200).json(words);
   } catch (error) {
     console.error(error);

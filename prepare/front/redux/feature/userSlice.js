@@ -77,6 +77,7 @@ export const userSlice = createSlice({
     logoutSuccess: (state) => {
       state.me = null;
       state.logoutLoading = false;
+      state.loginComplete = false;
       state.logoutComplete = true;
     },
     logoutFailure: (state, action) => {

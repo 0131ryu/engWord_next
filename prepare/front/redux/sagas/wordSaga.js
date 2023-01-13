@@ -28,6 +28,9 @@ import {
   loadCheckedRequest,
   loadCheckedSuccess,
   loadCheckedFailure,
+  loadWordsWeekendRequest,
+  loadWordsWeekendSuccess,
+  loadWordsWeekendFailure,
 } from "../feature/wordSlice";
 
 function addWordAPI(data) {
@@ -183,6 +186,22 @@ function* loadChecked(action) {
   }
 }
 
+function loadWordsWeekendAPI() {
+  return axios.get("/words/weekend");
+}
+
+function* loadWordsWeekend(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(loadWordsWeekendAPI, data);
+    console.log("result.data", result.data);
+    yield put(loadWordsWeekendSuccess(result.data));
+  } catch (error) {
+    yield put(loadWordsWeekendFailure(error));
+    console.log(error);
+  }
+}
+
 function* add_Word_Req() {
   yield takeLatest(addWordRequest.type, addWord);
 }
@@ -219,6 +238,10 @@ function* load_Checked_Req() {
   yield takeLatest(loadCheckedRequest.type, loadChecked);
 }
 
+function* load_Words_Weekend_Req() {
+  yield takeLatest(loadWordsWeekendRequest.type, loadWordsWeekend);
+}
+
 export const wordSagas = [
   fork(add_Word_Req),
   fork(revise_Word_Req),
@@ -229,4 +252,5 @@ export const wordSagas = [
   fork(search_Word_Req),
   fork(load_Words_Req),
   fork(load_Checked_Req),
+  fork(load_Words_Weekend_Req),
 ];

@@ -48,7 +48,7 @@ const WordList = ({ UserId }) => {
   return (
     <>
       {/* checkbox */}
-      <div className="absolute top-64 right-0 md:right-20 lg:right-52 lg:top-64">
+      <div className="absolute top-64 right-0 md:right-20 lg:right-52 lg:top-72">
         <div className="flex items-center mb-2">
           <input
             checked={showStatus > 0 || bChecked ? true : false}

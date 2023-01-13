@@ -14,8 +14,15 @@ const post = () => {
   const dispatch = useDispatch();
   const { me, changeNicknameComplete, uploadProfileImageComplete } =
     useSelector((state) => state.user);
-  const { mainPosts, loadPostsLoading, hasMorePosts, retweetError } =
-    useSelector((state) => state.post);
+  const {
+    mainPosts,
+    loadPostsLoading,
+    hasMorePosts,
+    retweetError,
+    likePostError,
+    bookmarkError,
+  } = useSelector((state) => state.post);
+  useSelector((state) => state.post);
   const { weekendResult, wordLists } = useSelector((state) => state.word);
   const id = useSelector((state) => state.user.me?.id);
   const postResult = mainPosts.filter((post) => post.UserId === id);
@@ -67,11 +74,7 @@ const post = () => {
                 );
               })}
             </div>
-            <div className="col-span-1">
-              <div className="mt-10">
-                <WeekendWordChart weekendResult={weekendResult} />
-              </div>
-            </div>
+            <div className="col-span-1"></div>
           </div>
         </div>
       </NavbarForm>

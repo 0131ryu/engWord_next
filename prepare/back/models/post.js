@@ -30,6 +30,7 @@ module.exports = class Post extends Model {
     db.Post.hasMany(db.Comment); // post.addComments, post.getComments
     db.Post.hasMany(db.Image); // post.addImages, post.getImages
     db.Post.belongsToMany(db.User, { through: "Like", as: "Likers" }); // post.addLikers, post.removeLikers
+    db.Post.belongsToMany(db.User, { through: "Bookmark", as: "Bookmarks" }); // post.addBookmarks, post.removeBookmarks
     db.Post.belongsTo(db.Post, { as: "Retweet" }); // post.addRetweet
   }
 };

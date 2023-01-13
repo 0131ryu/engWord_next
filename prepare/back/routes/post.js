@@ -101,6 +101,11 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
           as: "Likers", //post.Likers 생성
           attributes: ["id"],
         },
+        {
+          model: User, //좋아요 누른 사람
+          as: "Bookmarks", //post.Bookmarks 생성
+          attributes: ["id"],
+        },
       ],
     });
     res.status(201).json(fullPost);
@@ -164,6 +169,38 @@ router.delete("/:postId/like", isLoggedIn, async (req, res, next) => {
       return res.status(403).send("게시글이 존재하지 않습니다.");
     }
     await post.removeLikers(req.user.id);
+    res.json({ PostId: post.id, UserId: req.user.id });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.patch("/:postId/bookmark", isLoggedIn, async (req, res, next) => {
+  // PATCH /post/1/bookmark
+  try {
+    const post = await Post.findOne({ where: { id: req.params.postId } });
+    if (!post) {
+      return res.status(403).send("게시글이 존재하지 않습니다.");
+    }
+    // await post.addLikers(req.user.id);
+    await post.addBookmarks(req.user.id);
+    console.log("Post", post);
+    res.json({ PostId: post.id, UserId: req.user.id });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.delete("/:postId/bookmark", isLoggedIn, async (req, res, next) => {
+  // DELETE /post/1/bookmark
+  try {
+    const post = await Post.findOne({ where: { id: req.params.postId } });
+    if (!post) {
+      return res.status(403).send("게시글이 존재하지 않습니다.");
+    }
+    await post.removeBookmarks(req.user.id);
     res.json({ PostId: post.id, UserId: req.user.id });
   } catch (error) {
     console.error(error);

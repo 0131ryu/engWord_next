@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import { useRouter } from "next/router";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import NavbarForm from "../components/NavbarForm";
 import PostCard from "../components/post/PostCard";
@@ -10,12 +11,23 @@ import { loadMyInfoRequest } from "../redux/feature/userSlice";
 
 const post = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { me, changeNicknameComplete, uploadProfileImageComplete } =
     useSelector((state) => state.user);
-  const { mainPosts, loadPostsLoading, hasMorePosts, retweetError } =
-    useSelector((state) => state.post);
+  const {
+    mainPosts,
+    loadPostsLoading,
+    hasMorePosts,
+    retweetError,
+    likePostError,
+    bookmarkError,
+  } = useSelector((state) => state.post);
   const id = useSelector((state) => state.user.me?.id);
   const postResult = mainPosts.filter((post) => post.UserId === id);
+
+  const onBookmark = useCallback(() => {
+    router.push("/bookmark");
+  }, []);
 
   useEffect(() => {
     dispatch(loadMyInfoRequest());
@@ -26,6 +38,18 @@ const post = () => {
       alert(retweetError);
     }
   }, [retweetError]);
+
+  useEffect(() => {
+    if (likePostError) {
+      alert(likePostError);
+    }
+  }, [likePostError]);
+
+  useEffect(() => {
+    if (bookmarkError) {
+      alert(bookmarkError);
+    }
+  }, [bookmarkError]);
 
   useEffect(() => {
     if (hasMorePosts && !loadPostsLoading) {
@@ -44,11 +68,22 @@ const post = () => {
           <div className="grid grid-cols-4 gap-6">
             <div className="col-span-1">
               {me && (
-                <UserInfo
-                  nickname={me?.nickname}
-                  me={me}
-                  postResult={postResult}
-                />
+                <>
+                  <UserInfo
+                    nickname={me?.nickname}
+                    me={me}
+                    postResult={postResult}
+                  />
+                  <div
+                    className="bg-gray-100 ml-2 mt-2 rounded-xl"
+                    onClick={onBookmark}
+                  >
+                    <p className="text-gray-400 font-bold text-center cursor-pointer hover:text-light-orange">
+                      내가 북마크한 글
+                    </p>
+                  </div>
+                  <PostSearch />
+                </>
               )}
             </div>
             <div className="col-span-2">
@@ -59,9 +94,7 @@ const post = () => {
                 );
               })}
             </div>
-            <div className="col-span-1">
-              <PostSearch />
-            </div>
+            <div className="col-span-1"></div>
           </div>
         </div>
       </NavbarForm>

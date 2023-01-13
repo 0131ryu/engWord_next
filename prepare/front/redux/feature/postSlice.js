@@ -25,6 +25,12 @@ const initialState = {
   loadPostsLoading: false, //게시글 가져오기
   loadPostsComplete: false,
   loadPostsError: null,
+  bookmarkLoading: false, //bookmark
+  bookmarkComplete: false,
+  bookmarkError: null,
+  unbookmarkLoading: false, //unbookmark
+  unbookmarkComplete: false,
+  unbookmarkError: null,
   likePostLoading: false, //like
   likePostComplete: false,
   likePostError: null,
@@ -188,7 +194,7 @@ export const postSlice = createSlice({
     },
     likePostFailure: (state, action) => {
       state.likePostLoading = false;
-      state.likePostError = action.error;
+      state.likePostError = action.payload.response.data;
     },
     //unlike
     unlikePostRequest: (state) => {
@@ -243,6 +249,40 @@ export const postSlice = createSlice({
       state.retweetLoading = false;
       state.retweetError = action.payload.response.data;
     },
+    bookmarkRequest: (state) => {
+      state.bookmarkLoading = true;
+      state.bookmarkError = null;
+      state.bookmarkComplete = false;
+    },
+    bookmarkSuccess: (state, action) => {
+      const data = action.payload;
+      console.log("data", data);
+      const post = state.mainPosts.find((v) => v.id === data.PostId);
+      post.Bookmarks.push({ id: data.UserId });
+      state.bookmarkLoading = false;
+      state.bookmarkComplete = true;
+    },
+    bookmarkFailure: (state, action) => {
+      state.bookmarkLoading = false;
+      state.bookmarkError = action.payload.response.data;
+    },
+    //unlike
+    unbookmarkRequest: (state) => {
+      state.unbookmarkLoading = true;
+      state.unbookmarkError = null;
+      state.unbookmarkComplete = false;
+    },
+    unbookmarkSuccess: (state, action) => {
+      const data = action.payload;
+      const post = state.mainPosts.find((v) => v.id === data.PostId);
+      post.Bookmarks = post.Bookmarks.filter((v) => v.id !== data.UserId);
+      state.unbookmarkLoading = false;
+      state.unbookmarkComplete = true;
+    },
+    unbookmarkFailure: (state, action) => {
+      state.unbookmarkLoading = false;
+      state.unbookmarkError = action.error;
+    },
   },
 });
 
@@ -281,6 +321,12 @@ export const {
   retweetRequest,
   retweetSuccess,
   retweetFailure,
+  bookmarkRequest,
+  bookmarkSuccess,
+  bookmarkFailure,
+  unbookmarkRequest,
+  unbookmarkSuccess,
+  unbookmarkFailure,
 } = postSlice.actions;
 
 export default postSlice.reducer;

@@ -34,6 +34,12 @@ import {
   retweetRequest,
   retweetSuccess,
   retweetFailure,
+  bookmarkRequest,
+  bookmarkSuccess,
+  bookmarkFailure,
+  unbookmarkRequest,
+  unbookmarkSuccess,
+  unbookmarkFailure,
 } from "../feature/postSlice";
 import axios from "axios";
 
@@ -206,7 +212,37 @@ function* retweet(action) {
     yield put(retweetSuccess(result.data));
   } catch (error) {
     yield put(retweetFailure(error));
-  
+  }
+}
+
+function bookmarkAPI(data) {
+  return axios.patch(`/post/${data}/bookmark`);
+}
+
+function* bookmark(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(bookmarkAPI, data);
+    yield put(bookmarkSuccess(result.data));
+  } catch (error) {
+    yield put(bookmarkFailure(error));
+    console.log(error);
+  }
+}
+
+function unbookmarkAPI(data) {
+  return axios.delete(`/post/${data}/bookmark`);
+}
+
+function* unbookmark(action) {
+  try {
+    const data = action.payload;
+    console.log("data", data);
+    const result = yield call(unbookmarkAPI, data);
+    yield put(unbookmarkSuccess(result.data));
+  } catch (error) {
+    yield put(unbookmarkFailure(error));
+    console.log(error);
   }
 }
 
@@ -254,6 +290,14 @@ function* retweet_Req() {
   yield takeLatest(retweetRequest.type, retweet);
 }
 
+function* bookmark_Req() {
+  yield takeLatest(bookmarkRequest.type, bookmark);
+}
+
+function* unbookmark_Req() {
+  yield takeLatest(unbookmarkRequest.type, unbookmark);
+}
+
 export const postSagas = [
   fork(addPost_Req),
   fork(removePost_Req),
@@ -267,4 +311,6 @@ export const postSagas = [
   fork(uploadImages_Req),
   fork(uploadImages_Req),
   fork(retweet_Req),
+  fork(bookmark_Req),
+  fork(unbookmark_Req),
 ];

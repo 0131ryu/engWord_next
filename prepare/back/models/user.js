@@ -39,6 +39,7 @@ module.exports = class User extends Model {
     db.User.hasMany(db.Comment);
     db.User.hasMany(db.Result);
     db.User.belongsToMany(db.Post, { through: "Like", as: "Liked" });
+    db.User.belongsToMany(db.Post, { through: "Like", as: "Bookmarked" });
     db.User.belongsToMany(db.User, {
       through: "Follow",
       as: "Followers",

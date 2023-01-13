@@ -10,12 +10,14 @@ import {
 } from "@heroicons/react/24/outline";
 
 import {
+  bookmarkRequest,
   likePostRequest,
   removeCommentRequest,
   retweetFailure,
   retweetRequest,
   reviseCommentRequest,
   revisePostRequest,
+  unbookmarkRequest,
   unlikePostRequest,
 } from "../../redux/feature/postSlice";
 import { Popover, Transition } from "@headlessui/react";
@@ -35,11 +37,12 @@ import { useRouter } from "next/router";
 
 const PostCard = ({ post, index, me }) => {
   const dispatch = useDispatch();
-  const router = useRouter();
+
   const [removeModal, setRemoveModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const id = useSelector((state) => state.user.me?.id);
   const liked = post.Likers?.find((v) => v.id === id);
+  const bookmark = post.Bookmarks?.find((v) => v.id === id);
   const isFollowing = me?.Followings.find((v) => v.id === post.User.id);
   const blockingLists = me?.Blockings;
   const blockedLists = me?.Blockeds;
@@ -48,7 +51,6 @@ const PostCard = ({ post, index, me }) => {
     if (me) {
       dispatch(loadBlockedRequest());
       dispatch(loadBlockingRequest());
-      dispatch(loadBlockedRequest());
     }
   }, []);
 
@@ -106,9 +108,13 @@ const PostCard = ({ post, index, me }) => {
     }
   }, [isFollowing]);
 
-  const onGoProfile = useCallback(() => {
-    router.push("/profile");
-  }, []);
+  const onBookmark = useCallback(() => {
+    dispatch(bookmarkRequest(post.id));
+  }, [id]);
+
+  const onUnBookmark = useCallback(() => {
+    dispatch(unbookmarkRequest(post.id));
+  }, [id]);
 
   return (
     <>
@@ -123,8 +129,8 @@ const PostCard = ({ post, index, me }) => {
           <header className="px-4 py-3 flex items-center justify-between">
             <div className="flex items-center font-bold">
               <span className="mr-2">
-                {post.User.profileImg === "" ||
-                post.User.profileImg === null ? (
+                {post.User?.profileImg === "" ||
+                post.User?.profileImg === null ? (
                   <img
                     alt="profile-img"
                     src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
@@ -297,23 +303,48 @@ const PostCard = ({ post, index, me }) => {
             </div>
             <div className="float:right mr-3">
               <span>
-                <BookmarkIcon className="h-8 w-8 cursor-pointer" />
+                {bookmark ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="mt-2 w-8 h-8 cursor-pointer"
+                    onClick={onUnBookmark}
+                  >
+                    <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="mt-2 w-8 h-8 cursor-pointer"
+                    onClick={onBookmark}
+                  >
+                    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z" />
+                  </svg>
+                )}
               </span>
             </div>
           </div>
 
-          <div className="ml-4">
-            <a href="#" className="text-gray-500">
-              View all comments
-            </a>
-          </div>
+          {post.Comments.length === 0 ? null : (
+            <div className="ml-4">
+              <a href="#" className="text-gray-500">
+                View all comments
+              </a>
+            </div>
+          )}
           {/* CommentCard start */}
+
           {post.Comments.map((comment, i) => {
             return <CommentCard comment={comment} />;
           })}
-          <div>
-            <CommentForm post={post} />
-          </div>
+          {me && (
+            <div>
+              <CommentForm post={post} />
+            </div>
+          )}
         </article>
       </section>
 

@@ -65,11 +65,6 @@ export const userSlice = createSlice({
       state.me = action.payload;
     },
     loginFailure: (state, action) => {
-      console.log("action", action);
-      console.log("action.payload", action.payload);
-      console.log("action.payload.response", action.payload.response);
-      console.log("action.payload.response.data", action.payload.response.data);
-
       state.loginLoading = false;
       state.loginError = action.payload.response.data;
     },
@@ -84,6 +79,8 @@ export const userSlice = createSlice({
       state.logoutLoading = false;
       state.loginComplete = false;
       state.logoutComplete = true;
+      state.loginComplete = false;
+      state.signupComplete = false;
     },
     logoutFailure: (state, action) => {
       state.logoutLoading = false;

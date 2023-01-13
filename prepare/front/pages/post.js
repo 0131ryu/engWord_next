@@ -105,7 +105,9 @@ const post = () => {
                 );
               })}
             </div>
-            <div className="col-span-1"></div>
+            <div className="mt-10">
+              <WeekendWordChart weekendResult={weekendResult} />
+            </div>
           </div>
         </div>
       </NavbarForm>

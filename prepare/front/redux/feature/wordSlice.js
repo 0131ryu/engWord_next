@@ -58,8 +58,12 @@ export const wordSlice = createSlice({
       });
     },
     addWordError: (state, action) => {
-      state.addWordLoading = true;
-      state.addWordError = action.error;
+      state.addWordLoading = false;
+      console.log(
+        " action.payload.response.data",
+        action.payload.response.data
+      );
+      state.addWordError = action.payload.response.data;
     },
     //단어 수정(index값 필요할 것)
     reviseWordRequest: (state) => {

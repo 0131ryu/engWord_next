@@ -8,7 +8,7 @@ import FindResultModal from "./FindResultModal";
 
 const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
 
-const FindWordModal = ({ isId, setModal }) => {
+const FindWordModal = ({ UserId, setModal }) => {
   const dispatch = useDispatch();
   const [resultModal, setResultModal] = useState(false);
   const [open, setOpen] = useState(true);
@@ -20,19 +20,19 @@ const FindWordModal = ({ isId, setModal }) => {
   const onFindWordSubmit = () => {
     const validKorean = /^[가-힣\s.,;,~]+$/;
 
-    if (
-      !validKorean.test(korean) ||
-      korean.length === 0 ||
-      korean.length === 1
-    ) {
-      alert("검색은 2글자 이상, 한글만 가능합니다!");
+    if (!UserId) {
+      alert("로그인 후 단어 생성이 가능합니다.");
     } else {
-      setResultModal(true);
-      if (!korean) {
-        setKoreanError(true);
-        setResultModal(false);
+      if (!validKorean.test(korean) || korean.length === 0) {
+        alert("한글(단어)만 검색 가능합니다!");
       } else {
-        dispatch(findWordRequest(korean));
+        setResultModal(true);
+        if (!korean) {
+          setKoreanError(true);
+          setResultModal(false);
+        } else {
+          dispatch(findWordRequest(korean));
+        }
       }
     }
   };
@@ -118,7 +118,7 @@ const FindWordModal = ({ isId, setModal }) => {
                         <p className="text-center">
                           단어는{" "}
                           <span className="text-red-500 font-bold">
-                            최소 2글자 이상, 한글만
+                            한글(단어)
                           </span>{" "}
                           입력하세요.
                         </p>

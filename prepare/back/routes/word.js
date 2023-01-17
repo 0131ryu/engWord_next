@@ -13,10 +13,15 @@ router.post("/", isLoggedIn, async (req, res, next) => {
       type: req.body.type,
       UserId: req.user.id,
     });
+    const findWord = await Word.findOne({
+      where: { english: req.body.english },
+    });
+    if (findWord) {
+      return res.status(403).send("이미 있는 단어입니다.");
+    }
     const fullWord = await Word.findAll({
       where: { korean: word.korean },
     });
-    console.log("fullWord", fullWord);
     res.status(201).json(fullWord);
   } catch (error) {
     console.error(error);

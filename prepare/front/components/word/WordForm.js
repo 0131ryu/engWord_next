@@ -67,7 +67,7 @@ const WordForm = ({ UserId }) => {
   return (
     <>
       {/* 검색 모달창 */}
-      {modal ? <FindWordModal setModal={setModal} /> : null}
+      {modal ? <FindWordModal setModal={setModal} UserId={UserId} /> : null}
 
       {/* 검색 모달창 */}
       {modalSearch ? <SearchWordModal setModalSearch={setModalSearch} /> : null}

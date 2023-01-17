@@ -37,10 +37,6 @@ const axdata = async (wordName, callback) => {
 
     const obj = JSON.parse(xmlToJson);
     const word = obj.channel.item;
-    // console.log(obj.channel.item);
-    // console.log(Object.keys(obj.channel.item).includes("0"));
-
-    console.log(word);
 
     //없는 단어 입력 시
     if (word === undefined) {
@@ -52,34 +48,56 @@ const axdata = async (wordName, callback) => {
       ex_english = "단어 없음";
       ex_english_dfn = "단어 뜻 없음";
     }
-    //단어 존재하는 경우
+    // 단어 존재하는 경우
     else if (word !== undefined) {
-      if (obj.channel.item[0] === undefined) {
-        //단어가 한 개인 경우
-        korean = word.word._text;
-        //뜻이 한 개인 경우(레몬)
-        if (word.sense.length === undefined) {
-          korean_dfn = word.sense.definition._text;
-          english = word.sense.translation.trans_word._cdata;
-          english_dfn = word.sense.translation.trans_dfn._cdata;
-
-          ex_english = "중복된 단어는 없습니다.";
-          ex_english_dfn = "중복된 뜻은 없습니다.";
+      if (obj.channel.item.legnth === undefined) {
+        // korean = word.word._text;
+        // console.log("korean", korean);
+        if (word[0] === undefined) {
+          //단어가 한 개인 경우(레몬)
+          korean = word.word._text;
         } else {
-          //뜻이 여러 개인 경우(소금)
-          korean_dfn = word.sense[0].definition._text;
-          english = word.sense[0].translation.trans_word._cdata;
-          english_dfn = word.sense[0].translation.trans_dfn._cdata;
-
-          ex_english = word.sense[1].translation.trans_word._cdata;
-          ex_english_dfn = word.sense[1].translation.trans_dfn._cdata;
+          //단어가 1개 이상인 경우(오늘)
+          korean = word[0].word._text;
         }
-      } else {
+
+        //뜻이 한 개인 경우(레몬, 음악)
+        if (word[0] === undefined) {
+          if (word.sense[0] === undefined) {
+            korean_dfn = word.sense.definition._text;
+            english = word.sense.translation.trans_word._cdata;
+            english_dfn = word.sense.translation.trans_dfn._cdata;
+
+            ex_english = "중복된 단어는 없습니다.";
+            ex_english_dfn = "중복된 뜻은 없습니다.";
+          } else if (word.sense[0] !== undefined) {
+            korean_dfn = word.sense[0].definition._text;
+            english = word.sense[0].translation.trans_word._cdata;
+            english_dfn = word.sense[0].translation.trans_dfn._cdata;
+
+            ex_english = word.sense[1].translation.trans_word._cdata;
+            ex_english_dfn = word.sense[1].translation.trans_dfn._cdata;
+          }
+        } else if (word[0].sense !== undefined) {
+          // //뜻이 여러 개인 경우(오늘, 내일)
+          korean_dfn = word[0].sense[0].definition._text;
+          english = word[0].sense[0].translation.trans_word._cdata;
+          english_dfn = word[0].sense[0].translation.trans_dfn._cdata;
+          ex_english = word[0].sense[1].translation.trans_word._cdata;
+          ex_english_dfn = word[0].sense[0].translation.trans_dfn._cdata;
+        }
+      } else if (word.sense.length !== undefined && word.length > 1) {
         //단어도 뜻도 여러 개인 경우(사과)
         korean = word[0].word._text;
         korean_dfn = word[0].sense.definition._text;
-        english = word[0].sense.translation.trans_word._cdata;
-        english_dfn = word[0].sense.translation.trans_dfn._cdata;
+
+        if (word[0].origin) {
+          english = word[0].origin._text;
+          console.log("영문", english);
+        } else {
+          english = word[0].sense.translation.trans_word._cdata;
+          english_dfn = word[0].sense.translation.trans_dfn._cdata;
+        }
 
         ex_english = word[1].sense.translation.trans_word._cdata;
         ex_english_dfn = word[1].sense.translation.trans_dfn._cdata;

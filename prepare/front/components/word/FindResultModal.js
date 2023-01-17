@@ -7,7 +7,8 @@ import { addWordRequest, findWordRequest } from "../../redux/feature/wordSlice";
 import { DocumentMagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useCallback } from "react";
 
-const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
+const typesName = ["easy", "middle", "advance"];
+// const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
 
 const FindResultModal = ({ korean, setModal, setResultModal }) => {
   const dispatch = useDispatch();
@@ -23,11 +24,10 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
   // console.log("wordLists", wordLists);
 
   const [english, onChangeEnglish, setEnglish] = useInput("");
-  const [type, onChangeType, setType] = useInput(typesName[0]);
+  const [type, onChangeType, setType] = useInput("");
 
   const [resultEng, setResultEng] = useState("");
   const [resultExEnglish, setResultExEnglish] = useState([]);
-  const splitEnglish = [];
 
   useEffect(() => {
     setResultEng(findResult[0]?.english);
@@ -36,13 +36,26 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
 
   const onFindResultSubmit = useCallback(
     (e) => {
-      setModal(false);
-      setResultModal(false);
-      //; 포함?
-      if (resultEng.includes(";")) {
-        const splitEnglish = resultEng?.split("; ");
-        splitEnglish.map((eng) => {
-          const english = eng;
+      if (type === "") {
+        alert("타입 지정 후 단어를 생성하세요");
+      } else {
+        setModal(false);
+        setResultModal(false);
+        //; 포함?
+        if (resultEng.includes(";")) {
+          const splitEnglish = resultEng?.split("; ");
+          splitEnglish.map((eng) => {
+            const english = eng;
+            dispatch(
+              addWordRequest({
+                english,
+                korean,
+                type,
+              })
+            );
+          });
+        } else {
+          const english = resultEng;
           dispatch(
             addWordRequest({
               english,
@@ -50,16 +63,7 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
               type,
             })
           );
-        });
-      } else {
-        const english = resultEng;
-        dispatch(
-          addWordRequest({
-            english,
-            korean,
-            type,
-          })
-        );
+        }
       }
     },
     [english, korean, type]
@@ -206,15 +210,15 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
                           pl-2 h-8 placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-lg m-2"
                             />
                           </div>
-                          <div className="flex bg-gray-100">
+                          <div className="flex">
                             <p className="mt-3 ml-3 font-bold">타입</p>
                             <div className="flex items-center">
                               {typesName.map((type) => (
                                 <>
                                   <input
-                                    id={type.name}
+                                    id={type}
                                     name="type"
-                                    value={type.name}
+                                    value={type}
                                     onChange={onChangeType}
                                     type="radio"
                                     className="ml-3 mt-3 h-4 w-4 border-gray-300 text-dark-green focus:ring-dark-green"
@@ -223,7 +227,7 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
                                     htmlFor="easy"
                                     className="ml-3 mt-2 block text-sm font-medium text-gray-700"
                                   >
-                                    {type.name}
+                                    {type}
                                   </label>
                                 </>
                               ))}

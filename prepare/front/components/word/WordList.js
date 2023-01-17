@@ -23,10 +23,6 @@ const WordList = ({ UserId }) => {
   const advanceLength = wordLists.filter((d) => d.type === "advance").length;
 
   useEffect(() => {
-    console.log("wordLists", wordLists);
-  }, []);
-
-  useEffect(() => {
     dispatch(loadWordsRequest());
   }, [showStatus]);
 

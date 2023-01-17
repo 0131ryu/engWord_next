@@ -1,28 +1,18 @@
 import React from "react";
 import Head from "next/head";
-import PropTypes from "prop-types";
 import "antd/dist/antd.css";
 import "tailwindcss/tailwind.css";
-import { Provider } from "react-redux";
-import store from "../redux/store";
-// import { createWrapper } from "next-redux-wrapper";
+import wrapper from "../redux/store";
 
-const EngWordSNS = ({ Component }) => {
+const App = ({ Component }) => {
   return (
     <>
-      <Provider store={store}>
-        <Head>
-          <title>engWord</title>
-        </Head>
-        <Component />
-      </Provider>
+      <Head>
+        <title>engWord</title>
+      </Head>
+      <Component />
     </>
   );
 };
 
-EngWordSNS.propTypes = {
-  Component: PropTypes.elementType.isRequired,
-};
-
-export default EngWordSNS;
-// export default wrapper.withRedux(EngWordSNS);
+export default wrapper.withRedux(App);

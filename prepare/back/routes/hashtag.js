@@ -22,7 +22,7 @@ router.get("/:hashtag", async (req, res, next) => {
         },
         {
           model: User,
-          attributes: ["id", "nickname"],
+          attributes: ["id", "nickname", "profileImg"],
         },
         {
           model: Image,
@@ -33,7 +33,7 @@ router.get("/:hashtag", async (req, res, next) => {
             {
               model: User,
 
-              attributes: ["id", "nickname"],
+              attributes: ["id", "nickname", "profileImg"],
 
               order: [["createdAt", "DESC"]],
             },
@@ -45,12 +45,17 @@ router.get("/:hashtag", async (req, res, next) => {
           attiributes: ["id"],
         },
         {
+          model: User, //좋아요 누른 사람
+          as: "Bookmarks", //post.Bookmarks 생성
+          attributes: ["id"],
+        },
+        {
           model: Post,
           as: "Retweet",
           include: [
             {
               model: User,
-              attiributes: ["id", "nickname"],
+              attiributes: ["id", "nickname", "profileImg"],
             },
             {
               model: Image,

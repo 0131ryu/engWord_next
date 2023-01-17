@@ -48,10 +48,10 @@ const PostCard = ({ post, index, me }) => {
   const blockedLists = me?.Blockeds;
 
   useEffect(() => {
-    if (me) {
-      dispatch(loadBlockedRequest());
-      dispatch(loadBlockingRequest());
-    }
+    // if (me) {
+    //   dispatch(loadBlockedRequest());
+    //   dispatch(loadBlockingRequest());
+    // }
   }, []);
 
   const onClickRevise = useCallback(
@@ -129,20 +129,22 @@ const PostCard = ({ post, index, me }) => {
           <header className="px-4 py-3 flex items-center justify-between">
             <div className="flex items-center font-bold">
               <span className="mr-2">
-                {post.User?.profileImg === "" ||
-                post.User?.profileImg === null ? (
-                  <img
-                    alt="profile-img"
-                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                    className="h-8 w-8 rounded-full"
-                  />
-                ) : (
-                  <img
-                    className="h-8 w-8 rounded-full"
-                    src={`http://localhost:3005/profile/${post.User.profileImg}`}
-                    alt={post.User.profileImg}
-                  />
-                )}
+                <Link href={`/user/${post.UserId}`}>
+                  {post.User?.profileImg === "" ||
+                  post.User?.profileImg === null ? (
+                    <img
+                      alt="profile-img"
+                      src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                      className="h-8 w-8 rounded-full cursor-pointer"
+                    />
+                  ) : (
+                    <img
+                      className="h-8 w-8 rounded-full cursor-pointer"
+                      src={`http://localhost:3005/userImg/${post.User.profileImg}`}
+                      alt={post.User.profileImg}
+                    />
+                  )}
+                </Link>
               </span>
 
               <span>{post.User.nickname}</span>
@@ -231,7 +233,7 @@ const PostCard = ({ post, index, me }) => {
                     <span className="mr-2">
                       <img
                         alt="profile-img"
-                        src={`http://localhost:3005/profile/${post.Retweet.User.profileImg}`}
+                        src={`http://localhost:3005/userImg/${post.Retweet.User.profileImg}`}
                         className="h-8 w-8 rounded-full"
                       />
                     </span>
@@ -338,7 +340,7 @@ const PostCard = ({ post, index, me }) => {
           {/* CommentCard start */}
 
           {post.Comments.map((comment, i) => {
-            return <CommentCard comment={comment} />;
+            return <CommentCard comment={comment} key={comment.id} />;
           })}
           {me && (
             <div>

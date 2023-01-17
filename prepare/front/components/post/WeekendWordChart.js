@@ -22,11 +22,10 @@ const WeekendWordChart = ({ weekendResult }) => {
     arr.reduce((ac, v) => ({ ...ac, [v]: (ac[v] || 0) + 1 }), {});
 
   const result = getElCount(weekData);
-  const wordData = Object.values(result);
-  const maxValue = Math.max.apply(null, wordData);
-  const minValue = Math.min.apply(null, wordData);
+  const wordResult = Object.values(result);
+  const maxValue = Math.max.apply(null, wordResult);
+  const minValue = Math.min.apply(null, wordResult);
 
-  console.log("wordData", wordData);
   const weekDatas = new Set(weekData);
   const oneWeek = [...weekDatas];
 
@@ -34,7 +33,7 @@ const WeekendWordChart = ({ weekendResult }) => {
     labels: oneWeek,
     datasets: [
       {
-        data: wordData,
+        data: wordResult,
         backgroundColor: "transparent",
         borderColor: "#F0BB62",
         pointBorderColor: "transparent",

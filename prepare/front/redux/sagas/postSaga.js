@@ -22,6 +22,12 @@ import {
   loadPostsRequest,
   loadPostsSuccess,
   loadPostsFailure,
+  loadUserPostsRequest,
+  loadUserPostsSuccess,
+  loadUserPostsFailure,
+  loadHashtagPostsRequest,
+  loadHashtagPostsSuccess,
+  loadHashtagPostsFailure,
   likePostRequest,
   likePostSuccess,
   likePostFailure,
@@ -153,6 +159,41 @@ function* loadPosts(action) {
   }
 }
 
+function loadUserPostsAPI(data, lastId) {
+  return axios.get(`/user/${data}/posts?lastId=${lastId || 0}`); //data로 넘어갔으므로 req.query.data?
+}
+
+function* loadUserPosts(action) {
+  try {
+    const data = action.payload;
+    console.log("data", data);
+    const result = yield call(loadUserPostsAPI, data, lastId);
+    console.log("result.data", result.data);
+    yield put(loadUserPostsSuccess(result.data));
+  } catch (error) {
+    yield put(loadUserPostsFailure(error));
+    console.log(error);
+  }
+}
+
+function loadHashtagPostsAPI(data, lastId) {
+  return axios.get(
+    `/hashtag/${encodeURIComponent(data)}?lastId=${lastId || 0}`
+  ); //data로 넘어갔으므로 req.query.data?
+}
+
+function* loadHashtagPosts(action) {
+  try {
+    const data = action.payload;
+    const lastId = action.payload;
+    const result = yield call(loadHashtagPostsAPI, data, lastId);
+    yield put(loadHashtagPostsSuccess(result.data));
+  } catch (error) {
+    yield put(loadHashtagPostsFailure(error));
+    console.log(error);
+  }
+}
+
 function likePostAPI(data) {
   return axios.patch(`/post/${data}/like`);
 }
@@ -175,7 +216,6 @@ function unlikePostAPI(data) {
 function* unlikePost(action) {
   try {
     const data = action.payload;
-    console.log("data", data);
     const result = yield call(unlikePostAPI, data);
     yield put(unlikePostSuccess(result.data));
   } catch (error) {
@@ -274,6 +314,14 @@ function* loadPosts_Req() {
   yield takeLatest(loadPostsRequest.type, loadPosts);
 }
 
+function* loadUserPosts_Req() {
+  yield takeLatest(loadUserPostsRequest.type, loadUserPosts);
+}
+
+function* loadHashtagPosts_Req() {
+  yield takeLatest(loadHashtagPostsRequest.type, loadHashtagPosts);
+}
+
 function* likePost_Req() {
   yield takeLatest(likePostRequest.type, likePost);
 }
@@ -306,6 +354,8 @@ export const postSagas = [
   fork(removeComment_Req),
   fork(reviseComment_Req),
   fork(loadPosts_Req),
+  fork(loadUserPosts_Req),
+  fork(loadHashtagPosts_Req),
   fork(likePost_Req),
   fork(unlikePost_Req),
   fork(uploadImages_Req),

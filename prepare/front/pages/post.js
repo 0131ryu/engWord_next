@@ -1,6 +1,9 @@
+import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { END } from "redux-saga";
+
 import NavbarForm from "../components/NavbarForm";
 import PostCard from "../components/post/PostCard";
 import PostForms from "../components/post/PostForms";
@@ -10,6 +13,7 @@ import UserInfo from "../components/UserInfo";
 import { loadPostsRequest } from "../redux/feature/postSlice";
 import { loadMyInfoRequest } from "../redux/feature/userSlice";
 import { loadWordsWeekendRequest } from "../redux/feature/wordSlice";
+import wrapper from "../redux/store";
 
 const post = () => {
   const dispatch = useDispatch();
@@ -18,11 +22,8 @@ const post = () => {
     useSelector((state) => state.user);
   const {
     mainPosts,
-
     loadPostsLoading,
-
     hasMorePosts,
-
     retweetError,
     likePostError,
     bookmarkError,
@@ -33,10 +34,6 @@ const post = () => {
 
   const onBookmark = useCallback(() => {
     router.push("/bookmark");
-  }, []);
-
-  useEffect(() => {
-    dispatch(loadMyInfoRequest());
   }, []);
 
   useEffect(() => {
@@ -66,10 +63,10 @@ const post = () => {
       const lastId = mainPosts[mainPosts.length - 1]?.id;
       dispatch(loadPostsRequest(lastId));
     }
-    if (changeNicknameComplete || uploadProfileImageComplete) {
-      window.location.reload();
-    }
-  }, [hasMorePosts, mainPosts]);
+    // if (changeNicknameComplete || uploadProfileImageComplete) {
+    //   window.location.reload();
+    // }
+  }, [hasMorePosts, loadPostsLoading, mainPosts]);
 
   return (
     <>
@@ -92,7 +89,6 @@ const post = () => {
                       내가 북마크한 글
                     </p>
                   </div>
-                  <PostSearch />
                 </>
               )}
               <PostSearch />
@@ -105,14 +101,31 @@ const post = () => {
                 );
               })}
             </div>
-            <div className="mt-10">
-              <WeekendWordChart weekendResult={weekendResult} />
-            </div>
+            {weekendResult.length > 0 ? (
+              <div className="mt-10">
+                <WeekendWordChart weekendResult={weekendResult} />
+              </div>
+            ) : null}
           </div>
         </div>
       </NavbarForm>
     </>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  async (context) => {
+    const cookie = context.req ? context.req.headers.cookie : "";
+    axios.defaults.headers.Cookie = "";
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
+    }
+
+    context.store.dispatch(loadMyInfoRequest());
+    context.store.dispatch(loadPostsRequest());
+    context.store.dispatch(END);
+    await context.store.sagaTask.toPromise();
+  }
+);
 
 export default post;

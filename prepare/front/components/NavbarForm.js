@@ -138,7 +138,7 @@ const NavbarForm = ({ children }) => {
                             ) : (
                               <img
                                 className="h-8 w-8 rounded-full"
-                                src={`http://localhost:3005/profile/${me.profileImg}`}
+                                src={`http://localhost:3005/userImg/${me.profileImg}`}
                                 alt={me.profileImg}
                               />
                             )}

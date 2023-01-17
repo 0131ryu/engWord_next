@@ -12,17 +12,17 @@ const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 const router = express.Router();
 
 try {
-  fs.accessSync("uploads/profile");
+  fs.accessSync("uploads/userImg");
 } catch (error) {
-  console.log("uploads/profile 폴더가 없으므로 새로 생성합니다.");
-  fs.mkdirSync("uploads/profile");
+  console.log("uploads/userImg 폴더가 없으므로 새로 생성합니다.");
+  fs.mkdirSync("uploads/userImg");
 }
 
 //프로필 이미지
 const upload = multer({
   storage: multer.diskStorage({
     destination(req, file, done) {
-      done(null, "uploads/profile");
+      done(null, "uploads/userImg");
     },
     filename(req, file, done) {
       //파일이미지.png
@@ -36,6 +36,7 @@ const upload = multer({
 
 router.get("/", upload.none(), async (req, res, next) => {
   // GET /user
+  console.log("req.headers", req.headers);
   try {
     if (req.user) {
       const fullUserWithoutPassword = await User.findOne({
@@ -274,7 +275,6 @@ router.get("/:userId/posts", async (req, res, next) => {
   }
 });
 
-//isNotLoggedIn,
 router.post("/login", isNotLoggedIn, (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) {
@@ -282,9 +282,7 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
       return next(err);
     }
     if (info) {
-      return res
-        .status(401)
-        .send("로그인이 되지 않았습니다. 이메일과 비밀번호를 다시 확인하세요.");
+      return res.status(401).send(info.reason);
     }
     return req.login(user, async (loginErr) => {
       if (loginErr) {
@@ -293,9 +291,9 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
       }
       const fullUserWithoutPassword = await User.findOne({
         where: { id: user.id },
-        attributes: {
-          exclude: ["password"],
-        },
+        // attributes: {
+        //   exclude: ["password"],
+        // },
         include: [
           {
             model: Post,
@@ -313,6 +311,8 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
           },
         ],
       });
+      console.log("req.user", req.user);
+      console.log("fullUserWithoutPassword", fullUserWithoutPassword);
       return res.status(200).json(fullUserWithoutPassword);
     });
   })(req, res, next);
@@ -342,14 +342,77 @@ router.post("/", isNotLoggedIn, async (req, res, next) => {
   }
 });
 
+//loadUserPosts
+router.get("/:userId/posts", async (req, res, next) => {
+  try {
+    const where = { UserId: req.params.userId };
+    if (parseInt(req.query.lastId, 10)) {
+      // 초기 로딩이 아닐 때
+      where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
+    } // 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1
+
+    const posts = await Post.findAll({
+      //모든 게시글 가져옴
+      where,
+      limit: 10,
+      order: [
+        ["createdAt", "DESC"], //최신 게시글부터
+        [Comment, "createdAt", "DESC"],
+      ],
+      include: [
+        {
+          model: User,
+          attributes: ["id", "nickname", "profileImg"],
+        },
+        {
+          model: Image,
+        },
+        {
+          model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ["id", "nickname", "profileImg"],
+            },
+          ],
+        },
+        {
+          model: User, //좋아요 누른 사람
+          as: "Likers", //post.Likers 생성
+          attributes: ["id"],
+        },
+        {
+          model: User, //좋아요 누른 사람
+          as: "Bookmarks", //post.Bookmarks 생성
+          attributes: ["id"],
+        },
+        {
+          model: Post,
+          as: "Retweet",
+          include: [
+            {
+              model: User,
+              attributes: ["id", "nickname", "profileImg"],
+            },
+            {
+              model: Image,
+            },
+          ],
+        },
+      ],
+    });
+    console.log(posts);
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 router.post("/logout", (req, res) => {
   req.logout((err) => {
     req.session.destroy();
-    if (err) {
-      res.redirect("/");
-    } else {
-      res.status(200).send("server ok: 로그아웃 완료");
-    }
+    res.send("로그아웃 완료");
   });
 });
 

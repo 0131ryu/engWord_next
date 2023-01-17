@@ -194,7 +194,6 @@ function* loadWordsWeekend(action) {
   try {
     const data = action.payload;
     const result = yield call(loadWordsWeekendAPI, data);
-    console.log("result.data", result.data);
     yield put(loadWordsWeekendSuccess(result.data));
   } catch (error) {
     yield put(loadWordsWeekendFailure(error));

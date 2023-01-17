@@ -43,6 +43,9 @@ const initialState = {
   retweetLoading: false, //retweet
   retweetComplete: false,
   retweetError: null,
+  searchPostLoading: false, //searchPost
+  searchPostComplete: false,
+  searchPostError: null,
   Comments: [],
   imagePaths: [],
   updatedImages: [], //이미 업로드할 이미지
@@ -162,7 +165,7 @@ export const postSlice = createSlice({
       state.reviseCommentLoading = false;
       state.reviseCommentError = action.error;
     },
-    //게시글 불러오기
+    //loadPosts 게시글 불러오기
     loadPostsRequest: (state) => {
       state.loadPostsLoading = true;
       state.loadPostsError = null;
@@ -176,6 +179,39 @@ export const postSlice = createSlice({
       state.hasMorePosts = data.length === 10;
     },
     loadPostsFailure: (state, action) => {
+      state.loadPostsLoading = false;
+      state.loadPostsError = action.error;
+    },
+
+    loadUserPostsRequest: (state) => {
+      state.loadPostsLoading = true;
+      state.loadPostsError = null;
+      state.loadPostsComplete = false;
+    },
+    loadUserPostsSuccess: (state, action) => {
+      const data = action.payload;
+      state.loadPostsLoading = false;
+      state.loadPostsComplete = true;
+      state.mainPosts = state.mainPosts.concat(data);
+      state.hasMorePosts = data.length === 10;
+    },
+    loadUserPostsFailure: (state, action) => {
+      state.loadPostsLoading = false;
+      state.loadPostsError = action.error;
+    },
+    loadHashtagPostsRequest: (state) => {
+      state.loadPostsLoading = true;
+      state.loadPostsError = null;
+      state.loadPostsComplete = false;
+    },
+    loadHashtagPostsSuccess: (state, action) => {
+      const data = action.payload;
+      state.loadPostsLoading = false;
+      state.loadPostsComplete = true;
+      state.mainPosts = state.mainPosts.concat(data);
+      state.hasMorePosts = data.length === 10;
+    },
+    loadHashtagPostsFailure: (state, action) => {
       state.loadPostsLoading = false;
       state.loadPostsError = action.error;
     },
@@ -266,7 +302,6 @@ export const postSlice = createSlice({
       state.bookmarkLoading = false;
       state.bookmarkError = action.payload.response.data;
     },
-    //unlike
     unbookmarkRequest: (state) => {
       state.unbookmarkLoading = true;
       state.unbookmarkError = null;
@@ -282,6 +317,22 @@ export const postSlice = createSlice({
     unbookmarkFailure: (state, action) => {
       state.unbookmarkLoading = false;
       state.unbookmarkError = action.error;
+    },
+    searchPostRequest: (state) => {
+      state.searchPostLoading = true;
+      state.searchPostError = null;
+      state.searchPostComplete = false;
+    },
+    searchPostSuccess: (state, action) => {
+      const data = action.payload;
+      const post = state.mainPosts.find((v) => v.id === data.PostId);
+      post.Bookmarks = post.Bookmarks.filter((v) => v.id !== data.UserId);
+      state.searchPostLoading = false;
+      state.searchPostComplete = true;
+    },
+    searchPostFailure: (state, action) => {
+      state.searchPostLoading = false;
+      state.searchPostError = action.error;
     },
   },
 });
@@ -308,6 +359,12 @@ export const {
   loadPostsRequest,
   loadPostsSuccess,
   loadPostsFailure,
+  loadUserPostsRequest,
+  loadUserPostsSuccess,
+  loadUserPostsFailure,
+  loadHashtagPostsRequest,
+  loadHashtagPostsSuccess,
+  loadHashtagPostsFailure,
   likePostRequest,
   likePostSuccess,
   likePostFailure,

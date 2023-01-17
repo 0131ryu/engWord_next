@@ -3,9 +3,6 @@ const { Op } = require("sequelize");
 const { User, Word } = require("../models");
 const moment = require("moment");
 
-dateTo = moment().format("YYYY-MM-DD");
-dateFrom = moment().subtract(7, "d").format("YYYY-MM-DD");
-
 const router = express.Router();
 
 //개별 유저들의 전체 단어들
@@ -58,10 +55,13 @@ router.get("/checked", async (req, res, next) => {
 
 router.get("/weekend", async (req, res, next) => {
   try {
+    today = moment().format();
+    dateFrom = moment().subtract(7, "d").format("YYYY-MM-DD");
+    console.log("dateFrom", dateFrom);
     const words = await Word.findAll({
       where: {
         createdAt: {
-          [Op.between]: [dateFrom, dateTo], //일주일 동안의 값
+          [Op.between]: [dateFrom, today], //일주일 동안의 값
         },
       },
       order: [

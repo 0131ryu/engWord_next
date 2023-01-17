@@ -1,24 +1,28 @@
 import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
-import UserReducer from "./feature/userSlice";
-import WordReducer from "./feature/wordSlice";
-import PostReducer from "./feature/postSlice";
-import GameReducer from "./feature/gameSlice";
+import { createWrapper } from "next-redux-wrapper";
+
+import rootReducer from "./feature";
 import rootSaga from "./sagas/rootSaga";
 
-const sagaMiddleware = createSagaMiddleware();
+import logger from "redux-logger";
 
-const store = configureStore({
-  reducer: {
-    user: UserReducer,
-    word: WordReducer,
-    post: PostReducer,
-    game: GameReducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }).concat(sagaMiddleware),
+const isDev = process.env.NODE_ENV === "development";
+
+const createStore = () => {
+  const sagaMiddleware = createSagaMiddleware();
+  const middlewares = [sagaMiddleware];
+  const store = configureStore({
+    reducer: rootReducer,
+    middleware: middlewares,
+    devTools: isDev,
+  });
+  store.sagaTask = sagaMiddleware.run(rootSaga);
+  return store;
+};
+
+const wrapper = createWrapper(createStore, {
+  debug: isDev,
 });
 
-sagaMiddleware.run(rootSaga);
-
-export default store;
+export default wrapper;

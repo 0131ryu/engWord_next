@@ -196,7 +196,6 @@ export const wordSlice = createSlice({
     },
     searchWordSuccess: (state, action) => {
       const data = action.payload;
-      console.log("Data", data);
       state.searchWordLoading = false;
       state.searchWordComplete = true;
       state.searchResult.length = 0;

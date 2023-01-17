@@ -109,7 +109,7 @@ const PostCardBookmark = ({ post, index, me }) => {
       {bookmark ? (
         <section className="flex justify-center">
           <article className="overflow-hidden w-full my-3 shadow shadow-black-500/40 rounded-md">
-            <p className="ml-8 mt-2 text-gray-400">내가 북마크한 글</p>
+            <p className="ml-3 mt-2 text-gray-400">내가 북마크한 글</p>
             <header className="px-4 py-3 flex items-center justify-between">
               <div className="flex items-center font-bold">
                 <span className="mr-2">
@@ -123,7 +123,7 @@ const PostCardBookmark = ({ post, index, me }) => {
                   ) : (
                     <img
                       className="h-8 w-8 rounded-full"
-                      src={`http://localhost:3005/profile/${post.User.profileImg}`}
+                      src={`http://localhost:3005/userImg/${post.User.profileImg}`}
                       alt={post.User.profileImg}
                     />
                   )}
@@ -150,7 +150,7 @@ const PostCardBookmark = ({ post, index, me }) => {
                       <span className="mr-2">
                         <img
                           alt="profile-img"
-                          src={`http://localhost:3005/profile/${post.Retweet.User.profileImg}`}
+                          src={`http://localhost:3005/userImg/${post.Retweet.User.profileImg}`}
                           className="h-8 w-8 rounded-full"
                         />
                       </span>

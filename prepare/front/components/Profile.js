@@ -114,7 +114,7 @@ const Profile = ({ me, postResult, wordResult }) => {
                         ) : (
                           <img
                             className="rounded-full h-40 w-40"
-                            src={`http://localhost:3005/profile/${me.profileImg}`}
+                            src={`http://localhost:3005/userImg/${me.profileImg}`}
                             alt={me.profileImg}
                           />
                         )}

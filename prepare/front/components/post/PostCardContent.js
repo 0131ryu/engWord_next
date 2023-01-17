@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
-import { useRouter } from "next/router";
+import Link from "next/link";
 
 const PostCardContent = ({
   content,
@@ -9,22 +9,9 @@ const PostCardContent = ({
   onCancleRevisePost,
   index,
 }) => {
-  const router = useRouter();
   const [editText, setEditText] = useState(content);
   const onChangeText = useCallback((e) => {
     setEditText(e.target.value);
-  }, []);
-
-  // console.log("images", images);
-  // console.log("content", content);
-
-  const onGoHashtags = useCallback(() => {
-    content.split(/(#[^\s#]+)/g).map((v, i) => {
-      if (v.match(/(#[^\s#]+)/)) {
-        router.push(`/hashtag/${v.slice(1)}`); //수정 필요
-      }
-    });
-    console.log("눌름?");
   }, []);
 
   return (
@@ -56,32 +43,27 @@ const PostCardContent = ({
           <small className="text-gray-400 m-5 float-right">2 hours ago</small>
         </div>
       ) : (
-        <div>
-          {content.split(/(#[^\s#]+)/g).map((v, i) => {
-            if (v.match(/(#[^\s#]+)/)) {
-              return (
-                <>
-                  <p
-                    key={i}
-                    className="ml-4 text-sky-500 cursor-pointer"
-                    onClick={onGoHashtags}
-                  >
-                    {v}
-                  </p>
-                </>
-              );
-            } else {
-              return (
-                <>
-                  <p className="ml-5">{v}</p>
-                  <small className="text-gray-400 m-5 float-right">
-                    2 hours ago
-                  </small>
-                </>
-              );
-            }
-          })}
-        </div>
+        <>
+          <div className="mx-2.5">
+            {content.split(/(#[^\s#]+)/g).map((v, i) => {
+              if (v.match(/(#[^\s#]+)/)) {
+                return (
+                  <>
+                    <div key={i} className="float-left mx-1">
+                      <Link className="" href={`/hashtag/${v.slice(1)}`}>
+                        <p className="text-sky-500">{v}</p>
+                      </Link>
+                    </div>
+                  </>
+                );
+              }
+              return v;
+            })}
+          </div>
+          <small className="text-gray-400 m-5 float-right ml-2">
+            2 hours ago
+          </small>
+        </>
       )}
     </>
   );

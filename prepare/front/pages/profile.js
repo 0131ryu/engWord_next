@@ -6,6 +6,9 @@ import Profile from "../components/Profile";
 import { loadPostsRequest } from "../redux/feature/postSlice";
 import { loadMyInfoRequest } from "../redux/feature/userSlice";
 import { loadWordsRequest } from "../redux/feature/wordSlice";
+// import wrapper from "../redux/store";
+// import axios from "axios";
+// import { END } from "redux-saga";
 
 const profile = () => {
   const dispatch = useDispatch();
@@ -46,5 +49,21 @@ const profile = () => {
     </>
   );
 };
+
+// export const getServerSideProps = wrapper.getServerSideProps(
+//   async (context) => {
+//     const cookie = context.req ? context.req.headers.cookie : "";
+//     axios.defaults.headers.Cookie = "";
+//     if (context.req && cookie) {
+//       axios.defaults.headers.Cookie = cookie;
+//     }
+
+//     context.store.dispatch(loadMyInfoRequest());
+//     context.store.dispatch(loadPostsRequest());
+//     context.store.dispatch(loadWordsRequest());
+//     context.store.dispatch(END);
+//     await context.store.sagaTask.toPromise();
+//   }
+// );
 
 export default profile;

@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   mainPosts: [],
+  singlePost: null,
   hasMorePosts: true,
   addPostLoading: false, //게시글 추가 중
   addPostComplete: false,
@@ -25,6 +26,9 @@ const initialState = {
   loadPostsLoading: false, //게시글 가져오기
   loadPostsComplete: false,
   loadPostsError: null,
+  loadPostLoading: false, //개별 게시글 가져오기
+  loadPostComplete: false,
+  loadPostError: null,
   bookmarkLoading: false, //bookmark
   bookmarkComplete: false,
   bookmarkError: null,
@@ -165,7 +169,6 @@ export const postSlice = createSlice({
       state.reviseCommentLoading = false;
       state.reviseCommentError = action.error;
     },
-    //loadPosts 게시글 불러오기
     loadPostsRequest: (state) => {
       state.loadPostsLoading = true;
       state.loadPostsError = null;
@@ -182,7 +185,21 @@ export const postSlice = createSlice({
       state.loadPostsLoading = false;
       state.loadPostsError = action.error;
     },
-
+    loadPostRequest: (state) => {
+      state.loadPostLoading = true;
+      state.loadPostError = null;
+      state.loadPostComplete = false;
+    },
+    loadPostSuccess: (state, action) => {
+      const data = action.payload;
+      state.loadPostLoading = false;
+      state.loadPostComplete = true;
+      state.singlePost = data;
+    },
+    loadPostFailure: (state, action) => {
+      state.loadPostLoading = false;
+      state.loadPostError = action.error;
+    },
     loadUserPostsRequest: (state) => {
       state.loadPostsLoading = true;
       state.loadPostsError = null;
@@ -359,6 +376,9 @@ export const {
   loadPostsRequest,
   loadPostsSuccess,
   loadPostsFailure,
+  loadPostRequest,
+  loadPostSuccess,
+  loadPostFailure,
   loadUserPostsRequest,
   loadUserPostsSuccess,
   loadUserPostsFailure,

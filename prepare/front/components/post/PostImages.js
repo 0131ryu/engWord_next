@@ -11,7 +11,7 @@ const PostImages = ({ images }) => {
     setShowImagesZoom(false);
   }, []);
 
-  if (images.length === 1) {
+  if (images?.length === 1) {
     return (
       <>
         <div className="scale-75 hover:scale-100 ease-in duration-500 cursor-pointer rounded-lg">
@@ -28,7 +28,7 @@ const PostImages = ({ images }) => {
       </>
     );
   }
-  if (images.length === 2) {
+  if (images?.length === 2) {
     return (
       <>
         <div className="flex justify-center">
@@ -55,7 +55,7 @@ const PostImages = ({ images }) => {
       </>
     );
   }
-  if (images.length > 2) {
+  if (images?.length > 2) {
     return (
       <>
         <div className="flex justify-center">

@@ -22,6 +22,9 @@ import {
   loadPostsRequest,
   loadPostsSuccess,
   loadPostsFailure,
+  loadPostRequest,
+  loadPostSuccess,
+  loadPostFailure,
   loadUserPostsRequest,
   loadUserPostsSuccess,
   loadUserPostsFailure,
@@ -155,6 +158,22 @@ function* loadPosts(action) {
     yield put(loadPostsSuccess(result.data));
   } catch (error) {
     yield put(loadPostsFailure(error));
+    console.log(error);
+  }
+}
+
+function loadPostAPI(data) {
+  return axios.get(`/post/${data}`);
+}
+
+function* loadPost(action) {
+  try {
+    const data = action.payload;
+    console.log("data", data);
+    const result = yield call(loadPostAPI, data);
+    yield put(loadPostSuccess(result.data));
+  } catch (error) {
+    yield put(loadPostFailure(error));
     console.log(error);
   }
 }
@@ -314,6 +333,10 @@ function* loadPosts_Req() {
   yield takeLatest(loadPostsRequest.type, loadPosts);
 }
 
+function* loadPost_Req() {
+  yield takeLatest(loadPostRequest.type, loadPost);
+}
+
 function* loadUserPosts_Req() {
   yield takeLatest(loadUserPostsRequest.type, loadUserPosts);
 }
@@ -354,6 +377,7 @@ export const postSagas = [
   fork(removeComment_Req),
   fork(reviseComment_Req),
   fork(loadPosts_Req),
+  fork(loadPost_Req),
   fork(loadUserPosts_Req),
   fork(loadHashtagPosts_Req),
   fork(likePost_Req),

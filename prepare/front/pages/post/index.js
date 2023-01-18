@@ -4,22 +4,21 @@ import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { END } from "redux-saga";
 
-import NavbarForm from "../components/NavbarForm";
-import PostCard from "../components/post/PostCard";
-import PostForms from "../components/post/PostForms";
-import PostSearch from "../components/post/PostSearch";
-import WeekendWordChart from "../components/post/WeekendWordChart";
-import UserInfo from "../components/UserInfo";
-import { loadPostsRequest } from "../redux/feature/postSlice";
-import { loadMyInfoRequest } from "../redux/feature/userSlice";
-import { loadWordsWeekendRequest } from "../redux/feature/wordSlice";
-import wrapper from "../redux/store";
+import NavbarForm from "../../components/NavbarForm";
+import PostCard from "../../components/post/PostCard";
+import PostForms from "../../components/post/PostForms";
+import PostSearch from "../../components/post/PostSearch";
+import WeekendWordChart from "../../components/post/WeekendWordChart";
+import UserInfo from "../../components/UserInfo";
+import { loadPostsRequest } from "../../redux/feature/postSlice";
+import { loadMyInfoRequest } from "../../redux/feature/userSlice";
+import { loadWordsWeekendRequest } from "../../redux/feature/wordSlice";
+import wrapper from "../../redux/store";
 
 const post = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { me, changeNicknameComplete, uploadProfileImageComplete } =
-    useSelector((state) => state.user);
+  const { me } = useSelector((state) => state.user);
   const {
     mainPosts,
     loadPostsLoading,

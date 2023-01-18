@@ -3,15 +3,21 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 const PostCardContent = ({
+  id,
   content,
   editMode,
   onRevisePost,
   onCancleRevisePost,
   index,
 }) => {
+  const router = useRouter();
   const [editText, setEditText] = useState(content);
   const onChangeText = useCallback((e) => {
     setEditText(e.target.value);
+  }, []);
+
+  const onPostDetail = useCallback(() => {
+    router.push(`/post/${id}`);
   }, []);
 
   return (
@@ -51,13 +57,19 @@ const PostCardContent = ({
                   <>
                     <div key={i} className="float-left mx-1">
                       <Link className="" href={`/hashtag/${v.slice(1)}`}>
-                        <p className="text-sky-500">{v}</p>
+                        <p className="cursor-pointer text-sky-500">{v}</p>
                       </Link>
                     </div>
                   </>
                 );
               }
-              return v;
+              return (
+                <>
+                  <div className="cursor-pointer" onClick={onPostDetail}>
+                    {v}
+                  </div>
+                </>
+              );
             })}
           </div>
           <small className="text-gray-400 m-5 float-right ml-2">

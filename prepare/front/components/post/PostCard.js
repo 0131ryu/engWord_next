@@ -259,18 +259,14 @@ const PostCard = ({ post, index, me }) => {
             <>
               <PostImages images={post?.Images} />
 
-              <div
-                className="cursor-pointer"
-                onClick={singlePost ? null : onPostDetail}
-              >
-                <PostCardContent
-                  editMode={editMode}
-                  onCancleRevisePost={onCancleRevisePost}
-                  onRevisePost={onRevisePost}
-                  content={post?.content}
-                  index={index}
-                />
-              </div>
+              <PostCardContent
+                id={post?.id}
+                editMode={editMode}
+                onCancleRevisePost={onCancleRevisePost}
+                onRevisePost={onRevisePost}
+                content={post?.content}
+                index={index}
+              />
             </>
           )}
 

@@ -171,7 +171,7 @@ router.get("/:userId", async (req, res, next) => {
     const fullUserWithoutPassword = await User.findOne({
       where: { id: req.params.userId },
       attributes: {
-        exclude: ["password"],
+        exclude: ["password", "createdAt", "updatedAt"],
       },
       include: [
         {
@@ -220,7 +220,7 @@ router.get("/:userId/posts", async (req, res, next) => {
       include: [
         {
           model: User,
-          attributes: ["id", "nickname"],
+          attributes: ["id", "nickname", "profileImg"],
         },
         {
           model: Image,
@@ -230,7 +230,7 @@ router.get("/:userId/posts", async (req, res, next) => {
           include: [
             {
               model: User,
-              attributes: ["id", "nickname"],
+              attributes: ["id", "nickname", "profileImg"],
               order: [["createdAt", "DESC"]],
             },
           ],
@@ -238,7 +238,7 @@ router.get("/:userId/posts", async (req, res, next) => {
         {
           model: User, // 좋아요 누른 사람
           as: "Likers",
-          attributes: ["id"],
+          attributes: ["id", "nickname", "profileImg"],
         },
         {
           model: Post,
@@ -246,7 +246,7 @@ router.get("/:userId/posts", async (req, res, next) => {
           include: [
             {
               model: User,
-              attributes: ["id", "nickname"],
+              attributes: ["id", "nickname", "profileImg"],
             },
             {
               model: Image,
@@ -257,7 +257,7 @@ router.get("/:userId/posts", async (req, res, next) => {
               include: [
                 {
                   model: User,
-                  attributes: ["id", "nickname"],
+                  attributes: ["id", "nickname", "profileImg"],
                 },
                 {
                   model: Image,

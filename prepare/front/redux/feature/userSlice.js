@@ -13,6 +13,9 @@ const initialState = {
   loadMyInfoLoading: false, //내 정보 가져오기
   loadMyInfoComplete: false,
   loadMyInfoError: null,
+  loadUserLoading: false, // 유저 정보 가져오기
+  loadUserDone: false,
+  loadUserError: null,
   changeNicknameLoading: false, //닉네임 변경
   changeNicknameComplete: false,
   changeNicknameError: null,
@@ -44,6 +47,7 @@ const initialState = {
   uploadProfileImageComplete: false,
   uploadProfileImageError: null,
   me: null,
+  userInfo: null,
   imagePaths: [],
   signUpData: {},
   loginData: {},
@@ -115,6 +119,20 @@ export const userSlice = createSlice({
     loadMyInfoFailure: (state, action) => {
       state.loadMyInfoLoading = false;
       state.loadMyInfoError = action.error;
+    },
+    loadUserRequest: (state) => {
+      state.loadUserLoading = true;
+      state.loadUserError = null;
+      state.loadUserComplete = false;
+    },
+    loadUserSuccess: (state, action) => {
+      state.loadUserLoading = false;
+      state.loadUserComplete = true;
+      state.userInfo = action.payload;
+    },
+    loadUserFailure: (state, action) => {
+      state.loadUserLoading = false;
+      state.loadUserError = action.error;
     },
     //닉네임 변경
     changeNicknameRequest: (state) => {
@@ -299,6 +317,9 @@ export const {
   loadMyInfoRequest,
   loadMyInfoSuccess,
   loadMyInfoFailure,
+  loadUserRequest,
+  loadUserSuccess,
+  loadUserFailure,
   changeNicknameRequest,
   changeNicknameSuccess,
   changeNicknameFailure,

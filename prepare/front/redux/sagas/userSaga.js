@@ -12,6 +12,9 @@ import {
   loadMyInfoRequest,
   loadMyInfoSuccess,
   loadMyInfoFailure,
+  loadUserRequest,
+  loadUserSuccess,
+  loadUserFailure,
   changeNicknameRequest,
   changeNicknameSuccess,
   changeNicknameFailure,
@@ -101,6 +104,22 @@ function* loadMyInfo(action) {
     yield put(loadMyInfoSuccess(result.data));
   } catch (error) {
     yield put(loadMyInfoFailure(error));
+    console.log(error);
+  }
+}
+
+function loadUserAPI(data) {
+  return axios.get(`/user/${data}`);
+}
+
+function* loadUser(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(loadUserAPI, data);
+    console.log("result.data", result.data);
+    yield put(loadUserSuccess(result.data));
+  } catch (error) {
+    yield put(loadUserFailure(error));
     console.log(error);
   }
 }
@@ -274,6 +293,10 @@ function* loadmyinfo_Req() {
   yield takeLatest(loadMyInfoRequest.type, loadMyInfo);
 }
 
+function* loaduser_Req() {
+  yield takeLatest(loadUserRequest.type, loadUser);
+}
+
 function* changenickname_Req() {
   yield takeLatest(changeNicknameRequest.type, changeNickname);
 }
@@ -319,6 +342,7 @@ export const userSagas = [
   fork(logout_Req),
   fork(signup_Req),
   fork(loadmyinfo_Req),
+  fork(loaduser_Req),
   fork(changenickname_Req),
   fork(follow_Req),
   fork(unfollow_Req),

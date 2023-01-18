@@ -3,11 +3,13 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 const UserInfo = ({ nickname, me, postResult }) => {
+  console.log("me", me);
+
   return (
     <>
       <div className="ml-2 shadow shadow-black-500/40 rounded-xl">
         <div className="md:flex lg:flex">
-          {me.profileImg === "" || me.profileImg === null ? (
+          {me?.profileImg === "" || me?.profileImg === null ? (
             <img
               alt="profile-img"
               src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
@@ -16,8 +18,8 @@ const UserInfo = ({ nickname, me, postResult }) => {
           ) : (
             <img
               className="rounded-lg w-14 h-14 mt-2 ml-1"
-              src={`http://localhost:3005/userImg/${me.profileImg}`}
-              alt={me.profileImg}
+              src={`http://localhost:3005/userImg/${me?.profileImg}`}
+              alt={me?.profileImg}
             />
           )}
           <div className="ml-1">
@@ -31,7 +33,7 @@ const UserInfo = ({ nickname, me, postResult }) => {
               <Link
                 href={{
                   pathname: "/user/[id]",
-                  query: { id: me.id },
+                  query: { id: me?.id },
                 }}
                 prefetch={false}
               >
@@ -43,7 +45,11 @@ const UserInfo = ({ nickname, me, postResult }) => {
             <p className="text-gray-400 block">Follower</p>
             <p className="ml-1 font-bold cursor-pointer">
               <Link href={`/profile`}>
-                <a>{me?.Followers.length}</a>
+                <a>
+                  {me?.Followers.length >= 0
+                    ? me?.Followers.length
+                    : me?.Followers}
+                </a>
               </Link>
             </p>
           </div>
@@ -51,7 +57,11 @@ const UserInfo = ({ nickname, me, postResult }) => {
             <p className="text-gray-400 block">Following</p>
             <p className="ml-1 font-bold cursor-pointer">
               <Link href={`/profile`}>
-                <a>{me?.Followings.length}</a>
+                <a>
+                  {me?.Followings.length >= 0
+                    ? me?.Followings.length
+                    : me?.Followings}
+                </a>
               </Link>
             </p>
           </div>

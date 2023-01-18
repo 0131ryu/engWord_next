@@ -207,6 +207,7 @@ export const postSlice = createSlice({
     },
     loadUserPostsSuccess: (state, action) => {
       const data = action.payload;
+      console.log("결과", data);
       state.loadPostsLoading = false;
       state.loadPostsComplete = true;
       state.mainPosts = state.mainPosts.concat(data);

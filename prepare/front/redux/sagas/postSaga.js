@@ -185,9 +185,8 @@ function loadUserPostsAPI(data, lastId) {
 function* loadUserPosts(action) {
   try {
     const data = action.payload;
-    console.log("data", data);
-    const result = yield call(loadUserPostsAPI, data, lastId);
-    console.log("result.data", result.data);
+    console.log("Data", data);
+    const result = yield call(loadUserPostsAPI, data);
     yield put(loadUserPostsSuccess(result.data));
   } catch (error) {
     yield put(loadUserPostsFailure(error));

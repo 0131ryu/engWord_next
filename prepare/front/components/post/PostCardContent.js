@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const PostCardContent = ({
   content,
@@ -44,8 +44,8 @@ const PostCardContent = ({
         </div>
       ) : (
         <>
-          <div className="mx-2.5">
-            {content.split(/(#[^\s#]+)/g).map((v, i) => {
+          <div className="mx-5">
+            {content?.split(/(#[^\s#]+)/g).map((v, i) => {
               if (v.match(/(#[^\s#]+)/)) {
                 return (
                   <>

@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import {
   ArrowPathRoundedSquareIcon,
-  BookmarkIcon,
   HeartIcon,
   ChatBubbleOvalLeftEllipsisIcon,
   EllipsisHorizontalIcon,
@@ -37,22 +36,17 @@ import { useRouter } from "next/router";
 
 const PostCard = ({ post, index, me }) => {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const { singlePost } = useSelector((state) => state.post);
 
   const [removeModal, setRemoveModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const id = useSelector((state) => state.user.me?.id);
-  const liked = post.Likers?.find((v) => v.id === id);
-  const bookmark = post.Bookmarks?.find((v) => v.id === id);
+  const liked = post?.Likers?.find((v) => v.id === id);
+  const bookmark = post?.Bookmarks?.find((v) => v.id === id);
   const isFollowing = me?.Followings.find((v) => v.id === post.User.id);
   const blockingLists = me?.Blockings;
   const blockedLists = me?.Blockeds;
-
-  useEffect(() => {
-    // if (me) {
-    //   dispatch(loadBlockedRequest());
-    //   dispatch(loadBlockingRequest());
-    // }
-  }, []);
 
   const onClickRevise = useCallback(
     (e) => {
@@ -116,6 +110,10 @@ const PostCard = ({ post, index, me }) => {
     dispatch(unbookmarkRequest(post.id));
   }, [id]);
 
+  const onPostDetail = useCallback(() => {
+    router.push(`/post/${post.id}`);
+  }, []);
+
   return (
     <>
       {/* 삭제 포스트 모달창 */}
@@ -129,9 +127,9 @@ const PostCard = ({ post, index, me }) => {
           <header className="px-4 py-3 flex items-center justify-between">
             <div className="flex items-center font-bold">
               <span className="mr-2">
-                <Link href={`/user/${post.UserId}`}>
-                  {post.User?.profileImg === "" ||
-                  post.User?.profileImg === null ? (
+                <Link href={`/user/${post?.UserId}`}>
+                  {post?.User?.profileImg === "" ||
+                  post?.User?.profileImg === null ? (
                     <img
                       alt="profile-img"
                       src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
@@ -140,14 +138,14 @@ const PostCard = ({ post, index, me }) => {
                   ) : (
                     <img
                       className="h-8 w-8 rounded-full cursor-pointer"
-                      src={`http://localhost:3005/userImg/${post.User.profileImg}`}
-                      alt={post.User.profileImg}
+                      src={`http://localhost:3005/userImg/${post?.User.profileImg}`}
+                      alt={post?.User.profileImg}
                     />
                   )}
                 </Link>
               </span>
 
-              <span>{post.User.nickname}</span>
+              <span>{post?.User.nickname}</span>
 
               {id === undefined ? null : blockingLists &&
                 blockingLists?.find((block) => block.id === post.UserId) ? (
@@ -163,7 +161,7 @@ const PostCard = ({ post, index, me }) => {
                       : "hover:bg-light-beige hover:text-light-green"
                   }  `}
                 >
-                  {id === post.UserId ? null : (
+                  {id === post?.UserId ? null : (
                     <p className="text-sm">
                       {isFollowing ? "언팔로우" : "팔로우"}
                     </p>
@@ -177,7 +175,7 @@ const PostCard = ({ post, index, me }) => {
                   <>
                     <Popover.Button className="rounded-md px-3 py-2 text-base">
                       <div>
-                        {id === post.UserId ? (
+                        {id === post?.UserId ? (
                           <EllipsisHorizontalIcon className="h-9 w-9" />
                         ) : null}
                       </div>
@@ -217,13 +215,13 @@ const PostCard = ({ post, index, me }) => {
             </div>
           </header>
           {blockedLists &&
-          blockedLists.find((block) => block.id === post.UserId) ? (
+          blockedLists.find((block) => block.id === post?.UserId) ? (
             <p className="ml-3 p-2 text-red-500">게시글을 볼 수 없습니다.</p>
-          ) : post.RetweetId && post.Retweet ? (
+          ) : post?.RetweetId && post?.Retweet ? (
             <>
               <p className="ml-5">
-                {post.RetweetId
-                  ? `${post.User.nickname}님이 리트윗하셨습니다.`
+                {post?.RetweetId
+                  ? `${post?.User.nickname}님이 리트윗하셨습니다.`
                   : null}
               </p>
               <section className="flex justify-center">
@@ -238,11 +236,12 @@ const PostCard = ({ post, index, me }) => {
                       />
                     </span>
                     <span className="mr-2 mt-2 font-bold">
-                      {post.Retweet.User.nickname}
+                      {post?.Retweet.User.nickname}
                     </span>
                   </header>
 
                   <PostImages images={post?.Retweet.Images} />
+
                   <PostCardContent
                     editMode={editMode}
                     onCancleRevisePost={onCancleRevisePost}
@@ -258,14 +257,20 @@ const PostCard = ({ post, index, me }) => {
             </>
           ) : (
             <>
-              <PostImages images={post.Images} />
-              <PostCardContent
-                editMode={editMode}
-                onCancleRevisePost={onCancleRevisePost}
-                onRevisePost={onRevisePost}
-                content={post.content}
-                index={index}
-              />
+              <PostImages images={post?.Images} />
+
+              <div
+                className="cursor-pointer"
+                onClick={singlePost ? null : onPostDetail}
+              >
+                <PostCardContent
+                  editMode={editMode}
+                  onCancleRevisePost={onCancleRevisePost}
+                  onRevisePost={onRevisePost}
+                  content={post?.content}
+                  index={index}
+                />
+              </div>
             </>
           )}
 
@@ -289,18 +294,18 @@ const PostCard = ({ post, index, me }) => {
                   />
                 )}
 
-                <p className="mt-1">{post.Likers.length}</p>
+                <p className="mt-1">{post?.Likers.length}</p>
               </span>
               <span className="flex mr-4">
                 <ChatBubbleOvalLeftEllipsisIcon className="h-8 w-8" />
-                <p className="mt-1">{post.Comments.length}</p>
+                <p className="mt-1">{post?.Comments.length}</p>
               </span>
               <span className="flex mr-1">
                 <ArrowPathRoundedSquareIcon
                   onClick={onRetweet}
                   className="h-8 w-8 cursor-pointer"
                 />
-                <p className="mt-1">{post.Retweet?.length}</p>
+                <p className="mt-1">{post?.Retweet?.length}</p>
               </span>
             </div>
             <div className="float:right mr-3">
@@ -329,17 +334,19 @@ const PostCard = ({ post, index, me }) => {
               </span>
             </div>
           </div>
-
-          {post.Comments.length === 0 ? null : (
+          {post?.Comments.length === 0 || singlePost ? null : (
             <div className="ml-4">
-              <a href="#" className="text-gray-500">
+              <div
+                onClick={onPostDetail}
+                className="text-gray-500 hover:text-sky-500 cursor-pointer"
+              >
                 View all comments
-              </a>
+              </div>
             </div>
           )}
           {/* CommentCard start */}
 
-          {post.Comments.map((comment, i) => {
+          {post?.Comments.map((comment, i) => {
             return <CommentCard comment={comment} key={comment.id} />;
           })}
           {me && (

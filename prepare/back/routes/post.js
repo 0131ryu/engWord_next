@@ -484,7 +484,7 @@ router.get(`/:postId`, async (req, res, next) => {
           include: [
             {
               model: User,
-              attributes: ["id", "nickname"],
+              attributes: ["id", "nickname", "profileImg"],
             },
             {
               model: Image,
@@ -493,12 +493,12 @@ router.get(`/:postId`, async (req, res, next) => {
         },
         {
           model: User,
-          attributes: ["id", "nickname"],
+          attributes: ["id", "nickname", "profileImg"],
         },
         {
           model: User, // 좋아요 누른 사람
           as: "Likers",
-          attributes: ["id", "nickname"],
+          attributes: ["id", "nickname", "profileImg"],
         },
         {
           model: Image,
@@ -508,7 +508,7 @@ router.get(`/:postId`, async (req, res, next) => {
           include: [
             {
               model: User,
-              attributes: ["id", "nickname"],
+              attributes: ["id", "nickname", "profileImg"],
             },
           ],
         },

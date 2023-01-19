@@ -1,8 +1,5 @@
 import { Fragment, useRef, useState, useCallback, useEffect } from "react";
 import { Dialog, Transition, Listbox } from "@headlessui/react";
-import { useSelector, useDispatch } from "react-redux";
-import useInput from "../../hooks/useInput";
-import { reviseWordRequest } from "../../redux/feature/wordSlice";
 import {
   ArrowsRightLeftIcon,
   ArrowDownIcon,
@@ -11,11 +8,19 @@ import {
 
 const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
 
-const ReviseWordModal = ({ id, setModal, showEng, showKor, showType }) => {
-  const dispatch = useDispatch();
-
+const ReviseWordModal = ({
+  setEditMode,
+  editMode,
+  onChangeReviseWord,
+  setModal,
+  showEng,
+  showKor,
+  showType,
+}) => {
   const [open, setOpen] = useState(true);
   const [selected, setSelected] = useState(typesName[0]);
+  const [editKor, setEditKor] = useState(showKor);
+  const [editEng, setEditEng] = useState(showEng);
 
   const type = selected.name;
 
@@ -27,32 +32,44 @@ const ReviseWordModal = ({ id, setModal, showEng, showKor, showType }) => {
     }
   }, []);
 
-  const [english, onChangeEnglish] = useInput("");
-  const [korean, onChangeKorean] = useInput("");
+  const onChangeEnglish = useCallback(
+    (e) => {
+      setEditEng(e.target.value);
+    },
+    [showEng]
+  );
 
-  const onReviseWordSubmit = useCallback(() => {
-    setModal(false);
-    console.log(english, korean, type, id);
-    // dispatch(reviseWordRequest({ id: id, english, korean, type }));
+  const onChangeKorean = useCallback((e) => {
+    setEditKor(e.target.value);
+  }, []);
 
-    if (!english && !korean) {
-      dispatch(
-        reviseWordRequest({
-          id: id,
-          english: showEng,
-          korean: showKor,
-          type,
-        })
-      );
-    } else {
-      dispatch(reviseWordRequest({ id: id, english, korean, type }));
-    }
-  }, [english, korean, type]); //여기 넣어야 함
+  // const onReviseWordSubmit = useCallback(() => {
+  //   setModal(false);
+  //   console.log(english, korean, type, id);
+  //   // dispatch(reviseWordRequest({ id: id, english, korean, type }));
 
-  const onOpenCloseModal = () => {
+  //   if (!english && !korean) {
+  //     dispatch(
+  //       reviseWordRequest({
+  //         id: id,
+  //         english: showEng,
+  //         korean: showKor,
+  //         type,
+  //       })
+  //     );
+  //   } else {
+  //     dispatch(reviseWordRequest({ id: id, english, korean, type }));
+  //   }
+  // }, [english, korean, type]); //여기 넣어야 함
+
+  const onOpenCloseModal = useCallback(() => {
     console.log("open", open);
     setModal(false);
-  };
+  }, []);
+
+  const onBackEdit = useCallback(() => {
+    setEditMode(true);
+  }, []);
   const cancelButtonRef = useRef(null);
 
   return (
@@ -100,28 +117,46 @@ const ReviseWordModal = ({ id, setModal, showEng, showKor, showType }) => {
                         as="h3"
                         className="text-lg font-medium leading-6 text-gray-900"
                       >
-                        단어 수정
+                        {editMode ? <p>단어 수정</p> : <p>수정 완료</p>}
                       </Dialog.Title>
                       <div className="flex w-96">
                         <div>
-                          <input
-                            onChange={onChangeEnglish}
-                            placeholder={showEng}
-                            type="text"
-                            name="english"
-                            value={english}
-                            className="sm:600 w-52 grid grid-cols-2 gap-4 place-content-center
-                          pl-2 h-9  placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-full m-2"
-                          />
-                          <input
-                            onChange={onChangeKorean}
-                            placeholder={showKor}
-                            type="text"
-                            name="korean"
-                            value={korean}
-                            className="sm:600 w-52 grid grid-cols-2 gap-4 place-content-center
-                          pl-2 h-9  placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-full m-2"
-                          />
+                          {editMode ? (
+                            <div>
+                              <textarea
+                                onChange={onChangeEnglish}
+                                rows="1"
+                                className="sm:600 w-52 grid grid-cols-2 gap-4 place-content-center
+                                pl-2 h-7 border-solid border-2 border-light-green group-hover:opacity-80 rounded-full m-2"
+                                defaultValue={showEng}
+                              />
+
+                              <textarea
+                                onChange={onChangeKorean}
+                                rows="1"
+                                className="sm:600 w-52 grid grid-cols-2 gap-4 place-content-center
+                                pl-2 h-7 border-solid border-2 border-light-green group-hover:opacity-80 rounded-full m-2"
+                                defaultValue={showKor}
+                              />
+                            </div>
+                          ) : (
+                            <>
+                              <input
+                                placeholder={showEng}
+                                type="text"
+                                name="english"
+                                className="sm:600 w-52 grid grid-cols-2 gap-4 place-content-center
+                          pl-2 h-7 border-solid border-2 border-light-green group-hover:opacity-80 rounded-full m-2"
+                              />
+                              <input
+                                placeholder={showKor}
+                                type="text"
+                                name="korean"
+                                className="sm:600 w-52 grid grid-cols-2 gap-4 place-content-center
+                          pl-2 h-7 border-solid border-2 border-light-green group-hover:opacity-80 rounded-full m-2"
+                              />
+                            </>
+                          )}
                         </div>
                         <div className="ml-10 mt-2">
                           <Listbox value={selected} onChange={setSelected}>
@@ -192,19 +227,34 @@ const ReviseWordModal = ({ id, setModal, showEng, showKor, showType }) => {
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-light-green px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-dark-green focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={onReviseWordSubmit}
+                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-light-green px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-dark-green focus:outline-none focus:ring-2 focus:ring-light-green focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                    onClick={
+                      editMode
+                        ? onChangeReviseWord(editKor, editEng, type)
+                        : onOpenCloseModal
+                    }
                   >
-                    수정
+                    {editMode ? <p> 수정</p> : <p>완료</p>}
                   </button>
-                  <button
-                    type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={onOpenCloseModal}
-                    ref={cancelButtonRef}
-                  >
-                    취소
-                  </button>
+                  {editMode ? (
+                    <button
+                      type="button"
+                      className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-light-green focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                      onClick={onOpenCloseModal}
+                      ref={cancelButtonRef}
+                    >
+                      취소
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-light-green focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                      onClick={onBackEdit}
+                      ref={cancelButtonRef}
+                    >
+                      뒤로 가기
+                    </button>
+                  )}
                 </div>
               </Dialog.Panel>
             </Transition.Child>

@@ -9,14 +9,11 @@ import { loadMyInfoRequest } from "../redux/feature/userSlice";
 const Home = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  const { addWordError } = useCallback((state) => state.word);
+  const { addWordError } = useSelector((state) => state.word);
 
   useEffect(() => {
-    console.log("me", me);
     dispatch(loadMyInfoRequest());
   }, []);
-
-  console.log("addWordError", addWordError);
 
   useEffect(() => {
     if (addWordError) {

@@ -9,7 +9,7 @@ const NicknameEditForm = ({
   const [editNickname, setEditNickname] = useState(nickname);
   const onEditNickname = useCallback((e) => {
     setEditNickname(e.target.value);
-  });
+  }, []);
   return (
     <>
       {editMode ? (

@@ -19,9 +19,7 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
   const btnRef = createRef();
   const popoverRef = createRef();
 
-  const { wordLists, findResult } = useSelector((state) => state.word);
-
-  // console.log("wordLists", wordLists);
+  const { findResult, addWordError } = useSelector((state) => state.word);
 
   const [english, onChangeEnglish, setEnglish] = useInput("");
   const [type, onChangeType, setType] = useInput("");
@@ -187,9 +185,8 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
                         </Dialog.Title>
                         <div className="w-96">
                           <div className="flex">
-                            <p className="mt-3 ml-3 font-bold">한글</p>
+                            <p className="mt-3 ml-3 font-bold w-9">한글</p>
                             <input
-                              // onChange={onChangeKorean}
                               readOnly
                               placeholder={korean}
                               type="text"
@@ -199,7 +196,7 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
                             />
                           </div>
                           <div className="flex">
-                            <p className="mt-3 ml-3 font-bold">영어</p>
+                            <p className="mt-3 ml-3 font-bold  w-9">영어</p>
                             <input
                               onChange={onChangeEnglish}
                               placeholder={resultEng}

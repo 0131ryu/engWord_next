@@ -72,9 +72,6 @@ const PostCardContent = ({
               );
             })}
           </div>
-          <small className="text-gray-400 m-5 float-right ml-2">
-            2 hours ago
-          </small>
         </>
       )}
     </>

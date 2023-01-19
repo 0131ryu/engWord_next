@@ -1,42 +1,35 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
-const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
-
-const ImagesZoomModal = ({ images, onClose }) => {
+const ImagesZoomModal = ({ showNum, showImg, images, onClose }) => {
   const [open, setOpen] = useState(true);
-  const [id, setId] = useState(1);
-  const totalSlides = useRef(null);
-
-  console.log("images", images);
-
-  const cancelButtonRef = useRef(null);
+  const [num, setNum] = useState(showNum);
+  const [mainImage, setMainImage] = useState(true);
+  const [hideImages, setHideImages] = useState(false);
 
   const leftButton = () => {
-    if (id > 1) {
-      setId(id - 1);
+    setMainImage(false);
+    setHideImages(true);
+    if (num >= 1) {
+      setNum(num - 1);
     }
   };
 
   const rightButton = () => {
-    const innerElements = totalSlides.current.innerHTML;
-    let count = (innerElements.match(/<li/g) || []).length;
-    if (id < count) {
-      setId(id + 1);
+    setMainImage(false);
+    setHideImages(true);
+    const imgLength = images.length - 1;
+
+    if (num < imgLength) {
+      setNum(num + 1);
     }
   };
 
   return (
     <>
-      {console.log("id", id)}
       <Transition.Root show={open} as={Fragment}>
-        <Dialog
-          as="div"
-          className="relative z-10"
-          initialFocus={cancelButtonRef}
-          onClose={setOpen}
-        >
+        <Dialog as="div" className="relative z-10" onClose={setOpen}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -71,25 +64,34 @@ const ImagesZoomModal = ({ images, onClose }) => {
                           이미지 결과
                         </Dialog.Title>
                         <div className=" w-full h-full">
-                          {/* start - carousel  */}
                           <section>
                             <div className="relative">
-                              <ul id="slider" ref={totalSlides}>
-                                {images.map((v, i) => (
-                                  <li
-                                    name="slide"
-                                    className={`h-[50vh] relative ${
-                                      id === i + 1 ? null : "hidden"
-                                    }`}
-                                    key={v.id}
-                                  >
-                                    <img
-                                      className="h-full w-full object-cover"
-                                      src={`http://localhost:3005/${v.src}`}
-                                      alt={v?.src}
-                                    />
-                                  </li>
-                                ))}
+                              {mainImage ? (
+                                <img
+                                  className="h-full w-full rounded-lg object-cover"
+                                  src={`http://localhost:3005/${showImg}`}
+                                  alt={showImg}
+                                />
+                              ) : null}
+                              <ul id="slider">
+                                {hideImages
+                                  ? images.map((v, i) => (
+                                      <li
+                                        name="slide"
+                                        className={`h-full w-full rounded-lg relative ${
+                                          num === i ? null : "hidden"
+                                        }`}
+                                        // className={`h-[50vh] relative`}
+                                        key={v.id}
+                                      >
+                                        <img
+                                          className="h-full w-full rounded-lg object-cover"
+                                          src={`http://localhost:3005/${v.src}`}
+                                          alt={v?.src}
+                                        />
+                                      </li>
+                                    ))
+                                  : null}
                               </ul>
                               {images.length === 1 ? null : (
                                 <div className="absolute px-5 flex h-full w-full top-0 left-0">
@@ -111,8 +113,6 @@ const ImagesZoomModal = ({ images, onClose }) => {
                               )}
                             </div>
                           </section>
-
-                          {/* end */}
                         </div>
                       </div>
                     </div>

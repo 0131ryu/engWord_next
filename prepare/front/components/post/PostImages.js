@@ -3,10 +3,17 @@ import ImagesZoomModal from "./ImagesZoomModal";
 
 const PostImages = ({ images }) => {
   const [showImagesZoom, setShowImagesZoom] = useState(false);
+  const [showImg, setShowImg] = useState("");
+  const [showNum, setShowNum] = useState(0);
 
-  const onZoom = useCallback(() => {
-    setShowImagesZoom(true);
-  }, []);
+  const onZoom = useCallback(
+    (imgName, num) => () => {
+      setShowNum(num);
+      setShowImg(imgName);
+      setShowImagesZoom(true);
+    },
+    []
+  );
   const onClose = useCallback(() => {
     setShowImagesZoom(false);
   }, []);
@@ -14,16 +21,21 @@ const PostImages = ({ images }) => {
   if (images?.length === 1) {
     return (
       <>
-        <div className="scale-75 hover:scale-100 ease-in duration-500 cursor-pointer rounded-lg">
+        <div className="flex justify-center cursor-pointer rounded-lg">
           <img
             src={`http://localhost:3005/${images[0]?.src}`}
             alt={images[0]?.src}
-            className="rounded-lg"
-            onClick={onZoom}
+            className="rounded-lg shadow-xl min-h-[50px]"
+            onClick={onZoom(images[0]?.src, 0)}
           />
         </div>
         {showImagesZoom && (
-          <ImagesZoomModal images={images} onClose={onClose} />
+          <ImagesZoomModal
+            images={images}
+            onClose={onClose}
+            showImg={showImg}
+            showNum={showNum}
+          />
         )}
       </>
     );
@@ -31,61 +43,107 @@ const PostImages = ({ images }) => {
   if (images?.length === 2) {
     return (
       <>
-        <div className="flex justify-center">
-          <div className="cursor-pointer inline-block m-1">
-            <img
-              src={`http://localhost:3005/${images[0]?.src}`}
-              alt={images[0]?.src}
-              className="rounded-lg h-44"
-              onClick={onZoom}
+        <div className="cursor-pointer grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-3">
+          <img
+            src={`http://localhost:3005/${images[0]?.src}`}
+            alt={images[0]?.src}
+            className="rounded-lg shadow-xl min-h-full"
+            onClick={onZoom(images[0]?.src, 0)}
+          />
+          <img
+            id="image2"
+            src={`http://localhost:3005/${images[1]?.src}`}
+            alt={images[0]?.src}
+            className="rounded-lg shadow-xl min-h-full"
+            onClick={onZoom(images[1]?.src, 1)}
+          />
+
+          {showImagesZoom && (
+            <ImagesZoomModal
+              images={images}
+              onClose={onClose}
+              showImg={showImg}
+              showNum={showNum}
             />
-          </div>
-          <div className="cursor-pointer inline-block m-1">
-            <img
-              src={`http://localhost:3005/${images[1]?.src}`}
-              alt={images[0]?.src}
-              className="rounded-lg h-44"
-              onClick={onZoom}
-            />
-          </div>
+          )}
+        </div>
+      </>
+    );
+  }
+  if (images?.length === 3) {
+    return (
+      <>
+        <div className="cursor-pointer grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-3">
+          <img
+            src={`http://localhost:3005/${images[0]?.src}`}
+            alt={images[0]?.src}
+            className="rounded-lg shadow-xl min-h-full row-span-2"
+            onClick={onZoom(images[0]?.src, 0)}
+          />
+
+          <img
+            src={`http://localhost:3005/${images[1]?.src}`}
+            alt={images[1]?.src}
+            className="rounded-lg shadow-xl min-h-full"
+            onClick={onZoom(images[1]?.src, 1)}
+          />
+
+          <img
+            src={`http://localhost:3005/${images[2]?.src}`}
+            alt={images[2]?.src}
+            className="rounded-lg shadow-xl min-h-full"
+            onClick={onZoom(images[2]?.src, 2)}
+          />
         </div>
         {showImagesZoom && (
-          <ImagesZoomModal images={images} onClose={onClose} />
+          <ImagesZoomModal
+            images={images}
+            onClose={onClose}
+            showImg={showImg}
+            showNum={showNum}
+          />
         )}
       </>
     );
   }
-  if (images?.length > 2) {
+  if (images?.length >= 4) {
     return (
       <>
-        <div className="flex justify-center">
-          <div className="cursor-pointer inline-block m-1">
-            <img
-              src={`http://localhost:3005/${images[0]?.src}`}
-              alt={images[0]?.src}
-              className="rounded-lg h-44"
-              onClick={onZoom}
-            />
-          </div>
-          <div className="cursor-pointer inline-block m-1">
-            <img
-              src={`http://localhost:3005/${images[1]?.src}`}
-              alt={images[1]?.src}
-              className="rounded-lg h-44"
-              onClick={onZoom}
-            />
-          </div>
-          <div className="cursor-pointer inline-block m-1">
-            <img
-              src={`http://localhost:3005/${images[2]?.src}`}
-              alt={images[2]?.src}
-              className="rounded-lg h-44"
-              onClick={onZoom}
-            />
-          </div>
+        <div className="cursor-pointer grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-3">
+          <img
+            src={`http://localhost:3005/${images[0]?.src}`}
+            alt={images[0]?.src}
+            className="rounded-lg shadow-xl min-h-full"
+            onClick={onZoom(images[0]?.src, 0)}
+          />
+
+          <img
+            src={`http://localhost:3005/${images[1]?.src}`}
+            alt={images[1]?.src}
+            className="rounded-lg shadow-xl min-h-full"
+            onClick={onZoom(images[1]?.src, 1)}
+          />
+
+          <img
+            src={`http://localhost:3005/${images[2]?.src}`}
+            alt={images[2]?.src}
+            className="rounded-lg shadow-xl min-h-full"
+            onClick={onZoom(images[2]?.src, 2)}
+          />
+          <img
+            src={`http://localhost:3005/${images[3]?.src}`}
+            alt={images[3]?.src}
+            className="rounded-lg shadow-xl min-h-full"
+            onClick={onZoom(images[3]?.src, 3)}
+          />
         </div>
         {showImagesZoom && (
-          <ImagesZoomModal images={images} onClose={onClose} />
+          <ImagesZoomModal
+            images={images}
+            onClose={onClose}
+            showImg={showImg}
+            showNum={showNum}
+          />
         )}
       </>
     );

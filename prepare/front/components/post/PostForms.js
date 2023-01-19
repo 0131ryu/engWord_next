@@ -65,7 +65,7 @@ const PostForms = () => {
     <div className="bg-white col-span-2">
       <form
         encType="multipart/form-data"
-        className="mt-2 shadow shadow-black-500/40"
+        className="shadow shadow-black-500/40"
         onSubmit={onSubmitForm}
       >
         <textarea
@@ -103,13 +103,15 @@ const PostForms = () => {
         </div>
         {imagePaths.map((v, i) => (
           <div key={v} className="flex justify-center">
-            <div>
-              <img className="p-1" src={`http://localhost:3005/${v}`} alt={v} />
-            </div>
+            <img
+              className="w-20 h-20 pt-2"
+              src={`http://localhost:3005/${v}`}
+              alt={v}
+            />
             <button
               type="button"
               onClick={onRemoveImage(i)}
-              className="bg-red-500 text-white rounded-md mt-1 pb-2 pl-1 pr-1 w-10 h-5"
+              className="bg-red-500 text-white rounded-lg mt-2 ml-2 w-5 h-5"
             >
               X
             </button>

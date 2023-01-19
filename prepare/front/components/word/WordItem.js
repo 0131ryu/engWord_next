@@ -5,10 +5,14 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
 import ReviseWordModal from "./ReviseWordModal";
 import RemoveWordModal from "./RemoveWordModal";
-import { changeStatusWordRequest } from "../../redux/feature/wordSlice";
+import {
+  changeStatusWordRequest,
+  reviseWordRequest,
+} from "../../redux/feature/wordSlice";
 
 const WordItem = ({ UserId, word, index }) => {
   const dispatch = useDispatch();
+  const [editMode, setEditMode] = useState(false);
   const [modal, setModal] = useState(false);
   const [removeModal, setRemoveModal] = useState(false);
   const [id, setId] = useState(0);
@@ -22,15 +26,29 @@ const WordItem = ({ UserId, word, index }) => {
     }
   }, [word.status]);
 
+  const onChangeReviseWord = useCallback(
+    (editKor, editEng, editType) => () => {
+      setEditMode(false);
+      console.log(
+        "id, editKor, editEng, editType",
+        word.id,
+        editKor,
+        editEng,
+        editType
+      );
+      dispatch(reviseWordRequest({ id: word.id, editEng, editKor, editType }));
+    },
+    []
+  );
+
   const onReviseWord = (e) => {
-    setId(parseInt(e.target.value));
+    setEditMode(true);
     setModal(true);
   };
 
   const onRemoveWord = (e) => {
     setId(parseInt(e.target.value));
     setRemoveModal(true);
-    console.log(e.target.value, id);
   };
 
   const onChangeSelected = useCallback((e) => {
@@ -51,11 +69,13 @@ const WordItem = ({ UserId, word, index }) => {
       {/* 수정 모달창 */}
       {modal ? (
         <ReviseWordModal
-          id={word.id}
+          setEditMode={setEditMode}
           setModal={setModal}
+          editMode={editMode}
           showEng={word.english}
           showKor={word.korean}
           showType={word.type}
+          onChangeReviseWord={onChangeReviseWord}
         />
       ) : null}
       {/* 삭제 모달창 */}
@@ -81,7 +101,7 @@ const WordItem = ({ UserId, word, index }) => {
           <li className="flex first:pt-0 last:pb-0">
             <div className="relative bottom-10 ml-9 overflow-hidden">
               <p className="text-sm font-medium text-slate-900">
-                {word.english} ({word.id})
+                {word.english}
               </p>
               <p className="text-sm text-slate-900 truncate">
                 {word.korean} {word.id} {word.status}

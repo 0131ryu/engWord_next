@@ -48,16 +48,15 @@ function* addWord(action) {
     yield put(addWordSuccess(result.data));
   } catch (error) {
     yield put(addWordError(error));
-    console.log(error);
   }
 }
 
 function reviseWordAPI(data) {
   return axios.patch(`/word/${data.id}`, {
     id: data.id,
-    english: data.english,
-    korean: data.korean,
-    type: data.type,
+    english: data.editEng,
+    korean: data.editKor,
+    type: data.editType,
   });
 }
 

@@ -56,13 +56,10 @@ export const wordSlice = createSlice({
       data.map((d) => {
         state.wordLists.unshift(d);
       });
+      state.addWordError = null;
     },
     addWordError: (state, action) => {
       state.addWordLoading = false;
-      console.log(
-        " action.payload.response.data",
-        action.payload.response.data
-      );
       state.addWordError = action.payload.response.data;
     },
     //단어 수정(index값 필요할 것)
@@ -200,6 +197,7 @@ export const wordSlice = createSlice({
     },
     searchWordSuccess: (state, action) => {
       const data = action.payload;
+      state.removeWordComplete = false;
       state.searchWordLoading = false;
       state.searchWordComplete = true;
       state.searchResult.length = 0;

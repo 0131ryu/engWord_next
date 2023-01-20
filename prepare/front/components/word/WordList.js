@@ -30,8 +30,6 @@ const WordList = ({ UserId }) => {
     const checkboxClicked = e.target;
     const userId = e.target.value;
 
-    console.log("checkboxClicked", checkboxClicked);
-
     if (checkboxClicked.checked) {
       setBChecked(true);
       dispatch(changeStatusWordAllRequest({ status: "C", userId: userId }));

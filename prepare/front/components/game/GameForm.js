@@ -109,14 +109,6 @@ const GameForm = () => {
       setTimeout(() => setNum(parseInt(number.current)), 1000);
       const chooseAnswer = parseInt(e.currentTarget.value);
 
-      // console.log("checkedWords", checkedWords);
-      // console.log("gameLists", gameLists);
-      // console.log("num", num);
-      // console.log("chooseAnswer", chooseAnswer);
-      // console.log("checkedWords[num]", checkedWords[num]);
-      // console.log("checkedWords[num]?.answer", checkedWords[num]?.answer);
-      // console.log("score", score);
-
       if (chooseAnswer === checkedWords[num].answer) {
         setScore((score += 10));
 
@@ -233,8 +225,8 @@ const GameForm = () => {
         <HintModal setModal={setModal} korean={checkedWords[num]?.question} />
       ) : null}
       <div
-        className={`flex lg:flex flex h-full pt-12 ${
-          sec > 7 && "pt-20"
+        className={`flex lg:flex flex h-full pt-5 ${
+          sec > 7 && "pt-8"
         } items-center justify-center`}
       >
         <div className="sm:500px hidden">quiz game</div>

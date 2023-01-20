@@ -25,6 +25,7 @@ const StartModal = ({ UserId }) => {
   const checkedData = [...checkedWordList];
   const allData = [...wordLists];
   const answer = [1, 2, 3, 4];
+
   const result = [];
 
   const showStatus = wordLists.filter(
@@ -34,7 +35,7 @@ const StartModal = ({ UserId }) => {
   useEffect(() => {
     dispatch(loadWordsRequest());
     dispatch(loadCheckedRequest());
-  }, []);
+  }, [showStatus]);
 
   const onChangeAllSelected = useCallback((e) => {
     const checkboxClicked = e.target;
@@ -65,122 +66,87 @@ const StartModal = ({ UserId }) => {
       checkedData.splice(10, checkedData.length); //10개만 남기기
 
       if (result.length !== 10) {
-        checkedData.map((data, i) => {
+        checkedData.map((data) => {
           shuffleArray(answer);
-          if (answer[0] === 1 && i < 10) {
+          const allDataLists = [];
+          if (answer[0] === 1) {
+            allData.map((all) => {
+              if (data.english !== all.english && data.korean !== all.korean) {
+                allDataLists.push(all);
+              }
+            });
+
             result.push({
               question: data.korean,
               answer: 1,
               choices: Array.from(
                 new Set([
                   data.english,
-                  allData[i]?.english,
-                  allData[i + 1]?.english,
-                  allData[i + 2]?.english,
+                  allDataLists[0].english,
+                  allDataLists[1].english,
+                  allDataLists[2].english,
                 ])
               ),
             });
-          } else if (answer[0] === 2 && i < 10) {
+          } else if (answer[0] === 2) {
+            allData.map((all) => {
+              if (data.english !== all.english && data.korean !== all.korean) {
+                allDataLists.push(all);
+              }
+            });
+
             result.push({
               question: data.korean,
               answer: 2,
               choices: Array.from(
                 new Set([
-                  allData[i]?.english,
+                  allDataLists[0].english,
                   data.english,
-                  allData[i + 1]?.english,
-                  allData[i + 2]?.english,
+                  allDataLists[1].english,
+                  allDataLists[2].english,
                 ])
               ),
             });
-          } else if (answer[0] === 3 && i < 10) {
+          } else if (answer[0] === 3) {
+            allData.map((all) => {
+              if (data.english !== all.english && data.korean !== all.korean) {
+                allDataLists.push(all);
+              }
+            });
+
             result.push({
               question: data.korean,
               answer: 3,
               choices: Array.from(
                 new Set([
-                  allData[i]?.english,
-                  allData[i + 1]?.english,
+                  allDataLists[0].english,
+                  allDataLists[1].english,
                   data.english,
-                  allData[i + 2]?.english,
+                  allDataLists[2].english,
                 ])
               ),
             });
-          } else if (answer[0] === 4 && i < 10) {
+          } else if (answer[0] === 4) {
+            allData.map((all) => {
+              if (data.english !== all.english && data.korean !== all.korean) {
+                allDataLists.push(all);
+              }
+            });
             result.push({
               question: data.korean,
               answer: 4,
               choices: Array.from(
                 new Set([
-                  allData[i]?.english,
-                  allData[i + 1]?.english,
-                  allData[i + 2]?.english,
+                  allDataLists[0].english,
+                  allDataLists[1].english,
+                  allDataLists[2].english,
                   data.english,
                 ])
               ),
             });
           }
-          if (result[i]?.choices.length < 4) {
-            if (
-              result[i]?.answer === 2 &&
-              result[i]?.choices[1] !== data.english
-            ) {
-              console.log("답 2 index", i);
-              console.log("답 2에 다른 값 있음");
-              result.splice(i, 1, {
-                question: data.korean,
-                answer: 2,
-                choices: [
-                  data.english !== allData[i + 9]?.english &&
-                    allData[i + 9]?.english,
-                  data.english !== allData[i + 8]?.english &&
-                    allData[i + 8]?.english,
-                  data.english,
-                ],
-              });
-            } else if (
-              result[i]?.answer === 3 &&
-              result[i]?.choices[2] !== data.english
-            ) {
-              console.log("답 3 index", i);
-              console.log("답 3에 다른 값 있음");
-              result.splice(i, 1, {
-                question: data.korean,
-                answer: 3,
-                choices: [
-                  data.english !== allData[i + 9]?.english &&
-                    allData[i + 9]?.english,
-                  data.english !== allData[i + 8]?.english &&
-                    allData[i + 8]?.english,
-                  data.english,
-                ],
-              });
-            } else if (
-              result[i]?.answer === 4 &&
-              result[i]?.choices[4] !== data.english
-            ) {
-              console.log("답 4 index", i);
-              console.log("답 4에 다른 값 있음");
-              // result.splice(i, 1);
-              // i--;
-              console.log("결과는?", result[i].choices[4] === undefined); //3으로 답을 바꿔야 함
-              if (result[i].choices[4] === undefined) {
-                result.splice(i, 1, {
-                  question: data.korean,
-                  answer: 3,
-                  choices: [
-                    allData[i]?.english,
-                    allData[i + 1]?.english,
-                    data.english,
-                  ],
-                });
-              }
-            }
-          }
         });
       }
-
-      console.log("result", result);
 
       dispatch(startGameRequest(result));
       setGameStart(true);
@@ -193,10 +159,6 @@ const StartModal = ({ UserId }) => {
     router.push("/");
   };
   const cancelButtonRef = useRef(null);
-
-  const onGoLogin = () => {
-    router.push("/signin");
-  };
 
   return (
     <>

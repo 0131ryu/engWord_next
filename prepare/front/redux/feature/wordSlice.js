@@ -128,7 +128,6 @@ export const wordSlice = createSlice({
     },
     changeStatusWordSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data", data);
       state.changeStatusWordLoading = false;
       state.changeStatusWordComplete = true;
 
@@ -146,7 +145,6 @@ export const wordSlice = createSlice({
         const index = state.checkedWordList.findIndex(
           (word) => word.id === data.id
         );
-        console.log("index", index);
         state.checkedWordList.splice(index, 1);
         state.checkedWordList = state.checkedWordList.filter(
           (word) => word.id !== data.id
@@ -168,7 +166,9 @@ export const wordSlice = createSlice({
       state.changeStatusWordLoading = false;
       state.changeStatusWordComplete = true;
 
-      const changeStatus = state.wordLists.find((v) => v.UserId === data[0].id);
+      const changeStatus = state.wordLists.find(
+        (v) => v.UserId === data[0].UserId
+      );
       const showStatus = state.wordLists.find(
         (v) => v.UserId === data[0].UserId && v.status === "C"
       );
@@ -182,7 +182,6 @@ export const wordSlice = createSlice({
       }
       if (showStatus) {
         state.checkedWordList.length = 0;
-        state.checkedWordList = state.checkedWordList.concat(data);
       }
     },
     changeStatusWordAllError: (state, action) => {

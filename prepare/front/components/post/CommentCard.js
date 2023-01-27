@@ -1,28 +1,36 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Popover, Transition } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
-import {
-  removeCommentRequest,
-  reviseCommentRequest,
-} from "../../redux/feature/postSlice";
+import { reviseCommentRequest } from "../../redux/feature/postSlice";
+import RemoveCommentModal from "./RemoveCommentModal";
 
 const CommentCard = ({ comment }) => {
   const dispatch = useDispatch();
+  const { me } = useSelector((state) => state.user);
+
+  const [removeModal, setRemoveModal] = useState(false);
 
   const onReviseComment = useCallback((e) => {
     const index = e.target.value;
     dispatch(reviseCommentRequest(index));
   }, []);
 
-  const onRemoveComment = useCallback(() => {
-    const index = e.target.value;
-    dispatch(removeCommentRequest(index));
+  const onRemoveComment = useCallback((e) => {
+    setRemoveModal(true);
   }, []);
 
   return (
     <>
+      {/* 댓글 삭제 모달창 */}
+      {removeModal ? (
+        <RemoveCommentModal
+          postId={comment.PostId}
+          commentId={comment.id}
+          setRemoveModal={setRemoveModal}
+        />
+      ) : null}
       <div className="w-full px-2 mx-auto block">
         <div className="mt-1 ">
           <div className="p-2 justify-between rounde-md">
@@ -41,7 +49,9 @@ const CommentCard = ({ comment }) => {
                   <>
                     <Popover.Button className="rounded-md px-3 py-2 text-base">
                       <div>
-                        <EllipsisHorizontalIcon className="h-5 w-5" />
+                        {me?.id === comment?.UserId ? (
+                          <EllipsisHorizontalIcon className="h-9 w-9" />
+                        ) : null}
                       </div>
                     </Popover.Button>
                     <Transition
@@ -57,14 +67,14 @@ const CommentCard = ({ comment }) => {
                         <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                           <div className="bg-light-beige p-1">
                             <button
-                              // value={index}
+                              value={comment.PostId}
                               onClick={onReviseComment}
                               className="flow-root rounded-md px-2 py-2 transition duration-150 ease-in-out hover:bg-light-orange focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                             >
                               수정
                             </button>
                             <button
-                              // value={index}
+                              value={comment.PostId}
                               onClick={onRemoveComment}
                               className="flow-root rounded-md px-2 py-2 transition duration-150 ease-in-out hover:bg-red-500 hover:text-white focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                             >

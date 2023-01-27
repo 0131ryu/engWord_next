@@ -50,10 +50,15 @@ const initialState = {
   searchPostLoading: false, //searchPost
   searchPostComplete: false,
   searchPostError: null,
+  deleteImageLoading: false, //이미지 삭제(수정 때)
+  deleteImageComplete: false,
+  deleteImageError: null,
+  reviseImageLoading: false, //이미지 추가(수정 때)
+  reviseImageComplete: false,
+  reviseImageError: null,
   Comments: [],
   imagePaths: [],
-  updatedImages: [], //이미 업로드할 이미지
-  revisedImages: [], //새로 업로드할 이미지
+  reviseImagePaths: [],
 };
 
 export const postSlice = createSlice({
@@ -67,10 +72,10 @@ export const postSlice = createSlice({
       state.addPostComplete = false;
     },
     addPostSuccess: (state, action) => {
-      const postInfo = action.payload;
+      const data = action.payload;
       state.addPostLoading = false;
       state.addPostComplete = true;
-      state.mainPosts.unshift(postInfo);
+      state.mainPosts.unshift(data);
       state.imagePaths = [];
     },
     addPostFailure: (state, action) => {
@@ -106,6 +111,7 @@ export const postSlice = createSlice({
       state.revisePostLoading = false;
       state.revisePostComplete = true;
       state.mainPosts.find((v) => v.id === data.PostId).content = data.content;
+      state.imagePaths.length = 0;
     },
     revisePostFailure: (state, action) => {
       state.revisePostLoading = false;
@@ -119,6 +125,8 @@ export const postSlice = createSlice({
     },
     addCommentSuccess: (state, action) => {
       const data = action.payload;
+      console.log("data", data);
+      state.mainPosts.find((v) => console.log("v.id", v.id));
       const post = state.mainPosts.find((v) => v.id === data.PostId);
       post.Comments.unshift(data);
       state.addCommentLoading = false;
@@ -136,9 +144,14 @@ export const postSlice = createSlice({
     },
     removeCommentSuccess: (state, action) => {
       const data = action.payload;
+      console.log("data", data);
       state.removeCommentLoading = false;
       state.removeCommentComplete = true;
-      state.mainPosts = state.mainPosts.filter((v) => v.id !== data.PostId);
+      state.mainPosts.find((v) => console.log("v.Comments", v.Comments));
+      // const post = state.mainPosts.find((v) => v.id === data.PostId);
+      // post.Comments.unshift(data);
+
+      // state.mainPosts = state.mainPosts.filter((v) => v.id !== data.PostId);
     },
     removeCommentFailure: (state, action) => {
       state.removeCommentLoading = false;
@@ -274,7 +287,7 @@ export const postSlice = createSlice({
       state.uploadImagesComplete = false;
     },
     uploadImagesSuccess: (state, action) => {
-      const data = action.payload;
+      const data = action.payload; //타입이 object
       state.imagePaths = data;
       state.uploadImagesLoading = false;
       state.uploadImagesComplete = true;
@@ -282,6 +295,55 @@ export const postSlice = createSlice({
     uploadImagesFailure: (state, action) => {
       state.uploadImagesLoading = false;
       state.uploadImagesError = action.error;
+    },
+    deleteImageRequest: (state) => {
+      state.deleteImageLoading = true;
+      state.deleteImageError = null;
+      state.deleteImageComplete = false;
+    },
+    deleteImageSuccess: (state, action) => {
+      const data = action.payload;
+      const filteredData = (list) => {
+        list.forEach((post) => {
+          post.Images = post.Images.filter(
+            (img) => ![data.PostId].includes(img.id)
+          );
+        });
+        return list;
+      };
+      state.mainPosts = filteredData(state.mainPosts);
+      state.deleteImageLoading = false;
+      state.deleteImageComplete = true;
+    },
+    deleteImageFailure: (state, action) => {
+      state.deleteImageLoading = false;
+      state.deleteImageError = action.error;
+    },
+    reviseImageRequest: (state) => {
+      state.reviseImageLoading = true;
+      state.reviseImageError = null;
+      state.reviseImageComplete = false;
+    },
+    reviseImageSuccess: (state, action) => {
+      const data = action.payload;
+      console.log("data", data)
+      const addData = (list) => {
+        list.forEach((post) => {
+          if(post.id === data.PostId) {
+            [].forEach.call(data.findImage, (value) => {
+              post.Images.push({id: value.id, src: value.src})
+            })   
+          }
+        });
+        return list;
+      };
+      state.mainPosts = addData(state.mainPosts);
+      state.reviseImageLoading = false;
+      state.reviseImageComplete = true;
+    },
+    reviseImageFailure: (state, action) => {
+      state.reviseImageLoading = false;
+      state.reviseImageError = action.error;
     },
     removeImage: (state, action) => {
       state.imagePaths = state.imagePaths.filter(
@@ -395,7 +457,12 @@ export const {
   uploadImagesRequest,
   uploadImagesSuccess,
   uploadImagesFailure,
-  removeImage,
+  deleteImageRequest,
+  deleteImageSuccess,
+  deleteImageFailure,
+  reviseImageRequest,
+  reviseImageSuccess,
+  reviseImageFailure,
   retweetRequest,
   retweetSuccess,
   retweetFailure,
@@ -405,6 +472,7 @@ export const {
   unbookmarkRequest,
   unbookmarkSuccess,
   unbookmarkFailure,
+  removeImage
 } = postSlice.actions;
 
 export default postSlice.reducer;

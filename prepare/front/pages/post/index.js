@@ -58,6 +58,8 @@ const post = () => {
   }, [bookmarkError]);
 
   useEffect(() => {
+    console.log("mainPosts", mainPosts);
+
     if (hasMorePosts && !loadPostsLoading) {
       const lastId = mainPosts[mainPosts.length - 1]?.id;
       dispatch(loadPostsRequest(lastId));

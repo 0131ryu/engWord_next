@@ -40,6 +40,12 @@ import {
   uploadImagesRequest,
   uploadImagesSuccess,
   uploadImagesFailure,
+  deleteImageRequest,
+  deleteImageSuccess,
+  deleteImageFailure,
+  reviseImageRequest,
+  reviseImageSuccess,
+  reviseImageFailure,
   retweetRequest,
   retweetSuccess,
   retweetFailure,
@@ -58,7 +64,8 @@ function addPostAPI(data) {
 
 function* addPost(action) {
   try {
-    const result = yield call(addPostAPI, action.payload);
+    const data = action.payload;
+    const result = yield call(addPostAPI, data);
     yield put(addPostSuccess(result.data));
   } catch (err) {
     console.error(err);
@@ -72,8 +79,8 @@ function removePostAPI(data) {
 
 function* removePost(action) {
   try {
-    const result = yield call(removePostAPI, action.payload);
-    console.log("result.data", result.data);
+    const data = action.payload;
+    const result = yield call(removePostAPI, data);
     yield put(removePostSuccess(result.data));
   } catch (err) {
     console.error(err);
@@ -118,12 +125,13 @@ function* addComment(action) {
 
 function removeCommentAPI(data) {
   //PostId
-  return axios.delete(`/post/${data}`);
+  return axios.delete(`/post/${data.postId}/comment`);
 }
 
 function* removeComment(action) {
   try {
     const data = action.payload;
+
     const result = yield call(removeCommentAPI, data);
     yield put(removeCommentSuccess(result.data));
   } catch (err) {
@@ -257,6 +265,37 @@ function* uploadImages(action) {
   }
 }
 
+function deleteImageAPI(data) {
+  return axios.delete(`post/images/${data}`, data);
+}
+
+function* deleteImage(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(deleteImageAPI, data);
+    yield put(deleteImageSuccess(result.data));
+  } catch (error) {
+    yield put(deleteImageFailure(error));
+    console.log(error);
+  }
+}
+
+//reviseImage
+function reviseImageAPI(data) {
+  return axios.patch("post/images/revise", data);
+}
+
+function* reviseImage(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(reviseImageAPI, data);
+    yield put(reviseImageSuccess(result.data));
+  } catch (error) {
+    yield put(reviseImageFailure(error));
+    console.log(error);
+  }
+}
+
 function retweetAPI(data) {
   return axios.post(`/post/${data}/retweet`);
 }
@@ -356,6 +395,14 @@ function* uploadImages_Req() {
   yield takeLatest(uploadImagesRequest.type, uploadImages);
 }
 
+function* deleteImage_Req() {
+  yield takeLatest(deleteImageRequest.type, deleteImage);
+}
+
+function* reviseImage_Req() {
+  yield takeLatest(reviseImageRequest.type, reviseImage);
+}
+
 function* retweet_Req() {
   yield takeLatest(retweetRequest.type, retweet);
 }
@@ -382,7 +429,8 @@ export const postSagas = [
   fork(likePost_Req),
   fork(unlikePost_Req),
   fork(uploadImages_Req),
-  fork(uploadImages_Req),
+  fork(deleteImage_Req),
+  fork(reviseImage_Req),
   fork(retweet_Req),
   fork(bookmark_Req),
   fork(unbookmark_Req),

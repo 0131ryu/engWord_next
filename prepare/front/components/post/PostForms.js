@@ -30,11 +30,10 @@ const PostForms = () => {
       }
 
       const formData = new FormData();
-
+      console.log("imagePaths", imagePaths);
       imagePaths.forEach((p) => {
         formData.append("image", p);
       });
-      console.log("formData", formData);
       formData.append("content", text);
       dispatch(addPostRequest(formData));
     },
@@ -46,12 +45,16 @@ const PostForms = () => {
   }, [imageInput.current]);
 
   const onChangeImages = useCallback((e) => {
-    console.log("images", e.target.files);
-    const imageFormData = new FormData();
-    [].forEach.call(e.target.files, (f) => {
-      imageFormData.append("image", f);
-    });
-    dispatch(uploadImagesRequest(imageFormData));
+    const images = e.target.files;
+    if(Object.keys(images).length >= 5) {
+      alert('이미지는 4장까지만 추가됩니다.')
+    } else {
+      const imageFormData = new FormData();
+      [].forEach.call(images, (f) => {
+        imageFormData.append("image", f);
+      });
+      dispatch(uploadImagesRequest(imageFormData));
+    }
   }, []);
 
   const onRemoveImage = useCallback(
@@ -88,7 +91,7 @@ const PostForms = () => {
             <button
               type="button"
               onClick={onClickImageUpload}
-              className="ml-2 mb-1 hover:font-bold hover:text-light-orange"
+              className="ml-2 mb-1 bg-light-beige rounded-md font-bold hover:bg-light-orange"
             >
               이미지 추가
             </button>
@@ -97,8 +100,8 @@ const PostForms = () => {
             type="submit"
             className="flex hover:bg-light-green hover:text-white hover:rounded-md"
           >
-            <PencilIcon className="h-5 w-5 md:h-8 md:w-8 lg:h-8 lg:w-8" />
-            <h3 className="mr-2 font-bold hover:text-white">추가</h3>
+            <PencilIcon className="h-5 w-5" />
+            <h3 className="pr-1 font-bold hover:text-white">추가</h3>
           </button>
         </div>
         {imagePaths.map((v, i) => (

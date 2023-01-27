@@ -3,8 +3,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 const UserInfo = ({ nickname, me, postResult }) => {
-  console.log("me", me);
-
   return (
     <>
       <div className="ml-2 shadow shadow-black-500/40 rounded-xl">

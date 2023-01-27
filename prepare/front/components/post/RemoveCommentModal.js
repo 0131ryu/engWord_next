@@ -1,18 +1,18 @@
 import { Fragment, useRef, useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { Dialog, Transition } from "@headlessui/react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import { removePostRequest } from "../../redux/feature/postSlice";
+import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/24/outline";
+import { removeCommentRequest } from "../../redux/feature/postSlice";
 
-const RemovePostModal = ({ PostIndex, setRemoveModal }) => {
+const RemoveCommentModal = ({ commentId, postId, setRemoveModal }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(true);
 
   const cancelButtonRef = useRef(null);
 
-  const onRemovePostModal = useCallback(() => {
+  const onRemoveComment = useCallback(() => {
     setRemoveModal(false);
-    dispatch(removePostRequest(PostIndex));
+    dispatch(removeCommentRequest({ postId: postId, commentId: commentId }));
   }, []);
 
   const onOpenCloseModal = useCallback(() => {
@@ -56,7 +56,7 @@ const RemovePostModal = ({ PostIndex, setRemoveModal }) => {
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
                     <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <ExclamationTriangleIcon
+                      <ChatBubbleOvalLeftEllipsisIcon
                         className="h-6 w-6 text-red-600"
                         aria-hidden="true"
                       />
@@ -66,14 +66,14 @@ const RemovePostModal = ({ PostIndex, setRemoveModal }) => {
                         as="h3"
                         className="text-lg font-medium leading-6 text-gray-900"
                       >
-                        게시글을
+                        댓글을{" "}
                         <span className="text-red-500 font-bold">삭제</span>
                         하시겠습니까?
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                          <span className="text-red-500 font-bold">삭제</span>
-                          이후에는 해당 게시글은 다시 생성해야 합니다.
+                          <span className="text-red-500 font-bold">삭제</span>{" "}
+                          이후에는 댓글을 다시 입력해야 합니다.
                         </p>
                       </div>
                     </div>
@@ -83,7 +83,7 @@ const RemovePostModal = ({ PostIndex, setRemoveModal }) => {
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={onRemovePostModal}
+                    onClick={onRemoveComment}
                   >
                     삭제
                   </button>
@@ -105,4 +105,4 @@ const RemovePostModal = ({ PostIndex, setRemoveModal }) => {
   );
 };
 
-export default RemovePostModal;
+export default RemoveCommentModal;

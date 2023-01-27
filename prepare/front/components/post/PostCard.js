@@ -241,15 +241,19 @@ const PostCard = ({ post, index, me }) => {
                   </header>
 
                   <PostCardContent
+                    images={post?.Retweet.Images}
                     editMode={editMode}
                     onCancleRevisePost={onCancleRevisePost}
                     onRevisePost={onRevisePost}
                     content={post.Retweet.content}
                     index={index}
                   />
-                  <div className="m-10">
-                    <PostImages images={post?.Retweet.Images} />
-                  </div>
+
+                  {editMode ? null : (
+                    <div className="m-10">
+                      <PostImages images={post?.Retweet.Images} />
+                    </div>
+                  )}
                 </article>
               </section>
               <small className="text-gray-400 m-5 float-right">
@@ -259,6 +263,7 @@ const PostCard = ({ post, index, me }) => {
           ) : (
             <>
               <PostCardContent
+                images={post?.Images}
                 id={post?.id}
                 editMode={editMode}
                 onCancleRevisePost={onCancleRevisePost}
@@ -266,9 +271,11 @@ const PostCard = ({ post, index, me }) => {
                 content={post?.content}
                 index={index}
               />
-              <div className="m-10">
-                <PostImages images={post?.Images} />
-              </div>
+              {editMode ? null : (
+                <div className="m-10">
+                  <PostImages images={post?.Images} />
+                </div>
+              )}
               <small className="text-gray-400 m-5 float-right ml-2">
                 2 hours ago
               </small>

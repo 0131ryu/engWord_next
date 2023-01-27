@@ -115,6 +115,71 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
   }
 });
 
+//이미지
+
+router.post(
+  "/images",
+  isLoggedIn,
+  upload.array("image"),
+  async (req, res, next) => {
+    console.log("req.files", req.files);
+    res.json(req.files.map((v) => v.filename));
+  }
+);
+
+router.delete("/images/:imageId", isLoggedIn, async (req, res, next) => {
+  // DELETE /post/images/1
+  try {
+    const post = await Image.destroy({
+      where: { id: req.params.imageId },
+    });
+    if (!post) {
+      return res.status(403).send("게시글이 존재하지 않습니다.");
+    }
+    res.json({ PostId: parseInt(req.params.imageId) });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.patch(
+  "/images/revise",
+  isLoggedIn,
+  upload.array("image"),
+  async (req, res, next) => {
+    // PATCH /post/images
+    try {
+      const post = await Post.findOne({
+        where: { id: req.body.id },
+      });
+      if (!post) {
+        return res.status(403).send("게시글이 존재하지 않습니다.");
+      }
+      if(req.files) {
+        const images = await Promise.all(
+          req.files.map((image) => Image.create({ src: image.filename }))
+        );
+        await post.addImages(images);
+      }
+    
+      const findImage = await Promise.all(
+        req.files.map((image) =>  Image.findOne({
+          where: {src : image.filename},
+          attributes: {
+            exclude: ["createdAt", "updatedAt"],
+          },
+        }))
+      )
+      
+      res.json({ PostId: parseInt(req.body.id), findImage: findImage });
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  }
+);
+
 router.post(`/:postId/comment`, isLoggedIn, async (req, res, next) => {
   try {
     //게시글 존재하는지 검사
@@ -368,17 +433,48 @@ router.patch("/:postId", isLoggedIn, async (req, res, next) => {
   }
 });
 
-//이미지
-
-router.post(
-  "/images",
-  isLoggedIn,
-  upload.array("image"),
-  async (req, res, next) => {
-    console.log("req.files", req.files);
-    res.json(req.files.map((v) => v.filename));
+//댓글 삭제
+router.delete("/:postId/comment", isLoggedIn, async (req, res, next) => {
+  // DELETE /post/10/comment
+  try {
+    await Comment.destroy({
+      where: {
+        PostId: req.params.postId,
+        UserId: req.user.id, //작성자가 본인이 맞는지?
+      },
+    });
+    res.status(200).json({
+      postId: parseInt(req.params.postId, 10),
+      commentId: req.body.commentId, //안 나옴'
+    });
+  } catch (error) {
+    console.error(error);
+    next(error);
   }
-);
+});
+
+//댓글 수정
+router.patch("/:postId/comment", isLoggedIn, async (req, res, next) => {
+  // PATCH /post/10/comment
+  try {
+    await Post.update(
+      { content: req.body.editText },
+      {
+        where: {
+          id: req.params.postId,
+          UserId: req.user.id, //작성자가 본인이 맞는지?
+        },
+      }
+    );
+    res.status(200).json({
+      PostId: parseInt(req.params.postId, 10),
+      content: req.body.editText,
+    });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
 
 //리트윗
 router.post(`/:postId/retweet`, isLoggedIn, async (req, res, next) => {
@@ -392,6 +488,7 @@ router.post(`/:postId/retweet`, isLoggedIn, async (req, res, next) => {
           as: "Retweet",
         },
       ],
+      nt,
     });
     if (!post) {
       return res.status(403).send("존재하지 않는 게시글입니다.");

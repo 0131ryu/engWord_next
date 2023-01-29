@@ -43,7 +43,7 @@ const PostImages = ({ images }) => {
   if (images?.length === 2) {
     return (
       <>
-        <div className="cursor-pointer grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-3">
+        <div className="cursor-pointer grid grid-cols-2 gap-x-2 gap-y-3">
           <img
             src={`http://localhost:3005/${images[0]?.src}`}
             alt={images[0]?.src}
@@ -73,7 +73,7 @@ const PostImages = ({ images }) => {
   if (images?.length === 3) {
     return (
       <>
-        <div className="cursor-pointer grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-3">
+        <div className="cursor-pointer grid grid-cols-2 gap-x-2 gap-y-3">
           <img
             src={`http://localhost:3005/${images[0]?.src}`}
             alt={images[0]?.src}
@@ -109,7 +109,7 @@ const PostImages = ({ images }) => {
   if (images?.length >= 4) {
     return (
       <>
-        <div className="cursor-pointer grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-3">
+        <div className="cursor-pointer grid grid-cols-2 gap-x-2 gap-y-3">
           <img
             src={`http://localhost:3005/${images[0]?.src}`}
             alt={images[0]?.src}

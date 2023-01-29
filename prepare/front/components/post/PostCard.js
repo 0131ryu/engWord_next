@@ -11,8 +11,6 @@ import {
 import {
   bookmarkRequest,
   likePostRequest,
-  removeCommentRequest,
-  retweetFailure,
   retweetRequest,
   reviseCommentRequest,
   revisePostRequest,
@@ -75,11 +73,6 @@ const PostCard = ({ post, index, me }) => {
   const onReviseComment = useCallback((e) => {
     const index = e.target.value;
     dispatch(reviseCommentRequest(index));
-  }, []);
-
-  const onRemoveComment = useCallback(() => {
-    const index = e.target.value;
-    dispatch(removeCommentRequest(index));
   }, []);
 
   const onLike = useCallback(() => {
@@ -241,6 +234,7 @@ const PostCard = ({ post, index, me }) => {
                   </header>
 
                   <PostCardContent
+                    retweetId={post.id}
                     images={post?.Retweet.Images}
                     editMode={editMode}
                     onCancleRevisePost={onCancleRevisePost}
@@ -302,7 +296,7 @@ const PostCard = ({ post, index, me }) => {
                   />
                 )}
 
-                <p className="mt-1">{post?.Likers.length}</p>
+                <p className="mt-1">{post?.Likers?.length}</p>
               </span>
               <span className="flex mr-4">
                 <ChatBubbleOvalLeftEllipsisIcon className="h-8 w-8" />
@@ -353,12 +347,16 @@ const PostCard = ({ post, index, me }) => {
             </div>
           )}
           {/* CommentCard start */}
-
-          {post?.Comments.map((comment, i) => {
+          {post?.Comments.map((comment) => {
             return <CommentCard comment={comment} key={comment.id} />;
           })}
           {me && (
-            <div>
+            <div className="flex">
+              <img
+                className="h-8 w-8 rounded-full mt-6 mx-1"
+                src={`http://localhost:3005/userImg/${me.profileImg}`}
+                alt={post?.User.profileImg}
+              />
               <CommentForm post={post} />
             </div>
           )}

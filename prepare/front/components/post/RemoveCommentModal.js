@@ -4,7 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/24/outline";
 import { removeCommentRequest } from "../../redux/feature/postSlice";
 
-const RemoveCommentModal = ({ commentId, postId, setRemoveModal }) => {
+const RemoveCommentModal = ({ commentId, setRemoveModal }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(true);
 
@@ -12,7 +12,7 @@ const RemoveCommentModal = ({ commentId, postId, setRemoveModal }) => {
 
   const onRemoveComment = useCallback(() => {
     setRemoveModal(false);
-    dispatch(removeCommentRequest({ postId: postId, commentId: commentId }));
+    dispatch(removeCommentRequest({ commentId: commentId }));
   }, []);
 
   const onOpenCloseModal = useCallback(() => {

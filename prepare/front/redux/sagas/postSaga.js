@@ -125,13 +125,12 @@ function* addComment(action) {
 
 function removeCommentAPI(data) {
   //PostId
-  return axios.delete(`/post/${data.postId}/comment`);
+  return axios.delete(`/post/comment/${data.commentId}`);
 }
 
 function* removeComment(action) {
   try {
     const data = action.payload;
-
     const result = yield call(removeCommentAPI, data);
     yield put(removeCommentSuccess(result.data));
   } catch (err) {
@@ -141,14 +140,14 @@ function* removeComment(action) {
 }
 
 function reviseCommentAPI(data) {
-  return axios.post("/post", data);
+  return axios.patch(`/post/comment/${data.commentId}`, data);
 }
 
 function* reviseComment(action) {
   try {
-    //   const result = yield call(reviseCommentAPI, action.data);
-    console.log(action.payload);
-    yield put(reviseCommentSuccess(action.payload));
+    const data = action.payload;
+    const result = yield call(reviseCommentAPI, data);
+    yield put(reviseCommentSuccess(result.data));
   } catch (err) {
     console.error(err);
     yield put(reviseCommentFailure(err));

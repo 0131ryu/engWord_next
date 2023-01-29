@@ -147,11 +147,15 @@ export const postSlice = createSlice({
       console.log("data", data);
       state.removeCommentLoading = false;
       state.removeCommentComplete = true;
-      state.mainPosts.find((v) => console.log("v.Comments", v.Comments));
-      // const post = state.mainPosts.find((v) => v.id === data.PostId);
-      // post.Comments.unshift(data);
-
-      // state.mainPosts = state.mainPosts.filter((v) => v.id !== data.PostId);
+      const filteredData = (list) => {
+        list.forEach((post) => {
+          post.Comments = post.Comments.filter(
+            (comment) => ![data.id].includes(comment.id)
+          );
+        });
+        return list;
+      };
+      state.mainPosts = filteredData(state.mainPosts);
     },
     removeCommentFailure: (state, action) => {
       state.removeCommentLoading = false;
@@ -164,19 +168,22 @@ export const postSlice = createSlice({
       state.reviseCommentComplete = false;
     },
     reviseCommentSuccess: (state, action) => {
-      const data = action.payload;
+      const data = action.payload.findComment;
+      console.log("data", data); //id, content, PostId
       state.reviseCommentLoading = false;
       state.reviseCommentComplete = true;
-      state.mainPosts.splice(data.id, 1, {
-        id: shortId.generate(),
-        content: data.content,
-        User: {
-          id: shortId.generate(),
-          nickname: "test",
-        },
-        Images: ["https://picsum.photos/500"],
-        Comments: [],
-      });
+
+      const reviseData = (list) => {
+        list.forEach((post) => {
+          post.Comments.map((comment) => {
+            if (comment.id === data.id) {
+              comment.content = data.content;
+            }
+          });
+        });
+        return list;
+      };
+      state.mainPosts = reviseData(state.mainPosts);
     },
     reviseCommentFailure: (state, action) => {
       state.reviseCommentLoading = false;
@@ -326,13 +333,13 @@ export const postSlice = createSlice({
     },
     reviseImageSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data", data)
+      console.log("data", data);
       const addData = (list) => {
         list.forEach((post) => {
-          if(post.id === data.PostId) {
+          if (post.id === data.PostId) {
             [].forEach.call(data.findImage, (value) => {
-              post.Images.push({id: value.id, src: value.src})
-            })   
+              post.Images.push({ id: value.id, src: value.src });
+            });
           }
         });
         return list;
@@ -472,7 +479,7 @@ export const {
   unbookmarkRequest,
   unbookmarkSuccess,
   unbookmarkFailure,
-  removeImage
+  removeImage,
 } = postSlice.actions;
 
 export default postSlice.reducer;

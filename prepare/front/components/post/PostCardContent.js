@@ -4,11 +4,11 @@ import { useRouter } from "next/router";
 import {
   deleteImageRequest,
   reviseImageRequest,
-  uploadImagesRequest,
 } from "../../redux/feature/postSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const PostCardContent = ({
+  retweetId,
   images,
   id,
   content,
@@ -21,34 +21,44 @@ const PostCardContent = ({
   const router = useRouter();
   const [editText, setEditText] = useState(content);
   const imageInput = useRef();
-  const { reviseImagePaths } = useSelector((state) => state.post);
 
   const onClickImageUpload = useCallback(() => {
     imageInput.current.click();
   }, [imageInput.current]);
 
-  const onChangeImages = useCallback((e) => {   
-    if(Object.keys(images).length >= 5) {
-      alert('이미지는 4장까지만 추가됩니다.')
-    } else {
-      const image = e.target.files;
-      if(Object.keys(image).length + Object.keys(images).length >= 5) {
-        alert(`현재 등록한 이미지 수(${Object.keys(image).length}개)가 가능한 이미지 개수(${4 - Object.keys(images).length}개)보다 많습니다.`)
+  const onChangeImages = useCallback(
+    (e) => {
+      if (Object.keys(images).length >= 5) {
+        alert("이미지는 4장까지만 추가됩니다.");
       } else {
-        const formData = new FormData();
-        [].forEach.call(image, (value) => {
-          formData.append("image", value);
-        });
-        formData.append("id", id);
-        dispatch(reviseImageRequest(formData));
+        const image = e.target.files;
+        if (Object.keys(image).length + Object.keys(images).length >= 5) {
+          alert(
+            `현재 등록한 이미지 수(${
+              Object.keys(image).length
+            }개)가 가능한 이미지 개수(${
+              4 - Object.keys(images).length
+            }개)보다 많습니다.`
+          );
+        } else {
+          const formData = new FormData();
+          [].forEach.call(image, (value) => {
+            formData.append("image", value);
+          });
+          formData.append("id", id);
+          dispatch(reviseImageRequest(formData));
+        }
       }
-    }
-  
-  
-  }, [images]);
+    },
+    [images]
+  );
 
   const onChangeText = useCallback((e) => {
     setEditText(e.target.value);
+  }, []);
+
+  const onPostRetweetDetail = useCallback(() => {
+    router.push(`/post/${retweetId}`);
   }, []);
 
   const onPostDetail = useCallback(() => {
@@ -205,12 +215,15 @@ const PostCardContent = ({
               </button>
             </div>
           )}
-        
-          {Object.keys(images).length === 4 ?  
-          <div className="flex justify-center">
-          <p className="text-center text-red-500 font-bold">최대 이미지 등록(4장)</p>
-          </div> :   
-          <div className="flex justify-center">
+
+          {Object.keys(images).length === 4 ? (
+            <div className="flex justify-center">
+              <p className="text-center text-red-500 font-bold">
+                최대 이미지 등록(4장)
+              </p>
+            </div>
+          ) : (
+            <div className="flex justify-center">
               <input
                 type="file"
                 name="image"
@@ -226,9 +239,9 @@ const PostCardContent = ({
               >
                 이미지 추가
               </button>
-            </div>}
-          
-        
+            </div>
+          )}
+
           <div className="flex justify-end items-center mt-2 mr-4">
             <button
               onClick={onRevisePost(editText, index)}
@@ -247,26 +260,50 @@ const PostCardContent = ({
       ) : (
         <>
           <div className="mx-5">
-            {content?.split(/(#[^\s#]+)/g).map((v, i) => {
-              if (v.match(/(#[^\s#]+)/)) {
-                return (
-                  <>
-                    <div key={i} className="float-left mx-1">
-                      <Link className="" href={`/hashtag/${v.slice(1)}`}>
-                        <p className="cursor-pointer text-sky-500">{v}</p>
-                      </Link>
-                    </div>
-                  </>
-                );
-              }
-              return (
-                <>
-                  <div className="cursor-pointer" onClick={onPostDetail}>
-                    {v}
-                  </div>
-                </>
-              );
-            })}
+            {retweetId
+              ? content?.split(/(#[^\s#]+)/g).map((v, i) => {
+                  if (v.match(/(#[^\s#]+)/)) {
+                    return (
+                      <>
+                        <div key={i} className="float-left mx-1">
+                          <Link className="" href={`/hashtag/${v.slice(1)}`}>
+                            <p className="cursor-pointer text-sky-500">{v}</p>
+                          </Link>
+                        </div>
+                      </>
+                    );
+                  }
+                  return (
+                    <>
+                      <div
+                        className="cursor-pointer"
+                        onClick={onPostRetweetDetail}
+                      >
+                        {v}
+                      </div>
+                    </>
+                  );
+                })
+              : content?.split(/(#[^\s#]+)/g).map((v, i) => {
+                  if (v.match(/(#[^\s#]+)/)) {
+                    return (
+                      <>
+                        <div key={i} className="float-left mx-1">
+                          <Link className="" href={`/hashtag/${v.slice(1)}`}>
+                            <p className="cursor-pointer text-sky-500">{v}</p>
+                          </Link>
+                        </div>
+                      </>
+                    );
+                  }
+                  return (
+                    <>
+                      <div className="cursor-pointer" onClick={onPostDetail}>
+                        {v}
+                      </div>
+                    </>
+                  );
+                })}
           </div>
         </>
       )}

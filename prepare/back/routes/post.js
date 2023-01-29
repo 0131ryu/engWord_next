@@ -156,22 +156,24 @@ router.patch(
       if (!post) {
         return res.status(403).send("게시글이 존재하지 않습니다.");
       }
-      if(req.files) {
+      if (req.files) {
         const images = await Promise.all(
           req.files.map((image) => Image.create({ src: image.filename }))
         );
         await post.addImages(images);
       }
-    
+
       const findImage = await Promise.all(
-        req.files.map((image) =>  Image.findOne({
-          where: {src : image.filename},
-          attributes: {
-            exclude: ["createdAt", "updatedAt"],
-          },
-        }))
-      )
-      
+        req.files.map((image) =>
+          Image.findOne({
+            where: { src: image.filename },
+            attributes: {
+              exclude: ["createdAt", "updatedAt"],
+            },
+          })
+        )
+      );
+
       res.json({ PostId: parseInt(req.body.id), findImage: findImage });
     } catch (error) {
       console.error(error);
@@ -200,7 +202,7 @@ router.post(`/:postId/comment`, isLoggedIn, async (req, res, next) => {
       include: [
         {
           model: User,
-          attributes: ["id", "nickname"],
+          attributes: ["id", "nickname", "profileImg"],
         },
       ],
     });
@@ -345,7 +347,7 @@ router.post("/:postId/retweet", isLoggedIn, async (req, res, next) => {
           include: [
             {
               model: User,
-              attributes: ["id", "nickname"],
+              attributes: ["id", "nickname", "profileImg"],
             },
           ],
         },
@@ -397,12 +399,20 @@ router.post("/:postId/retweet", isLoggedIn, async (req, res, next) => {
 router.delete("/:postId", isLoggedIn, async (req, res, next) => {
   // DELETE /post/10
   try {
+    //댓글 삭제 후 게시글 삭제할 것
+    await Comment.destroy({
+      where: {
+        PostId: req.params.postId,
+        UserId: req.user.id, //작성자가 본인이 맞는지?
+      },
+    });
     await Post.destroy({
       where: {
         id: req.params.postId,
         UserId: req.user.id, //작성자가 본인이 맞는지?
       },
     });
+
     res.status(200).json({ PostId: parseInt(req.params.postId, 10) });
   } catch (error) {
     console.error(error);
@@ -434,18 +444,17 @@ router.patch("/:postId", isLoggedIn, async (req, res, next) => {
 });
 
 //댓글 삭제
-router.delete("/:postId/comment", isLoggedIn, async (req, res, next) => {
-  // DELETE /post/10/comment
+router.delete("/comment/:commentId", isLoggedIn, async (req, res, next) => {
+  // DELETE /post/comment/10
   try {
     await Comment.destroy({
       where: {
-        PostId: req.params.postId,
+        id: req.params.commentId,
         UserId: req.user.id, //작성자가 본인이 맞는지?
       },
     });
     res.status(200).json({
-      postId: parseInt(req.params.postId, 10),
-      commentId: req.body.commentId, //안 나옴'
+      id: parseInt(req.params.commentId),
     });
   } catch (error) {
     console.error(error);
@@ -454,22 +463,27 @@ router.delete("/:postId/comment", isLoggedIn, async (req, res, next) => {
 });
 
 //댓글 수정
-router.patch("/:postId/comment", isLoggedIn, async (req, res, next) => {
-  // PATCH /post/10/comment
+router.patch("/comment/:commentId", isLoggedIn, async (req, res, next) => {
+  // PATCH /post/comment/10
   try {
-    await Post.update(
+    await Comment.update(
       { content: req.body.editText },
       {
         where: {
-          id: req.params.postId,
+          id: req.params.commentId,
           UserId: req.user.id, //작성자가 본인이 맞는지?
         },
       }
     );
-    res.status(200).json({
-      PostId: parseInt(req.params.postId, 10),
-      content: req.body.editText,
+    const findComment = await Comment.findOne({
+      where: {
+        id: req.params.commentId,
+      },
+      attributes: {
+        exclude: ["createdAt", "updatedAt", "UserId", "nickname"],
+      },
     });
+    res.status(200).json({ findComment: findComment });
   } catch (error) {
     console.error(error);
     next(error);

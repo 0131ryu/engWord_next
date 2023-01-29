@@ -59,14 +59,10 @@ const post = () => {
 
   useEffect(() => {
     console.log("mainPosts", mainPosts);
-
     if (hasMorePosts && !loadPostsLoading) {
       const lastId = mainPosts[mainPosts.length - 1]?.id;
       dispatch(loadPostsRequest(lastId));
     }
-    // if (changeNicknameComplete || uploadProfileImageComplete) {
-    //   window.location.reload();
-    // }
   }, [hasMorePosts, loadPostsLoading, mainPosts]);
 
   return (

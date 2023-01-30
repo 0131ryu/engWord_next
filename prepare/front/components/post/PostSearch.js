@@ -1,15 +1,20 @@
 import React, { useCallback } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import useInput from "../../hooks/useInput";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 const PostSearch = () => {
+  const { mainPosts } = useSelector((state) => state.post);
+  const router = useRouter();
   const [detail, onChangeDetail] = useInput("");
 
   const onSearch = useCallback(() => {
     if (!detail) {
       alert("아무것도 검색하지 않았습니다.");
+    } else {
+      router.replace(`/search/${detail}`);
     }
-    console.log("detail", detail);
   }, [detail]);
   return (
     <div className="mt-2 ml-2 w-full mx-auto block">

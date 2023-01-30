@@ -57,7 +57,7 @@ const User = () => {
             <UserInfo
               nickname={userInfo?.nickname}
               me={userInfo}
-              postResult={postResult}
+              mainPosts={mainPosts}
             />
           </div>
           <div className="col-span-2">

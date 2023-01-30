@@ -31,6 +31,9 @@ import {
   loadHashtagPostsRequest,
   loadHashtagPostsSuccess,
   loadHashtagPostsFailure,
+  loadSearchPostsRequest,
+  loadSearchPostsSuccess,
+  loadSearchPostsFailure,
   likePostRequest,
   likePostSuccess,
   likePostFailure,
@@ -192,7 +195,6 @@ function loadUserPostsAPI(data, lastId) {
 function* loadUserPosts(action) {
   try {
     const data = action.payload;
-    console.log("Data", data);
     const result = yield call(loadUserPostsAPI, data);
     yield put(loadUserPostsSuccess(result.data));
   } catch (error) {
@@ -209,12 +211,33 @@ function loadHashtagPostsAPI(data, lastId) {
 
 function* loadHashtagPosts(action) {
   try {
-    const data = action.payload;
-    const lastId = action.payload;
+    const data = action.payload.data;
+    const lastId = action.payload?.lastId;
     const result = yield call(loadHashtagPostsAPI, data, lastId);
     yield put(loadHashtagPostsSuccess(result.data));
   } catch (error) {
     yield put(loadHashtagPostsFailure(error));
+    console.log(error);
+  }
+}
+
+//loadSearchPosts
+function loadSearchPostsAPI(data, lastId) {
+  return axios.get(
+    `/posts/search/${encodeURIComponent(data)}?lastId=${lastId || 0}`
+  ); //data로 넘어갔으므로 req.query.data?
+}
+
+function* loadSearchPosts(action) {
+  try {
+    console.log("action.payload", action.payload);
+    const data = action.payload.data;
+    const lastId = action.payload?.lastId;
+    const result = yield call(loadSearchPostsAPI, data, lastId);
+    console.log("result.data", result.data);
+    yield put(loadSearchPostsSuccess(result.data));
+  } catch (error) {
+    yield put(loadSearchPostsFailure(error));
     console.log(error);
   }
 }
@@ -382,6 +405,10 @@ function* loadHashtagPosts_Req() {
   yield takeLatest(loadHashtagPostsRequest.type, loadHashtagPosts);
 }
 
+function* loadSearchPosts_Req() {
+  yield takeLatest(loadSearchPostsRequest.type, loadSearchPosts);
+}
+
 function* likePost_Req() {
   yield takeLatest(likePostRequest.type, likePost);
 }
@@ -425,6 +452,7 @@ export const postSagas = [
   fork(loadPost_Req),
   fork(loadUserPosts_Req),
   fork(loadHashtagPosts_Req),
+  fork(loadSearchPosts_Req),
   fork(likePost_Req),
   fork(unlikePost_Req),
   fork(uploadImages_Req),

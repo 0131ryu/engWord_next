@@ -1,6 +1,6 @@
 const express = require("express");
 const { Op } = require("sequelize");
-const { Post, Image, User, Comment } = require("../models");
+const { Post, Image, User, Comment, Hashtag } = require("../models");
 
 const router = express.Router();
 
@@ -8,6 +8,78 @@ const router = express.Router();
 router.get("/", async (req, res, next) => {
   try {
     const where = {};
+    if (parseInt(req.query.lastId, 10)) {
+      // 초기 로딩이 아닐 때
+      where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
+    } //// 10 -> 10 + 10 -> 10 + 10 + 10 누적됨
+
+    const posts = await Post.findAll({
+      //모든 게시글 가져옴
+      where,
+      limit: 10,
+      order: [
+        ["createdAt", "DESC"], //최신 게시글부터
+        [Comment, "createdAt", "DESC"],
+      ],
+      include: [
+        {
+          model: User,
+          attributes: ["id", "nickname", "profileImg"],
+        },
+        {
+          model: Image,
+        },
+        {
+          model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ["id", "nickname", "profileImg"],
+            },
+          ],
+        },
+        {
+          model: User, //좋아요 누른 사람
+          as: "Likers", //post.Likers 생성
+          attributes: ["id"],
+        },
+        {
+          model: User, //좋아요 누른 사람
+          as: "Bookmarks", //post.Bookmarks 생성
+          attributes: ["id"],
+        },
+        {
+          model: Post,
+          as: "Retweet",
+          include: [
+            {
+              model: User,
+              attributes: ["id", "nickname", "profileImg"],
+            },
+            {
+              model: Image,
+            },
+          ],
+        },
+      ],
+    });
+    console.log("Result", posts);
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.get("/search/:content", async (req, res, next) => {
+  // GET /posts/search/노드
+  try {
+    const content = req.params.content;
+    const where = {
+      content: {
+        [Op.like]: `%${decodeURIComponent(content)}%`,
+      },
+    };
     if (parseInt(req.query.lastId, 10)) {
       // 초기 로딩이 아닐 때
       where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
@@ -63,7 +135,7 @@ router.get("/", async (req, res, next) => {
         },
       ],
     });
-    console.log(posts);
+    console.log("Result", posts);
     res.status(200).json(posts);
   } catch (error) {
     console.error(error);

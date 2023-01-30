@@ -6,7 +6,12 @@ const { Op } = require("sequelize");
 router.get("/:hashtag", async (req, res, next) => {
   // GET /hashtag/노드
   try {
-    const where = {};
+    const hashtag = req.params.hashtag;
+    const where = {
+      content: {
+        [Op.like]: `%#${decodeURIComponent(hashtag)}%`,
+      },
+    };
     if (parseInt(req.query.lastId, 10)) {
       // 초기 로딩이 아닐때
       where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
@@ -18,7 +23,6 @@ router.get("/:hashtag", async (req, res, next) => {
       include: [
         {
           model: Hashtag,
-          where: { name: decodeURIComponent(req.params.hashtag) },
         },
         {
           model: User,

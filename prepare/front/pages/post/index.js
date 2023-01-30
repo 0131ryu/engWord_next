@@ -74,11 +74,7 @@ const Index = () => {
             <div className="col-span-1">
               {me && (
                 <>
-                  <UserInfo
-                    nickname={me?.nickname}
-                    me={me}
-                    mainPosts={mainPosts}
-                  />
+                  <UserInfo nickname={me?.nickname} me={me} />
                   <div
                     className="bg-gray-100 ml-2 mt-2 rounded-xl"
                     onClick={onBookmark}

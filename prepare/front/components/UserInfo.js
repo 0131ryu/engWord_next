@@ -1,7 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { loadPostsRequest } from "../redux/feature/postSlice";
 
-const UserInfo = ({ nickname, me, mainPosts }) => {
+const UserInfo = ({ nickname, me }) => {
+  const dispatch = useDispatch();
+  const { mainPosts, loadPostsLoading, hasMorePosts } = useSelector(
+    (state) => state.post
+  );
+
+  useEffect(() => {
+    if (hasMorePosts && !loadPostsLoading) {
+      const lastId = mainPosts[mainPosts.length - 1]?.id;
+      dispatch(loadPostsRequest(lastId));
+    }
+  }, [hasMorePosts, mainPosts]);
+
   return (
     <>
       <div className="ml-2 shadow shadow-black-500/40 rounded-xl">

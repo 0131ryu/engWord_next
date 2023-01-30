@@ -59,7 +59,7 @@ const TodayChart = () => {
       data: JSON.parse(a.score),
       datalabels: {
         // This code is used to display data values
-        anchor: "end",
+        anchor: "top",
         align: "top",
         formatter: Math.round,
         font: {
@@ -107,9 +107,11 @@ const TodayChart = () => {
       )}
       {lineChartData.datasets.length !== 0 && (
         <div>
-          <h1 className="font-bold">오늘의 결과</h1>
+          <h1 className="font-bold">오늘의 결과</h1>{" "}
           <p>(점수가 0인 경우 표에 표시되지 않습니다.)</p>
-          <Bar data={data} options={options}></Bar>
+          <div className="flex justify-center lg:w-6/12 lg:h-6/12 lg:mx-96">
+            <Bar data={data} options={options}></Bar>
+          </div>
         </div>
       )}
     </div>

@@ -54,11 +54,7 @@ const User = () => {
       <div className="h-full mt-5">
         <div className="grid grid-cols-4 gap-6">
           <div className="col-span-1">
-            <UserInfo
-              nickname={userInfo?.nickname}
-              me={userInfo}
-              mainPosts={mainPosts}
-            />
+            <UserInfo nickname={userInfo?.nickname} me={userInfo} />
           </div>
           <div className="col-span-2">
             <div className="flex justify-center">

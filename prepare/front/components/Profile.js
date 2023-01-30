@@ -63,6 +63,10 @@ const Profile = ({ me, postResult, wordResult }) => {
     setEditMode(true);
   }, [id]);
 
+  const onCancleChangeNickname = useCallback(() => {
+    setEditMode(false);
+  }, []);
+
   const onClickFollowerModal = useCallback(() => {
     setFollowerModal(true);
   }, []);
@@ -208,6 +212,7 @@ const Profile = ({ me, postResult, wordResult }) => {
                   </div>
                   <div className="text-center mt-3">
                     <NicknameEditForm
+                      onCancleChangeNickname={onCancleChangeNickname}
                       editMode={editMode}
                       nickname={me?.nickname}
                       onChangeNicknameEdit={onChangeNicknameEdit}

@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { END } from "redux-saga";
+import { useInView } from "react-intersection-observer";
 
 import NavbarForm from "../../components/NavbarForm";
 import PostCard from "../../components/post/PostCard";
@@ -15,7 +16,7 @@ import { loadMyInfoRequest } from "../../redux/feature/userSlice";
 import { loadWordsWeekendRequest } from "../../redux/feature/wordSlice";
 import wrapper from "../../redux/store";
 
-const post = () => {
+const Index = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { me } = useSelector((state) => state.user);
@@ -28,8 +29,7 @@ const post = () => {
     bookmarkError,
   } = useSelector((state) => state.post);
   const { weekendResult, wordLists } = useSelector((state) => state.word);
-  const id = useSelector((state) => state.user.me?.id);
-  const postResult = mainPosts.filter((post) => post.UserId === id);
+  const [ref, inView] = useInView();
 
   const onBookmark = useCallback(() => {
     router.push("/bookmark");
@@ -59,11 +59,12 @@ const post = () => {
 
   useEffect(() => {
     console.log("mainPosts", mainPosts);
-    if (hasMorePosts && !loadPostsLoading) {
+    if (inView && hasMorePosts && !loadPostsLoading) {
       const lastId = mainPosts[mainPosts.length - 1]?.id;
       dispatch(loadPostsRequest(lastId));
+      console.log("lastId", lastId);
     }
-  }, [hasMorePosts, loadPostsLoading, mainPosts]);
+  }, [inView, hasMorePosts, loadPostsLoading, mainPosts]);
 
   return (
     <>
@@ -76,7 +77,7 @@ const post = () => {
                   <UserInfo
                     nickname={me?.nickname}
                     me={me}
-                    postResult={postResult}
+                    mainPosts={mainPosts}
                   />
                   <div
                     className="bg-gray-100 ml-2 mt-2 rounded-xl"
@@ -97,6 +98,10 @@ const post = () => {
                   <PostCard key={index} post={post} index={index} me={me} />
                 );
               })}
+              <div
+                ref={hasMorePosts && !loadPostsLoading ? ref : undefined}
+                className="h-10"
+              />
             </div>
             {weekendResult.length > 0 ? (
               <div className="mt-10">
@@ -125,4 +130,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
   }
 );
 
-export default post;
+export default Index;

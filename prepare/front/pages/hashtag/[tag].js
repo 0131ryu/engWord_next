@@ -4,18 +4,13 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { END } from "redux-saga";
+import { useInView } from "react-intersection-observer";
 
 import NavbarForm from "../../components/NavbarForm";
 import PostCard from "../../components/post/PostCard";
-import UserInfo from "../../components/UserInfo";
-import {
-  loadHashtagPostsRequest,
-  loadUserPostsRequest,
-} from "../../redux/feature/postSlice";
-import {
-  loadMyInfoRequest,
-  loadUserRequest,
-} from "../../redux/feature/userSlice";
+import PostSearch from "../../components/post/PostSearch";
+import { loadHashtagPostsRequest } from "../../redux/feature/postSlice";
+import { loadMyInfoRequest } from "../../redux/feature/userSlice";
 import wrapper from "../../redux/store";
 
 const Hashtag = () => {
@@ -27,13 +22,14 @@ const Hashtag = () => {
     (state) => state.post
   );
   const { me } = useSelector((state) => state.user);
+  const [ref, inView] = useInView();
 
   useEffect(() => {
-    if (hasMorePosts && !loadPostsLoading) {
+    if (inView && hasMorePosts && !loadPostsLoading) {
       const lastId = mainPosts[mainPosts.length - 1]?.id;
-      dispatch(loadUserPostsRequest(lastId, tag));
+      dispatch(loadHashtagPostsRequest({ lastId: lastId, data: tag }));
     }
-  }, [hasMorePosts, loadPostsLoading, mainPosts, tag]);
+  }, [inView, hasMorePosts, loadPostsLoading, mainPosts, tag]);
 
   const onGoSNS = useCallback(() => {
     router.push("/post");
@@ -42,29 +38,30 @@ const Hashtag = () => {
   return (
     <NavbarForm>
       <Head>
-        {/* <title>{`title ${userInfo?.nickname}님의 작성 게시글`}</title>
-        <meta name="description" content={`${userInfo?.content}`} />
-        <meta
-          property="og:title"
-          content={`${userInfo?.nickname}님의 작성 게시글`}
-        />
-        <meta property="og:description" content={userInfo?.content} />
+        <title>{`#${tag}로 찾은 게시글`}</title>
+        <meta name="description" content={`${tag}`} />
+        <meta property="og:title" content={`#${tag}로 찾은 게시글`} />
+        <meta property="og:description" content={tag} />
         <meta property="og:image" content="https://engword.shop/favicon.ico" />
-        <meta property="og:url" content={`https://engword.shop/post/${id}`} /> */}
+        <meta
+          property="og:url"
+          content={`https://engword.shop/hashtag/${tag}`}
+        />
       </Head>
 
       <div className="h-full mt-5">
         <div className="grid grid-cols-4 gap-6">
           <div className="col-span-1">
             <div className=" text-center ml-2 shadow shadow-black-500/40 rounded-xl">
-              <div className="md:flex lg:flex">
+              <div className="flex place-content-center">
                 <div className="ml-1">
-                  <p className="font-bold p-1 mt-1 lg:mt-5">
-                    <span className="text-sky-500">#{tag}</span> 결과
+                  <p className="font-bold p-1 mt-1">
+                    <span className="text-sky-500 lg:text-lg">#{tag}</span> 결과
                   </p>
                 </div>
               </div>
             </div>
+            <PostSearch />
           </div>
           <div className="col-span-2">
             <div className="flex justify-center">
@@ -78,6 +75,10 @@ const Hashtag = () => {
             {mainPosts.map((post, index) => {
               return <PostCard key={index} post={post} index={index} me={me} />;
             })}
+            <div
+              ref={hasMorePosts && !loadPostsLoading ? ref : undefined}
+              className="h-10"
+            />
           </div>
           <div className="col-span-1"></div>
         </div>
@@ -94,7 +95,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
       axios.defaults.headers.Cookie = cookie;
     }
 
-    context.store.dispatch(loadHashtagPostsRequest(context.params.tag));
+    context.store.dispatch(
+      loadHashtagPostsRequest({ data: context.params.tag })
+    );
     context.store.dispatch(loadMyInfoRequest());
 
     context.store.dispatch(END);

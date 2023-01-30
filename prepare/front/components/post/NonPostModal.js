@@ -1,24 +1,19 @@
 import { Fragment, useRef, useState, useCallback } from "react";
-import { useDispatch } from "react-redux";
 import { Dialog, Transition } from "@headlessui/react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import { removePostRequest } from "../../redux/feature/postSlice";
+import {
+  FaceFrownIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
+import PostSearch from "./PostSearch";
+import { useRouter } from "next/router";
 
-const RemovePostModal = ({ PostIndex, setRemoveModal }) => {
-  const dispatch = useDispatch();
+const NonPostModal = ({ content }) => {
+  const router = useRouter();
   const [open, setOpen] = useState(true);
-
   const cancelButtonRef = useRef(null);
 
-  const onRemovePostModal = useCallback(() => {
-    setRemoveModal(false);
-    dispatch(removePostRequest(PostIndex));
-  }, []);
-
-  const onOpenCloseModal = useCallback(() => {
-    console.log("open", open);
-    setRemoveModal(false);
-    setOpen(!open);
+  const onGoSNS = useCallback(() => {
+    router.push("/post");
   }, []);
 
   return (
@@ -56,7 +51,7 @@ const RemovePostModal = ({ PostIndex, setRemoveModal }) => {
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
                     <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <ExclamationTriangleIcon
+                      <FaceFrownIcon
                         className="h-6 w-6 text-red-600"
                         aria-hidden="true"
                       />
@@ -66,19 +61,23 @@ const RemovePostModal = ({ PostIndex, setRemoveModal }) => {
                         as="h3"
                         className="text-lg font-medium leading-6 text-gray-900"
                       >
-                        게시글을
-                        <span className="text-red-500 font-bold"> 삭제</span>
-                        하시겠습니까?
+                        검색한
+                        <span className="text-red-500 font-bold">
+                          {" "}
+                          {content}
+                        </span>
+                        를 찾을 수 없습니다.
                       </Dialog.Title>
-                      <div className="mt-2">
-                        <p className="text-sm text-gray-500">
-                          <span className="text-red-500 font-bold">삭제 </span>
-                          이후에는 해당 게시글은{" "}
-                          <span className="text-red-500 font-bold">
-                            다시 생성
-                          </span>
-                          해야 합니다.
+                      <div className="mt-2 bg-gray-100 w-96 h-20 rounded-md">
+                        <p className="pt-2  font-bold flex place-content-center">
+                          검색은{" "}
+                          <MagnifyingGlassIcon className="w-5 h-5 text-red-500" />
+                          를 눌러주세요.
                         </p>
+
+                        <div className="w-11/12 ml-2">
+                          <PostSearch />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -87,17 +86,9 @@ const RemovePostModal = ({ PostIndex, setRemoveModal }) => {
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={onRemovePostModal}
+                    onClick={onGoSNS}
                   >
-                    삭제
-                  </button>
-                  <button
-                    type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={onOpenCloseModal}
-                    ref={cancelButtonRef}
-                  >
-                    취소
+                    게시글로 돌아가기
                   </button>
                 </div>
               </Dialog.Panel>
@@ -109,4 +100,4 @@ const RemovePostModal = ({ PostIndex, setRemoveModal }) => {
   );
 };
 
-export default RemovePostModal;
+export default NonPostModal;

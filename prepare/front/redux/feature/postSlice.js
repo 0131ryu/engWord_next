@@ -227,7 +227,6 @@ export const postSlice = createSlice({
     },
     loadUserPostsSuccess: (state, action) => {
       const data = action.payload;
-      console.log("결과", data);
       state.loadPostsLoading = false;
       state.loadPostsComplete = true;
       state.mainPosts = state.mainPosts.concat(data);
@@ -250,6 +249,22 @@ export const postSlice = createSlice({
       state.hasMorePosts = data.length === 10;
     },
     loadHashtagPostsFailure: (state, action) => {
+      state.loadPostsLoading = false;
+      state.loadPostsError = action.error;
+    },
+    loadSearchPostsRequest: (state) => {
+      state.loadPostsLoading = true;
+      state.loadPostsError = null;
+      state.loadPostsComplete = false;
+    },
+    loadSearchPostsSuccess: (state, action) => {
+      const data = action.payload;
+      state.loadPostsLoading = false;
+      state.loadPostsComplete = true;
+      state.mainPosts = state.mainPosts.concat(data);
+      state.hasMorePosts = data.length === 10;
+    },
+    loadSearchPostsFailure: (state, action) => {
       state.loadPostsLoading = false;
       state.loadPostsError = action.error;
     },
@@ -455,6 +470,9 @@ export const {
   loadHashtagPostsRequest,
   loadHashtagPostsSuccess,
   loadHashtagPostsFailure,
+  loadSearchPostsRequest,
+  loadSearchPostsSuccess,
+  loadSearchPostsFailure,
   likePostRequest,
   likePostSuccess,
   likePostFailure,

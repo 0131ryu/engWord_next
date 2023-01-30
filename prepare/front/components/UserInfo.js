@@ -1,8 +1,7 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 
-const UserInfo = ({ nickname, me, postResult }) => {
+const UserInfo = ({ nickname, me, mainPosts }) => {
   return (
     <>
       <div className="ml-2 shadow shadow-black-500/40 rounded-xl">
@@ -35,7 +34,9 @@ const UserInfo = ({ nickname, me, postResult }) => {
                 }}
                 prefetch={false}
               >
-                <a>{postResult.length}</a>
+                <a>
+                  {mainPosts?.filter((post) => post.UserId === me?.id).length}
+                </a>
               </Link>
             </p>
           </div>

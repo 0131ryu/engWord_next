@@ -6,7 +6,7 @@ const { Op } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
 
-const { User, Post, Image, Comment } = require("../models");
+const { User, Post, Image, Comment, Word } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 
 const router = express.Router();
@@ -42,7 +42,7 @@ router.get("/", upload.none(), async (req, res, next) => {
       const fullUserWithoutPassword = await User.findOne({
         where: { id: req.user.id },
         attributes: {
-          exclude: ["password"],
+          exclude: ["password", "createdAt", "updatedAt"],
         },
         include: [
           {
@@ -50,27 +50,40 @@ router.get("/", upload.none(), async (req, res, next) => {
             attributes: ["id"],
           },
           {
+            model: Word,
+            attributes: ["id"],
+          },
+          {
             model: User,
             as: "Followings",
-            attributes: ["id"],
+            attributes: {
+              exclude: ["createdAt", "updatedAt", "password"],
+            },
           },
           {
             model: User,
             as: "Blockings",
-            attributes: ["id"],
+            attributes: {
+              exclude: ["createdAt", "updatedAt", "password"],
+            },
           },
           {
             model: User,
             as: "Followers",
-            attributes: ["id"],
+            attributes: {
+              exclude: ["createdAt", "updatedAt", "password"],
+            },
           },
           {
             model: User,
             as: "Blockeds",
-            attributes: ["id"],
+            attributes: {
+              exclude: ["createdAt", "updatedAt", "password"],
+            },
           },
         ],
       });
+      console.log("fullUserWithoutPassword", fullUserWithoutPassword);
       res.status(200).json(fullUserWithoutPassword);
     } else {
       res.status(200).json(null);

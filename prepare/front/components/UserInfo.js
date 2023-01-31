@@ -3,8 +3,9 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { loadPostsRequest } from "../redux/feature/postSlice";
 
-const UserInfo = ({ nickname, me }) => {
+const UserInfo = () => {
   const dispatch = useDispatch();
+  const { me } = useSelector((state) => state.user);
   const { mainPosts, loadPostsLoading, hasMorePosts } = useSelector(
     (state) => state.post
   );
@@ -34,7 +35,7 @@ const UserInfo = ({ nickname, me }) => {
             />
           )}
           <div className="ml-1">
-            <p className="font-bold p-1 mt-1 lg:mt-5">{nickname}</p>
+            <p className="font-bold p-1 mt-1 lg:mt-5">{me.nickname}</p>
           </div>
         </div>
         <div className="text-center lg:flex md:ml-5 lg:ml-10">
@@ -48,9 +49,7 @@ const UserInfo = ({ nickname, me }) => {
                 }}
                 prefetch={false}
               >
-                <a>
-                  {mainPosts?.filter((post) => post.UserId === me?.id).length}
-                </a>
+                <a>{me.Posts.length}</a>
               </Link>
             </p>
           </div>
@@ -58,11 +57,7 @@ const UserInfo = ({ nickname, me }) => {
             <p className="text-gray-400 block">Follower</p>
             <p className="ml-1 font-bold cursor-pointer">
               <Link href={`/profile`}>
-                <a>
-                  {me?.Followers.length >= 0
-                    ? me?.Followers.length
-                    : me?.Followers}
-                </a>
+                <a>{me?.Followers.length >= 0 ? me?.Followers.length : 0}</a>
               </Link>
             </p>
           </div>
@@ -70,11 +65,7 @@ const UserInfo = ({ nickname, me }) => {
             <p className="text-gray-400 block">Following</p>
             <p className="ml-1 font-bold cursor-pointer">
               <Link href={`/profile`}>
-                <a>
-                  {me?.Followings.length >= 0
-                    ? me?.Followings.length
-                    : me?.Followings}
-                </a>
+                <a>{me?.Followings.length >= 0 ? me?.Followings.length : 0}</a>
               </Link>
             </p>
           </div>

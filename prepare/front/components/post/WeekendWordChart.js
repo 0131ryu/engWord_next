@@ -53,8 +53,8 @@ const WeekendWordChart = ({ weekendResult }) => {
         },
       },
       y: {
-        min: minValue,
-        max: maxValue,
+        min: 0,
+        max: maxValue + 1,
       },
     },
   };
@@ -64,7 +64,7 @@ const WeekendWordChart = ({ weekendResult }) => {
       <p className="text-center">
         전체 유저들의 <br />
         <span className="font-bold text-light-orange">
-          주간({oneWeek[0]} ~ {oneWeek[oneWeek.length - 1]})
+          ({oneWeek[0]} ~ {oneWeek[oneWeek.length - 1]})
         </span>{" "}
         단어 작성 개수
       </p>

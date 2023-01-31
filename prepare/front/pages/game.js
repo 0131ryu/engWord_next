@@ -1,22 +1,42 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import React from "react";
+import { useSelector } from "react-redux";
 import StartModal from "../components/game/StartModal";
 import NavbarForm from "../components/NavbarForm";
 import { loadMyInfoRequest } from "../redux/feature/userSlice";
+import { loadWordsRequest } from "../redux/feature/wordSlice";
+
+import { END } from "redux-saga";
+import wrapper from "../redux/store";
 
 const game = () => {
-  const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  useEffect(() => {
-    dispatch(loadMyInfoRequest());
-  }, []);
+
   return (
     <>
       <NavbarForm>
-        <StartModal UserId={me?.id} />
+        {me ? <StartModal UserId={me?.id} /> : <div>로그인하지 않음</div>}
       </NavbarForm>
     </>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  async (context) => {
+    const cookie = context.req ? context.req.headers.cookie : "";
+    axios.defaults.headers.Cookie = "";
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
+    }
+
+    context.store.dispatch(loadMyInfoRequest());
+    if (cookie !== undefined) {
+      context.store.dispatch(loadWordsRequest());
+    }
+
+    context.store.dispatch(END);
+    await context.store.sagaTask.toPromise();
+  }
+);
 
 export default game;

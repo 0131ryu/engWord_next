@@ -81,7 +81,7 @@ const AlertModal = ({ words, setAlert }) => {
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
                     type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-red-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                    className="mt-3 inline-flex w-full justify-center rounded-md px-4 py-2 text-base font-medium hover:bg-red-500 hover:text-white shadow-sm bg-white text-red-500 border border-red-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={onOpenCloseModal}
                     ref={cancelButtonRef}
                   >

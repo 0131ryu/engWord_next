@@ -1,7 +1,9 @@
+import axios from "axios";
 import React, { useEffect } from "react";
 import LoginForm from "../components/LoginForm";
 import SuccessLogin from "../components/SuccessLogin";
 import NavbarForm from "../components/NavbarForm";
+import { END } from "redux-saga";
 import wrapper from "../redux/store";
 
 import { useSelector } from "react-redux";
@@ -21,21 +23,15 @@ const signIn = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
   async (context) => {
-    // const cookie = context.req ? context.req.headers.cookie : "";
-    // axios.defaults.headers.Cookie = "";
-    // // 쿠키가 브라우저에 있는경우만 넣어서 실행
-    // // (주의, 아래 조건이 없다면 다른 사람으로 로그인 될 수도 있음)
-    // if (context.req && cookie) {
-    //   axios.defaults.headers.Cookie = cookie;
-    // }
-    // await context.store.dispatch(loadMyInfoRequest());
-    // console.log("context", context);
-    context.store.dispatch(loadMyInfoRequest());
-    console.log("context", context);
+    const cookie = context.req ? context.req.headers.cookie : "";
+    axios.defaults.headers.Cookie = "";
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
+    }
 
-    return {
-      props: {},
-    };
+    context.store.dispatch(loadMyInfoRequest());
+    context.store.dispatch(END);
+    await context.store.sagaTask.toPromise();
   }
 );
 

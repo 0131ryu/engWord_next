@@ -1,9 +1,6 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  changeStatusWordAllRequest,
-  loadWordsRequest,
-} from "../../redux/feature/wordSlice";
+import { changeStatusWordAllRequest } from "../../redux/feature/wordSlice";
 import WordChart from "./WordChart";
 import WordItem from "./WordItem";
 
@@ -12,18 +9,18 @@ const WordList = ({ UserId }) => {
   const [bChecked, setBChecked] = useState(false);
   const { wordLists } = useSelector((state) => state.word);
 
+  console.log("wordLists", wordLists);
+
   const showStatus = wordLists.filter(
     (word) => word.status === "C" && word.UserId === UserId
   ).length;
-
   const allWord = wordLists.filter((word) => word.UserId === UserId).length;
-
   const easyLength = wordLists.filter((d) => d.type === "easy").length;
   const middleLength = wordLists.filter((d) => d.type === "middle").length;
   const advanceLength = wordLists.filter((d) => d.type === "advance").length;
 
   useEffect(() => {
-    dispatch(loadWordsRequest());
+    showStatus, allWord, easyLength, middleLength, advanceLength;
   }, [showStatus]);
 
   const onChangeAllSelected = useCallback((e) => {
@@ -76,9 +73,9 @@ const WordList = ({ UserId }) => {
         <div className="h-max mx-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-1">
           {/* Easy start */}
           <div className="group relative rounded-lg p-3 lg:w-80 lg:ml-10">
-            <div className="overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-white border-2 border-light-green lg:aspect-none">
+            <div className="overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-md">
               <div className={`${easyLength > 0 ? "h-full" : "h-40"}`}>
-                <h1 className="text-slate-900 font-medium px-3 pt-2">
+                <h1 className="flex text-slate-900 font-medium px-3 pt-2">
                   🥉 Easy
                 </h1>
               </div>
@@ -95,7 +92,7 @@ const WordList = ({ UserId }) => {
                 })
               ) : (
                 <div className="relative bottom-20 sm:600">
-                  <div className="bg-gray-300 h-3/5 rounded mx-1 flex py-5 mt-1 h-20">
+                  <div className="bg-gray-100 h-3/5 rounded mx-1 flex py-5 mt-1 h-20">
                     <div className="w-full mt-3 text-center h-10">
                       <p className="text-sm font-bold text-slate-900">
                         단어는 로그인 후 입력 가능합니다.
@@ -109,7 +106,7 @@ const WordList = ({ UserId }) => {
           {/* Easy end */}
           {/* Middle start */}
           <div className="group relative rounded-lg p-3 lg:w-80 lg:ml-10">
-            <div className="overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-white border-2 border-light-green lg:aspect-none">
+            <div className="overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-md">
               <div className={`${middleLength > 0 ? "h-full" : "h-40"}`}>
                 <h1 className="text-slate-900 font-medium px-3 pt-2">
                   🥈 Middle
@@ -128,7 +125,7 @@ const WordList = ({ UserId }) => {
                 })
               ) : (
                 <div className="relative bottom-20 sm:600">
-                  <div className="bg-gray-300 h-3/5 rounded mx-1 flex py-5 mt-1 h-20">
+                  <div className="bg-gray-100 h-3/5 rounded mx-1 flex py-5 mt-1 h-20">
                     <div className="w-full mt-3 text-center h-10">
                       <p className="text-sm font-bold text-slate-900">
                         단어는 로그인 후 입력 가능합니다.
@@ -142,7 +139,7 @@ const WordList = ({ UserId }) => {
           {/* Middle end */}
           {/* Advance start */}
           <div className="group relative rounded-lg p-3 lg:w-80 lg:ml-10">
-            <div className=" overflow-y-auto max-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-white border-2 border-light-green lg:aspect-none">
+            <div className="overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-md">
               <div className={`${advanceLength > 0 ? "h-full" : "h-40"}`}>
                 <h1 className="text-slate-900 font-medium px-3 pt-2">
                   🥇 Advance
@@ -160,7 +157,7 @@ const WordList = ({ UserId }) => {
                 })
               ) : (
                 <div className="relative bottom-20 sm:600">
-                  <div className="bg-gray-300 h-3/5 rounded mx-1 flex py-5 mt-1 h-20">
+                  <div className="bg-gray-100 h-3/5 rounded mx-1 flex py-5 mt-1 h-20">
                     <div className="w-full mt-3 text-center h-10">
                       <p className="text-sm font-bold text-slate-900">
                         단어는 로그인 후 입력 가능합니다.

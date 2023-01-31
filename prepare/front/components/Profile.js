@@ -18,9 +18,9 @@ import { loadGameRequest } from "../redux/feature/gameSlice";
 import AlertLoginModal from "./AletrtLoginModal";
 import TodayChart from "./profile/TodayChart";
 
-const Profile = ({ me, postResult, wordResult }) => {
+const Profile = () => {
   const dispatch = useDispatch();
-  const { imagePaths } = useSelector((state) => state.user);
+  const { me } = useSelector((state) => state.user);
   const { gameScore } = useSelector((state) => state.game);
   const id = useSelector((state) => state.user.me?.id);
 
@@ -36,7 +36,6 @@ const Profile = ({ me, postResult, wordResult }) => {
   }, [imageInput.current]);
 
   const onChangeImages = useCallback((e) => {
-    console.log("images", e.target.files);
     const imageFormData = new FormData();
     [].forEach.call(e.target.files, (f) => {
       imageFormData.append("image", f);
@@ -161,7 +160,7 @@ const Profile = ({ me, postResult, wordResult }) => {
                         <div className="mr-4 p-3 text-center">
                           <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
                             <Link href={`/post`}>
-                              <a> {postResult.length}</a>
+                              <a>{me.Posts.length}</a>
                             </Link>
                           </span>
                           <span className="text-sm text-blueGray-400">
@@ -222,7 +221,7 @@ const Profile = ({ me, postResult, wordResult }) => {
                         <div className="mr-4 p-3 text-center">
                           <span className="text-xl font-bold block uppercase tracking-wide">
                             <Link href={`/index`}>
-                              <a>{wordResult.length}</a>
+                              <a>{me.Words?.length}</a>
                             </Link>
                           </span>
                           <span className="text-sm text-blueGray-400">

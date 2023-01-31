@@ -64,11 +64,7 @@ const bookmark = () => {
           <div className="h-full mt-5">
             <div className="grid grid-cols-4 gap-6">
               <div className="col-span-1">
-                <UserInfo
-                  nickname={me?.nickname}
-                  me={me}
-                  postResult={postResult}
-                />
+                <UserInfo />
                 <div
                   className="bg-gray-100 ml-2 mt-2 rounded-xl"
                   onClick={onPost}

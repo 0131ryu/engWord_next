@@ -113,7 +113,7 @@ const BlockFollowModal = ({ setBlockFollowModal, blockInfo }) => {
                                     <div className="flex-shrink-0">
                                       <img
                                         className="ml-2 w-8 h-8 rounded-full"
-                                        src="/docs/images/people/profile-picture-1.jpg"
+                                        src={`http://localhost:3005/userImg/${block.profileImg}`}
                                         alt="Neil image"
                                       />
                                     </div>

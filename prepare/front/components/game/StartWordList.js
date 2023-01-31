@@ -30,7 +30,7 @@ const StartWordList = ({ word, index }) => {
   }, []);
 
   return (
-    <div className="m-1 flex border-2 border-light-green h-12 w-80 rounded-md">
+    <div className="m-1 pt-1 flex h-12 w-80 shadow-md shadow-black-500/40 rounded-md">
       <input
         checked={bChecked}
         onChange={onChangeSelected}

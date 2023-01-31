@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useRouter } from "next/router";
 import React, {
   Fragment,
@@ -7,6 +8,9 @@ import React, {
   useState,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { END } from "redux-saga";
+import { useInView } from "react-intersection-observer";
+
 import { Dialog, Transition } from "@headlessui/react";
 import AlertLoginModal from "../components/AletrtLoginModal";
 import NavbarForm from "../components/NavbarForm";
@@ -16,13 +20,15 @@ import { loadPostsRequest } from "../redux/feature/postSlice";
 import { loadMyInfoRequest } from "../redux/feature/userSlice";
 import PostCardBookmark from "../components/post/PostCardBookmark";
 
+import wrapper from "../redux/store";
+
 const bookmark = () => {
   const dispatch = useDispatch();
+  const [ref, inView] = useInView();
   const [open, setOpen] = useState(true);
   const router = useRouter();
-  const { me, changeNicknameComplete, uploadProfileImageComplete } =
-    useSelector((state) => state.user);
-  const { mainPosts, hasMorePosts, retweetError, unbookmarkComplete } =
+  const { me } = useSelector((state) => state.user);
+  const { mainPosts, loadPostsLoading, hasMorePosts, retweetError } =
     useSelector((state) => state.post);
 
   const cancelButtonRef = useRef(null);
@@ -47,15 +53,13 @@ const bookmark = () => {
   }, [retweetError]);
 
   useEffect(() => {
-    if (hasMorePosts) {
+    console.log("mainPosts", mainPosts);
+    if (inView && hasMorePosts && !loadPostsLoading) {
       const lastId = mainPosts[mainPosts.length - 1]?.id;
       dispatch(loadPostsRequest(lastId));
+      console.log("lastId", lastId);
     }
-    if (changeNicknameComplete || uploadProfileImageComplete) {
-      window.location.reload();
-    }
-    console.log("hello");
-  }, [hasMorePosts, mainPosts, unbookmarkComplete]);
+  }, [inView, hasMorePosts, loadPostsLoading, mainPosts]);
 
   return (
     <>
@@ -86,9 +90,10 @@ const bookmark = () => {
                     />
                   );
                 })}
-                {/*  <div className="text-red-500">
-                    북마크한 게시글이 없습니다!
-                  </div> */}
+                <div
+                  ref={hasMorePosts && !loadPostsLoading ? ref : undefined}
+                  className="h-10"
+                />
               </div>
               <div className="col-span-1"></div>
             </div>
@@ -137,5 +142,20 @@ const bookmark = () => {
     </>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  async (context) => {
+    const cookie = context.req ? context.req.headers.cookie : "";
+    axios.defaults.headers.Cookie = "";
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
+    }
+
+    context.store.dispatch(loadMyInfoRequest());
+    context.store.dispatch(loadPostsRequest());
+    context.store.dispatch(END);
+    await context.store.sagaTask.toPromise();
+  }
+);
 
 export default bookmark;

@@ -352,11 +352,19 @@ const PostCard = ({ post, index, me }) => {
           })}
           {me && (
             <div className="flex">
-              <img
-                className="h-8 w-8 rounded-full mt-6 mx-1"
-                src={`http://localhost:3005/userImg/${me.profileImg}`}
-                alt={post?.User.profileImg}
-              />
+              {me.profileImg === "" || me.profileImg === null ? (
+                <img
+                  alt="profile-img"
+                  src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                  className="h-8 w-8 rounded-full mt-6 mx-1"
+                />
+              ) : (
+                <img
+                  className="h-8 w-8 rounded-full mt-6 mx-1"
+                  src={`http://localhost:3005/userImg/${me.profileImg}`}
+                  alt={me.profileImg}
+                />
+              )}
               <CommentForm post={post} />
             </div>
           )}

@@ -106,7 +106,7 @@ const WordForm = ({ UserId }) => {
               name="english"
               className="
             basis-1/5 md:basis-1/3 sm:600 w-28 md:w-48 lg:w-48 grid grid-cols-2 gap-4 place-content-center
-            pl-2 h-9  placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-full m-2"
+            pl-2 h-9 placeholder:italic placeholder:text-slate-400 flex overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-full m-2"
             />
             {/* korean */}
             <input
@@ -116,14 +116,14 @@ const WordForm = ({ UserId }) => {
               type="text"
               name="korean"
               className="
-            basis-1/5 md:basis-1/3 sm:600 w-28 lg:w-48 grid grid-cols-2 gap-4 place-content-center
-            pl-2 h-9  placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-full m-2"
+              basis-1/5 md:basis-1/3 sm:600 w-28 md:w-48 lg:w-48 grid grid-cols-2 gap-4 place-content-center
+              pl-2 h-9 placeholder:italic placeholder:text-slate-400 flex overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-full m-2"
             />
             {/* typesName start */}
-            <div className="z-10 w-20 h-48 mt-2 mr-2">
+            <div className="z-10 w-20 h-48 mt-2 mr-2 ">
               <Listbox value={selected} onChange={setSelected}>
                 <div className="relative ">
-                  <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-2 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm border-2 border-light-green">
+                  <Listbox.Button className="relative w-full cursor-pointer  py-2 pl-2 pr-10 shadow-lg shadow-black-500/40 rounded-md">
                     <span className="block">{selected.name}</span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                       <ArrowDownIcon
@@ -143,7 +143,7 @@ const WordForm = ({ UserId }) => {
                         <Listbox.Option
                           key={typeIdx + 1}
                           className={({ active }) =>
-                            `relative cursor-default select-none py-2 pl-2 pr-4 ${
+                            `relative cursor-pointer select-none py-2 pl-2 pr-4 ${
                               active
                                 ? "bg-light-orange rounded-lg text-black"
                                 : "text-gray-900"

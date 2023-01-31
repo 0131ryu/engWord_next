@@ -4,8 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { LightBulbIcon } from "@heroicons/react/24/outline";
 import SearchResultModal from "../word/SearchResultModal";
 
-const typesName = [{ name: "easy" }, { name: "middle" }, { name: "advance" }];
-
 const HintModal = ({ setModal, korean }) => {
   const [resultEnglish, setResultEnglish] = useState([]);
   const [resultEnglishDfn, setResultEnglishDfn] = useState([]);

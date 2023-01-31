@@ -304,9 +304,9 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
       }
       const fullUserWithoutPassword = await User.findOne({
         where: { id: user.id },
-        // attributes: {
-        //   exclude: ["password"],
-        // },
+        attributes: {
+          exclude: ["password"],
+        },
         include: [
           {
             model: Post,
@@ -424,6 +424,7 @@ router.get("/:userId/posts", async (req, res, next) => {
 
 router.post("/logout", (req, res) => {
   req.logout((err) => {
+    res.clearCookie("connect.sid"); //쿠키 삭제
     req.session.destroy();
     res.send("로그아웃 완료");
   });

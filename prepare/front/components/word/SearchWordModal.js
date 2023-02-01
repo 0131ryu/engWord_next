@@ -31,9 +31,10 @@ const SearchWordModal = ({ setModalSearch }) => {
     }
   }, [word]);
 
-  const onOpenCloseModal = () => {
+  const onOpenCloseModal = useCallback(() => {
     setModalSearch(false);
-  };
+  }, []);
+
   const cancelButtonRef = useRef(null);
 
   return (
@@ -52,7 +53,7 @@ const SearchWordModal = ({ setModalSearch }) => {
           as="div"
           className="relative z-10"
           initialFocus={cancelButtonRef}
-          onClose={setOpen}
+          onClose={onOpenCloseModal}
         >
           <Transition.Child
             as={Fragment}
@@ -96,15 +97,15 @@ const SearchWordModal = ({ setModalSearch }) => {
                             (찾고자하는 단어를 입력하세요.)
                           </p>
                         </Dialog.Title>
-                        <div className="flex w-96">
-                          <div>
+                        <div className="flex w-96 mt-1">
+                          <div className="ml-8 lg:ml-0 bg-gray-100 rounded-lg">
                             <input
                               onChange={onChangeWord}
                               placeholder="한글 또는 영어 단어를 입력하세요"
                               type="text"
                               name="word"
-                              className="ml-8 lg:ml-0 sm:600 w-80 lg:w-96 grid grid-cols-2 gap-4 place-content-center
-                          pl-2 h-9  placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-full m-2"
+                              className="sm:600 w-80 lg:w-96 grid grid-cols-2 gap-4 place-content-center
+                          pl-2 h-9 shadow-lg shadow-black-500/40 rounded-full m-2 m-2"
                             />
                             {wordError ? (
                               <p className="text-center font-bold text-red-500">

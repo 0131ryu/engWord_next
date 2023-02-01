@@ -17,7 +17,7 @@ const PostSearch = () => {
     }
   }, [detail]);
   return (
-    <div className="mt-2 ml-2 w-full mx-auto block">
+    <div className="mt-2 ml-2 w-full mx-auto block ">
       <div className="flex bg-gray-100 overflow-hidden w-full my-3 shadow shadow-black-500/40 rounded-md">
         <input
           onChange={onChangeDetail}

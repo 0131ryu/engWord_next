@@ -15,7 +15,6 @@ import FollowingModal from "./FollowingModal";
 import FollowerModal from "./FollowerModal";
 import BlockFollowModal from "./BlockFollowModal";
 import { loadGameRequest } from "../redux/feature/gameSlice";
-import AlertLoginModal from "./AletrtLoginModal";
 import TodayChart from "./profile/TodayChart";
 
 const Profile = () => {
@@ -99,7 +98,7 @@ const Profile = () => {
           blockInfo={me?.Blockings}
         />
       ) : null}
-      {me ? (
+      {me && (
         <div className="mt-10 lg:mt-20">
           <section className="flex flex-wrap justify-center">
             <div className="container mx-auto px-4">
@@ -248,8 +247,6 @@ const Profile = () => {
             </div>
           </section>
         </div>
-      ) : (
-        <AlertLoginModal />
       )}
     </>
   );

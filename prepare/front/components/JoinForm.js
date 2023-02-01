@@ -77,7 +77,7 @@ const JoinForm = () => {
         </div>
         {/* <form className="mt-8 space-y-6"> */}
         <input type="hidden" name="remember" defaultValue="true" />
-        <div className=" rounded-lg shadow-sm">
+        <div className="rounded-lg shadow-sm bg-gray-100 p-2">
           <div>
             <label htmlFor="email-address" className="sr-only">
               Email address
@@ -89,13 +89,13 @@ const JoinForm = () => {
               type="email"
               autoComplete="email"
               required
-              className="relative mb-2 block w-full appearance-none rounded-lg border-2 border-light-beige px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-dark-green focus:outline-none focus:dark-green sm:text-sm"
+              className="relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
               placeholder="Email"
               onChange={onChangeEmail}
             />
           </div>
           {emailRule.test(email) ? null : (
-            <p className="ml-3 text-red-500">
+            <p className="my-2 ml-1 text-red-500">
               이메일 형식(ex) test.gmail.com)에 맞게 입력하세요.
             </p>
           )}
@@ -111,13 +111,13 @@ const JoinForm = () => {
               type="text"
               autoComplete="current-nickname"
               required
-              className="relative mb-2 block w-full appearance-none rounded-lg border-2 border-light-beige px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-dark-green focus:outline-none focus:dark-green sm:text-sm"
+              className="relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
               placeholder="Nickname"
               onChange={onChangeNickname}
             />
           </div>
           {nicknameRule.test(nickname) ? null : (
-            <p className="ml-3 text-red-500">
+            <p className="my-2 ml-1 text-red-500">
               닉네임은 한글, 영문, 숫자 포함 가능합니다.
             </p>
           )}
@@ -133,13 +133,13 @@ const JoinForm = () => {
               type="password"
               autoComplete="current-password"
               required
-              className="relative mb-2 block w-full appearance-none rounded-lg border-2 border-light-beige px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-dark-green focus:outline-none focus:dark-green sm:text-sm"
+              className="relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
               placeholder="Password"
               onChange={onChangePassword}
             />
           </div>
           {passwordRule.test(password) ? null : (
-            <p className="ml-3 text-red-500">
+            <p className="my-2 ml-1 text-red-500">
               비밀번호는 숫자, 영문포함 6자리 이상 12자리 이하로 입력하세요.
             </p>
           )}
@@ -154,7 +154,7 @@ const JoinForm = () => {
               type="password"
               autoComplete="current-password"
               required
-              className="relative mb-2 block w-full appearance-none rounded-lg border-2 border-light-beige px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-dark-green focus:outline-none focus:dark-green sm:text-sm"
+              className="relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
               placeholder="Password Check"
               onChange={onChangePasswordCheck}
             />
@@ -167,7 +167,7 @@ const JoinForm = () => {
           <div>
             <div className="form-check">
               <input
-                className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm  checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                className="accent-light-green mr-1 h-4 w-4 rounded cursor-pointer"
                 type="checkbox"
                 id="flexCheckChecked"
                 value={term}
@@ -175,7 +175,7 @@ const JoinForm = () => {
                 onChange={onChangeTerm}
               />
               <label
-                className="form-check-label inline-block text-gray-800"
+                className="form-check-label inline-block text-gray-800 mt-5"
                 htmlFor="flexCheckChecked"
               >
                 최종적으로 모든 정보가 이상 없습니까?

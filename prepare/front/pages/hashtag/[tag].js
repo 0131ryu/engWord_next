@@ -51,10 +51,10 @@ const Hashtag = () => {
 
       <div className="h-full mt-5">
         <div className="grid grid-cols-4 gap-6">
-          <div className="col-span-1">
-            <div className=" text-center ml-2 shadow shadow-black-500/40 rounded-xl">
-              <div className="flex place-content-center">
-                <div className="ml-1">
+          <div className="col-span-1 ">
+            <div className="bg-gray-100 p-2 text-center ml-2 shadow shadow-black-500/40 rounded-lg">
+              <div className="bg-white rounded-lg flex place-content-center">
+                <div className="ml-1 ">
                   <p className="font-bold p-1 mt-1">
                     <span className="text-sky-500 lg:text-lg">#{tag}</span> 결과
                   </p>
@@ -63,7 +63,7 @@ const Hashtag = () => {
             </div>
             <PostSearch />
           </div>
-          <div className="col-span-2">
+          <div className="col-span-2 bg-gray-100 p-2 rounded-lg">
             <div className="flex justify-center">
               <button
                 onClick={onGoSNS}

@@ -15,8 +15,6 @@ const HintModal = ({ setModal, korean }) => {
 
   const { HintLists } = useSelector((state) => state.game);
   useEffect(() => {
-    console.log("useEffect 안 HintLists[0]", HintLists[0]);
-
     const english = HintLists[0]?.english;
     const english_dfn = HintLists[0]?.english_dfn;
     const ex_english = HintLists[0]?.ex_english;
@@ -51,9 +49,10 @@ const HintModal = ({ setModal, korean }) => {
     }
   }, [HintLists]);
 
-  const onOpenCloseModal = () => {
+  const onOpenCloseModal = useCallback(() => {
     setModal(false);
-  };
+  }, []);
+
   const cancelButtonRef = useRef(null);
 
   return (
@@ -71,7 +70,7 @@ const HintModal = ({ setModal, korean }) => {
           as="div"
           className="relative z-10"
           initialFocus={cancelButtonRef}
-          onClose={setOpen}
+          onClose={onOpenCloseModal}
         >
           <Transition.Child
             as={Fragment}

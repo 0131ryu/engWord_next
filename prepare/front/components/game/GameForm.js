@@ -70,10 +70,6 @@ const GameForm = () => {
   useEffect(() => {
     console.log("gameWordLists", gameWordLists);
     console.log("checkedWords[num]", checkedWords[num]);
-    // console.log("checkedWords[num]?.choices[0]", checkedWords[num]?.choices[0]);
-    // console.log("checkedWords[num]?.choices[1]", checkedWords[num]?.choices[1]);
-    // console.log("checkedWords[num]?.choices[2]", checkedWords[num]?.choices[2]);
-    // console.log("checkedWords[num]?.choices[3]", checkedWords[num]?.choices[3]);
   }, []);
 
   //타이머
@@ -221,7 +217,7 @@ const GameForm = () => {
       {/* <EndModal score={score} /> */}
       {num === 10 ? <EndModal score={score} /> : null}
       {/* 힌트 모달 */}
-      {modal ? (
+      {modal && sec !== 0 ? (
         <HintModal setModal={setModal} korean={checkedWords[num]?.question} />
       ) : null}
       <div

@@ -32,18 +32,19 @@ const BlockFollowModal = ({ setBlockFollowModal, blockInfo }) => {
     []
   );
 
-  const onOpenCloseModal = () => {
+  const onOpenCloseModal = useCallback(() => {
     console.log("open", open);
     setBlockFollowModal(false);
     setOpen(!open);
-  };
+  }, []);
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
         className="relative z-10"
         initialFocus={cancelButtonRef}
-        onClose={setOpen}
+        onClose={onOpenCloseModal}
       >
         <Transition.Child
           as={Fragment}
@@ -91,12 +92,6 @@ const BlockFollowModal = ({ setBlockFollowModal, blockInfo }) => {
                           <h5 className="text-xl font-bold leading-none text-gray-900">
                             차단한 사람 수 : {blockInfo.length}
                           </h5>
-                          <a
-                            href="#"
-                            className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500"
-                          >
-                            View all
-                          </a>
                         </div>
                         <div className="flow-root">
                           <ul
@@ -127,9 +122,11 @@ const BlockFollowModal = ({ setBlockFollowModal, blockInfo }) => {
                                     </div>
                                     <button
                                       onClick={onCancleBlock(block.id)}
-                                      className="bg-red-500 text-white hover:bg-light-beige hover:text-red-500 rounded inline-flex items-center text-base font-semibold text-gray-900"
+                                      className="bg-red-500 hover:bg-white  rounded inline-flex items-center text-base font-semibold text-gray-900"
                                     >
-                                      취소
+                                      <p className="text-white hover:text-red-500">
+                                        취소
+                                      </p>
                                     </button>
                                   </div>
                                 );

@@ -54,8 +54,8 @@ const Search = () => {
         <div className="grid grid-cols-4 gap-6">
           {mainPosts.length > 0 ? (
             <div className="col-span-1">
-              <div className=" text-center ml-2 shadow shadow-black-500/40 rounded-xl">
-                <div className="flex place-content-center">
+              <div className="bg-gray-100 p-2 text-center ml-2 shadow shadow-black-500/40 rounded-lg">
+                <div className="bg-white rounded-lg flex place-content-center">
                   <div className="ml-1">
                     <p className="font-bold p-1 mt-1">
                       <span className="text-light-orange lg:text-lg">
@@ -70,7 +70,7 @@ const Search = () => {
             </div>
           ) : null}
 
-          <div className="col-span-2">
+          <div className="col-span-2 bg-gray-100 p-2 rounded-lg">
             {mainPosts.length > 0 ? (
               <>
                 <div className="flex justify-center">

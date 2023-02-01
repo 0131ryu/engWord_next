@@ -19,12 +19,16 @@ const LoginForm = () => {
   }, [loginError]);
 
   const onSubmitForm = useCallback(() => {
-    dispatch(
-      loginRequest({
-        email,
-        password,
-      })
-    );
+    if (!email || !password) {
+      alert("이메일 혹은 비밀번호가 입력되지 않았습니다.");
+    } else {
+      dispatch(
+        loginRequest({
+          email,
+          password,
+        })
+      );
+    }
   }, [email, password]);
 
   const onSignup = useCallback(() => {
@@ -42,14 +46,8 @@ const LoginForm = () => {
             <span className="text-light-brown">EngWord</span>에 환영합니다!
           </h4>
         </div>
-        {/* <form
-          onSubmit={onSubmitForm}
-          className="mt-8 space-y-6"
-          action="#"
-          method="POST"
-        > */}
         <input type="hidden" name="remember" defaultValue="true" />
-        <div className=" rounded-lg shadow-sm">
+        <div className="bg-gray-100 p-2 rounded-lg shadow-sm">
           <div>
             <label htmlFor="email-address" className="sr-only">
               Email address
@@ -60,7 +58,7 @@ const LoginForm = () => {
               type="email"
               autoComplete="email"
               required
-              className="relative mb-2 block w-full appearance-none rounded-lg border-2 border-light-beige px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-dark-green focus:outline-none focus:dark-green sm:text-sm"
+              className="relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
               placeholder="Email"
               onChange={onChangeEmail}
             />
@@ -75,7 +73,7 @@ const LoginForm = () => {
               type="password"
               autoComplete="current-password"
               required
-              className="relative block w-full appearance-none rounded-lg border-2 border-light-beige px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-dark-green focus:outline-none focus:dark-green sm:text-sm"
+              className="relative p-2 mt-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
               placeholder="Password"
               onChange={onChangePassword}
             />
@@ -105,7 +103,6 @@ const LoginForm = () => {
             Sign in
           </button>
         </div>
-        {/* </form> */}
       </div>
     </div>
   );

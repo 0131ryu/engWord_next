@@ -67,20 +67,21 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
     [english, korean, type]
   );
 
-  const onOpenCloseModal = () => {
+  const onOpenCloseModal = useCallback(() => {
     setModal(false);
     setResultModal(false);
-  };
+  }, []);
 
-  const openPopover = () => {
+  const openPopover = useCallback(() => {
     createPopper(btnRef.current, popoverRef.current, {
       placement: "bottom",
     });
     setPopoverShow(true);
-  };
-  const closePopover = () => {
+  }, []);
+
+  const closePopover = useCallback(() => {
     setPopoverShow(false);
-  };
+  }, []);
 
   const cancelButtonRef = useRef(null);
 
@@ -91,7 +92,7 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
           as="div"
           className="relative z-10"
           initialFocus={cancelButtonRef}
-          onClose={setOpen}
+          onClose={() => setResultModal(true)}
         >
           <Transition.Child
             as={Fragment}

@@ -3,28 +3,25 @@ import { useDispatch } from "react-redux";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
+import { useCallback } from "react";
 
 const AlertModal = ({ words, setAlert }) => {
   console.log(words);
   const [open, setOpen] = useState(true);
-  const router = useRouter();
   const cancelButtonRef = useRef(null);
 
-  const onRestartGame = () => {
-    window.location.reload();
-  };
-
-  const onOpenCloseModal = () => {
+  const onOpenCloseModal = useCallback(() => {
     setOpen(false);
     setAlert(false);
-  };
+  }, []);
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
         className="relative z-10"
         initialFocus={cancelButtonRef}
-        onClose={setOpen}
+        onClose={onOpenCloseModal}
       >
         <Transition.Child
           as={Fragment}

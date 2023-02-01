@@ -39,7 +39,7 @@ const WordList = ({ UserId }) => {
   return (
     <>
       {/* checkbox */}
-      <div className="absolute top-64 right-0 md:right-20 lg:right-52 lg:top-72">
+      <div className="absolute top-[280px] right-0 md:right-20 lg:right-52 lg:top-72">
         <div className="flex items-center mb-2">
           <input
             checked={showStatus > 0 || bChecked ? true : false}
@@ -47,7 +47,7 @@ const WordList = ({ UserId }) => {
             value={UserId}
             name="checkItem"
             type="checkbox"
-            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+            className="h-4 w-4 rounded cursor-pointer accent-light-green"
           />
           전체 선택 / 해제
         </div>
@@ -72,8 +72,8 @@ const WordList = ({ UserId }) => {
       <div className="lg:w-full relative">
         <div className="h-max mx-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-1">
           {/* Easy start */}
-          <div className="group relative rounded-lg p-3 lg:w-80 lg:ml-10">
-            <div className="overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-md">
+          <div className="bg-gray-100 group relative rounded-lg p-3 lg:w-80 lg:ml-10">
+            <div className="bg-white overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-md">
               <div className={`${easyLength > 0 ? "h-full" : "h-40"}`}>
                 <h1 className="flex text-slate-900 font-medium px-3 pt-2">
                   🥉 Easy
@@ -105,8 +105,8 @@ const WordList = ({ UserId }) => {
           </div>
           {/* Easy end */}
           {/* Middle start */}
-          <div className="group relative rounded-lg p-3 lg:w-80 lg:ml-10">
-            <div className="overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-md">
+          <div className="bg-gray-100 group relative rounded-lg p-3 lg:w-80 lg:ml-10">
+            <div className="bg-white overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-md">
               <div className={`${middleLength > 0 ? "h-full" : "h-40"}`}>
                 <h1 className="text-slate-900 font-medium px-3 pt-2">
                   🥈 Middle
@@ -138,8 +138,8 @@ const WordList = ({ UserId }) => {
           </div>
           {/* Middle end */}
           {/* Advance start */}
-          <div className="group relative rounded-lg p-3 lg:w-80 lg:ml-10">
-            <div className="overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-md">
+          <div className="bg-gray-100 group relative rounded-lg p-3 lg:w-80 lg:ml-10">
+            <div className="bg-white overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-md">
               <div className={`${advanceLength > 0 ? "h-full" : "h-40"}`}>
                 <h1 className="text-slate-900 font-medium px-3 pt-2">
                   🥇 Advance

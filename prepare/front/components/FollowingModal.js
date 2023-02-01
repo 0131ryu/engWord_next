@@ -1,4 +1,10 @@
-import React, { useEffect, Fragment, useRef, useState } from "react";
+import React, {
+  useEffect,
+  Fragment,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 import { useDispatch } from "react-redux";
 import { Dialog, Transition } from "@headlessui/react";
 import { UsersIcon } from "@heroicons/react/24/outline";
@@ -14,25 +20,28 @@ const FollowingModal = ({ setFollowingModal, followingsInfo }) => {
 
   useEffect(() => {
     dispatch(loadFollowingsRequest());
-    console.log("followingsInfo", followingsInfo);
   }, []);
 
-  const onClickUnFollow = (id) => () => {
-    dispatch(unfollowRequest(id));
-  };
+  const onClickUnFollow = useCallback(
+    (id) => () => {
+      dispatch(unfollowRequest(id));
+    },
+    []
+  );
 
-  const onOpenCloseModal = () => {
+  const onOpenCloseModal = useCallback(() => {
     console.log("open", open);
     setFollowingModal(false);
     setOpen(!open);
-  };
+  }, []);
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
         className="relative z-10"
         initialFocus={cancelButtonRef}
-        onClose={setOpen}
+        onClose={onOpenCloseModal}
       >
         <Transition.Child
           as={Fragment}
@@ -75,12 +84,6 @@ const FollowingModal = ({ setFollowingModal, followingsInfo }) => {
                           <h5 className="text-xl font-bold leading-none text-gray-900">
                             팔로잉 수 : {followingsInfo.length}
                           </h5>
-                          <a
-                            href="#"
-                            className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500"
-                          >
-                            View all
-                          </a>
                         </div>
                         <div className="flow-root">
                           <ul
@@ -111,9 +114,11 @@ const FollowingModal = ({ setFollowingModal, followingsInfo }) => {
                                     </div>
                                     <button
                                       onClick={onClickUnFollow(following.id)}
-                                      className="bg-red-500 text-white hover:bg-light-beige hover:text-red-500 rounded inline-flex items-center text-base font-semibold text-gray-900"
+                                      className="bg-red-500 hover:bg-white rounded inline-flex items-center text-base font-semibold text-gray-900"
                                     >
-                                      언팔로우
+                                      <p className="text-white hover:text-red-500">
+                                        언팔로우
+                                      </p>
                                     </button>
                                   </div>
                                 );
@@ -128,7 +133,7 @@ const FollowingModal = ({ setFollowingModal, followingsInfo }) => {
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
                     type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                    className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-light-orange"
                     onClick={onOpenCloseModal}
                     ref={cancelButtonRef}
                   >

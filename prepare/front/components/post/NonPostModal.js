@@ -22,7 +22,7 @@ const NonPostModal = ({ content }) => {
         as="div"
         className="relative z-10"
         initialFocus={cancelButtonRef}
-        onClose={setOpen}
+        onClose={() => setOpen(true)}
       >
         <Transition.Child
           as={Fragment}

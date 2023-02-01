@@ -116,7 +116,7 @@ const PostCard = ({ post, index, me }) => {
 
       {/* card start */}
       <section className="flex justify-center">
-        <article className="overflow-hidden w-full my-3 shadow shadow-black-500/40 rounded-md">
+        <article className="bg-white overflow-hidden w-full my-3 shadow shadow-black-500/40 rounded-md">
           <header className="px-4 py-3 flex items-center justify-between">
             <div className="flex items-center font-bold">
               <span className="mr-2">
@@ -188,13 +188,13 @@ const PostCard = ({ post, index, me }) => {
                             <button
                               value={index}
                               onClick={onClickRevise}
-                              className="flow-root rounded-md px-2 py-2 transition duration-150 ease-in-out hover:bg-light-beige focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                              className="flow-root rounded-md w-full p-1 transition duration-150 ease-in-out hover:bg-light-orange "
                             >
                               수정
                             </button>
                             <button
                               onClick={onRemovePost}
-                              className="flow-root rounded-md px-2 py-2 transition duration-150 ease-in-out hover:bg-light-beige focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                              className="flow-root rounded-md w-full p-1 transition duration-150 ease-in-out hover:bg-red-500 hover:text-white"
                             >
                               삭제
                             </button>

@@ -87,7 +87,7 @@ const Index = () => {
               )}
               <PostSearch />
             </div>
-            <div className="col-span-2">
+            <div className="col-span-2 bg-gray-100 p-2 rounded-lg">
               {me && <PostForms />}
               {mainPosts.map((post, index) => {
                 return (

@@ -89,7 +89,7 @@ const CommentCard = ({ comment }) => {
                 <p
                   id="message"
                   rows="3"
-                  className="text-clip overflow-hidden block p-2.5 bg-gray-100 text-xs lg:text-sm w-11/12 lg:h-full"
+                  className="text-clip overflow-hidden block p-2.5 bg-gray-100 rounded-lg text-xs lg:text-sm w-11/12 lg:h-full"
                 >
                   {comment.content}
                 </p>
@@ -120,13 +120,13 @@ const CommentCard = ({ comment }) => {
                             <div className="bg-light-beige p-1">
                               <button
                                 onClick={onReviseComment}
-                                className="flow-root rounded-md px-2 py-2 transition duration-150 ease-in-out hover:bg-light-orange focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                                className="flow-root rounded-md w-full p-1 transition duration-150 ease-in-out hover:bg-light-orange "
                               >
                                 수정
                               </button>
                               <button
                                 onClick={onRemoveComment}
-                                className="flow-root rounded-md px-2 py-2 transition duration-150 ease-in-out hover:bg-red-500 hover:text-white focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                                className="flow-root rounded-md w-full p-1 transition duration-150 ease-in-out hover:bg-red-500 hover:text-white focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                               >
                                 삭제
                               </button>

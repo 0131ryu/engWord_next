@@ -17,9 +17,13 @@ const CommentForm = ({ post }) => {
   }, [addCommentComplete]);
 
   const onSubmitCommentForm = useCallback(() => {
-    dispatch(
-      addCommentRequest({ content: commentText, postId: post.id, userId: id })
-    );
+    if (!commentText) {
+      alert("댓글은 입력 후 등록 가능합니다.");
+    } else {
+      dispatch(
+        addCommentRequest({ content: commentText, postId: post.id, userId: id })
+      );
+    }
   }, [commentText, id]);
   return (
     <>

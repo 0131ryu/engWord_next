@@ -29,13 +29,6 @@ const WordItem = ({ UserId, word, index }) => {
   const onChangeReviseWord = useCallback(
     (editKor, editEng, editType) => () => {
       setEditMode(false);
-      console.log(
-        "id, editKor, editEng, editType",
-        word.id,
-        editKor,
-        editEng,
-        editType
-      );
       dispatch(reviseWordRequest({ id: word.id, editEng, editKor, editType }));
     },
     []
@@ -85,7 +78,7 @@ const WordItem = ({ UserId, word, index }) => {
       {/* item start */}
       <div
         key={word}
-        className="flex items-start bg-gray-200 group-hover:opacity-80 rounded-lg h-20 m-2"
+        className="flex items-start bg-gray-200 hover:opacity-80 rounded-lg h-20 m-2"
       >
         <div className="h-24 w-90 sm:600 w-96 lg:w-48">
           <div className="flex py-5 pl-3">
@@ -95,7 +88,7 @@ const WordItem = ({ UserId, word, index }) => {
               value={word.id}
               name="checkItem"
               type="checkbox"
-              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              className="h-4 w-4 rounded accent-light-green cursor-pointer"
             />
           </div>
           <li className="flex first:pt-0 last:pb-0">

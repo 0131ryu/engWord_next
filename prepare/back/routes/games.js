@@ -12,8 +12,8 @@ router.get("/", async (req, res, next) => {
   try {
     const games = await Result.findAll({
       raw: true,
-      UserId: req.user.id,
       where: {
+        UserId: req.user.id,
         createdAt: {
           [Op.between]: [TODAY_START, NOW],
         },

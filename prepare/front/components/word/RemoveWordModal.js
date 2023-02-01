@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { removeWordRequest } from "../../redux/feature/wordSlice";
+import { useCallback } from "react";
 
 const RemoveWordModal = ({ id, setRemoveModal }) => {
   const dispatch = useDispatch();
@@ -10,23 +11,23 @@ const RemoveWordModal = ({ id, setRemoveModal }) => {
 
   const cancelButtonRef = useRef(null);
 
-  const onRemoveWordSubmit = () => {
+  const onRemoveWordSubmit = useCallback(() => {
     setRemoveModal(false);
     dispatch(removeWordRequest(id));
-  };
+  }, []);
 
-  const onOpenCloseModal = () => {
-    console.log("open", open);
+  const onOpenCloseModal = useCallback(() => {
     setRemoveModal(false);
     setOpen(!open);
-  };
+  }, []);
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
         className="relative z-10"
         initialFocus={cancelButtonRef}
-        onClose={setOpen}
+        onClose={onOpenCloseModal}
       >
         <Transition.Child
           as={Fragment}

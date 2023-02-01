@@ -1,4 +1,4 @@
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useCallback, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useSelector, useDispatch } from "react-redux";
 import useInput from "../../hooks/useInput";
@@ -37,10 +37,10 @@ const FindWordModal = ({ UserId, setModal }) => {
     }
   };
 
-  const onOpenCloseModal = () => {
+  const onOpenCloseModal = useCallback(() => {
     console.log("open", open);
     setModal(false);
-  };
+  }, []);
   const cancelButtonRef = useRef(null);
 
   return (
@@ -57,9 +57,9 @@ const FindWordModal = ({ UserId, setModal }) => {
       <Transition.Root show={open} as={Fragment}>
         <Dialog
           as="div"
-          className="relative z-10"
+          className="relative z-10 "
           initialFocus={cancelButtonRef}
-          onClose={setOpen}
+          onClose={onOpenCloseModal}
         >
           <Transition.Child
             as={Fragment}

@@ -26,27 +26,32 @@ const FollowerModal = ({ setFollowerModal, followersInfo, followingsInfo }) => {
     dispatch(loadFollowersRequest());
   }, []);
 
-  const onClickFollowUp = (id) => () => {
-    dispatch(followRequest(id));
-  };
+  const onClickFollowUp = useCallback(
+    (id) => () => {
+      dispatch(followRequest(id));
+    },
+    []
+  );
 
-  const onBlockFollowing = (id) => () => {
-    console.log("id", id); //차단하는 아이디
-    dispatch(blockfollowRequest(id));
-  };
+  const onBlockFollowing = useCallback(
+    (id) => () => {
+      dispatch(blockfollowRequest(id));
+    },
+    []
+  );
 
-  const onOpenCloseModal = () => {
-    console.log("open", open);
+  const onOpenCloseModal = useCallback(() => {
     setFollowerModal(false);
     setOpen(!open);
-  };
+  }, []);
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
         className="relative z-10"
         initialFocus={cancelButtonRef}
-        onClose={setOpen}
+        onClose={onOpenCloseModal}
       >
         <Transition.Child
           as={Fragment}
@@ -91,12 +96,6 @@ const FollowerModal = ({ setFollowerModal, followersInfo, followingsInfo }) => {
                           <h5 className="text-xl font-bold leading-none text-gray-900">
                             팔로워 수 : {followersInfo.length}
                           </h5>
-                          <a
-                            href="#"
-                            className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500"
-                          >
-                            View all
-                          </a>
                         </div>
                         <div className="flow-root">
                           <ul
@@ -133,9 +132,11 @@ const FollowerModal = ({ setFollowerModal, followersInfo, followingsInfo }) => {
                                       <>
                                         <button
                                           onClick={onClickFollowUp(follower.id)}
-                                          className="bg-light-green text-white hover:bg-light-beige hover:text-red-500 rounded inline-flex items-center text-base font-semibold text-gray-900"
+                                          className="bg-light-green hover:bg-white rounded inline-flex items-center text-base font-semibold text-gray-900"
                                         >
-                                          맞팔로우
+                                          <p className="text-white hover:text-light-green">
+                                            맞팔로우
+                                          </p>
                                         </button>
                                         <Popover>
                                           <>
@@ -186,7 +187,7 @@ const FollowerModal = ({ setFollowerModal, followersInfo, followingsInfo }) => {
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
                     type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                    className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-light-orange"
                     onClick={onOpenCloseModal}
                     ref={cancelButtonRef}
                   >

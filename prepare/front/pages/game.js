@@ -8,6 +8,7 @@ import { loadWordsRequest } from "../redux/feature/wordSlice";
 
 import { END } from "redux-saga";
 import wrapper from "../redux/store";
+import LoginForm from "../components/LoginForm";
 
 const game = () => {
   const { me } = useSelector((state) => state.user);
@@ -15,7 +16,7 @@ const game = () => {
   return (
     <>
       <NavbarForm>
-        {me ? <StartModal UserId={me?.id} /> : <div>로그인하지 않음</div>}
+        {me ? <StartModal UserId={me?.id} /> : <LoginForm />}
       </NavbarForm>
     </>
   );

@@ -12,7 +12,6 @@ import { startGameRequest } from "../../redux/feature/gameSlice";
 import GameForm from "./GameForm";
 import AlertModal from "./AlertModal";
 import StartWordList from "./StartWordList";
-import AlertLoginModal from "../AletrtLoginModal";
 
 const StartModal = ({ UserId }) => {
   const { wordLists, checkedWordList } = useSelector((state) => state.word);
@@ -154,10 +153,11 @@ const StartModal = ({ UserId }) => {
     }
   }, [result]);
 
-  const onOpenCloseModal = () => {
+  const onOpenCloseModal = useCallback(() => {
     setOpen(false);
     router.push("/");
-  };
+  }, []);
+
   const cancelButtonRef = useRef(null);
 
   return (
@@ -171,7 +171,7 @@ const StartModal = ({ UserId }) => {
           as="div"
           className="relative z-10"
           initialFocus={cancelButtonRef}
-          onClose={setOpen}
+          onClose={() => setOpen(true)}
         >
           <Transition.Child
             as={Fragment}
@@ -196,7 +196,7 @@ const StartModal = ({ UserId }) => {
                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
-                {UserId ? (
+                {UserId && (
                   <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                     <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                       <div className="sm:flex sm:items-start">
@@ -216,35 +216,31 @@ const StartModal = ({ UserId }) => {
                             </span>
                             중
                             <span className="font-bold text-red-500">10개</span>
-                            의&nbsp;
-                            <span className="font-bold">랜덤 게임</span>이
+                            의 단어가&nbsp;
+                            <span className="font-bold">랜덤</span>으로
                             진행됩니다.
                             <p className="text-xs">
                               (
                               <span className="font-bold text-red-500">
-                                제외
-                              </span>
-                              를 누를 경우,
-                              <span className="font-bold text-red-500">
-                                게임에서 제외됩니다.
+                                선택하지 않은 단어는 게임에서 제외됩니다.
                               </span>
                               )
                             </p>
                             <div className="flex">
-                              <p className="w-1/2">
+                              <p className="font-bold w-3/5">
                                 총 추가된 단어 :
                                 <span className="font-bold text-red-500 ml-3">
                                   {checkedWordList.length}
                                 </span>
                               </p>
-                              <div className="w-1/2 bg-gray-100">
+                              <div className="w-2/5">
                                 <input
                                   checked={showStatus > 0 ? true : false}
                                   onChange={onChangeAllSelected}
                                   value={UserId}
                                   name="checkItem"
                                   type="checkbox"
-                                  className="mr-1 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                  className="accent-light-green mr-1 h-4 w-4 rounded cursor-pointer"
                                 />
                                 <span className="font-bold">
                                   전체 선택 / 해제
@@ -252,7 +248,7 @@ const StartModal = ({ UserId }) => {
                               </div>
                             </div>
                           </Dialog.Title>
-                          <div className="group justify-center flex overflow-y-auto max-h-96 overflow-hidden rounded-md">
+                          <div className="bg-gray-100 group justify-center flex overflow-y-auto max-h-96 overflow-hidden rounded-md">
                             <div>
                               {wordLists.map((word, index) => {
                                 {
@@ -283,10 +279,6 @@ const StartModal = ({ UserId }) => {
                         단어로 이동
                       </button>
                     </div>
-                  </Dialog.Panel>
-                ) : (
-                  <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                    <AlertLoginModal />
                   </Dialog.Panel>
                 )}
               </Transition.Child>

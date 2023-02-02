@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   mainPosts: [],
-  singlePost: null,
+  singlePost: [],
   hasMorePosts: true,
   addPostLoading: false, //게시글 추가 중
   addPostComplete: false,
@@ -218,7 +218,7 @@ export const postSlice = createSlice({
     },
     loadPostFailure: (state, action) => {
       state.loadPostLoading = false;
-      state.loadPostError = action.error;
+      state.loadPostError = action.payload.response.data;
     },
     loadUserPostsRequest: (state) => {
       state.loadPostsLoading = true;
@@ -395,8 +395,10 @@ export const postSlice = createSlice({
     bookmarkSuccess: (state, action) => {
       const data = action.payload;
       console.log("data", data);
-      const post = state.mainPosts.find((v) => v.id === data.PostId);
-      post.Bookmarks.push({ id: data.UserId });
+      state.singlePost.find((v) => console.log("v.id", v.id));
+      state.mainPosts.find((v) => console.log("v.id", v.id));
+      // const post = state.mainPosts.find((v) => v.id === data.PostId);
+      // post.Bookmarks.push({ id: data.UserId });
       state.bookmarkLoading = false;
       state.bookmarkComplete = true;
     },
@@ -411,8 +413,11 @@ export const postSlice = createSlice({
     },
     unbookmarkSuccess: (state, action) => {
       const data = action.payload;
-      const post = state.mainPosts.find((v) => v.id === data.PostId);
-      post.Bookmarks = post.Bookmarks.filter((v) => v.id !== data.UserId);
+      console.log("unbookmark data", data);
+      state.singlePost.find((v) => console.log("v.id", v.id));
+      state.mainPosts.find((v) => console.log("v.id", v.id));
+      // const post = state.mainPosts.find((v) => v.id === data.PostId);
+      // post.Bookmarks = post.Bookmarks.filter((v) => v.id !== data.UserId);
       state.unbookmarkLoading = false;
       state.unbookmarkComplete = true;
     },

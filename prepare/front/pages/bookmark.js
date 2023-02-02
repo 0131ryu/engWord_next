@@ -29,13 +29,6 @@ const bookmark = () => {
   const { mainPosts, loadPostsLoading, hasMorePosts, retweetError } =
     useSelector((state) => state.post);
 
-  const cancelButtonRef = useRef(null);
-  const id = useSelector((state) => state.user.me?.id);
-  const postResult = mainPosts.filter((post) => post.UserId === id);
-
-  const post = mainPosts.filter((v) => v.Bookmarks.length > 0);
-  console.log("post", post);
-
   const onPost = useCallback(() => {
     router.push("/post");
   }, []);

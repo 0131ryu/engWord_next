@@ -5,6 +5,8 @@ import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
 import { reviseCommentRequest } from "../../redux/feature/postSlice";
 import RemoveCommentModal from "./RemoveCommentModal";
+import moment from "moment";
+import "moment/locale/ko";
 
 const CommentCard = ({ comment }) => {
   const dispatch = useDispatch();
@@ -86,13 +88,18 @@ const CommentCard = ({ comment }) => {
                   </div>
                 </div>
               ) : (
-                <p
-                  id="message"
-                  rows="3"
-                  className="text-clip overflow-hidden block p-2.5 bg-gray-100 rounded-lg text-xs lg:text-sm w-11/12 lg:h-full"
-                >
-                  {comment.content}
-                </p>
+                <>
+                  <div
+                    id="message"
+                    rows="3"
+                    className="text-clip overflow-hidden block p-2.5 bg-gray-100 rounded-lg lg:text-sm w-11/12 lg:h-full"
+                  >
+                    {comment.content}
+                    <p className="text-center text-xs text-gray-400 float-right">
+                      {moment(comment.createdAt).fromNow()}
+                    </p>
+                  </div>
+                </>
               )}
 
               {editMode ? null : (

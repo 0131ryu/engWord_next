@@ -221,7 +221,7 @@ export const wordSlice = createSlice({
     },
     loadWordsFailure: (state, action) => {
       state.loadWordsLoading = false;
-      state.loadWordsError = action.error;
+      state.loadWordsError = action.payload.response.data;
     },
     loadCheckedRequest: (state) => {
       state.loadCheckedLoading = true;

@@ -22,6 +22,9 @@ router.get("/", async (req, res, next) => {
         },
       ],
     });
+    if (!words) {
+      return res.status(500).send("로그인을 다시 한 번 확인하세요");
+    }
     console.log(words);
     res.status(200).json(words);
   } catch (error) {

@@ -113,7 +113,6 @@ export const userSlice = createSlice({
     },
     loadMyInfoSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data", data);
       state.loadMyInfoLoading = false;
       state.loadMyInfoComplete = true;
       state.me = data;

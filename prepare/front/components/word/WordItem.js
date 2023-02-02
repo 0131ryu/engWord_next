@@ -2,15 +2,17 @@ import React, { useCallback, useState, useEffect } from "react";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import ReviseWordModal from "./ReviseWordModal";
 import RemoveWordModal from "./RemoveWordModal";
 import {
   changeStatusWordRequest,
   reviseWordRequest,
 } from "../../redux/feature/wordSlice";
+import moment from "moment";
+import "moment/locale/ko";
 
-const WordItem = ({ UserId, word, index }) => {
+const WordItem = ({ word, index }) => {
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
   const [modal, setModal] = useState(false);
@@ -154,6 +156,9 @@ const WordItem = ({ UserId, word, index }) => {
               </Menu.Items>
             </Transition>
           </Menu>
+          <div className="relative top-5 right-10 inline-block lg:ml-10 w-14">
+            <p className="text-center">{moment(word.createdAt).fromNow()}</p>
+          </div>
         </div>
       </div>
     </>

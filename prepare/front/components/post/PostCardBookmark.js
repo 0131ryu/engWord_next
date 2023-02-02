@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import {
   ArrowPathRoundedSquareIcon,
-  BookmarkIcon,
   HeartIcon,
   ChatBubbleOvalLeftEllipsisIcon,
   EllipsisHorizontalIcon,
@@ -12,38 +11,44 @@ import {
 import {
   bookmarkRequest,
   likePostRequest,
-  removeCommentRequest,
-  retweetFailure,
   retweetRequest,
   reviseCommentRequest,
   revisePostRequest,
   unbookmarkRequest,
   unlikePostRequest,
 } from "../../redux/feature/postSlice";
+import { Popover, Transition } from "@headlessui/react";
 
+import CommentForm from "./CommentForm";
 import CommentCard from "./CommentCard";
+import RemovePostModal from "./RemovePostModal";
 import PostCardContent from "./PostCardContent";
-import { followRequest, unfollowRequest } from "../../redux/feature/userSlice";
+import {
+  followRequest,
+  loadBlockingRequest,
+  loadBlockedRequest,
+  unfollowRequest,
+} from "../../redux/feature/userSlice";
 import PostImages from "./PostImages";
+import { useRouter } from "next/router";
+import moment from "moment";
+import "moment/locale/ko";
 
 const PostCardBookmark = ({ post, index, me }) => {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const { singlePost } = useSelector((state) => state.post);
 
   const [removeModal, setRemoveModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const id = useSelector((state) => state.user.me?.id);
-  const liked = post.Likers?.find((v) => v.id === id);
-  const bookmark = post.Bookmarks?.find((v) => v.id === id);
+  const liked = post?.Likers?.find((v) => v.id === id);
+  const bookmark = post?.Bookmarks?.find((v) => v.id === id);
+
   const [bookmarkUser, setBookmarkUser] = useState(0);
-  const [show, setShow] = useState(false);
 
   useEffect(() => {
-    // console.log("post.Bookmarks", post.Bookmarks);
-    post.Bookmarks?.map((b) => {
-      //   console.log("b.Bookmark", b.Bookmark);
-      //   console.log("북마크 유저 아이디", b.Bookmark?.UserId);
-    });
-
+    bookmark;
     post.Bookmarks?.find((b) => setBookmarkUser(b.Bookmark?.UserId));
   }, []);
 
@@ -103,44 +108,75 @@ const PostCardBookmark = ({ post, index, me }) => {
     dispatch(unbookmarkRequest(post.id));
   }, [id]);
 
+  const onPostDetail = useCallback(() => {
+    router.push(`/post/${post.id}`);
+  }, []);
+
   return (
     <>
       {/* card start */}
-      {bookmark ? (
+      {bookmark && (
         <section className="flex justify-center">
-          <article className="overflow-hidden w-full my-3 shadow shadow-black-500/40 rounded-md">
-            <p className="ml-3 mt-2 text-gray-400">내가 북마크한 글</p>
+          <article className="bg-white overflow-hidden w-full my-3 shadow shadow-black-500/40 rounded-md">
+            <div>
+              <p className="ml-3 mt-2 text-gray-400">내가 북마크한 글</p>
+            </div>
             <header className="px-4 py-3 flex items-center justify-between">
               <div className="flex items-center font-bold">
                 <span className="mr-2">
-                  {post.User?.profileImg === "" ||
-                  post.User?.profileImg === null ? (
-                    <img
-                      alt="profile-img"
-                      src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                      className="h-8 w-8 rounded-full"
-                    />
-                  ) : (
-                    <img
-                      className="h-8 w-8 rounded-full"
-                      src={`http://localhost:3005/userImg/${post.User.profileImg}`}
-                      alt={post.User.profileImg}
-                    />
-                  )}
+                  <Link href={`/user/${post?.UserId}`}>
+                    {post?.User?.profileImg === "" ||
+                    post?.User?.profileImg === null ? (
+                      <img
+                        alt="profile-img"
+                        src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                        className="h-8 w-8 rounded-full cursor-pointer"
+                      />
+                    ) : (
+                      <img
+                        className="h-8 w-8 rounded-full cursor-pointer"
+                        src={`http://localhost:3005/userImg/${post?.User.profileImg}`}
+                        alt={post?.User.profileImg}
+                      />
+                    )}
+                  </Link>
                 </span>
 
-                <span>{post.User.nickname}</span>
+                <span>{post?.User.nickname}</span>
+
+                {id === undefined ? null : blockingLists &&
+                  blockingLists?.find((block) => block.id === post.UserId) ? (
+                  <div className="ml-2 bg-gray-100 rounded w-20">
+                    차단한 유저
+                  </div>
+                ) : (
+                  <button
+                    onClick={onClickFollow}
+                    className={`ml-2 ${
+                      isFollowing ? "bg-red-500" : "bg-light-green"
+                    } rounded w-20 text-white ${
+                      isFollowing
+                        ? "hover:bg-light-beige hover:text-red-500"
+                        : "hover:bg-light-beige hover:text-light-green"
+                    }  `}
+                  >
+                    {id === post?.UserId ? null : (
+                      <p className="text-sm">
+                        {isFollowing ? "언팔로우" : "팔로우"}
+                      </p>
+                    )}
+                  </button>
+                )}
               </div>
-              <div className="float-right"></div>
             </header>
             {blockedLists &&
-            blockedLists.find((block) => block.id === post.UserId) ? (
+            blockedLists.find((block) => block.id === post?.UserId) ? (
               <p className="ml-3 p-2 text-red-500">게시글을 볼 수 없습니다.</p>
-            ) : post.RetweetId && post.Retweet ? (
+            ) : post?.RetweetId && post?.Retweet ? (
               <>
                 <p className="ml-5">
-                  {post.RetweetId
-                    ? `${post.User.nickname}님이 리트윗하셨습니다.`
+                  {post?.RetweetId
+                    ? `${post?.User.nickname}님이 리트윗하셨습니다.`
                     : null}
                 </p>
                 <section className="flex justify-center">
@@ -155,34 +191,52 @@ const PostCardBookmark = ({ post, index, me }) => {
                         />
                       </span>
                       <span className="mr-2 mt-2 font-bold">
-                        {post.Retweet.User.nickname}
+                        {post?.Retweet.User.nickname}
                       </span>
                     </header>
 
-                    <PostImages images={post?.Retweet.Images} />
                     <PostCardContent
+                      retweetId={post.id}
+                      images={post?.Retweet.Images}
                       editMode={editMode}
                       onCancleRevisePost={onCancleRevisePost}
                       onRevisePost={onRevisePost}
                       content={post.Retweet.content}
                       index={index}
                     />
+
+                    {editMode ? null : (
+                      <div className="m-10">
+                        <PostImages images={post?.Retweet.Images} />
+                      </div>
+                    )}
                   </article>
                 </section>
                 <small className="text-gray-400 m-5 float-right">
-                  1 hours ago
+                  {moment(post?.createdAt).fromNow()}
                 </small>
               </>
             ) : (
               <>
-                <PostImages images={post.Images} />
                 <PostCardContent
+                  images={post?.Images}
+                  id={post?.id}
                   editMode={editMode}
                   onCancleRevisePost={onCancleRevisePost}
                   onRevisePost={onRevisePost}
-                  content={post.content}
+                  content={post?.content}
                   index={index}
                 />
+                {editMode ? null : (
+                  <div className="m-10">
+                    <PostImages images={post?.Images} />
+                  </div>
+                )}
+                <small className="text-gray-400 m-5 float-right ml-2">
+                  <p className="text-center">
+                    {moment(post?.createdAt).fromNow()}
+                  </p>
+                </small>
               </>
             )}
 
@@ -194,23 +248,30 @@ const PostCardBookmark = ({ post, index, me }) => {
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       fill="currentColor"
-                      className="w-8 h-8"
+                      className="w-8 h-8 cursor-pointer"
+                      onClick={onUnLike}
                     >
                       <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
                     </svg>
                   ) : (
-                    <HeartIcon className="h-8 w-8" />
+                    <HeartIcon
+                      onClick={onLike}
+                      className="h-8 w-8 cursor-pointer"
+                    />
                   )}
 
-                  <p className="mt-1">{post.Likers.length}</p>
+                  <p className="mt-1">{post?.Likers?.length}</p>
                 </span>
                 <span className="flex mr-4">
                   <ChatBubbleOvalLeftEllipsisIcon className="h-8 w-8" />
-                  <p className="mt-1">{post.Comments.length}</p>
+                  <p className="mt-1">{post?.Comments.length}</p>
                 </span>
                 <span className="flex mr-1">
-                  <ArrowPathRoundedSquareIcon className="h-8 w-8" />
-                  <p className="mt-1">{post.Retweet?.length}</p>
+                  <ArrowPathRoundedSquareIcon
+                    onClick={onRetweet}
+                    className="h-8 w-8 cursor-pointer"
+                  />
+                  <p className="mt-1">{post?.Retweet?.length}</p>
                 </span>
               </div>
               <div className="float:right mr-3">
@@ -239,21 +300,24 @@ const PostCardBookmark = ({ post, index, me }) => {
                 </span>
               </div>
             </div>
-
-            {post.Comments.length === 0 ? null : (
+            {post?.Comments.length === 0 || singlePost ? null : (
               <div className="ml-4">
-                <a href="#" className="text-gray-500">
+                <div
+                  onClick={onPostDetail}
+                  className="text-gray-500 hover:text-sky-500 cursor-pointer"
+                >
                   View all comments
-                </a>
+                </div>
               </div>
             )}
             {/* CommentCard start */}
-            {post.Comments.map((comment, i) => {
-              return <CommentCard comment={comment} />;
+            {post?.Comments.map((comment) => {
+              return <CommentCard comment={comment} key={comment.id} />;
             })}
           </article>
         </section>
-      ) : null}
+      )}
+
       {/* card end */}
     </>
   );

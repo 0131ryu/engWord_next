@@ -13,13 +13,19 @@ import { loadWordsRequest } from "../redux/feature/wordSlice";
 
 const Home = () => {
   const { me } = useSelector((state) => state.user);
-  const { addWordError } = useSelector((state) => state.word);
+  const { addWordError, loadWordsError } = useSelector((state) => state.word);
 
   useEffect(() => {
     if (addWordError) {
       alert(addWordError);
     }
   }, [addWordError]);
+
+  useEffect(() => {
+    if (loadWordsError) {
+      alert(loadWordsError);
+    }
+  }, [loadWordsError]);
 
   return (
     <>

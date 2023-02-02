@@ -31,11 +31,14 @@ import {
 } from "../../redux/feature/userSlice";
 import PostImages from "./PostImages";
 import { useRouter } from "next/router";
+import moment from "moment";
+import "moment/locale/ko";
 
 const PostCard = ({ post, index, me }) => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { singlePost } = useSelector((state) => state.post);
+
+  console.log("post", post);
 
   const [removeModal, setRemoveModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -131,8 +134,8 @@ const PostCard = ({ post, index, me }) => {
                   ) : (
                     <img
                       className="h-8 w-8 rounded-full cursor-pointer"
-                      src={`http://localhost:3005/userImg/${post?.User.profileImg}`}
-                      alt={post?.User.profileImg}
+                      src={`http://localhost:3005/userImg/${post.User.profileImg}`}
+                      alt={post.User.profileImg}
                     />
                   )}
                 </Link>
@@ -251,7 +254,7 @@ const PostCard = ({ post, index, me }) => {
                 </article>
               </section>
               <small className="text-gray-400 m-5 float-right">
-                1 hours ago
+                {moment(post?.createdAt).fromNow()}
               </small>
             </>
           ) : (
@@ -271,7 +274,9 @@ const PostCard = ({ post, index, me }) => {
                 </div>
               )}
               <small className="text-gray-400 m-5 float-right ml-2">
-                2 hours ago
+                <p className="text-center">
+                  {moment(post?.createdAt).fromNow()}
+                </p>
               </small>
             </>
           )}
@@ -336,7 +341,7 @@ const PostCard = ({ post, index, me }) => {
               </span>
             </div>
           </div>
-          {post?.Comments.length === 0 || singlePost ? null : (
+          {post?.Comments.length === 0 || post ? null : (
             <div className="ml-4">
               <div
                 onClick={onPostDetail}

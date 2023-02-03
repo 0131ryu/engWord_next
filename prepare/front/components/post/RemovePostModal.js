@@ -4,7 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { removePostRequest } from "../../redux/feature/postSlice";
 
-const RemovePostModal = ({ PostIndex, setRemoveModal }) => {
+const RemovePostModal = ({ postId, setRemoveModal }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(true);
 
@@ -12,11 +12,11 @@ const RemovePostModal = ({ PostIndex, setRemoveModal }) => {
 
   const onRemovePostModal = useCallback(() => {
     setRemoveModal(false);
-    dispatch(removePostRequest(PostIndex));
+    dispatch(removePostRequest(postId));
   }, []);
 
   const onOpenCloseModal = useCallback(() => {
-    console.log("open", open);
+    console.log("postId", postId);
     setRemoveModal(false);
     setOpen(!open);
   }, []);
@@ -93,7 +93,7 @@ const RemovePostModal = ({ PostIndex, setRemoveModal }) => {
                   </button>
                   <button
                     type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-100"
+                    className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={onOpenCloseModal}
                     ref={cancelButtonRef}
                   >

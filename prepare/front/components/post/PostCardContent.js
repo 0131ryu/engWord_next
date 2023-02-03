@@ -16,6 +16,7 @@ const PostCardContent = ({
   onRevisePost,
   onCancleRevisePost,
   index,
+  postId,
 }) => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -298,7 +299,10 @@ const PostCardContent = ({
                   }
                   return (
                     <>
-                      <div className="cursor-pointer" onClick={onPostDetail}>
+                      <div
+                        className={`${postId ? null : "cursor-pointer"}`}
+                        onClick={postId ? null : onPostDetail}
+                      >
                         {v}
                       </div>
                     </>

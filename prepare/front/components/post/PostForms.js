@@ -46,8 +46,8 @@ const PostForms = () => {
 
   const onChangeImages = useCallback((e) => {
     const images = e.target.files;
-    if(Object.keys(images).length >= 5) {
-      alert('이미지는 4장까지만 추가됩니다.')
+    if (Object.keys(images).length >= 5) {
+      alert("이미지는 4장까지만 추가됩니다.");
     } else {
       const imageFormData = new FormData();
       [].forEach.call(images, (f) => {

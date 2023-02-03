@@ -102,7 +102,7 @@ router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
           attributes: ["id"],
         },
         {
-          model: User, //좋아요 누른 사람
+          model: User, //북마크 여부
           as: "Bookmarks", //post.Bookmarks 생성
           attributes: ["id"],
         },
@@ -306,8 +306,6 @@ router.post("/:postId/retweet", isLoggedIn, async (req, res, next) => {
     if (exPost) {
       return res.status(403).send("이미 리트윗했습니다.");
     }
-    console.log("유저 아이디", req.user.id);
-    console.log("retweetTargetId", retweetTargetId);
     const retweet = await Post.create({
       UserId: req.user.id,
       nickname: req.user.nickname,
@@ -359,42 +357,6 @@ router.post("/:postId/retweet", isLoggedIn, async (req, res, next) => {
     next(error);
   }
 });
-
-// router.patch("/:postId", isLoggedIn, async (req, res, next) => {
-//   //게시글 수정
-//   //해시태그 수정하는 경우
-//   const hashtags = req.body.content.match(/#[^\s#]+/g);
-
-//   try {
-//     await Post.update(
-//       { content: req.body.content },
-//       {
-//         where: {
-//           id: req.params.postId,
-//           UserId: req.user.id,
-//         },
-//       }
-//     );
-//     const post = await Post.findOne({ where: { id: req.params.postId } });
-//     if (hashtags) {
-//       const result = await Promise.all(
-//         //저장은 소문자만
-//         hashtags.map((tag) =>
-//           Hashtag.findOrCreate({ where: { name: tag.slice(1).toLowerCase() } })
-//         )
-//       ); //[[노드, true], [리액트, true]] 이런 모양이므로 첫 번째 것만 추출하게 함
-//       await post.setHashtags(result.map((v) => v[0]));
-//     }
-//     res.status(200).json({
-//       PostId: parseInt(req.params.postId, 10),
-//       content: req.body.content,
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     next(error);
-//   }
-// });
-
 //게시글 삭제
 router.delete("/:postId", isLoggedIn, async (req, res, next) => {
   // DELETE /post/10
@@ -495,14 +457,13 @@ router.post(`/:postId/retweet`, isLoggedIn, async (req, res, next) => {
   try {
     //게시글 존재하는지 검사
     const post = await Post.findOne({
-      where: { id: req.params.postId },
+      where: { id: req.params.postId }, //게시글 id
       include: [
         {
           model: Post,
           as: "Retweet",
         },
       ],
-      nt,
     });
     if (!post) {
       return res.status(403).send("존재하지 않는 게시글입니다.");
@@ -511,7 +472,6 @@ router.post(`/:postId/retweet`, isLoggedIn, async (req, res, next) => {
       req.user.id === post.UserId ||
       (post.Retweet && post.Retweet.UserId === req.user.id)
     ) {
-      //자신의 게시글을 본인이 리트윗 하는 경우 || 남이 리트윗한 게시글을 본인이 리트윗 하는 것
       return res.status(403).send("자신의 글은 리트윗할 수 없습니다.");
     }
     const retweetTargetId = post.RetweetId || post.id;
@@ -590,25 +550,10 @@ router.get(`/:postId`, async (req, res, next) => {
       where: { id: post.id },
       include: [
         {
-          model: Post,
-          as: "Retweet",
-          include: [
-            {
-              model: User,
-              attributes: ["id", "nickname", "profileImg"],
-            },
-            {
-              model: Image,
-            },
-          ],
+          model: Hashtag,
         },
         {
           model: User,
-          attributes: ["id", "nickname", "profileImg"],
-        },
-        {
-          model: User, // 좋아요 누른 사람
-          as: "Likers",
           attributes: ["id", "nickname", "profileImg"],
         },
         {
@@ -619,74 +564,44 @@ router.get(`/:postId`, async (req, res, next) => {
           include: [
             {
               model: User,
+
               attributes: ["id", "nickname", "profileImg"],
+
+              order: [["createdAt", "DESC"]],
+            },
+          ],
+        },
+        {
+          model: User, // 좋아요 누른사람
+          as: "Likers",
+          attiributes: ["id"],
+        },
+        {
+          model: User, //좋아요 누른 사람
+          as: "Bookmarks", //post.Bookmarks 생성
+          attributes: ["id"],
+        },
+        {
+          model: Post,
+          as: "Retweet",
+          include: [
+            {
+              model: User,
+              attiributes: ["id", "nickname", "profileImg"],
+            },
+            {
+              model: Image,
             },
           ],
         },
       ],
     });
+    console.log("fullPost", fullPost);
     res.status(200).json(fullPost);
   } catch (error) {
     console.error(error);
     next(error);
   }
-});
-
-//게시글 검색
-router.get("/search/:detail", async (req, res, next) => {
-  const where = { [Op.like]: "%" + req.params.detail + "%" };
-  // if (parseInt(req.query.lastId, 10)) {
-  //   // 초기 로딩이 아닐 때
-  //   where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
-  // } // 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1
-
-  const posts = Post.findAll({
-    where,
-    // limit: 10,
-    // include: [
-    //   {
-    //     model: User,
-    //     attributes: ["id", "nickname", "profileImg"],
-    //   },
-    //   {
-    //     model: Image,
-    //   },
-    //   {
-    //     model: Comment,
-    //     include: [
-    //       {
-    //         model: User,
-    //         attributes: ["id", "nickname", "profileImg"],
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     model: User, //좋아요 누른 사람
-    //     as: "Likers", //post.Likers 생성
-    //     attributes: ["id"],
-    //   },
-    //   {
-    //     model: User, //좋아요 누른 사람
-    //     as: "Bookmarks", //post.Bookmarks 생성
-    //     attributes: ["id"],
-    //   },
-    //   {
-    //     model: Post,
-    //     as: "Retweet",
-    //     include: [
-    //       {
-    //         model: User,
-    //         attributes: ["id", "nickname", "profileImg"],
-    //       },
-    //       {
-    //         model: Image,
-    //       },
-    //     ],
-    //   },
-    // ],
-  });
-  console.log("posts", posts);
-  res.status(200).json(posts);
 });
 
 module.exports = router;

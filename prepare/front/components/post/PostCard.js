@@ -1,51 +1,30 @@
 import React, { Fragment, useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
-import {
-  ArrowPathRoundedSquareIcon,
-  HeartIcon,
-  ChatBubbleOvalLeftEllipsisIcon,
-  EllipsisHorizontalIcon,
-} from "@heroicons/react/24/outline";
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 
-import {
-  bookmarkRequest,
-  likePostRequest,
-  retweetRequest,
-  reviseCommentRequest,
-  revisePostRequest,
-  unbookmarkRequest,
-  unlikePostRequest,
-} from "../../redux/feature/postSlice";
+import { revisePostRequest } from "../../redux/feature/postSlice";
 import { Popover, Transition } from "@headlessui/react";
 
 import CommentForm from "./CommentForm";
 import CommentCard from "./CommentCard";
 import RemovePostModal from "./RemovePostModal";
 import PostCardContent from "./PostCardContent";
-import {
-  followRequest,
-  loadBlockingRequest,
-  loadBlockedRequest,
-  unfollowRequest,
-} from "../../redux/feature/userSlice";
+import { followRequest, unfollowRequest } from "../../redux/feature/userSlice";
 import PostImages from "./PostImages";
 import { useRouter } from "next/router";
 import moment from "moment";
 import "moment/locale/ko";
+import PostCardBar from "./PostCardBar";
 
-const PostCard = ({ post, index, me }) => {
+const PostCard = ({ post, index, me, routerQueryId }) => {
   const dispatch = useDispatch();
   const router = useRouter();
-
-  console.log("post", post);
-
   const [removeModal, setRemoveModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const id = useSelector((state) => state.user.me?.id);
-  const liked = post?.Likers?.find((v) => v.id === id);
-  const bookmark = post?.Bookmarks?.find((v) => v.id === id);
-  const isFollowing = me?.Followings.find((v) => v.id === post.User.id);
+
+  const id = me?.id;
+  const isFollowing = me?.Followings.find((v) => v.id === post.User?.id);
   const blockingLists = me?.Blockings;
   const blockedLists = me?.Blockeds;
 
@@ -58,8 +37,8 @@ const PostCard = ({ post, index, me }) => {
 
   const onRevisePost = useCallback(
     (editText) => () => {
-      const postId = post.id;
-      dispatch(revisePostRequest({ postId, editText }));
+      const routerQueryId = post.id;
+      dispatch(revisePostRequest({ routerQueryId, editText }));
       setEditMode(false);
     },
     [id]
@@ -73,23 +52,6 @@ const PostCard = ({ post, index, me }) => {
     setRemoveModal(true);
   }, []);
 
-  const onReviseComment = useCallback((e) => {
-    const index = e.target.value;
-    dispatch(reviseCommentRequest(index));
-  }, []);
-
-  const onLike = useCallback(() => {
-    dispatch(likePostRequest(post.id));
-  }, [id]);
-
-  const onUnLike = useCallback(() => {
-    dispatch(unlikePostRequest(post.id));
-  }, [id]);
-
-  const onRetweet = useCallback(() => {
-    dispatch(retweetRequest(post.id));
-  }, []);
-
   const onClickFollow = useCallback(() => {
     if (isFollowing) {
       dispatch(unfollowRequest(post.User.id));
@@ -97,14 +59,6 @@ const PostCard = ({ post, index, me }) => {
       dispatch(followRequest(post.User.id));
     }
   }, [isFollowing]);
-
-  const onBookmark = useCallback(() => {
-    dispatch(bookmarkRequest(post.id));
-  }, [id]);
-
-  const onUnBookmark = useCallback(() => {
-    dispatch(unbookmarkRequest(post.id));
-  }, [id]);
 
   const onPostDetail = useCallback(() => {
     router.push(`/post/${post.id}`);
@@ -114,7 +68,7 @@ const PostCard = ({ post, index, me }) => {
     <>
       {/* 삭제 포스트 모달창 */}
       {removeModal ? (
-        <RemovePostModal PostIndex={post.id} setRemoveModal={setRemoveModal} />
+        <RemovePostModal postId={post.id} setRemoveModal={setRemoveModal} />
       ) : null}
 
       {/* card start */}
@@ -132,16 +86,18 @@ const PostCard = ({ post, index, me }) => {
                       className="h-8 w-8 rounded-full cursor-pointer"
                     />
                   ) : (
-                    <img
-                      className="h-8 w-8 rounded-full cursor-pointer"
-                      src={`http://localhost:3005/userImg/${post.User.profileImg}`}
-                      alt={post.User.profileImg}
-                    />
+                    <>
+                      <img
+                        className="h-8 w-8 rounded-full cursor-pointer"
+                        src={`http://localhost:3005/userImg/${post.User?.profileImg}`}
+                        alt={post.User?.profileImg}
+                      />
+                    </>
                   )}
                 </Link>
               </span>
 
-              <span>{post?.User.nickname}</span>
+              <span>{post?.User?.nickname}</span>
 
               {id === undefined ? null : blockingLists &&
                 blockingLists?.find((block) => block.id === post.UserId) ? (
@@ -188,13 +144,16 @@ const PostCard = ({ post, index, me }) => {
                       <Popover.Panel className="z-50 absolute mt-1 w-16 h-10">
                         <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                           <div className="bg-light-beige p-1">
-                            <button
-                              value={index}
-                              onClick={onClickRevise}
-                              className="flow-root rounded-md w-full p-1 transition duration-150 ease-in-out hover:bg-light-orange "
-                            >
-                              수정
-                            </button>
+                            {post?.RetweetId ? null : (
+                              <button
+                                value={index}
+                                onClick={onClickRevise}
+                                className="flow-root rounded-md w-full p-1 transition duration-150 ease-in-out hover:bg-light-orange "
+                              >
+                                수정
+                              </button>
+                            )}
+
                             <button
                               onClick={onRemovePost}
                               className="flow-root rounded-md w-full p-1 transition duration-150 ease-in-out hover:bg-red-500 hover:text-white"
@@ -253,7 +212,12 @@ const PostCard = ({ post, index, me }) => {
                   )}
                 </article>
               </section>
-              <small className="text-gray-400 m-5 float-right">
+              <small
+                className={`text-gray-400 m-5 float-right ${
+                  routerQueryId ? null : "cursor-pointer"
+                }`}
+                onClick={routerQueryId ? null : onPostDetail}
+              >
                 {moment(post?.createdAt).fromNow()}
               </small>
             </>
@@ -267,6 +231,7 @@ const PostCard = ({ post, index, me }) => {
                 onRevisePost={onRevisePost}
                 content={post?.content}
                 index={index}
+                routerQueryId={routerQueryId}
               />
               {editMode ? null : (
                 <div className="m-10">
@@ -274,85 +239,22 @@ const PostCard = ({ post, index, me }) => {
                 </div>
               )}
               <small className="text-gray-400 m-5 float-right ml-2">
-                <p className="text-center">
+                <p
+                  className={`text-center ${
+                    routerQueryId ? null : "cursor-pointer"
+                  }`}
+                  onClick={routerQueryId ? null : onPostDetail}
+                >
                   {moment(post?.createdAt).fromNow()}
                 </p>
               </small>
             </>
           )}
 
-          <div className="flex bg-gray-100 justify-between items-center w-full mb-2">
-            <div className="flex item-center ml-3">
-              <span className="flex mr-4">
-                {liked ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="w-8 h-8 cursor-pointer"
-                    onClick={onUnLike}
-                  >
-                    <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
-                  </svg>
-                ) : (
-                  <HeartIcon
-                    onClick={onLike}
-                    className="h-8 w-8 cursor-pointer"
-                  />
-                )}
+          <PostCardBar post={post} postId={post.id} />
 
-                <p className="mt-1">{post?.Likers?.length}</p>
-              </span>
-              <span className="flex mr-4">
-                <ChatBubbleOvalLeftEllipsisIcon className="h-8 w-8" />
-                <p className="mt-1">{post?.Comments.length}</p>
-              </span>
-              <span className="flex mr-1">
-                <ArrowPathRoundedSquareIcon
-                  onClick={onRetweet}
-                  className="h-8 w-8 cursor-pointer"
-                />
-                <p className="mt-1">{post?.Retweet?.length}</p>
-              </span>
-            </div>
-            <div className="float:right mr-3">
-              <span>
-                {bookmark ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="mt-2 w-8 h-8 cursor-pointer"
-                    onClick={onUnBookmark}
-                  >
-                    <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="mt-2 w-8 h-8 cursor-pointer"
-                    onClick={onBookmark}
-                  >
-                    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z" />
-                  </svg>
-                )}
-              </span>
-            </div>
-          </div>
-          {post?.Comments.length === 0 || post ? null : (
-            <div className="ml-4">
-              <div
-                onClick={onPostDetail}
-                className="text-gray-500 hover:text-sky-500 cursor-pointer"
-              >
-                View all comments
-              </div>
-            </div>
-          )}
           {/* CommentCard start */}
-          {post?.Comments.map((comment) => {
+          {post?.Comments?.map((comment) => {
             return <CommentCard comment={comment} key={comment.id} />;
           })}
           {me && (

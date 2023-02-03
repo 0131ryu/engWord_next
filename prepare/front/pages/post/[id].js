@@ -14,8 +14,8 @@ import wrapper from "../../redux/store";
 const Post = () => {
   const router = useRouter();
   const { id } = router.query;
+  const { me } = useSelector((state) => state.user);
   const { singlePost } = useSelector((state) => state.post);
-  console.log("id", id, "siglePost", singlePost);
 
   const onGoSNS = useCallback(() => {
     router.push("/post");
@@ -23,7 +23,7 @@ const Post = () => {
 
   return (
     <NavbarForm>
-      <Head>
+      {/* <Head>
         <title>{`title ${singlePost?.User.nickname}님의 글`}</title>
         <meta name="description" content={`${singlePost?.content}`} />
         <meta
@@ -40,7 +40,7 @@ const Post = () => {
           }
         />
         <meta property="og:url" content={`https://engword.shop/post/${id}`} />
-      </Head>
+      </Head> */}
 
       <div className="h-full mt-5">
         <div className="grid grid-cols-4 gap-6">
@@ -54,7 +54,7 @@ const Post = () => {
                 게시글로 돌아가기
               </button>
             </div>
-            <PostCard post={singlePost} />
+            <PostCard post={singlePost} me={me} routerQueryId={id} />
           </div>
           <div className="col-span-1"></div>
         </div>

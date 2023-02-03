@@ -76,6 +76,7 @@ export const postSlice = createSlice({
       state.addPostLoading = false;
       state.addPostComplete = true;
       state.mainPosts.unshift(data);
+      // state.mainPosts = state.mainPosts.concat(data);
       state.imagePaths = [];
     },
     addPostFailure: (state, action) => {
@@ -395,10 +396,10 @@ export const postSlice = createSlice({
     bookmarkSuccess: (state, action) => {
       const data = action.payload;
       console.log("data", data);
-      state.singlePost.find((v) => console.log("v.id", v.id));
-      state.mainPosts.find((v) => console.log("v.id", v.id));
-      // const post = state.mainPosts.find((v) => v.id === data.PostId);
-      // post.Bookmarks.push({ id: data.UserId });
+      // state.singlePost.find((v) => console.log("v.id", v.id));
+      // state.mainPosts.find((v) => console.log("v.id", v.id));
+      const post = state.mainPosts.find((v) => v.id === data.PostId);
+      post.Bookmarks.push({ id: data.UserId });
       state.bookmarkLoading = false;
       state.bookmarkComplete = true;
     },
@@ -414,10 +415,10 @@ export const postSlice = createSlice({
     unbookmarkSuccess: (state, action) => {
       const data = action.payload;
       console.log("unbookmark data", data);
-      state.singlePost.find((v) => console.log("v.id", v.id));
-      state.mainPosts.find((v) => console.log("v.id", v.id));
-      // const post = state.mainPosts.find((v) => v.id === data.PostId);
-      // post.Bookmarks = post.Bookmarks.filter((v) => v.id !== data.UserId);
+      // state.singlePost.find((v) => console.log("v.id", v.id));
+      // state.mainPosts.find((v) => console.log("v.id", v.id));
+      const post = state.mainPosts.find((v) => v.id === data.PostId);
+      post.Bookmarks = post.Bookmarks.filter((v) => v.id !== data.UserId);
       state.unbookmarkLoading = false;
       state.unbookmarkComplete = true;
     },

@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "next -p 3000",
-    "build": "next build",
-    "start": "next start"
+    "build": "cross-env ANALYZE=true NODE_ENV=production next build",
+    "start": "cross-env NODE_ENV=production next start -p 3000"
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +14,7 @@
     "@ant-design/icons": "^4.7.0",
     "@headlessui/react": "^1.7.3",
     "@heroicons/react": "^2.0.12",
+    "@next/bundle-analyzer": "^13.1.6",
     "@popperjs/core": "^2.11.6",
     "@reduxjs/toolkit": "^1.8.6",
     "antd": "^4.23.5",
@@ -22,6 +23,7 @@
     "babel-plugin-styled-components": "^2.0.7",
     "chart.js": "^4.1.2",
     "chartjs-plugin-datalabels": "^2.2.0",
+    "cross-env": "^7.0.3",
     "moment": "^2.29.4",
     "next": "^12.3.1",
     "next-redux-wrapper": "^6.0.2",

@@ -1,0 +1,7 @@
+engWord.pem
+/back/node_modules
+/back/.env
+/back/uploads
+/front/node_modules
+/front/.next
+/front/.env

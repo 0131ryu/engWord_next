@@ -1,7 +1,8 @@
 const express = require("express");
 const { Op } = require("sequelize");
 const moment = require("moment");
-const { User, Word, Game, Result } = require("../models");
+const { Result } = require("../models");
+moment.locale("ko");
 const TODAY_START = moment().format("YYYY-MM-DD 00:00");
 const NOW = moment().format("YYYY-MM-DD 23:59");
 

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon  server.js",
-    "start": "cross-env NODE.ENV=production node server"
+    "start": "cross-env NODE_ENV=production pm2 start server.js"
   },
   "author": "",
   "license": "ISC",
@@ -32,6 +32,7 @@
     "nodemon": "^2.0.20",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
+    "pm2": "^5.2.2",
     "request": "^2.88.2",
     "sequelize": "^6.28.0",
     "sequelize-cli": "^6.5.2",

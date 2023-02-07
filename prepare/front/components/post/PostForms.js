@@ -7,6 +7,7 @@ import {
   uploadImagesRequest,
   removeImage,
 } from "../../redux/feature/postSlice";
+import { backUrl } from "../../config/config";
 
 const PostForms = () => {
   const dispatch = useDispatch();
@@ -108,7 +109,7 @@ const PostForms = () => {
           <div key={v} className="flex justify-center">
             <img
               className="w-20 h-20 pt-2"
-              src={`http://localhost:3005/${v}`}
+              src={`http://${backUrl}/${v}`}
               alt={v}
             />
             <button

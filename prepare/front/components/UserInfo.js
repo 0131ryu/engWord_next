@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { loadPostsRequest } from "../redux/feature/postSlice";
+import { backUrl } from "../config/config";
 
 const UserInfo = () => {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const UserInfo = () => {
             ) : (
               <img
                 className="rounded-lg w-14 h-14 mt-2 ml-1"
-                src={`http://localhost:3005/userImg/${me?.profileImg}`}
+                src={`http://${backUrl}/userImg/${me?.profileImg}`}
                 alt={me?.profileImg}
               />
             )}

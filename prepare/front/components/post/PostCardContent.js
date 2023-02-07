@@ -6,6 +6,7 @@ import {
   reviseImageRequest,
 } from "../../redux/feature/postSlice";
 import { useDispatch } from "react-redux";
+import { backUrl } from "../../config/config";
 
 const PostCardContent = ({
   retweetId,
@@ -93,7 +94,7 @@ const PostCardContent = ({
           {images?.length === 1 && (
             <div className="flex justify-center mt-1 ml-3">
               <img
-                src={`http://localhost:3005/${images[0]?.src}`}
+                src={`http://${backUrl}/${images[0]?.src}`}
                 alt={images[0]?.src}
                 className="rounded-lg h-7 w-7 lg:h-10 lg:w-10"
               />
@@ -108,7 +109,7 @@ const PostCardContent = ({
           {images?.length === 2 && (
             <div className="flex justify-center mt-1 ml-3">
               <img
-                src={`http://localhost:3005/${images[0]?.src}`}
+                src={`http://${backUrl}/${images[0]?.src}`}
                 alt={images[0]?.src}
                 className="rounded-lg h-7 w-7 lg:h-10 lg:w-10"
               />
@@ -119,7 +120,7 @@ const PostCardContent = ({
                 X
               </button>
               <img
-                src={`http://localhost:3005/${images[1]?.src}`}
+                src={`http://${backUrl}/${images[1]?.src}`}
                 alt={images[1]?.src}
                 className="rounded-lg h-7 w-7 lg:h-10 lg:w-10"
               />
@@ -134,7 +135,7 @@ const PostCardContent = ({
           {images?.length === 3 && (
             <div className="flex justify-center mt-1 ml-3">
               <img
-                src={`http://localhost:3005/${images[0]?.src}`}
+                src={`http://${backUrl}/${images[0]?.src}`}
                 alt={images[0]?.src}
                 className="rounded-lg h-7 w-7 lg:h-10 lg:w-10"
               />
@@ -145,7 +146,7 @@ const PostCardContent = ({
                 X
               </button>
               <img
-                src={`http://localhost:3005/${images[1]?.src}`}
+                src={`http://${backUrl}/${images[1]?.src}`}
                 alt={images[1]?.src}
                 className="rounded-lg h-7 w-7 lg:h-10 lg:w-10"
               />
@@ -156,7 +157,7 @@ const PostCardContent = ({
                 X
               </button>
               <img
-                src={`http://localhost:3005/${images[2]?.src}`}
+                src={`http://${backUrl}/${images[2]?.src}`}
                 alt={images[2]?.src}
                 className="rounded-lg h-7 w-7 lg:h-10 lg:w-10"
               />
@@ -171,7 +172,7 @@ const PostCardContent = ({
           {images?.length === 4 && (
             <div className="flex justify-center mt-1 ml-3">
               <img
-                src={`http://localhost:3005/${images[0]?.src}`}
+                src={`http://${backUrl}/${images[0]?.src}`}
                 alt={images[0]?.src}
                 className="rounded-lg h-7 w-7 lg:h-10 lg:w-10"
               />
@@ -182,7 +183,7 @@ const PostCardContent = ({
                 X
               </button>
               <img
-                src={`http://localhost:3005/${images[1]?.src}`}
+                src={`http://${backUrl}/${images[1]?.src}`}
                 alt={images[1]?.src}
                 className="rounded-lg h-7 w-7 lg:h-10 lg:w-10"
               />
@@ -193,7 +194,7 @@ const PostCardContent = ({
                 X
               </button>
               <img
-                src={`http://localhost:3005/${images[2]?.src}`}
+                src={`http://${backUrl}/${images[2]?.src}`}
                 alt={images[2]?.src}
                 className="rounded-lg h-7 w-7 lg:h-10 lg:w-10"
               />
@@ -204,7 +205,7 @@ const PostCardContent = ({
                 X
               </button>
               <img
-                src={`http://localhost:3005/${images[3]?.src}`}
+                src={`http://${backUrl}/${images[3]?.src}`}
                 alt={images[3]?.src}
                 className="rounded-lg h-7 w-7 lg:h-10 lg:w-10"
               />

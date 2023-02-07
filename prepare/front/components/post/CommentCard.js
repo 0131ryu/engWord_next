@@ -7,6 +7,7 @@ import { reviseCommentRequest } from "../../redux/feature/postSlice";
 import RemoveCommentModal from "./RemoveCommentModal";
 import moment from "moment";
 import "moment/locale/ko";
+import { backUrl } from "../../config/config";
 
 const CommentCard = ({ comment }) => {
   const dispatch = useDispatch();
@@ -57,7 +58,7 @@ const CommentCard = ({ comment }) => {
             <div className="flex">
               <img
                 className="mt-2 h-8 w-8 rounded-full cursor-pointer"
-                src={`http://localhost:3005/userImg/${comment.User.profileImg}`}
+                src={`http://${backUrl}/userImg/${comment.User.profileImg}`}
                 alt={comment.profileImg}
               />
               <p className="p-2 m-1 font-bold text-xs">{comment.nickname}</p>

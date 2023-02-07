@@ -16,6 +16,7 @@ import {
   followRequest,
   loadFollowersRequest,
 } from "../redux/feature/userSlice";
+import { backUrl } from "../config/config";
 
 const FollowerModal = ({ setFollowerModal, followersInfo, followingsInfo }) => {
   const dispatch = useDispatch();
@@ -112,7 +113,7 @@ const FollowerModal = ({ setFollowerModal, followersInfo, followingsInfo }) => {
                                     <div className="flex-shrink-0">
                                       <img
                                         className="ml-2 w-8 h-8 rounded-full"
-                                        src={`http://localhost:3005/userImg/${follower.profileImg}`}
+                                        src={`http://${backUrl}/userImg/${follower.profileImg}`}
                                         alt="Neil image"
                                       />
                                     </div>

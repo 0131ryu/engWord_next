@@ -10,6 +10,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { loadMyInfoRequest, logoutRequest } from "../redux/feature/userSlice";
 import { useRouter } from "next/router";
+import { backUrl } from "../config/config";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -138,7 +139,7 @@ const NavbarForm = ({ children }) => {
                             ) : (
                               <img
                                 className="h-8 w-8 rounded-full"
-                                src={`http://localhost:3005/userImg/${me.profileImg}`}
+                                src={`http://${backUrl}/userImg/${me.profileImg}`}
                                 alt={me.profileImg}
                               />
                             )}

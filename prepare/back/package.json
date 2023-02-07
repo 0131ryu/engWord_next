@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon  server.js",
-    "start": "node server"
+    "start": "cross-env NODE.ENV=production node server"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +15,7 @@
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-session": "^1.17.3",

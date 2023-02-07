@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(helmet());
   app.use(
     cors({
-      origin: "http://engword.shop", //이전에 샀던 도메인
+      origin: [ "http://engword.shop", "http://localhost:3060"],
       credentials: true,
     })
   );

@@ -37,11 +37,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(helmet());
   app.use(
     cors({
-      origin: [
-        // "http://engword.shop",
-        // "http://localhost:3000",
-        "http://43.201.108.146",
-      ],
+      origin: ["http://engword.shop", "http://43.201.108.146"],
       credentials: true,
     })
   );
@@ -49,7 +45,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(morgan("dev"));
   app.use(
     cors({
-      origin: "http://localhost:3000",
+      origin: true, // "http://localhost:3000",
       credentials: true,
     })
   );

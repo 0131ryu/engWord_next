@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(helmet());
   app.use(
     cors({
-      origin: ["http://engword.shop", "http://43.201.108.146"],
+      origin: ["http://localhost:3000", "http://engword.shop"],
       credentials: true,
     })
   );
@@ -61,6 +61,11 @@ app.use(
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      domain: process.env.NODE_ENV === "production" && ".engword.shop",
+    },
   })
 );
 app.use(passport.initialize());

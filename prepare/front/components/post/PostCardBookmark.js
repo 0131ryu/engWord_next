@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import moment from "moment";
 import "moment/locale/ko";
 import PostCardBar from "./PostCardBar";
+import { backUrl } from "../../config/config";
 
 const PostCardBookmark = ({ post, index, me }) => {
   const dispatch = useDispatch();
@@ -94,7 +95,7 @@ const PostCardBookmark = ({ post, index, me }) => {
                       <>
                         <img
                           className="h-8 w-8 rounded-full cursor-pointer"
-                          src={`http://localhost:3005/userImg/${post.User?.profileImg}`}
+                          src={`http://${backUrl}/userImg/${post.User?.profileImg}`}
                           alt={post.User?.profileImg}
                         />
                       </>
@@ -193,7 +194,7 @@ const PostCardBookmark = ({ post, index, me }) => {
                       <span className="mr-2">
                         <img
                           alt="profile-img"
-                          src={`http://localhost:3005/userImg/${post.Retweet.User.profileImg}`}
+                          src={`http://${backUrl}/userImg/${post.Retweet.User.profileImg}`}
                           className="h-8 w-8 rounded-full"
                         />
                       </span>
@@ -267,7 +268,7 @@ const PostCardBookmark = ({ post, index, me }) => {
                 ) : (
                   <img
                     className="h-8 w-8 rounded-full mt-6 mx-1"
-                    src={`http://localhost:3005/userImg/${me.profileImg}`}
+                    src={`http://${backUrl}/userImg/${me.profileImg}`}
                     alt={me.profileImg}
                   />
                 )}

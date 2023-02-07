@@ -38,8 +38,8 @@ if (process.env.NODE_ENV === "production") {
   app.use(
     cors({
       origin: [
-        "http://engword.shop",
-        "http://localhost:3000",
+        // "http://engword.shop",
+        // "http://localhost:3000",
         "http://43.201.108.146",
       ],
       credentials: true,

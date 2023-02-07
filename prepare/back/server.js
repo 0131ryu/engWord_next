@@ -67,8 +67,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get("/", (req, res) => {
-  res.clearCookie("connect.sid"); //직접 backend쪽 서버에서 실행해야 함
-  req.session.destroy();
   res.send("hello express");
 });
 

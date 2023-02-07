@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon  server.js",
-    "start": "cross-env NODE.ENV=production node server"
+    "start": "cross-env NODE_ENV=production pm2 start server.js"
   },
   "author": "",
   "license": "ISC",

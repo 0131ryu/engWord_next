@@ -83,6 +83,6 @@ app.use("/game", gameRouter);
 app.use("/games", gamesRouter);
 app.use("/hashtag", hashtagRouter);
 
-app.listen(3005, (req, res) => {
-  console.log("The server is running at port 3005");
+app.listen(80, (req, res) => {
+  console.log("The server is running at port 80");
 });

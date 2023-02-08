@@ -33,13 +33,19 @@ router.post("/", isLoggedIn, async (req, res, next) => {
 router.delete("/:id", isLoggedIn, async (req, res, next) => {
   // DELETE /word/10
   try {
+    const word = await Word.findOne({
+      where: {
+        id: req.params.id,
+        UserId: req.user.id, //작성자가 본인이 맞는지?
+      },
+    });
     await Word.destroy({
       where: {
         id: req.params.id,
         UserId: req.user.id, //작성자가 본인이 맞는지?
       },
     });
-    res.status(200).json({ id: parseInt(req.params.id) });
+    res.status(200).json({ id: parseInt(req.params.id), type: word.type });
   } catch (error) {
     console.error(error);
     next(error);

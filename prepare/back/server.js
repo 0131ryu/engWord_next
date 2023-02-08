@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(helmet());
   app.use(
     cors({
-      origin: [ "http://engword.shop", "http://localhost:3060"],
+      origin: ["http://localhost:3000", "http://engword.shop"],
       credentials: true,
     })
   );
@@ -61,14 +61,17 @@ app.use(
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      domain: process.env.NODE_ENV === "production" && ".engword.shop",
+    },
   })
 );
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.get("/", (req, res) => {
-  res.clearCookie("connect.sid"); //직접 backend쪽 서버에서 실행해야 함
-  req.session.destroy();
   res.send("hello express");
 });
 
@@ -83,6 +86,6 @@ app.use("/game", gameRouter);
 app.use("/games", gamesRouter);
 app.use("/hashtag", hashtagRouter);
 
-app.listen(3005, (req, res) => {
-  console.log("The server is running at port 3005");
+app.listen(80, (req, res) => {
+  console.log("The server is running at port 80");
 });

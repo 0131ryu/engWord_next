@@ -51,7 +51,7 @@ router.get("/", upload.none(), async (req, res, next) => {
           },
           {
             model: Word,
-            attributes: ["id"],
+            attributes: ["id", "type"],
           },
           {
             model: User,

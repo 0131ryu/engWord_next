@@ -2,6 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   wordLists: [],
+  easyWordLists: [],
+  middleWordLists: [],
+  advanceWordLists: [],
+  hasMoreEasy: true,
+  hasMoreMiddle: true,
+  hasMoreAdvance: true,
   checkedWordList: [],
   addWordLoading: false, //단어 추가
   addWordComplete: false,
@@ -27,6 +33,15 @@ const initialState = {
   loadWordsLoading: false, //단어 가져오기
   loadWordsComplete: false,
   loadWordsError: null,
+  loadEasyWordsLoading: false, //easy 가져오기
+  loadEasyWordsComplete: false,
+  loadEasyWordsError: null,
+  loadMiddleWordsLoading: false, //middle 가져오기
+  loadMiddleWordsComplete: false,
+  loadMiddleWordsError: null,
+  loadAdvanceWordsLoading: false, //advance 가져오기
+  loadAdvanceWordsComplete: false,
+  loadAdvanceWordsError: null,
   loadCheckedLoading: false, //체크한 단어 가져오기
   loadCheckedComplete: false,
   loadCheckedError: null,
@@ -55,7 +70,15 @@ export const wordSlice = createSlice({
       state.addWordComplete = true;
       data.map((d) => {
         state.wordLists.unshift(d);
+        if (d.type === "easy") {
+          state.easyWordLists.unshift(d);
+        } else if (d.type === "middle") {
+          state.middleWordLists.unshift(d);
+        } else if (d.type === "advance") {
+          state.advanceWordLists.unshift(d);
+        }
       });
+
       state.addWordError = null;
     },
     addWordError: (state, action) => {
@@ -72,13 +95,91 @@ export const wordSlice = createSlice({
       const data = action.payload;
       state.reviseWordLoading = false;
       state.reviseWordComplete = true;
+      console.log("data", data);
 
       const findRevise = state.wordLists.find((v) => v.id === data.id);
-
       if (findRevise) {
         findRevise.english = data.english;
         findRevise.korean = data.korean;
         findRevise.type = data.type;
+      }
+
+      if (data.type === "easy") {
+        const easyRevise = state.easyWordLists.find((v) => v.id === data.id);
+        if (easyRevise) {
+          //easyWordLists에 있는 경우(easy -> easy)
+          easyRevise.english = data.english;
+          easyRevise.korean = data.korean;
+          easyRevise.type = data.type;
+        } else {
+          //easyWordLists에 없는 경우(다른 곳에서 easy로 옮김)
+          const middleFindIndex = state.middleWordLists.findIndex(
+            (w) => w.id === data.id
+          );
+          const advanceFindIndex = state.advanceWordLists.findIndex(
+            (w) => w.id === data.id
+          );
+          if (middleFindIndex < 0) {
+            //advance => easy
+            state.advanceWordLists.splice(advanceFindIndex, 1);
+          } else if (advanceFindIndex < 0) {
+            //middle => easy
+            state.middleWordLists.splice(middleFindIndex, 1);
+          }
+          state.easyWordLists.unshift(data);
+        }
+      } else if (data.type === "middle") {
+        const middleRevise = state.middleWordLists.find(
+          (v) => v.id === data.id
+        );
+        if (middleRevise) {
+          //middleWordLists에 있는 경우(middle -> middle)
+          middleRevise.english = data.english;
+          middleRevise.korean = data.korean;
+          middleRevise.type = data.type;
+        } else {
+          //middleWordLists에 없는 경우(다른 곳에서 middle로 옮김)
+          const easyFindIndex = state.easyWordLists.findIndex(
+            (w) => w.id === data.id
+          );
+          const advanceFindIndex = state.advanceWordLists.findIndex(
+            (w) => w.id === data.id
+          );
+          if (easyFindIndex < 0) {
+            //advance => middle
+            state.advanceWordLists.splice(advanceFindIndex, 1);
+          } else if (advanceFindIndex < 0) {
+            //middle => middle
+            state.easyWordLists.splice(easyFindIndex, 1);
+          }
+          state.middleWordLists.unshift(data);
+        }
+      } else if (data.type === "advance") {
+        const advanceRevise = state.advanceWordLists.find(
+          (v) => v.id === data.id
+        );
+        if (advanceRevise) {
+          //advanceWordLists에 있는 경우(advance -> advance)
+          advanceRevise.english = data.english;
+          advanceRevise.korean = data.korean;
+          advanceRevise.type = data.type;
+        } else {
+          //advanceWordLists에 없는 경우(다른 곳에서 advance로 옮김)
+          const easyFindIndex = state.easyWordLists.findIndex(
+            (w) => w.id === data.id
+          );
+          const middleFindIndex = state.middleWordLists.findIndex(
+            (w) => w.id === data.id
+          );
+          if (easyFindIndex < 0) {
+            //middle => advance
+            state.middleWordLists.splice(middleFindIndex, 1);
+          } else if (middleFindIndex < 0) {
+            //easy => advance
+            state.easyWordLists.splice(easyFindIndex, 1);
+          }
+          state.advanceWordLists.unshift(data);
+        }
       }
     },
     reviseWordError: (state, action) => {
@@ -95,9 +196,27 @@ export const wordSlice = createSlice({
       const data = action.payload;
       state.removeWordLoading = false;
       state.removeWordComplete = true;
+      console.log("data", data);
 
       const findIndex = state.wordLists.findIndex((w) => w.id === data.id);
       state.wordLists.splice(findIndex, 1);
+
+      if (data.type === "easy") {
+        const easyFindIndex = state.easyWordLists.findIndex(
+          (w) => w.id === data.id
+        );
+        state.easyWordLists.splice(easyFindIndex, 1);
+      } else if (data.type === "middle") {
+        const middleFindIndex = state.middleWordLists.findIndex(
+          (w) => w.id === data.id
+        );
+        state.middleWordLists.splice(middleFindIndex, 1);
+      } else if (data.type === "advance") {
+        const advanceFindIndex = state.advanceWordLists.findIndex(
+          (w) => w.id === data.id
+        );
+        state.advanceWordLists.splice(advanceFindIndex, 1);
+      }
     },
     removeWordError: (state, action) => {
       state.removeWordLoading = true;
@@ -166,6 +285,26 @@ export const wordSlice = createSlice({
       state.changeStatusWordLoading = false;
       state.changeStatusWordComplete = true;
 
+      const changeEasyStatus = state.easyWordLists.find(
+        (v) => v.UserId === data[0].UserId
+      );
+      const changeMiddleStatus = state.middleWordLists.find(
+        (v) => v.UserId === data[0].UserId
+      );
+      const changeAdvanceStatus = state.advanceWordLists.find(
+        (v) => v.UserId === data[0].UserId
+      );
+
+      const showEasyStatus = state.easyWordLists.find(
+        (v) => v.UserId === data[0].UserId && v.status === "C"
+      );
+      const showMiddleStatus = state.middleWordLists.find(
+        (v) => v.UserId === data[0].UserId && v.status === "C"
+      );
+      const showAdvanceStatus = state.advanceWordLists.find(
+        (v) => v.UserId === data[0].UserId && v.status === "C"
+      );
+
       const changeStatus = state.wordLists.find(
         (v) => v.UserId === data[0].UserId
       );
@@ -180,8 +319,29 @@ export const wordSlice = createSlice({
           state.checkedWordList = state.checkedWordList.concat(data);
         });
       }
-      if (showStatus) {
+      if (
+        showStatus ||
+        showEasyStatus ||
+        showMiddleStatus ||
+        showAdvanceStatus
+      ) {
         state.checkedWordList.length = 0;
+      }
+
+      if (changeEasyStatus) {
+        state.easyWordLists.map((word) => {
+          word.status = data[0].status;
+        });
+      }
+      if (changeMiddleStatus) {
+        state.middleWordLists.map((word) => {
+          word.status = data[0].status;
+        });
+      }
+      if (changeAdvanceStatus) {
+        state.advanceWordLists.map((word) => {
+          word.status = data[0].status;
+        });
       }
     },
     changeStatusWordAllError: (state, action) => {
@@ -222,6 +382,57 @@ export const wordSlice = createSlice({
     loadWordsFailure: (state, action) => {
       state.loadWordsLoading = false;
       state.loadWordsError = action.payload.response.data;
+    },
+    loadEasyWordsRequest: (state) => {
+      state.loadEasyWordsLoading = true;
+      state.loadEasyWordsError = null;
+      state.loadEasyWordsComplete = false;
+    },
+    loadEasyWordsSuccess: (state, action) => {
+      const data = action.payload;
+      state.loadEasyWordsLoading = false;
+      state.loadEasyWordsComplete = true;
+      //전체 word
+      console.log("data", data);
+      state.easyWordLists = state.easyWordLists.concat(data);
+      state.hasMoreEasy = data.length === 3;
+    },
+    loadEasyWordsFailure: (state, action) => {
+      state.loadEasyWordsLoading = false;
+      state.loadEasyWordsError = false;
+    },
+    loadMiddleWordsRequest: (state) => {
+      state.loadMiddleWordsLoading = true;
+      state.loadMiddleWordsError = null;
+      state.loadMiddleWordsComplete = false;
+    },
+    loadMiddleWordsSuccess: (state, action) => {
+      const data = action.payload;
+      state.loadMiddleWordsLoading = false;
+      state.loadMiddleWordsComplete = true;
+      state.middleWordLists = state.middleWordLists.concat(data);
+      state.hasMoreMiddle = data.length === 3;
+    },
+    loadMiddleWordsFailure: (state, action) => {
+      state.loadMiddleWordsLoading = false;
+      state.loadMiddleWordsError = false;
+    },
+    loadAdvanceWordsRequest: (state) => {
+      state.loadAdvanceWordsLoading = true;
+      state.loadAdvanceWordsError = null;
+      state.loadAdvanceWordsComplete = false;
+    },
+    loadAdvanceWordsSuccess: (state, action) => {
+      const data = action.payload;
+      state.loadAdvanceWordsLoading = false;
+      state.loadAdvanceWordsComplete = true;
+      state.advanceWordLists = state.advanceWordLists.concat(data);
+      state.hasMoreAdvance = data.length === 3;
+    },
+    loadAdvanceWordsFailure: (state, action) => {
+      state.loadAdvanceWordsLoading = false;
+      // state.loadAdvanceWordsError = action.payload.response.data;
+      state.loadAdvanceWordsError = false;
     },
     loadCheckedRequest: (state) => {
       state.loadCheckedLoading = true;
@@ -288,6 +499,15 @@ export const {
   loadWordsRequest,
   loadWordsSuccess,
   loadWordsFailure,
+  loadEasyWordsRequest,
+  loadEasyWordsSuccess,
+  loadEasyWordsFailure,
+  loadMiddleWordsRequest,
+  loadMiddleWordsSuccess,
+  loadMiddleWordsFailure,
+  loadAdvanceWordsRequest,
+  loadAdvanceWordsSuccess,
+  loadAdvanceWordsFailure,
   loadCheckedRequest,
   loadCheckedSuccess,
   loadCheckedFailure,

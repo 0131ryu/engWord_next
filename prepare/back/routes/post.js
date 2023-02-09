@@ -1,12 +1,9 @@
-const { S3Client } = require("@aws-sdk/client-s3");
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const multerS3 = require("multer-s3");
 const AWS = require("aws-sdk");
 const fs = require("fs");
-
-const s3 = new S3Client();
 
 const { Post, Image, Comment, User, Hashtag } = require("../models");
 const { isLoggedIn } = require("./middlewares");
@@ -28,7 +25,7 @@ AWS.config.update({
 
 const upload = multer({
   storage: multerS3({
-    s3: s3,
+    s3: new AWS.S3(),
     bucket: "engword-s3", //버킷 이름
     metadata: function (req, file, cb) {
       cb(null, { fieldName: file.fieldname });

@@ -106,7 +106,7 @@ const PostForms = () => {
         </div>
         {imagePaths.map((v, i) => (
           <div key={v} className="flex justify-center">
-            <img className="w-20 h-20 pt-2" src={`http://${v}`} alt={v} />
+            <img className="w-20 h-20 pt-2" src={`${v}`} alt={v} />
             <button
               type="button"
               onClick={onRemoveImage(i)}

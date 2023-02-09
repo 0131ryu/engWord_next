@@ -22,7 +22,6 @@ const Profile = () => {
   const { me } = useSelector((state) => state.user);
   const { gameScore } = useSelector((state) => state.game);
   const id = useSelector((state) => state.user.me?.id);
-
   const [nickname, onChangeNickname] = useInput(me?.nickname || "");
   const [editMode, setEditMode] = useState(false);
   const [followerModal, setFollowerModal] = useState(false);
@@ -77,6 +76,7 @@ const Profile = () => {
     setBlockFollowModal(true);
   }, []);
 
+  console.log("me", me);
   return (
     <>
       {followingModal ? (
@@ -116,7 +116,7 @@ const Profile = () => {
                         ) : (
                           <img
                             className="rounded-full h-40 w-40"
-                            src={`http://${me.profileImg}`}
+                            src={`${me.profileImg}`}
                             alt={me.profileImg}
                           />
                         )}

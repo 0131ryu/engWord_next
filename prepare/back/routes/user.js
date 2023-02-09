@@ -5,6 +5,8 @@ const multer = require("multer");
 const { Op } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
+const multerS3 = require("multer-s3");
+const AWS = require("aws-sdk");
 
 const { User, Post, Image, Comment, Word } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
@@ -18,17 +20,22 @@ try {
   fs.mkdirSync("uploads/userImg");
 }
 
+AWS.config.update({
+  accessKeyId: process.env.S3_ACCESS_KEY_ID,
+  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  region: "ap-northeast-2",
+});
+
 //프로필 이미지
 const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, done) {
-      done(null, "uploads/userImg");
-    },
-    filename(req, file, done) {
-      //파일이미지.png
-      const ext = path.extname(file.originalname); //확장자 추출(.png)
-      const basename = path.basename(file.originalname, ext); //파일이미지
-      done(null, basename + "_" + new Date().getTime() + ext); //파일이미지1234849.png
+  storage: multerS3({
+    s3: new AWS.S3(),
+    bucket: "engword-s3", //버킷 이름
+    key(req, file, cb) {
+      cb(
+        null,
+        `original/userImg/${Date.now()}_${path.basename(file.originalname)}`
+      );
     },
   }),
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
@@ -103,8 +110,8 @@ router.post(
       { profileImg: req.file.filename },
       { where: { id: req.user.id } }
     );
-    res.json(req.file);
-    console.log("req.file", req.file);
+    res.json(req.file.location);
+    console.log("req.file", req.file.location);
   }
 );
 

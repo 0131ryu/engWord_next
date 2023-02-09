@@ -16,7 +16,6 @@ import FollowerModal from "./FollowerModal";
 import BlockFollowModal from "./BlockFollowModal";
 import { loadGameRequest } from "../redux/feature/gameSlice";
 import TodayChart from "./profile/TodayChart";
-import { backUrl } from "../config/config";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -117,7 +116,7 @@ const Profile = () => {
                         ) : (
                           <img
                             className="rounded-full h-40 w-40"
-                            src={`http://${backUrl}/userImg/${me.profileImg}`}
+                            src={`http://${me.profileImg}`}
                             alt={me.profileImg}
                           />
                         )}

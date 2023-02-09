@@ -13,7 +13,6 @@ import {
   loadBlockedRequest,
   loadBlockingRequest,
 } from "../redux/feature/userSlice";
-import { backUrl } from "../config/config";
 
 const BlockFollowModal = ({ setBlockFollowModal, blockInfo }) => {
   const dispatch = useDispatch();
@@ -109,7 +108,7 @@ const BlockFollowModal = ({ setBlockFollowModal, blockInfo }) => {
                                     <div className="flex-shrink-0">
                                       <img
                                         className="ml-2 w-8 h-8 rounded-full"
-                                        src={`http://${backUrl}/userImg/${block.profileImg}`}
+                                        src={`http://${block.profileImg}`}
                                         alt="Neil image"
                                       />
                                     </div>

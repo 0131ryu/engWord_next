@@ -1,7 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import { backUrl } from "../../config/config";
 
 const ImagesZoomModal = ({ showNum, showImg, images, onClose }) => {
   const [open, setOpen] = useState(true);
@@ -70,7 +69,7 @@ const ImagesZoomModal = ({ showNum, showImg, images, onClose }) => {
                               {mainImage ? (
                                 <img
                                   className="h-full w-full rounded-lg object-cover"
-                                  src={`http://${backUrl}/${showImg}`}
+                                  src={`http://${showImg}`}
                                   alt={showImg}
                                 />
                               ) : null}
@@ -87,7 +86,7 @@ const ImagesZoomModal = ({ showNum, showImg, images, onClose }) => {
                                       >
                                         <img
                                           className="h-full w-full rounded-lg object-cover"
-                                          src={`http://${backUrl}/${v.src}`}
+                                          src={`http://${v.src}`}
                                           alt={v?.src}
                                         />
                                       </li>

@@ -57,7 +57,7 @@ const CommentCard = ({ comment }) => {
             <div className="flex">
               <img
                 className="mt-2 h-8 w-8 rounded-full cursor-pointer"
-                src={`http://${comment.User.profileImg}`}
+                src={`${comment.User.profileImg}`}
                 alt={comment.profileImg}
               />
               <p className="p-2 m-1 font-bold text-xs">{comment.nickname}</p>

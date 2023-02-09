@@ -34,7 +34,7 @@ const upload = multer({
     key(req, file, cb) {
       cb(
         null,
-        `original/userImg/${Date.now()}_${path.basename(file.originalname)}`
+        `original/profileImg/${Date.now()}_${path.basename(file.originalname)}`
       );
     },
   }),
@@ -107,11 +107,12 @@ router.post(
   upload.single("image"),
   async (req, res, next) => {
     await User.update(
-      { profileImg: req.file.filename },
+      { profileImg: req.file.location },
       { where: { id: req.user.id } }
     );
     res.json(req.file.location);
-    console.log("req.file", req.file.location);
+    console.log("req.file", req.file);
+    console.log("req.file.location", req.file.location);
   }
 );
 

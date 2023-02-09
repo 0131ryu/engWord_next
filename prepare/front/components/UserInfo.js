@@ -31,7 +31,7 @@ const UserInfo = () => {
             ) : (
               <img
                 className="rounded-lg w-14 h-14 mt-2 ml-1"
-                src={`http://${me?.profileImg}`}
+                src={me?.profileImg}
                 alt={me?.profileImg}
               />
             )}

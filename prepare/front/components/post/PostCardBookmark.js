@@ -94,7 +94,7 @@ const PostCardBookmark = ({ post, index, me }) => {
                       <>
                         <img
                           className="h-8 w-8 rounded-full cursor-pointer"
-                          src={`http://${post.User?.profileImg}`}
+                          src={`${post.User?.profileImg}`}
                           alt={post.User?.profileImg}
                         />
                       </>
@@ -193,7 +193,7 @@ const PostCardBookmark = ({ post, index, me }) => {
                       <span className="mr-2">
                         <img
                           alt="profile-img"
-                          src={`http://${post.Retweet.User.profileImg}`}
+                          src={`${post.Retweet.User.profileImg}`}
                           className="h-8 w-8 rounded-full"
                         />
                       </span>
@@ -267,7 +267,7 @@ const PostCardBookmark = ({ post, index, me }) => {
                 ) : (
                   <img
                     className="h-8 w-8 rounded-full mt-6 mx-1"
-                    src={`http://${me.profileImg}`}
+                    src={`${me.profileImg}`}
                     alt={me.profileImg}
                   />
                 )}

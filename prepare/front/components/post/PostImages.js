@@ -23,7 +23,7 @@ const PostImages = ({ images }) => {
       <>
         <div className="flex justify-center cursor-pointer rounded-lg">
           <img
-            src={`http://${images[0]?.src}`}
+            src={`${images[0]?.src}`}
             alt={images[0]?.src}
             className="rounded-lg shadow-xl min-h-[50px]"
             onClick={onZoom(images[0]?.src, 0)}
@@ -45,14 +45,14 @@ const PostImages = ({ images }) => {
       <>
         <div className="cursor-pointer grid grid-cols-2 gap-x-2 gap-y-3">
           <img
-            src={`http://${images[0]?.src}`}
+            src={`${images[0]?.src}`}
             alt={images[0]?.src}
             className="rounded-lg shadow-xl min-h-full"
             onClick={onZoom(images[0]?.src, 0)}
           />
           <img
             id="image2"
-            src={`http://${images[1]?.src}`}
+            src={`${images[1]?.src}`}
             alt={images[0]?.src}
             className="rounded-lg shadow-xl min-h-full"
             onClick={onZoom(images[1]?.src, 1)}
@@ -75,21 +75,21 @@ const PostImages = ({ images }) => {
       <>
         <div className="cursor-pointer grid grid-cols-2 gap-x-2 gap-y-3">
           <img
-            src={`http://${images[0]?.src}`}
+            src={`${images[0]?.src}`}
             alt={images[0]?.src}
             className="rounded-lg shadow-xl min-h-full row-span-2"
             onClick={onZoom(images[0]?.src, 0)}
           />
 
           <img
-            src={`http://${images[1]?.src}`}
+            src={`${images[1]?.src}`}
             alt={images[1]?.src}
             className="rounded-lg shadow-xl min-h-full"
             onClick={onZoom(images[1]?.src, 1)}
           />
 
           <img
-            src={`http://${images[2]?.src}`}
+            src={`${images[2]?.src}`}
             alt={images[2]?.src}
             className="rounded-lg shadow-xl min-h-full"
             onClick={onZoom(images[2]?.src, 2)}
@@ -111,27 +111,27 @@ const PostImages = ({ images }) => {
       <>
         <div className="cursor-pointer grid grid-cols-2 gap-x-2 gap-y-3">
           <img
-            src={`http://${images[0]?.src}`}
+            src={`${images[0]?.src}`}
             alt={images[0]?.src}
             className="rounded-lg shadow-xl min-h-full"
             onClick={onZoom(images[0]?.src, 0)}
           />
 
           <img
-            src={`http://${images[1]?.src}`}
+            src={`${images[1]?.src}`}
             alt={images[1]?.src}
             className="rounded-lg shadow-xl min-h-full"
             onClick={onZoom(images[1]?.src, 1)}
           />
 
           <img
-            src={`http://${images[2]?.src}`}
+            src={`${images[2]?.src}`}
             alt={images[2]?.src}
             className="rounded-lg shadow-xl min-h-full"
             onClick={onZoom(images[2]?.src, 2)}
           />
           <img
-            src={`http://${images[3]?.src}`}
+            src={`${images[3]?.src}`}
             alt={images[3]?.src}
             className="rounded-lg shadow-xl min-h-full"
             onClick={onZoom(images[3]?.src, 3)}

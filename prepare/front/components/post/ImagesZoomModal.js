@@ -69,7 +69,7 @@ const ImagesZoomModal = ({ showNum, showImg, images, onClose }) => {
                               {mainImage ? (
                                 <img
                                   className="h-full w-full rounded-lg object-cover"
-                                  src={`http://${showImg}`}
+                                  src={`${showImg}`}
                                   alt={showImg}
                                 />
                               ) : null}
@@ -86,7 +86,7 @@ const ImagesZoomModal = ({ showNum, showImg, images, onClose }) => {
                                       >
                                         <img
                                           className="h-full w-full rounded-lg object-cover"
-                                          src={`http://${v.src}`}
+                                          src={`${v.src}`}
                                           alt={v?.src}
                                         />
                                       </li>

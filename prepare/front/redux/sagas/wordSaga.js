@@ -25,6 +25,15 @@ import {
   loadWordsRequest,
   loadWordsSuccess,
   loadWordsFailure,
+  loadEasyWordsRequest,
+  loadEasyWordsSuccess,
+  loadEasyWordsFailure,
+  loadMiddleWordsRequest,
+  loadMiddleWordsSuccess,
+  loadMiddleWordsFailure,
+  loadAdvanceWordsRequest,
+  loadAdvanceWordsSuccess,
+  loadAdvanceWordsFailure,
   loadCheckedRequest,
   loadCheckedSuccess,
   loadCheckedFailure,
@@ -167,6 +176,51 @@ function* loadWords(action) {
   }
 }
 
+function loadEasyWordsAPI(data) {
+  return axios.get(`/words/easy?lastId=${data || 0}`);
+}
+
+function* loadEasyWords(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(loadEasyWordsAPI, data);
+    yield put(loadEasyWordsSuccess(result.data));
+  } catch (error) {
+    yield put(loadEasyWordsFailure(error));
+    console.log(error);
+  }
+}
+
+function loadMiddleWordsAPI(data) {
+  return axios.get(`/words/middle?lastId=${data || 0}`);
+}
+
+function* loadMiddleWords(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(loadMiddleWordsAPI, data);
+    yield put(loadMiddleWordsSuccess(result.data));
+  } catch (error) {
+    yield put(loadMiddleWordsFailure(error));
+    console.log(error);
+  }
+}
+
+function loadAdvanceWordsAPI(data) {
+  return axios.get(`/words/advance?lastId=${data || 0}`);
+}
+
+function* loadAdvanceWords(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(loadAdvanceWordsAPI, data);
+    yield put(loadAdvanceWordsSuccess(result.data));
+  } catch (error) {
+    yield put(loadAdvanceWordsFailure(error));
+    console.log(error);
+  }
+}
+
 //loadChecked
 function loadCheckedAPI() {
   return axios.get("/words/checked");
@@ -230,6 +284,18 @@ function* load_Words_Req() {
   yield takeLatest(loadWordsRequest.type, loadWords);
 }
 
+function* load_EasyWords_Req() {
+  yield takeLatest(loadEasyWordsRequest.type, loadEasyWords);
+}
+
+function* load_MiddleWords_Req() {
+  yield takeLatest(loadMiddleWordsRequest.type, loadMiddleWords);
+}
+
+function* load_AdvanceWords_Req() {
+  yield takeLatest(loadAdvanceWordsRequest.type, loadAdvanceWords);
+}
+
 function* load_Checked_Req() {
   yield takeLatest(loadCheckedRequest.type, loadChecked);
 }
@@ -247,6 +313,9 @@ export const wordSagas = [
   fork(change_StatusAll_Req),
   fork(search_Word_Req),
   fork(load_Words_Req),
+  fork(load_EasyWords_Req),
+  fork(load_MiddleWords_Req),
+  fork(load_AdvanceWords_Req),
   fork(load_Checked_Req),
   fork(load_Words_Weekend_Req),
 ];

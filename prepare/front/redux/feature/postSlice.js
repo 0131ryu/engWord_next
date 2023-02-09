@@ -311,7 +311,7 @@ export const postSlice = createSlice({
     },
     uploadImagesSuccess: (state, action) => {
       const data = action.payload; //타입이 object
-      state.imagePaths = data;
+      state.imagePaths = state.imagePaths.concat(data);
       state.uploadImagesLoading = false;
       state.uploadImagesComplete = true;
     },

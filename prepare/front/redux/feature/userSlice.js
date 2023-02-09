@@ -294,7 +294,7 @@ export const userSlice = createSlice({
     },
     uploadProfileImageSuccess: (state, action) => {
       const data = action.payload;
-      state.imagePaths = data;
+      state.me.profileImg = data;
       state.uploadProfileImageLoading = false;
       state.uploadProfileImageComplete = true;
     },

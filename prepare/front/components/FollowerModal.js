@@ -112,7 +112,7 @@ const FollowerModal = ({ setFollowerModal, followersInfo, followingsInfo }) => {
                                     <div className="flex-shrink-0">
                                       <img
                                         className="ml-2 w-8 h-8 rounded-full"
-                                        src={`http://${follower.profileImg}`}
+                                        src={`${follower.profileImg}`}
                                         alt="Neil image"
                                       />
                                     </div>

@@ -21,6 +21,10 @@ const WordItem = ({ word, index }) => {
   const [bChecked, setBChecked] = useState(false);
 
   useEffect(() => {
+    console.log("word", word);
+  }, []);
+
+  useEffect(() => {
     if (word.status === "C") {
       setBChecked(true);
     } else if (word.status === "A") {
@@ -31,6 +35,7 @@ const WordItem = ({ word, index }) => {
   const onChangeReviseWord = useCallback(
     (editKor, editEng, editType) => () => {
       setEditMode(false);
+      console.log("editKor", editKor, "editEng", editEng, "editType", editType);
       dispatch(reviseWordRequest({ id: word.id, editEng, editKor, editType }));
     },
     []
@@ -156,7 +161,7 @@ const WordItem = ({ word, index }) => {
               </Menu.Items>
             </Transition>
           </Menu>
-          <div className="relative top-5 right-10 inline-block lg:ml-10 w-14">
+          <div className="relative top-5 right-16 inline-block lg:ml-10 w-20">
             <p className="text-center">{moment(word.createdAt).fromNow()}</p>
           </div>
         </div>

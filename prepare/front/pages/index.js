@@ -1,19 +1,82 @@
 import axios from "axios";
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import NavbarForm from "../components/NavbarForm";
 import WordForm from "../components/word/WordForm";
-import WordList from "../components/word/WordList";
 
 import { END } from "redux-saga";
 import wrapper from "../redux/store";
 
 import { loadMyInfoRequest } from "../redux/feature/userSlice";
-import { loadWordsRequest } from "../redux/feature/wordSlice";
+import {
+  loadAdvanceWordsRequest,
+  loadEasyWordsRequest,
+  loadMiddleWordsRequest,
+  loadWordsRequest,
+} from "../redux/feature/wordSlice";
+import WordChart from "../components/word/WordChart";
+import WordItem from "../components/word/WordItem";
+import { useInView } from "react-intersection-observer";
+import WordCheckbox from "../components/word/WordCheckbox";
 
 const Home = () => {
+  const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  const { addWordError, loadWordsError } = useSelector((state) => state.word);
+  const {
+    addWordError,
+    loadWordsError,
+    easyWordLists,
+    middleWordLists,
+    advanceWordLists,
+    hasMoreEasy,
+    hasMoreMiddle,
+    hasMoreAdvance,
+    loadEasyWordsLoading,
+    loadMiddleWordsLoading,
+    loadAdvanceWordsLoading,
+    wordLists,
+  } = useSelector((state) => state.word);
+  const [refAdvance, inViewAdvance] = useInView();
+  const [refEasy, inViewEasy] = useInView();
+  const [refMiddle, inViewMiddle] = useInView();
+
+  useEffect(() => {
+    if (inViewEasy && hasMoreEasy && !loadEasyWordsLoading) {
+      const lastId = easyWordLists[easyWordLists.length - 1]?.id;
+      dispatch(loadEasyWordsRequest(lastId));
+    }
+  }, [inViewEasy, hasMoreEasy, loadEasyWordsLoading, easyWordLists]);
+
+  useEffect(() => {
+    if (inViewMiddle && hasMoreMiddle && !loadMiddleWordsLoading) {
+      const lastId = middleWordLists[middleWordLists.length - 1]?.id;
+      dispatch(loadMiddleWordsRequest(lastId));
+    }
+  }, [inViewMiddle, hasMoreMiddle, loadMiddleWordsLoading, middleWordLists]);
+
+  useEffect(() => {
+    if (inViewAdvance && hasMoreAdvance && !loadAdvanceWordsLoading) {
+      const lastId = advanceWordLists[advanceWordLists.length - 1]?.id;
+      dispatch(loadAdvanceWordsRequest(lastId));
+    }
+  }, [
+    inViewAdvance,
+    hasMoreAdvance,
+    loadAdvanceWordsLoading,
+    advanceWordLists,
+  ]);
+
+  const easyLength = wordLists.filter((d) => d.type === "easy").length;
+  const middleLength = wordLists.filter((d) => d.type === "middle").length;
+  const advanceLength = wordLists.filter((d) => d.type === "advance").length;
+
+  useEffect(() => {
+    easyLength, middleLength, advanceLength;
+    // console.log("me", me);
+    console.log("easyWordLists", easyWordLists);
+    console.log("middleWordLists", middleWordLists);
+    console.log("advanceWordLists", advanceWordLists);
+  }, []);
 
   useEffect(() => {
     if (addWordError) {
@@ -31,7 +94,133 @@ const Home = () => {
     <>
       <NavbarForm>
         <WordForm UserId={me?.id} />
-        <WordList UserId={me?.id} />
+        <WordCheckbox me={me} />
+
+        {(easyLength !== 0 || middleLength !== 0 || advanceLength !== 0) &&
+          me?.id && (
+            <div className="flex justify-center relative bottom-10">
+              <WordChart
+                easyLength={easyLength}
+                middleLength={middleLength}
+                advanceLength={advanceLength}
+              />
+            </div>
+          )}
+
+        <div className="lg:w-full relative">
+          <div className="h-max mx-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-1">
+            {/* Easy start */}
+            <div className="bg-gray-100 group relative rounded-lg p-3 lg:w-80 lg:ml-10">
+              <div className="bg-white overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-md">
+                <div className={`${easyLength > 0 ? "h-full" : "h-40"}`}>
+                  <h1 className="text-slate-900 font-medium px-3 pt-2">
+                    🥉 Easy
+                  </h1>
+                </div>
+
+                {me?.id ? (
+                  easyWordLists.map((word, index) => {
+                    return <WordItem key={word.id} word={word} index={index} />;
+                  })
+                ) : (
+                  <div className="relative bottom-20 sm:600">
+                    <div className="bg-gray-100 h-3/5 rounded mx-1 flex py-5 mt-1 h-20">
+                      <div className="w-full mt-3 text-center h-10">
+                        <p className="text-sm font-bold text-slate-900">
+                          단어는 로그인 후 입력 가능합니다.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div
+                  ref={
+                    hasMoreEasy && !loadEasyWordsLoading ? refEasy : undefined
+                  }
+                  className="h-5"
+                />
+              </div>
+            </div>
+            {/* Easy end */}
+            {/* Middle start */}
+            <div className="bg-gray-100 group relative rounded-lg p-3 lg:w-80 lg:ml-10">
+              <div className="bg-white overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-md">
+                <div className={`${middleLength > 0 ? "h-full" : "h-40"}`}>
+                  <h1 className="text-slate-900 font-medium px-3 pt-2">
+                    🥈 Middle
+                  </h1>
+                </div>
+
+                {me ? (
+                  middleWordLists.map((word, index) => {
+                    return (
+                      <>
+                        <WordItem key={word.id} word={word} index={index} />
+                      </>
+                    );
+                  })
+                ) : (
+                  <div className="relative bottom-20 sm:600">
+                    <div className="bg-gray-100 h-3/5 rounded mx-1 flex py-5 mt-1 h-20">
+                      <div className="w-full mt-3 text-center h-10">
+                        <p className="text-sm font-bold text-slate-900">
+                          단어는 로그인 후 입력 가능합니다.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div
+                  ref={
+                    hasMoreMiddle && !loadMiddleWordsLoading
+                      ? refMiddle
+                      : undefined
+                  }
+                  className="h-5"
+                />
+              </div>
+            </div>
+            {/* Middle end */}
+            {/* Advance start */}
+            <div className="bg-gray-100 group relative rounded-lg p-3 lg:w-80 lg:ml-10">
+              <div className="bg-white overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-md">
+                <div className={`${advanceLength > 0 ? "h-full" : "h-40"}`}>
+                  <h1 className="text-slate-900 font-medium px-3 pt-2">
+                    🥇 Advance
+                  </h1>
+                </div>
+                {me ? (
+                  advanceWordLists.map((word, index) => {
+                    return (
+                      <>
+                        <WordItem key={word.id} word={word} index={index} />
+                      </>
+                    );
+                  })
+                ) : (
+                  <div className="relative bottom-20 sm:600">
+                    <div className="bg-gray-100 h-3/5 rounded mx-1 flex py-5 mt-1 h-20">
+                      <div className="w-full mt-3 text-center h-10">
+                        <p className="text-sm font-bold text-slate-900">
+                          단어는 로그인 후 입력 가능합니다.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div
+                  ref={
+                    hasMoreAdvance && !loadAdvanceWordsLoading
+                      ? refAdvance
+                      : undefined
+                  }
+                  className="h-5"
+                />
+              </div>
+            </div>
+            {/* Advance end */}
+          </div>
+        </div>
       </NavbarForm>
     </>
   );
@@ -48,6 +237,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
     context.store.dispatch(loadMyInfoRequest());
     if (cookie !== undefined) {
       context.store.dispatch(loadWordsRequest());
+      context.store.dispatch(loadEasyWordsRequest());
+      context.store.dispatch(loadMiddleWordsRequest());
+      context.store.dispatch(loadAdvanceWordsRequest());
     }
 
     context.store.dispatch(END);

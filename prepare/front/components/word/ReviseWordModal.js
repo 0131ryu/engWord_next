@@ -25,6 +25,9 @@ const ReviseWordModal = ({
   const type = selected.name;
 
   useEffect(() => {
+    console.log("showEng", showEng);
+    console.log("showKor", showKor);
+    console.log("showType", showType);
     if (showType === "middle") {
       setSelected(typesName[1]);
     } else if (showType === "advance") {

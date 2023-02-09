@@ -1,3 +1,4 @@
+const { S3Client } = require("@aws-sdk/client-s3");
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
@@ -30,7 +31,7 @@ const upload = multer({
     s3: s3,
     bucket: "engword-s3", //버킷 이름
     metadata: function (req, file, cb) {
-      cb(null, {fieldName: file.fieldname});
+      cb(null, { fieldName: file.fieldname });
     },
     key(req, file, cb) {
       cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`);

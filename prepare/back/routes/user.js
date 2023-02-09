@@ -1,3 +1,4 @@
+const { S3Client } = require("@aws-sdk/client-s3");
 const express = require("express");
 const bcrypt = require("bcrypt");
 const passport = require("passport");

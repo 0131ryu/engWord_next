@@ -1,6 +1,6 @@
 import axios from "axios";
+import Head from "next/head";
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import JoinForm from "../components/JoinForm";
 import NavbarForm from "../components/NavbarForm";
 import { useSelector } from "react-redux";
@@ -31,6 +31,23 @@ const signUp = () => {
   return (
     <div>
       <NavbarForm>
+        <Head>
+          <title>{`engWord 회원가입`}</title>
+          <meta
+            name="description"
+            content={`engWord에 회원가입을 하면 영단어 만들기, sns, 게임을 즐길 수 있습니다`}
+          />
+          <meta property="og:title" content={`engWord 회원가입`} />
+          <meta
+            property="og:description"
+            content="engWord에 회원가입을 하면 영단어 만들기, sns, 게임을 즐길 수 있습니다"
+          />
+          <meta
+            property="og:image"
+            content="https://engword.shop/favicon.ico"
+          />
+          <meta property="og:url" content={`https://engword.shop/signup`} />
+        </Head>
         {me || showSignUp ? <SuccessSignup me={me} /> : <JoinForm />}
       </NavbarForm>
     </div>

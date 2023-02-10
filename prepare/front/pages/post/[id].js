@@ -23,7 +23,7 @@ const Post = () => {
 
   return (
     <NavbarForm>
-      {/* <Head>
+      <Head>
         <title>{`title ${singlePost?.User.nickname}님의 글`}</title>
         <meta name="description" content={`${singlePost?.content}`} />
         <meta
@@ -40,7 +40,7 @@ const Post = () => {
           }
         />
         <meta property="og:url" content={`https://engword.shop/post/${id}`} />
-      </Head> */}
+      </Head>
 
       <div className="h-full mt-5">
         <div className="grid grid-cols-4 gap-6">

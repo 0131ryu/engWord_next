@@ -1,5 +1,6 @@
 import axios from "axios";
-import React, { useCallback, useEffect, useState } from "react";
+import Head from "next/head";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import NavbarForm from "../components/NavbarForm";
 import WordForm from "../components/word/WordForm";
@@ -72,10 +73,6 @@ const Home = () => {
 
   useEffect(() => {
     easyLength, middleLength, advanceLength;
-    // console.log("me", me);
-    console.log("easyWordLists", easyWordLists);
-    console.log("middleWordLists", middleWordLists);
-    console.log("advanceWordLists", advanceWordLists);
   }, []);
 
   useEffect(() => {
@@ -93,6 +90,26 @@ const Home = () => {
   return (
     <>
       <NavbarForm>
+        <Head>
+          <title>{`engWord에서 영어 단어, 만들어 봅시다!`}</title>
+          <meta
+            name="description"
+            content={`engWord에서 영어단어를 만들고, sns에 공유하고 게임을 즐기세요!`}
+          />
+          <meta
+            property="og:title"
+            content={`engWord에서 영어 단어, 만들어 봅시다!`}
+          />
+          <meta
+            property="og:description"
+            content="engWord에서 영어단어를 만들고, sns에 공유하고 게임을 즐기세요!"
+          />
+          <meta
+            property="og:image"
+            content="https://engword.shop/favicon.ico"
+          />
+          <meta property="og:url" content={`https://engword.shop/`} />
+        </Head>
         <WordForm UserId={me?.id} />
         <WordCheckbox me={me} />
 

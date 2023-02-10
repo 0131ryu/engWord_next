@@ -1,4 +1,5 @@
 import axios from "axios";
+import Head from "next/head";
 import React from "react";
 import { useSelector } from "react-redux";
 import StartModal from "../components/game/StartModal";
@@ -16,6 +17,26 @@ const game = () => {
   return (
     <>
       <NavbarForm>
+        <Head>
+          <title>{`등록한 영어단어로 게임을 즐겨보세요!`}</title>
+          <meta
+            name="description"
+            content={`engWord에서 만든 영어단어로 자신의 실력을 검증해볼까요?`}
+          />
+          <meta
+            property="og:title"
+            content={`등록한 영어단어로 게임을 즐겨보세요!`}
+          />
+          <meta
+            property="og:description"
+            content="engWord에서 만든 영어단어로 자신의 실력을 검증해볼까요?"
+          />
+          <meta
+            property="og:image"
+            content="https://engword.shop/favicon.ico"
+          />
+          <meta property="og:url" content={`https://engword.shop/game`} />
+        </Head>
         {me ? <StartModal UserId={me?.id} /> : <LoginForm />}
       </NavbarForm>
     </>

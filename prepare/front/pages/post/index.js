@@ -1,4 +1,5 @@
 import axios from "axios";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,6 +70,26 @@ const Index = () => {
   return (
     <>
       <NavbarForm>
+        <Head>
+          <title>{`서로의 영단어와 지식을 공유 해보세요!`}</title>
+          <meta
+            name="description"
+            content={`다른 사람들과 지식을 공유하고 꾸준히 학습하는 습관을 가져볼까요?`}
+          />
+          <meta
+            property="og:title"
+            content={`서로의 영단어와 지식을 공유 해보세요!`}
+          />
+          <meta
+            property="og:description"
+            content="다른 사람들과 지식을 공유하고 꾸준히 학습하는 습관을 가져볼까요?"
+          />
+          <meta
+            property="og:image"
+            content="https://engword.shop/favicon.ico"
+          />
+          <meta property="og:url" content={`https://engword.shop/post`} />
+        </Head>
         <div className="h-full mt-5">
           <div className="grid grid-cols-4 gap-6">
             <div className="col-span-1">

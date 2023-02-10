@@ -37,8 +37,9 @@ const PostCard = ({ post, index, me, routerQueryId }) => {
 
   const onRevisePost = useCallback(
     (editText) => () => {
-      const routerQueryId = post.id;
-      dispatch(revisePostRequest({ routerQueryId, editText }));
+      const postId = post.id;
+      console.log("postId", postId);
+      dispatch(revisePostRequest({ postId, editText }));
       setEditMode(false);
     },
     [id]

@@ -149,16 +149,28 @@ router.patch(
         return res.status(403).send("게시글이 존재하지 않습니다.");
       }
       if (req.files) {
-        const images = await Promise.all(
-          req.files.map((image) => Image.create({ src: image.filename }))
-        );
-        await post.addImages(images);
+        if (req.files.length === 1) {
+          //이미지 하나면 req.files[0].location
+          const image = await Image.create({
+            src: req.files[0].location,
+            PostId: req.body.id,
+          });
+          await post.addImages(image);
+        } else {
+          //이미지 여러개 올리면 map 이용
+          const images = await Promise.all(
+            req.files.map((image) =>
+              Image.create({ src: image.location, PostId: req.body.id })
+            )
+          );
+          await post.addImages(images);
+        }
       }
 
       const findImage = await Promise.all(
         req.files.map((image) =>
           Image.findOne({
-            where: { src: image.filename },
+            where: { src: image.location },
             attributes: {
               exclude: ["createdAt", "updatedAt"],
             },

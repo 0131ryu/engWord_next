@@ -1,4 +1,5 @@
 import axios from "axios";
+import Head from "next/head";
 import React from "react";
 import { useSelector } from "react-redux";
 import { END } from "redux-saga";
@@ -14,7 +15,26 @@ const profile = () => {
 
   return (
     <>
-      <NavbarForm>{me ? <Profile /> : <LoginForm />}</NavbarForm>
+      <NavbarForm>
+        <Head>
+          <title>{`engWord 내 정보`}</title>
+          <meta
+            name="description"
+            content={`내 정보에서는 닉네임 변경, 영단어 게임 결과, post 관련 정보를 확인할 수 있습니다.`}
+          />
+          <meta property="og:title" content={`engWord 내 정보`} />
+          <meta
+            property="og:description"
+            content="내 정보에서는 닉네임 변경, 영단어 게임 결과, post 관련 정보를 확인할 수 있습니다."
+          />
+          <meta
+            property="og:image"
+            content="https://engword.shop/favicon.ico"
+          />
+          <meta property="og:url" content={`https://engword.shop/profile`} />
+        </Head>
+        {me ? <Profile /> : <LoginForm />}
+      </NavbarForm>
     </>
   );
 };

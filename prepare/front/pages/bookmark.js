@@ -1,12 +1,7 @@
 import axios from "axios";
+import Head from "next/head";
 import { useRouter } from "next/router";
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { END } from "redux-saga";
 import { useInView } from "react-intersection-observer";
@@ -23,7 +18,6 @@ import wrapper from "../redux/store";
 const bookmark = () => {
   const dispatch = useDispatch();
   const [ref, inView] = useInView();
-  const [open, setOpen] = useState(true);
   const router = useRouter();
   const { me } = useSelector((state) => state.user);
   const { mainPosts, loadPostsLoading, hasMorePosts, retweetError } =
@@ -44,7 +38,6 @@ const bookmark = () => {
   }, [retweetError]);
 
   useEffect(() => {
-    console.log("mainPosts", mainPosts);
     if (inView && hasMorePosts && !loadPostsLoading) {
       const lastId = mainPosts[mainPosts.length - 1]?.id;
       dispatch(loadPostsRequest(lastId));
@@ -55,6 +48,17 @@ const bookmark = () => {
   return (
     <>
       <NavbarForm>
+        <Head>
+          <title>{`북마크한 게시글`}</title>
+          <meta name="description" content={`내가 북마크한 게시글`} />
+          <meta property="og:title" content={`북마크한 게시글`} />
+          <meta property="og:description" content="내가 북마크한 게시글" />
+          <meta
+            property="og:image"
+            content="https://engword.shop/favicon.ico"
+          />
+          <meta property="og:url" content={`https://engword.shop/bookmark`} />
+        </Head>
         {me && (
           <div className="h-full mt-5">
             <div className="grid grid-cols-4 gap-6">

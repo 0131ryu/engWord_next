@@ -24,7 +24,6 @@ const User = () => {
     (state) => state.post
   );
   const { userInfo, me } = useSelector((state) => state.user);
-  const postResult = mainPosts;
 
   useEffect(() => {
     if (hasMorePosts && !loadPostsLoading) {
@@ -48,7 +47,7 @@ const User = () => {
         />
         <meta property="og:description" content={userInfo?.content} />
         <meta property="og:image" content="https://engword.shop/favicon.ico" />
-        <meta property="og:url" content={`https://engword.shop/post/${id}`} />
+        <meta property="og:url" content={`https://engword.shop/user/${id}`} />
       </Head>
 
       <div className="h-full mt-5">

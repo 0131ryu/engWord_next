@@ -101,6 +101,7 @@ function revisePostAPI(data) {
 function* revisePost(action) {
   try {
     const data = action.payload;
+    console.log("data", data);
     const result = yield call(revisePostAPI, data);
     console.log("result", result);
     yield put(revisePostSuccess(result.data));

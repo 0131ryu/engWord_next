@@ -138,7 +138,7 @@ const PostForms = () => {
               </button>
               <img
                 className="w-10 h-10 lg:w-20 lg:h-20 rounded-lg"
-                src={v}
+                src={v.replace(/\/thumb\//, "/original/")}
                 alt={v}
               />
             </div>

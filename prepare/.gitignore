@@ -5,3 +5,4 @@ engWord.pem
 /front/node_modules
 /front/.next
 /front/.env
+/lambda/node_modules

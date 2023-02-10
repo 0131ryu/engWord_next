@@ -69,7 +69,10 @@ const ImagesZoomModal = ({ showNum, showImg, images, onClose }) => {
                               {mainImage ? (
                                 <img
                                   className="h-full w-full rounded-lg object-cover"
-                                  src={`${showImg}`}
+                                  src={`${showImg.replace(
+                                    /\/thumb\//,
+                                    "/original/"
+                                  )}`}
                                   alt={showImg}
                                 />
                               ) : null}
@@ -81,12 +84,14 @@ const ImagesZoomModal = ({ showNum, showImg, images, onClose }) => {
                                         className={`h-full w-full rounded-lg relative ${
                                           num === i ? null : "hidden"
                                         }`}
-                                        // className={`h-[50vh] relative`}
                                         key={v.id}
                                       >
                                         <img
                                           className="h-full w-full rounded-lg object-cover"
-                                          src={`${v.src}`}
+                                          src={`${v.src.replace(
+                                            /\/thumb\//,
+                                            "/original/"
+                                          )}`}
                                           alt={v?.src}
                                         />
                                       </li>

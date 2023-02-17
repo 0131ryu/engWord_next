@@ -65,6 +65,7 @@ app.use(
       httpOnly: true,
       secure: true, //https 적용 후 변경
       domain: process.env.NODE_ENV === "production" && ".engword.shop",
+      sameSite: "none",
     },
   })
 );

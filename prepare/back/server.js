@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(helmet());
   app.use(
     cors({
-      origin: ["http://localhost:3000", "http://engword.shop"],
+      origin: ["http://localhost:3000", "https://engword.shop"],
       credentials: true,
     })
   );
@@ -45,7 +45,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(morgan("dev"));
   app.use(
     cors({
-      origin: true, // "http://localhost:3000",
+      origin: true,
       credentials: true,
     })
   );
@@ -63,7 +63,7 @@ app.use(
     secret: process.env.COOKIE_SECRET,
     cookie: {
       httpOnly: true,
-      secure: false,
+      secure: true, //https 적용 후 변경
       domain: process.env.NODE_ENV === "production" && ".engword.shop",
     },
   })
@@ -86,6 +86,6 @@ app.use("/game", gameRouter);
 app.use("/games", gamesRouter);
 app.use("/hashtag", hashtagRouter);
 
-app.listen(80, (req, res) => {
+app.listen(3005, (req, res) => {
   console.log("The server is running at port 80");
 });

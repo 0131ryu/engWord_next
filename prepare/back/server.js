@@ -35,7 +35,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(morgan("combined"));
   app.use(hpp());
   app.use(helmet());
-  app.set("trust proxy", 1);
+
   app.use(
     cors({
       origin: ["http://localhost:3000", "https://engword.shop"],
@@ -54,6 +54,7 @@ if (process.env.NODE_ENV === "production") {
 
 passportConfig();
 
+app.set("trust proxy", 1);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -67,7 +68,7 @@ app.use(
       httpOnly: true,
       secure: true, //https 적용 후 변경
       domain: process.env.NODE_ENV === "production" && ".engword.shop",
-      sameSite: true,
+      sameSite: "strict",
     },
   })
 );

@@ -35,6 +35,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(morgan("combined"));
   app.use(hpp());
   app.use(helmet());
+  app.set("trust proxy", 1);
   app.use(
     cors({
       origin: ["http://localhost:3000", "https://engword.shop"],
@@ -56,7 +57,7 @@ passportConfig();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
-app.set("trust proxy", 1);
+
 app.use(
   session({
     saveUninitialized: false,

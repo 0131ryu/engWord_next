@@ -36,7 +36,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(hpp());
   app.use(helmet());
   app.set("trust proxy", true);
-  session.Cookie.secure = ture;
+  session.Cookie.secure = true;
   app.use(
     cors({
       // origin: ["http://localhost:3000", "https://engword.shop"],

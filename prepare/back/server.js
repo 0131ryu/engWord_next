@@ -36,7 +36,6 @@ if (process.env.NODE_ENV === "production") {
   app.use(hpp());
   app.use(helmet());
   app.set("trust proxy", true);
-  app.use("Access-Control-Allow-Credentials", true);
   app.use(
     cors({
       // origin: ["http://localhost:3000", "https://engword.shop"],

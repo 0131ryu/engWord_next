@@ -36,7 +36,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(hpp());
   app.use(helmet());
   app.set("trust proxy", true);
-  session.Cookie.secure = true;
+  app.use("Access-Control-Allow-Credentials", true);
   app.use(
     cors({
       // origin: ["http://localhost:3000", "https://engword.shop"],
@@ -69,7 +69,8 @@ app.use(
       httpOnly: true,
       secure: true, //https 적용 후 변경
       domain: process.env.NODE_ENV === "production" && ".engword.shop",
-      sameSite: "strict",
+      sameSite: "none",
+      maxAge: 8600000,
     },
   })
 );

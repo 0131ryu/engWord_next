@@ -3,19 +3,20 @@ const multer = require("multer");
 const path = require("path");
 const multerS3 = require("multer-s3");
 const AWS = require("aws-sdk");
-const fs = require("fs");
+// const fs = require("fs");
 
 const { Post, Image, Comment, User, Hashtag } = require("../models");
 const { isLoggedIn } = require("./middlewares");
 
 const router = express.Router();
 
-try {
-  fs.accessSync("uploads");
-} catch (error) {
-  console.log("uploads 폴더가 없으므로 새로 생성합니다.");
-  fs.mkdirSync("uploads");
-}
+//local에서 이미지 올릴 때 적용
+// try {
+//   fs.accessSync("uploads");
+// } catch (error) {
+//   console.log("uploads 폴더가 없으므로 새로 생성합니다.");
+//   fs.mkdirSync("uploads");
+// }
 
 AWS.config.update({
   accessKeyId: process.env.S3_ACCESS_KEY_ID,

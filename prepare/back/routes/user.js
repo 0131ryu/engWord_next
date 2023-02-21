@@ -3,7 +3,8 @@ const bcrypt = require("bcrypt");
 const passport = require("passport");
 const multer = require("multer");
 const { Op } = require("sequelize");
-const fs = require("fs");
+
+// const fs = require("fs");
 const path = require("path");
 const multerS3 = require("multer-s3");
 const AWS = require("aws-sdk");
@@ -13,12 +14,12 @@ const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 
 const router = express.Router();
 
-try {
-  fs.accessSync("uploads/userImg");
-} catch (error) {
-  console.log("uploads/userImg 폴더가 없으므로 새로 생성합니다.");
-  fs.mkdirSync("uploads/userImg");
-}
+// try {
+//   fs.accessSync("uploads/userImg");
+// } catch (error) {
+//   console.log("uploads/userImg 폴더가 없으므로 새로 생성합니다.");
+//   fs.mkdirSync("uploads/userImg");
+// }
 
 AWS.config.update({
   accessKeyId: process.env.S3_ACCESS_KEY_ID,

@@ -35,7 +35,8 @@ if (process.env.NODE_ENV === "production") {
   app.use(morgan("combined"));
   app.use(hpp());
   app.use(helmet());
-
+  app.set("trust proxy", true);
+  session.Cookie.secure = ture;
   app.use(
     cors({
       // origin: ["http://localhost:3000", "https://engword.shop"],
@@ -68,6 +69,7 @@ app.use(
       httpOnly: true,
       secure: true, //https 적용 후 변경
       domain: process.env.NODE_ENV === "production" && ".engword.shop",
+      sameSite: "strict",
     },
   })
 );

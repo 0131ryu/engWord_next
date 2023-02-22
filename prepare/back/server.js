@@ -66,8 +66,9 @@ app.use(
     proxy: true, //배포 시 추가
     cookie: {
       httpOnly: true,
-      secure: true, //https 적용 시 true
-      domain: process.env.NODE_ENV === "production" && ".engword.shop",
+      secure: process.env.NODE_ENV === "production" ? true : false, //https 적용 시 true
+      sameSite: process.env.NODE_ENV === "production" ? "none" : false,
+      // domain: process.env.NODE_ENV === "production" && ".engword.shop",
     },
   })
 );

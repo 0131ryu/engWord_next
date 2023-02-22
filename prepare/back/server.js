@@ -35,11 +35,10 @@ if (process.env.NODE_ENV === "production") {
   app.use(morgan("combined"));
   app.use(hpp());
   app.use(helmet());
-  app.set("trust proxy", true);
+  app.set("trust proxy", 1); //배포 시 추가
   app.use(
     cors({
-      // origin: ["http://localhost:3000", "https://engword.shop"],
-      origin: "https://engword.shop",
+      origin: "https://engword.shop", //local "http://localhost:3000"
       credentials: true,
     })
   );
@@ -64,12 +63,11 @@ app.use(
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
+    proxy: true, //배포 시 추가
     cookie: {
       httpOnly: true,
-      secure: true, //https 적용 후 변경
+      secure: true, //https 적용 시 true
       domain: process.env.NODE_ENV === "production" && ".engword.shop",
-      sameSite: "none",
-      maxAge: 8600000,
     },
   })
 );

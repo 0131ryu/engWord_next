@@ -1,10 +1,9 @@
 import axios from "axios";
 import Head from "next/head";
+import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import NavbarForm from "../components/NavbarForm";
-import WordForm from "../components/word/WordForm";
-
+import { useInView } from "react-intersection-observer";
 import { END } from "redux-saga";
 import wrapper from "../redux/store";
 
@@ -15,10 +14,12 @@ import {
   loadMiddleWordsRequest,
   loadWordsRequest,
 } from "../redux/feature/wordSlice";
-import WordChart from "../components/word/WordChart";
-import WordItem from "../components/word/WordItem";
-import { useInView } from "react-intersection-observer";
-import WordCheckbox from "../components/word/WordCheckbox";
+
+const WordChart = dynamic(import("../components/word/WordChart"));
+const WordItem = dynamic(import("../components/word/WordItem"));
+const WordCheckbox = dynamic(import("../components/word/WordCheckbox"));
+const NavbarForm = dynamic(import("../components/NavbarForm"));
+const WordForm = dynamic(import("../components/word/WordForm"));
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -42,21 +43,21 @@ const Home = () => {
   const [refMiddle, inViewMiddle] = useInView();
 
   useEffect(() => {
-    if (inViewEasy && hasMoreEasy && !loadEasyWordsLoading) {
+    if (me && inViewEasy && hasMoreEasy && !loadEasyWordsLoading) {
       const lastId = easyWordLists[easyWordLists.length - 1]?.id;
       dispatch(loadEasyWordsRequest(lastId));
     }
   }, [inViewEasy, hasMoreEasy, loadEasyWordsLoading, easyWordLists]);
 
   useEffect(() => {
-    if (inViewMiddle && hasMoreMiddle && !loadMiddleWordsLoading) {
+    if (me && inViewMiddle && hasMoreMiddle && !loadMiddleWordsLoading) {
       const lastId = middleWordLists[middleWordLists.length - 1]?.id;
       dispatch(loadMiddleWordsRequest(lastId));
     }
   }, [inViewMiddle, hasMoreMiddle, loadMiddleWordsLoading, middleWordLists]);
 
   useEffect(() => {
-    if (inViewAdvance && hasMoreAdvance && !loadAdvanceWordsLoading) {
+    if (me && inViewAdvance && hasMoreAdvance && !loadAdvanceWordsLoading) {
       const lastId = advanceWordLists[advanceWordLists.length - 1]?.id;
       dispatch(loadAdvanceWordsRequest(lastId));
     }
@@ -67,9 +68,9 @@ const Home = () => {
     advanceWordLists,
   ]);
 
-  const easyLength = wordLists.filter((d) => d.type === "easy").length;
-  const middleLength = wordLists.filter((d) => d.type === "middle").length;
-  const advanceLength = wordLists.filter((d) => d.type === "advance").length;
+  const easyLength = wordLists?.filter((d) => d.type === "easy").length;
+  const middleLength = wordLists?.filter((d) => d.type === "middle").length;
+  const advanceLength = wordLists?.filter((d) => d.type === "advance").length;
 
   useEffect(() => {
     easyLength, middleLength, advanceLength;
@@ -82,7 +83,7 @@ const Home = () => {
   }, [addWordError]);
 
   useEffect(() => {
-    if (loadWordsError) {
+    if (me && loadWordsError) {
       alert(loadWordsError);
     }
   }, [loadWordsError]);
@@ -111,7 +112,12 @@ const Home = () => {
           <meta property="og:url" content={`https://engword.shop/`} />
         </Head>
         <WordForm UserId={me?.id} />
-        <WordCheckbox me={me} />
+        <WordCheckbox
+          me={me}
+          easyLength={easyLength}
+          middleLength={middleLength}
+          advanceLength={advanceLength}
+        />
 
         {(easyLength !== 0 || middleLength !== 0 || advanceLength !== 0) &&
           me?.id && (
@@ -129,7 +135,9 @@ const Home = () => {
             {/* Easy start */}
             <div className="bg-gray-100 group relative rounded-lg p-3 lg:w-80 lg:ml-10">
               <div className="bg-white overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-md">
-                <div className={`${easyLength > 0 ? "h-full" : "h-40"}`}>
+                <div
+                  className={`${easyLength > 0 && me?.id ? "h-full" : "h-40"}`}
+                >
                   <h1 className="text-slate-900 font-medium px-3 pt-2">
                     🥉 Easy
                   </h1>
@@ -250,6 +258,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
     if (context.req && cookie) {
       axios.defaults.headers.Cookie = cookie;
     }
+
+    console.log("cookie", cookie);
 
     context.store.dispatch(loadMyInfoRequest());
     if (cookie !== undefined) {

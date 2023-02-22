@@ -68,7 +68,7 @@ app.use(
       httpOnly: true,
       secure: process.env.NODE_ENV === "production" ? true : false, //https 적용 시 true
       sameSite: process.env.NODE_ENV === "production" ? "none" : false,
-      // domain: process.env.NODE_ENV === "production" && ".engword.shop",
+      domain: process.env.NODE_ENV === "production" && ".engword.shop",
     },
   })
 );

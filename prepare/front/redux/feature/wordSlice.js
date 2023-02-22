@@ -65,7 +65,6 @@ export const wordSlice = createSlice({
     },
     addWordSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data", data);
       state.addWordLoading = false;
       state.addWordComplete = true;
       data.map((d) => {
@@ -95,7 +94,6 @@ export const wordSlice = createSlice({
       const data = action.payload;
       state.reviseWordLoading = false;
       state.reviseWordComplete = true;
-      console.log("data", data);
 
       const findRevise = state.wordLists.find((v) => v.id === data.id);
       if (findRevise) {
@@ -196,7 +194,6 @@ export const wordSlice = createSlice({
       const data = action.payload;
       state.removeWordLoading = false;
       state.removeWordComplete = true;
-      console.log("data", data);
 
       const findIndex = state.wordLists.findIndex((w) => w.id === data.id);
       state.wordLists.splice(findIndex, 1);
@@ -392,8 +389,6 @@ export const wordSlice = createSlice({
       const data = action.payload;
       state.loadEasyWordsLoading = false;
       state.loadEasyWordsComplete = true;
-      //전체 word
-      console.log("data", data);
       state.easyWordLists = state.easyWordLists.concat(data);
       state.hasMoreEasy = data.length === 3;
     },

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeStatusWordAllRequest } from "../../redux/feature/wordSlice";
 
-const WordCheckbox = ({ me }) => {
+const WordCheckbox = ({ me, easyLength, middleLength, advanceLength }) => {
   const dispatch = useDispatch();
   const [bChecked, setBChecked] = useState(false);
 
@@ -43,7 +43,9 @@ const WordCheckbox = ({ me }) => {
       <p>
         체크된 단어 개수 :
         <span className="font-bold text-light-orange ml-2">{showStatus}</span>
-        <span className="font-bold text-light-green">/{me?.Words?.length}</span>
+        <span className="font-bold text-light-green">
+          /{easyLength + middleLength + advanceLength}
+        </span>
       </p>
     </div>
   );

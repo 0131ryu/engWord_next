@@ -21,10 +21,6 @@ const WordItem = ({ word, index }) => {
   const [bChecked, setBChecked] = useState(false);
 
   useEffect(() => {
-    console.log("word", word);
-  }, []);
-
-  useEffect(() => {
     if (word.status === "C") {
       setBChecked(true);
     } else if (word.status === "A") {

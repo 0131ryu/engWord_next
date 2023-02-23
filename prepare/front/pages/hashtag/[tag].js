@@ -1,17 +1,19 @@
 import axios from "axios";
 import Head from "next/head";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { END } from "redux-saga";
 import { useInView } from "react-intersection-observer";
 
-import NavbarForm from "../../components/NavbarForm";
-import PostCard from "../../components/post/PostCard";
-import PostSearch from "../../components/post/PostSearch";
 import { loadHashtagPostsRequest } from "../../redux/feature/postSlice";
 import { loadMyInfoRequest } from "../../redux/feature/userSlice";
 import wrapper from "../../redux/store";
+
+const NavbarForm = dynamic(import("../../components/NavbarForm"));
+const PostCard = dynamic(import("../../components/post/PostCard"));
+const PostSearch = dynamic(import("../../components/post/PostSearch"));
 
 const Hashtag = () => {
   const dispatch = useDispatch();

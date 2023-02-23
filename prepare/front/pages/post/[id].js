@@ -1,15 +1,17 @@
 import axios from "axios";
 import Head from "next/head";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { useSelector } from "react-redux";
 import { END } from "redux-saga";
 
-import NavbarForm from "../../components/NavbarForm";
-import PostCard from "../../components/post/PostCard";
 import { loadPostRequest } from "../../redux/feature/postSlice";
 import { loadMyInfoRequest } from "../../redux/feature/userSlice";
 import wrapper from "../../redux/store";
+
+const NavbarForm = dynamic(import("../../components/NavbarForm"));
+const PostCard = dynamic(import("../../components/post/PostCard"));
 
 const Post = () => {
   const router = useRouter();

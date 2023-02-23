@@ -13,9 +13,7 @@ import GameForm from "./GameForm";
 import AlertModal from "./AlertModal";
 import StartWordList from "./StartWordList";
 
-const StartModal = ({ UserId }) => {
-  const { wordLists, checkedWordList } = useSelector((state) => state.word);
-
+const StartModal = ({ UserId, wordLists, checkedWordList }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [open, setOpen] = useState(true);

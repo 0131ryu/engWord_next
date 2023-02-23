@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  wordLists: [],
+  hasMoreWords: true,
   gameWordLists: [],
   gameResultLists: [],
   gameScoreLists: [],

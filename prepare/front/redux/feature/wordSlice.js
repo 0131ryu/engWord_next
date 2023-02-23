@@ -33,6 +33,9 @@ const initialState = {
   loadWordsLoading: false, //단어 가져오기
   loadWordsComplete: false,
   loadWordsError: null,
+  loadWordListsLoading: false, //게임에 필요한 단어정보들 가져오기
+  loadWordListsComplete: false,
+  loadWordListsError: null,
   loadEasyWordsLoading: false, //easy 가져오기
   loadEasyWordsComplete: false,
   loadEasyWordsError: null,
@@ -370,15 +373,31 @@ export const wordSlice = createSlice({
     },
     loadWordsSuccess: (state, action) => {
       const data = action.payload;
+      console.log("data", data);
       state.loadWordsLoading = false;
       state.loadWordsComplete = true;
-      //전체 word
-      state.wordLists.length = 0;
       state.wordLists = state.wordLists.concat(data);
     },
     loadWordsFailure: (state, action) => {
       state.loadWordsLoading = false;
       state.loadWordsError = action.payload.response.data;
+    },
+    loadWordListsRequest: (state) => {
+      state.loadWordListsLoading = true;
+      state.loadWordListsError = null;
+      state.loadWordListsComplete = false;
+    },
+    loadWordListsSuccess: (state, action) => {
+      const data = action.payload;
+      console.log("data", data);
+      state.loadWordListsLoading = false;
+      state.loadWordListsComplete = true;
+      state.wordLists = state.wordLists.concat(data);
+      state.hasMoreWords = data.length === 8;
+    },
+    loadWordListsFailure: (state, action) => {
+      state.loadWordListsLoading = false;
+      state.loadWordListsError = action.error;
     },
     loadEasyWordsRequest: (state) => {
       state.loadEasyWordsLoading = true;
@@ -494,6 +513,9 @@ export const {
   loadWordsRequest,
   loadWordsSuccess,
   loadWordsFailure,
+  loadWordListsRequest,
+  loadWordListsSuccess,
+  loadWordListsFailure,
   loadEasyWordsRequest,
   loadEasyWordsSuccess,
   loadEasyWordsFailure,

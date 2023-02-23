@@ -1,21 +1,25 @@
 import axios from "axios";
 import Head from "next/head";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { END } from "redux-saga";
 import { useInView } from "react-intersection-observer";
 
-import NavbarForm from "../../components/NavbarForm";
-import PostCard from "../../components/post/PostCard";
-import PostForms from "../../components/post/PostForms";
-import PostSearch from "../../components/post/PostSearch";
-import WeekendWordChart from "../../components/post/WeekendWordChart";
-import UserInfo from "../../components/UserInfo";
 import { loadPostsRequest } from "../../redux/feature/postSlice";
 import { loadMyInfoRequest } from "../../redux/feature/userSlice";
 import { loadWordsWeekendRequest } from "../../redux/feature/wordSlice";
 import wrapper from "../../redux/store";
+
+const NavbarForm = dynamic(import("../../components/NavbarForm"));
+const PostCard = dynamic(import("../../components/post/PostCard"));
+const PostForms = dynamic(import("../../components/post/PostForms"));
+const PostSearch = dynamic(import("../../components/post/PostSearch"));
+const WeekendWordChart = dynamic(
+  import("../../components/post/WeekendWordChart")
+);
+const UserInfo = dynamic(import("../../components/UserInfo"));
 
 const Index = () => {
   const dispatch = useDispatch();
@@ -59,11 +63,9 @@ const Index = () => {
   }, [bookmarkError]);
 
   useEffect(() => {
-    console.log("mainPosts", mainPosts);
     if (inView && hasMorePosts && !loadPostsLoading) {
       const lastId = mainPosts[mainPosts.length - 1]?.id;
       dispatch(loadPostsRequest(lastId));
-      console.log("lastId", lastId);
     }
   }, [inView, hasMorePosts, loadPostsLoading, mainPosts]);
 

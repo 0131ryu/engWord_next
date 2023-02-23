@@ -1,14 +1,15 @@
 import axios from "axios";
 import Head from "next/head";
+import dynamic from "next/dynamic";
 import React from "react";
 import { useSelector } from "react-redux";
 import { END } from "redux-saga";
-
-import NavbarForm from "../components/NavbarForm";
-import LoginForm from "../components/LoginForm";
-import Profile from "../components/Profile";
 import { loadMyInfoRequest } from "../redux/feature/userSlice";
 import wrapper from "../redux/store";
+
+const AlertLogin = dynamic(import("../components/AlertLogin"));
+const NavbarForm = dynamic(import("../components/NavbarForm"));
+const Profile = dynamic(import("../components/Profile"));
 
 const profile = () => {
   const { me } = useSelector((state) => state.user);
@@ -33,7 +34,7 @@ const profile = () => {
           />
           <meta property="og:url" content={`https://engword.shop/profile`} />
         </Head>
-        {me ? <Profile /> : <LoginForm />}
+        {me ? <Profile /> : <AlertLogin />}
       </NavbarForm>
     </>
   );

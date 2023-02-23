@@ -42,7 +42,7 @@ const StartWordList = ({ word, index }) => {
       <li className="my-2.5 flex w-[380px]">
         <div className="ml-2 w-1/2">
           <p className="text-sm font-medium text-slate-900 truncate">
-            ({index}) {word.english}
+            ({index + 1}) {word.english}
           </p>
         </div>
         <div className="ml-2 w-1/2">

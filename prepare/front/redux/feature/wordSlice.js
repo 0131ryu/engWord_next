@@ -392,7 +392,7 @@ export const wordSlice = createSlice({
       state.loadWordListsLoading = false;
       state.loadWordListsComplete = true;
       state.wordLists = state.wordLists.concat(data);
-      state.hasMoreWords = data.length === 8;
+      state.hasMoreWords = data.length === 10;
     },
     loadWordListsFailure: (state, action) => {
       state.loadWordListsLoading = false;

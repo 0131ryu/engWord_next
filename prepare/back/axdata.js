@@ -38,6 +38,8 @@ const axdata = async (wordName, callback) => {
     const obj = JSON.parse(xmlToJson);
     const word = obj.channel.item;
 
+    console.log("word", word);
+
     //없는 단어 입력 시
     if (word === undefined) {
       korean = wordName;
@@ -80,11 +82,19 @@ const axdata = async (wordName, callback) => {
           }
         } else if (word[0].sense !== undefined) {
           // //뜻이 여러 개인 경우(오늘, 내일)
-          korean_dfn = word[0].sense[0].definition._text;
-          english = word[0].sense[0].translation.trans_word._cdata;
-          english_dfn = word[0].sense[0].translation.trans_dfn._cdata;
-          ex_english = word[0].sense[1].translation.trans_word._cdata;
-          ex_english_dfn = word[0].sense[0].translation.trans_dfn._cdata;
+          if (word[0].sense[0] === undefined) {
+            korean_dfn = word[0].sense.definition._text;
+            english = word[0].sense.translation.trans_word._cdata;
+            english_dfn = word[0].sense.translation.trans_dfn._cdata;
+            ex_english = "";
+            ex_english_dfn = "";
+          } else if (word[0].sense[0] !== undefined) {
+            korean_dfn = word[0].sense[0].definition._text;
+            english = word[0].sense[0].translation.trans_word._cdata;
+            english_dfn = word[0].sense[0].translation.trans_dfn._cdata;
+            ex_english = word[0].sense[1].translation.trans_word._cdata;
+            ex_english_dfn = word[0].sense[0].translation.trans_dfn._cdata;
+          }
         }
       } else if (word.sense.length !== undefined && word.length > 1) {
         //단어도 뜻도 여러 개인 경우(사과)

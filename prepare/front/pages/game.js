@@ -58,7 +58,6 @@ const game = () => {
   }, [inView, hasMoreWords, wordLists, loadWordsLoading]);
 
   useEffect(() => {
-    dispatch(loadWordListsRequest());
     dispatch(loadCheckedRequest());
   }, []);
 

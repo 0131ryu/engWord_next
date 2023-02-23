@@ -186,6 +186,7 @@ function loadWordListsAPI(data) {
 function* loadWordLists(action) {
   try {
     const data = action.payload;
+    console.log("data", data);
     const result = yield call(loadWordListsAPI, data);
     yield put(loadWordListsSuccess(result.data));
   } catch (error) {

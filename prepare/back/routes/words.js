@@ -9,12 +9,6 @@ const router = express.Router();
 //개별 유저들의 전체 단어들
 router.get("/", isLoggedIn, async (req, res, next) => {
   try {
-    // const where = { UserId: req.user.id };
-    // if (parseInt(req.query.lastId, 10)) {
-    //   // 초기 로딩이 아닐 때
-    //   where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
-    // }
-
     const words = await Word.findAll({
       //모든 게시글 가져옴
       where: { UserId: req.user.id },
@@ -34,7 +28,7 @@ router.get("/", isLoggedIn, async (req, res, next) => {
     if (!words) {
       return res.status(500).send("로그인을 다시 한 번 확인하세요");
     }
-    console.log(words);
+    console.log("Result", words);
     res.status(200).json(words);
   } catch (error) {
     console.error(error);
@@ -175,6 +169,41 @@ router.get("/weekend", async (req, res, next) => {
         ],
       },
     });
+    res.status(200).json(words);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.get("/game", isLoggedIn, async (req, res, next) => {
+  try {
+    const where = { UserId: req.user.id };
+    if (parseInt(req.query.lastId, 10)) {
+      // 초기 로딩이 아닐 때
+      where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
+    }
+    const words = await Word.findAll({
+      //모든 게시글 가져옴
+      where,
+      limit: 8,
+      order: [
+        ["createdAt", "DESC"], //최신 게시글부터
+      ],
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
+      include: [
+        {
+          model: User,
+          attributes: ["id"],
+        },
+      ],
+    });
+    if (!words) {
+      return res.status(500).send("로그인을 다시 한 번 확인하세요");
+    }
+    console.log("Result", words);
     res.status(200).json(words);
   } catch (error) {
     console.error(error);

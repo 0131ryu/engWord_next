@@ -30,7 +30,7 @@ const StartWordList = ({ word, index }) => {
   }, []);
 
   return (
-    <div className="bg-white m-1 pt-1 flex h-12 w-80 shadow-md shadow-black-500/40 rounded-md">
+    <div className="bg-white m-1 pt-1 flex h-12 w-[420px] shadow-md shadow-black-500/40 rounded-md">
       <input
         checked={bChecked}
         onChange={onChangeSelected}
@@ -39,12 +39,14 @@ const StartWordList = ({ word, index }) => {
         type="checkbox"
         className="accent-light-green mt-3 ml-2 h-4 w-4 rounded cursor-pointer"
       />
-      <li className="my-2.5 flex">
-        <div className="flex ml-2">
-          <p className="text-sm font-medium text-slate-900  w-32 truncate">
-            ({index}) {word.english} ({word.status})
+      <li className="my-2.5 flex w-[380px]">
+        <div className="ml-2 w-1/2">
+          <p className="text-sm font-medium text-slate-900 truncate">
+            ({index}) {word.english}
           </p>
-          <p className="ml-3 text-sm font-medium text-slate-900 w-32 truncate">
+        </div>
+        <div className="ml-2 w-1/2">
+          <p className="text-sm font-medium text-slate-900  truncate">
             뜻: {word.korean}
           </p>
         </div>

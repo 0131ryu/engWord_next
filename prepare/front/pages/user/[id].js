@@ -1,19 +1,21 @@
 import axios from "axios";
 import Head from "next/head";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { END } from "redux-saga";
 
-import NavbarForm from "../../components/NavbarForm";
-import PostCard from "../../components/post/PostCard";
-import UserInfo from "../../components/UserInfo";
 import { loadUserPostsRequest } from "../../redux/feature/postSlice";
 import {
   loadMyInfoRequest,
   loadUserRequest,
 } from "../../redux/feature/userSlice";
 import wrapper from "../../redux/store";
+
+const NavbarForm = dynamic(import("../../components/NavbarForm"));
+const PostCard = dynamic(import("../../components/post/PostCard"));
+const UserInfo = dynamic(import("../../components/UserInfo"));
 
 const User = () => {
   const dispatch = useDispatch();

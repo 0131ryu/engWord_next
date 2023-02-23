@@ -1,14 +1,16 @@
 import axios from "axios";
 import Head from "next/head";
+import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
-import JoinForm from "../components/JoinForm";
-import NavbarForm from "../components/NavbarForm";
 import { useSelector } from "react-redux";
-import SuccessSignup from "../components/SuccessSignup";
 
 import { END } from "redux-saga";
 import wrapper from "../redux/store";
 import { loadMyInfoRequest } from "../redux/feature/userSlice";
+
+const JoinForm = dynamic(import("../components/JoinForm"));
+const NavbarForm = dynamic(import("../components/NavbarForm"));
+const SuccessSignup = dynamic(import("../components/SuccessSignup"));
 
 const signUp = () => {
   const [showSignUp, setShowSignUp] = useState(false);

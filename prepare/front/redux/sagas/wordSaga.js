@@ -25,6 +25,9 @@ import {
   loadWordsRequest,
   loadWordsSuccess,
   loadWordsFailure,
+  loadWordListsRequest,
+  loadWordListsSuccess,
+  loadWordListsFailure,
   loadEasyWordsRequest,
   loadEasyWordsSuccess,
   loadEasyWordsFailure,
@@ -176,6 +179,21 @@ function* loadWords(action) {
   }
 }
 
+function loadWordListsAPI(data) {
+  return axios.get(`/words/game?lastId=${data || 0}`);
+}
+
+function* loadWordLists(action) {
+  try {
+    const data = action.payload;
+    const result = yield call(loadWordListsAPI, data);
+    yield put(loadWordListsSuccess(result.data));
+  } catch (error) {
+    yield put(loadWordListsFailure(error));
+    console.log(error);
+  }
+}
+
 function loadEasyWordsAPI(data) {
   return axios.get(`/words/easy?lastId=${data || 0}`);
 }
@@ -284,6 +302,10 @@ function* load_Words_Req() {
   yield takeLatest(loadWordsRequest.type, loadWords);
 }
 
+function* load_WordLists_Req() {
+  yield takeLatest(loadWordListsRequest.type, loadWordLists);
+}
+
 function* load_EasyWords_Req() {
   yield takeLatest(loadEasyWordsRequest.type, loadEasyWords);
 }
@@ -313,6 +335,7 @@ export const wordSagas = [
   fork(change_StatusAll_Req),
   fork(search_Word_Req),
   fork(load_Words_Req),
+  fork(load_WordLists_Req),
   fork(load_EasyWords_Req),
   fork(load_MiddleWords_Req),
   fork(load_AdvanceWords_Req),

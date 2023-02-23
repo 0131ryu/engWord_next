@@ -68,9 +68,9 @@ const Home = () => {
     advanceWordLists,
   ]);
 
-  const easyLength = wordLists?.filter((d) => d.type === "easy").length;
-  const middleLength = wordLists?.filter((d) => d.type === "middle").length;
-  const advanceLength = wordLists?.filter((d) => d.type === "advance").length;
+  const easyLength = wordLists.filter((d) => d.type === "easy").length;
+  const middleLength = wordLists.filter((d) => d.type === "middle").length;
+  const advanceLength = wordLists.filter((d) => d.type === "advance").length;
 
   useEffect(() => {
     easyLength, middleLength, advanceLength;

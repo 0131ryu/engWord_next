@@ -42,7 +42,9 @@ const WordCheckbox = ({ me, easyLength, middleLength, advanceLength }) => {
       </div>
       <p>
         체크된 단어 개수 :
-        <span className="font-bold text-light-orange ml-2">{showStatus}</span>
+        <span className="font-bold text-light-orange ml-2">
+          {bChecked ? easyLength + middleLength + advanceLength : showStatus}
+        </span>
         <span className="font-bold text-light-green">
           /{easyLength + middleLength + advanceLength}
         </span>

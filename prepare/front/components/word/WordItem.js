@@ -11,6 +11,7 @@ import {
 } from "../../redux/feature/wordSlice";
 import moment from "moment";
 import "moment/locale/ko";
+import { loadMyInfoRequest } from "../../redux/feature/userSlice";
 
 const WordItem = ({ word, index }) => {
   const dispatch = useDispatch();
@@ -26,12 +27,12 @@ const WordItem = ({ word, index }) => {
     } else if (word.status === "A") {
       setBChecked(false);
     }
+    loadMyInfoRequest();
   }, [word.status]);
 
   const onChangeReviseWord = useCallback(
     (editKor, editEng, editType) => () => {
       setEditMode(false);
-      console.log("editKor", editKor, "editEng", editEng, "editType", editType);
       dispatch(reviseWordRequest({ id: word.id, editEng, editKor, editType }));
     },
     []

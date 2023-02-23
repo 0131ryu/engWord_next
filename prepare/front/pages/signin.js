@@ -1,14 +1,16 @@
 import axios from "axios";
 import Head from "next/head";
+import dynamic from "next/dynamic";
 import React from "react";
-import LoginForm from "../components/LoginForm";
-import SuccessLogin from "../components/SuccessLogin";
-import NavbarForm from "../components/NavbarForm";
 import { END } from "redux-saga";
 import wrapper from "../redux/store";
 
 import { useSelector } from "react-redux";
 import { loadMyInfoRequest } from "../redux/feature/userSlice";
+
+const LoginForm = dynamic(import("../components/LoginForm"));
+const SuccessLogin = dynamic(import("../components/SuccessLogin"));
+const NavbarForm = dynamic(import("../components/NavbarForm"));
 
 const signIn = () => {
   const { me, loginComplete } = useSelector((state) => state.user);

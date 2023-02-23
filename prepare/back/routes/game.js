@@ -1,6 +1,6 @@
 const express = require("express");
-const { sequelize, Op } = require("sequelize");
-const { Game, User, Result } = require("../models");
+const { Op } = require("sequelize");
+const { Game, Result } = require("../models");
 const { isLoggedIn } = require("./middlewares");
 
 const router = express.Router();

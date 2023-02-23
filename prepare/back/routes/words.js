@@ -176,9 +176,11 @@ router.get("/weekend", async (req, res, next) => {
   }
 });
 
+// router.get("/game", async (req, res, next) => {
 router.get("/game", isLoggedIn, async (req, res, next) => {
   try {
     const where = { UserId: req.user.id };
+    // const where = { UserId: 1 };
     if (parseInt(req.query.lastId, 10)) {
       // 초기 로딩이 아닐 때
       where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
@@ -186,7 +188,7 @@ router.get("/game", isLoggedIn, async (req, res, next) => {
     const words = await Word.findAll({
       //모든 게시글 가져옴
       where,
-      limit: 8,
+      limit: 10,
       order: [
         ["createdAt", "DESC"], //최신 게시글부터
       ],
@@ -203,7 +205,6 @@ router.get("/game", isLoggedIn, async (req, res, next) => {
     if (!words) {
       return res.status(500).send("로그인을 다시 한 번 확인하세요");
     }
-    console.log("Result", words);
     res.status(200).json(words);
   } catch (error) {
     console.error(error);

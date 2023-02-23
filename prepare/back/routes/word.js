@@ -163,12 +163,18 @@ router.get("/search/:word", async (req, res, next) => {
 
 //API로 단어 검색
 router.get("/:korean", async (req, res, next) => {
-  await axdata(req.params.korean, (error, { wordLists } = {}) => {
-    if (error) {
-      res.send(error);
+  const result = await axdata(
+    req.params.korean,
+    (error, { wordLists } = {}) => {
+      if (error) {
+        res.send(error);
+      }
+      res.send(wordLists);
     }
-    res.send(wordLists);
-  });
+  );
+  if (result) {
+    return res.status(404).send("검색한 단어를 찾을 수 없습니다.");
+  }
 });
 
 module.exports = router;

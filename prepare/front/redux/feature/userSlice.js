@@ -220,8 +220,6 @@ export const userSlice = createSlice({
     },
     blockfollowSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data.blockingUser", data.blockingUser);
-      console.log("data.blockedUser", data.blockedUser);
       state.blockfollowLoading = false;
       state.blockfollowComplete = true;
       //내 팔로워 목록에서 줄어들음
@@ -275,7 +273,6 @@ export const userSlice = createSlice({
     },
     cancleBlockSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data", data);
       state.cancleBlockLoading = false;
       state.cancleBlockComplete = true;
       state.me.Blockings = state.me.Blockings.filter(

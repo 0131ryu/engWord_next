@@ -101,9 +101,7 @@ function revisePostAPI(data) {
 function* revisePost(action) {
   try {
     const data = action.payload;
-    console.log("data", data);
     const result = yield call(revisePostAPI, data);
-    console.log("result", result);
     yield put(revisePostSuccess(result.data));
   } catch (err) {
     console.error(err);
@@ -117,9 +115,7 @@ function addCommentAPI(data) {
 
 function* addComment(action) {
   try {
-    console.log("action.payload", action.payload);
     const result = yield call(addCommentAPI, action.payload);
-    console.log("result", result);
     yield put(addCommentSuccess(result.data));
   } catch (err) {
     console.error(err);
@@ -180,7 +176,6 @@ function loadPostAPI(data) {
 function* loadPost(action) {
   try {
     const data = action.payload;
-    console.log("data", data);
     const result = yield call(loadPostAPI, data);
     yield put(loadPostSuccess(result.data));
   } catch (error) {
@@ -231,11 +226,9 @@ function loadSearchPostsAPI(data, lastId) {
 
 function* loadSearchPosts(action) {
   try {
-    console.log("action.payload", action.payload);
     const data = action.payload.data;
     const lastId = action.payload?.lastId;
     const result = yield call(loadSearchPostsAPI, data, lastId);
-    console.log("result.data", result.data);
     yield put(loadSearchPostsSuccess(result.data));
   } catch (error) {
     yield put(loadSearchPostsFailure(error));
@@ -326,9 +319,7 @@ function retweetAPI(data) {
 function* retweet(action) {
   try {
     const data = action.payload;
-    console.log("data", data);
     const result = yield call(retweetAPI, data);
-    console.log("result.data", result.data);
     yield put(retweetSuccess(result.data));
   } catch (error) {
     yield put(retweetFailure(error));
@@ -357,7 +348,6 @@ function unbookmarkAPI(data) {
 function* unbookmark(action) {
   try {
     const data = action.payload;
-    console.log("data", data);
     const result = yield call(unbookmarkAPI, data);
     yield put(unbookmarkSuccess(result.data));
   } catch (error) {

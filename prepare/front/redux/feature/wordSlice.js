@@ -373,7 +373,6 @@ export const wordSlice = createSlice({
     },
     loadWordsSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data", data);
       state.loadWordsLoading = false;
       state.loadWordsComplete = true;
       state.wordLists = state.wordLists.concat(data);

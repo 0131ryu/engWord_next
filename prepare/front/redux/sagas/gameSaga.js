@@ -29,7 +29,6 @@ function* findHint(action) {
   try {
     const data = action.payload;
     const response = yield call(findHintAPI, data);
-    console.log("response.data", response.data);
     yield put(findHintSuccess(response.data));
   } catch (error) {
     yield put(findHintError(error));
@@ -58,9 +57,7 @@ function addResultGameAPI(data) {
 function* addResultGame(action) {
   try {
     const data = action.payload;
-    // console.log("data", data);
     const result = yield call(addResultGameAPI, data);
-    // console.log("result.data", result.data);
     yield put(addResultGameSuccess(result.data));
   } catch (error) {
     yield put(addResultGameError(error));
@@ -107,10 +104,8 @@ function addScoreAPI(data) {
 function* addScore(action) {
   try {
     const data = action.payload;
-    console.log("data", data);
     const result = yield call(addScoreAPI, data);
-    console.log("result.data", result.data);
-    // yield put(addScoreSuccess(result.data));
+    yield put(addScoreSuccess(result.data));
   } catch (error) {
     yield put(addScoreFailure(error));
     console.log(error);

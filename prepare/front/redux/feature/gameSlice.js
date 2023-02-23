@@ -40,7 +40,6 @@ export const gameSlice = createSlice({
     },
     startGameSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data", data);
       state.startGameLoading = false;
       state.startGameComplete = true;
       state.gameWordLists.length = 0;
@@ -59,7 +58,6 @@ export const gameSlice = createSlice({
     findHintSuccess: (state, action) => {
       state.findHintLoading = false;
       state.findHintComplete = true;
-      console.log(action.payload);
       if (state.HintLists.length > 0) {
         state.HintLists.length = 0;
       }
@@ -126,7 +124,6 @@ export const gameSlice = createSlice({
     },
     addScoreSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data", data);
       state.addScoreLoading = false;
       state.addScoreComplete = true;
       state.gameScore.length = 0;

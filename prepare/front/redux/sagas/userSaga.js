@@ -85,9 +85,7 @@ function* signUp(action) {
   try {
     const data = action.payload;
     const result = yield call(signUpAPI, data);
-    console.log("result", result);
     yield put(signupSuccess());
-    // yield call(signupSuccess, data);
   } catch (error) {
     yield put(signupFailure(error));
   }
@@ -116,7 +114,6 @@ function* loadUser(action) {
   try {
     const data = action.payload;
     const result = yield call(loadUserAPI, data);
-    console.log("result.data", result.data);
     yield put(loadUserSuccess(result.data));
   } catch (error) {
     yield put(loadUserFailure(error));
@@ -132,7 +129,6 @@ function* changeNickname(action) {
   try {
     const data = action.payload;
     const result = yield call(changeNicknameAPI, data);
-    // console.log("result", result);
     yield put(changeNicknameSuccess(result.data));
   } catch (error) {
     yield put(changeNicknameFailure(error));
@@ -147,7 +143,6 @@ function followAPI(data) {
 function* follow(action) {
   try {
     const data = action.payload;
-    console.log("data", data);
     const result = yield call(followAPI, data);
     yield put(followSuccess(result.data));
   } catch (error) {
@@ -178,7 +173,6 @@ function loadFollowersAPI(data) {
 function* loadFollowers(action) {
   try {
     const data = action.payload;
-    console.log("data", data);
     const result = yield call(loadFollowersAPI, data);
     yield put(loadFollowersSuccess(result.data));
   } catch (error) {

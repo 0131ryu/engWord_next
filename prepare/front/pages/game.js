@@ -195,15 +195,6 @@ const game = () => {
           />
           <meta property="og:url" content={`https://engword.shop/game`} />
         </Head>
-        {/* {me ? (
-          <StartModal
-            UserId={me?.id}
-            wordLists={wordLists}
-            checkedWordList={checkedWordList}
-          />
-        ) : (
-          <LoginForm />
-        )} */}
         {alert ? (
           <AlertModal setAlert={setAlert} words={checkedWordList.length} />
         ) : null}

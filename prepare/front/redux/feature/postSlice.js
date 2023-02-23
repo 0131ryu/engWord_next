@@ -91,7 +91,6 @@ export const postSlice = createSlice({
     },
     removePostSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data", data);
       state.removePostLoading = false;
       state.removePostComplete = true;
       state.mainPosts = state.mainPosts.filter((v) => v.id !== data.PostId);
@@ -108,7 +107,6 @@ export const postSlice = createSlice({
     },
     revisePostSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data", data);
       state.revisePostLoading = false;
       state.revisePostComplete = true;
       state.mainPosts.find((v) => v.id === data.PostId).content = data.content;
@@ -126,8 +124,6 @@ export const postSlice = createSlice({
     },
     addCommentSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data", data);
-      state.mainPosts.find((v) => console.log("v.id", v.id));
       const post = state.mainPosts.find((v) => v.id === data.PostId);
       post.Comments.unshift(data);
       state.addCommentLoading = false;
@@ -145,7 +141,6 @@ export const postSlice = createSlice({
     },
     removeCommentSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data", data);
       state.removeCommentLoading = false;
       state.removeCommentComplete = true;
       const filteredData = (list) => {
@@ -170,7 +165,6 @@ export const postSlice = createSlice({
     },
     reviseCommentSuccess: (state, action) => {
       const data = action.payload.findComment;
-      console.log("data", data); //id, content, PostId
       state.reviseCommentLoading = false;
       state.reviseCommentComplete = true;
 
@@ -349,7 +343,6 @@ export const postSlice = createSlice({
     },
     reviseImageSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data", data);
       const addData = (list) => {
         list.forEach((post) => {
           if (post.id === data.PostId) {
@@ -395,9 +388,6 @@ export const postSlice = createSlice({
     },
     bookmarkSuccess: (state, action) => {
       const data = action.payload;
-      console.log("data", data);
-      // state.singlePost.find((v) => console.log("v.id", v.id));
-      // state.mainPosts.find((v) => console.log("v.id", v.id));
       const post = state.mainPosts.find((v) => v.id === data.PostId);
       post.Bookmarks.push({ id: data.UserId });
       state.bookmarkLoading = false;
@@ -414,9 +404,6 @@ export const postSlice = createSlice({
     },
     unbookmarkSuccess: (state, action) => {
       const data = action.payload;
-      console.log("unbookmark data", data);
-      // state.singlePost.find((v) => console.log("v.id", v.id));
-      // state.mainPosts.find((v) => console.log("v.id", v.id));
       const post = state.mainPosts.find((v) => v.id === data.PostId);
       post.Bookmarks = post.Bookmarks.filter((v) => v.id !== data.UserId);
       state.unbookmarkLoading = false;

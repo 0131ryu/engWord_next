@@ -1,11 +1,12 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { LockOpenIcon } from "@heroicons/react/20/solid";
 import { BookmarkIcon } from "@heroicons/react/24/outline";
 
 import useInput from "../hooks/useInput";
 import { useDispatch, useSelector } from "react-redux";
 import { signupRequest } from "../redux/feature/userSlice";
-import SuccessSignup from "./SuccessSignup";
+
+import { emailRule, passwordRule, nicknameRule } from "../config/regRule";
 
 const JoinForm = () => {
   const dispatch = useDispatch();
@@ -16,13 +17,39 @@ const JoinForm = () => {
 
   const [passwordCheck, setPasswordCheck] = useState("");
   const [term, setTerm] = useState(false);
+
   const [passwordError, setPasswordError] = useState(false);
   const [termError, setTermError] = useState(false);
 
-  const emailRule =
-    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-  const passwordRule = /^[A-Za-z0-9]{6,12}$/;
-  const nicknameRule = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/;
+  const userRef = useRef();
+
+  const [validEmail, setValidEmail] = useState(false);
+  const [validNickname, setValidNickname] = useState(false);
+  const [validPassword, setValidPassword] = useState(false);
+
+  useEffect(() => {
+    userRef.current.focus();
+  }, []);
+
+  useEffect(() => {
+    const result = emailRule.test(email);
+    setValidEmail(result);
+  }, [email]);
+
+  useEffect(() => {
+    const result = nicknameRule.test(nickname);
+    setValidNickname(result);
+  }, [nickname]);
+
+  useEffect(() => {
+    const result = nicknameRule.test(nickname);
+    setValidNickname(result);
+  }, [password]);
+
+  useEffect(() => {
+    const result = passwordRule.test(password);
+    setValidPassword(result);
+  }, [password]);
 
   const onChangePasswordCheck = useCallback(
     (e) => {
@@ -41,7 +68,8 @@ const JoinForm = () => {
     if (
       !emailRule.test(email) ||
       !passwordRule.test(password) ||
-      !nicknameRule.test(nickname)
+      !nicknameRule.test(nickname) ||
+      term === false
     ) {
       alert("회원가입 기준에 맞지 않습니다. 다시 확인하세요.");
     } else {
@@ -78,114 +106,118 @@ const JoinForm = () => {
         {/* <form className="mt-8 space-y-6"> */}
         <input type="hidden" name="remember" defaultValue="true" />
         <div className="rounded-lg shadow-sm bg-gray-100 p-2">
-          <div>
-            <label htmlFor="email-address" className="sr-only">
-              Email address
-            </label>
-            <input
-              id="email-address"
-              value={email}
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              className="relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
-              placeholder="Email"
-              onChange={onChangeEmail}
-            />
-          </div>
-          {emailRule.test(email) ? null : (
-            <p className="my-2 ml-1 text-red-500">
-              이메일 형식(ex) test.gmail.com)에 맞게 입력하세요.
-            </p>
+          <label htmlFor="email-address" className="sr-only">
+            Email address
+          </label>
+          <input
+            ref={userRef}
+            id="email-address"
+            value={email}
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            className="mb-2 relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
+            placeholder="Email"
+            onChange={onChangeEmail}
+          />
+          {email && !validEmail ? (
+            <div className="bg-light-beige rounded-lg">
+              <p className="ml-3 mt-1">
+                이메일 형식(ex) test.gmail.com)에 맞게 입력하세요.
+              </p>
+            </div>
+          ) : null}
+
+          <label htmlFor="nickname" className="sr-only">
+            nickname
+          </label>
+          <input
+            ref={userRef}
+            id="nickname"
+            value={nickname}
+            name="nickname"
+            type="text"
+            autoComplete="current-nickname"
+            required
+            className="mb-2 relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
+            placeholder="Nickname"
+            onChange={onChangeNickname}
+          />
+
+          {nickname && !validNickname ? (
+            <div className="bg-light-beige rounded-lg">
+              <p className="ml-3 mt-1">
+                닉네임은 한글, 영문, 숫자 포함 가능합니다.
+              </p>
+            </div>
+          ) : null}
+
+          <label htmlFor="password" className="sr-only">
+            Password
+          </label>
+          <input
+            id="password"
+            value={password}
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            required
+            className="mb-2 relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
+            placeholder="Password"
+            onChange={onChangePassword}
+          />
+
+          {password && !validPassword ? (
+            <div className="bg-light-beige rounded-lg">
+              <p className="ml-3 mt-1">
+                숫자, 영문포함{" "}
+                <span className="font-bold">6자리 이상 12자리 이하</span>로
+                입력하세요.
+              </p>
+            </div>
+          ) : null}
+
+          <label htmlFor="passwordCheck" className="sr-only">
+            Password Check
+          </label>
+          <input
+            id="passwordCheck"
+            value={passwordCheck}
+            name="passwordCheck"
+            type="password"
+            autoComplete="current-password"
+            required
+            className="mb-2 relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
+            placeholder="Password Check"
+            onChange={onChangePasswordCheck}
+          />
+          {passwordError && (
+            <div className="bg-light-beige rounded-lg">
+              <p className="ml-3 mt-1">비밀번호가 일치하지 않습니다</p>
+            </div>
           )}
 
-          <div>
-            <label htmlFor="nickname" className="sr-only">
-              nickname
-            </label>
+          <div className="form-check">
             <input
-              id="nickname"
-              value={nickname}
-              name="nickname"
-              type="text"
-              autoComplete="current-nickname"
-              required
-              className="relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
-              placeholder="Nickname"
-              onChange={onChangeNickname}
+              className="accent-light-green mr-1 h-4 w-4 rounded cursor-pointer"
+              type="checkbox"
+              id="flexCheckChecked"
+              value={term}
+              checked={term}
+              onChange={onChangeTerm}
             />
-          </div>
-          {nicknameRule.test(nickname) ? null : (
-            <p className="my-2 ml-1 text-red-500">
-              닉네임은 한글, 영문, 숫자 포함 가능합니다.
-            </p>
-          )}
-
-          <div>
-            <label htmlFor="password" className="sr-only">
-              Password
+            <label
+              className="form-check-label inline-block text-gray-800 mt-5"
+              htmlFor="flexCheckChecked"
+            >
+              최종적으로 모든 정보가 이상 없습니까?
             </label>
-            <input
-              id="password"
-              value={password}
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              className="relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
-              placeholder="Password"
-              onChange={onChangePassword}
-            />
-          </div>
-          {passwordRule.test(password) ? null : (
-            <p className="my-2 ml-1 text-red-500">
-              비밀번호는 숫자, 영문포함 6자리 이상 12자리 이하로 입력하세요.
-            </p>
-          )}
-          <div>
-            <label htmlFor="passwordCheck" className="sr-only">
-              Password Check
-            </label>
-            <input
-              id="passwordCheck"
-              value={passwordCheck}
-              name="passwordCheck"
-              type="password"
-              autoComplete="current-password"
-              required
-              className="relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
-              placeholder="Password Check"
-              onChange={onChangePasswordCheck}
-            />
-            {passwordError && (
+            {termError && (
               <h4 className="text-red-400 font-bold">
-                비밀번호가 일치하지 않습니다
+                체크박스를 확인 바랍니다.
               </h4>
             )}
-          </div>
-          <div>
-            <div className="form-check">
-              <input
-                className="accent-light-green mr-1 h-4 w-4 rounded cursor-pointer"
-                type="checkbox"
-                id="flexCheckChecked"
-                value={term}
-                checked={term}
-                onChange={onChangeTerm}
-              />
-              <label
-                className="form-check-label inline-block text-gray-800 mt-5"
-                htmlFor="flexCheckChecked"
-              >
-                최종적으로 모든 정보가 이상 없습니까?
-              </label>
-              {termError && (
-                <h4 className="text-red-400 font-bold">
-                  체크박스를 확인 바랍니다.
-                </h4>
-              )}
-            </div>
           </div>
         </div>
 

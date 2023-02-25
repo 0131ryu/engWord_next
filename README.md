@@ -1,20 +1,21 @@
 # engWord_next
 ### next.js를 활용한 영단어 배포
 
+### [프로젝트를 정리한 블로그](https://velog.io/@131ryuji/series/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%98%81%EB%8B%A8%EC%96%B4-SNS-%EA%B2%8C%EC%9E%84-%ED%8F%AC%ED%95%A8)
+
 # 📖 사이트 주소 : https://engword.shop
 ## back주소 : https://api.engword.shop
 
-# ⭐ [영어단어장 version2.0]와 무엇이 다른가?
-## (깃헙 : https://github.com/0131ryu/engWord)
+# ⭐ [영어단어장 version2.0](https://github.com/0131ryu/engWord)와 무엇이 다른가?
 
 ## * `Home` : 영단어 생성 및 수정 
 ## * `SNS` : 사용자가 이용가능한 SNS(트위터처럼 포스팅 작성, 팔로잉과 언팔로잉, 검색 가능)
 ## * `Game` : `Home`에서 만든 영단어로 10개를 랜덤으로 지정해 게임처럼 진행
 ## * `Profile` : 사용자가 작성한 게시글, 단어 수, 게임에서 맞춘 단어 수, 팔로잉, 팔로워, 차단 여부 확인 가능
 
-### API 정리 문서 : https://app.gitbook.com/o/XjQnIMaCjPRpB3WKV43I/s/TebqwzYidVWF2nE0Diey/
+### [API 정리 문서](https://app.gitbook.com/o/XjQnIMaCjPRpB3WKV43I/s/TebqwzYidVWF2nE0Diey) 
 
-#### 1. `[Home, Game]` 한국어 기초사전 API 사용(https://krdict.korean.go.kr/openApi/openApiInfo)
+#### 1. `[Home, Game]` [한국어 기초사전 API](https://krdict.korean.go.kr/openApi/openApiInfo) 사용
 
 ▶ 단어 생성 시 `API`를 통해 검색 후 단어 생성 가능 
 

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { LockClosedIcon, BookmarkIcon } from "@heroicons/react/20/solid";
+import { LockClosedIcon } from "@heroicons/react/20/solid";
 import useInput from "../hooks/useInput";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "../redux/feature/userSlice";
@@ -60,10 +60,7 @@ const LoginForm = () => {
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
         <div>
-          <div className="mt-20 mx-auto w-auto bg-light-beige rounded-md h-10 w-10">
-            <BookmarkIcon className="h-10 w-10" />
-          </div>
-          <h4 className="mt-8 text-center text-3xl font-bold tracking-tight text-gray-900">
+          <h4 className="mt-40 text-center text-3xl font-bold tracking-tight text-gray-900">
             <span className="text-light-brown">EngWord</span>에 환영합니다!
           </h4>
         </div>

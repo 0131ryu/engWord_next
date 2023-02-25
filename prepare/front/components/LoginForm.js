@@ -1,9 +1,11 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { LockClosedIcon, BookmarkIcon } from "@heroicons/react/20/solid";
 import useInput from "../hooks/useInput";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "../redux/feature/userSlice";
 import { useRouter } from "next/router";
+
+import { emailRule, passwordRule } from "../config/regRule";
 
 const LoginForm = () => {
   const { loginError } = useSelector((state) => state.user);
@@ -12,11 +14,30 @@ const LoginForm = () => {
   const [email, onChangeEmail] = useInput("");
   const [password, onChangePassword] = useInput("");
 
+  const userRef = useRef();
+
+  const [validEmail, setValidEmail] = useState(false);
+  const [validPassword, setValidPassword] = useState(false);
+
+  useEffect(() => {
+    userRef.current.focus();
+  }, []);
+
   useEffect(() => {
     if (loginError) {
       alert(loginError);
     }
   }, [loginError]);
+
+  useEffect(() => {
+    const result = emailRule.test(email);
+    setValidEmail(result);
+  }, [email]);
+
+  useEffect(() => {
+    const result = passwordRule.test(password);
+    setValidPassword(result);
+  }, [password]);
 
   const onSubmitForm = useCallback(() => {
     if (!email || !password) {
@@ -40,7 +61,7 @@ const LoginForm = () => {
       <div className="w-full max-w-md space-y-8">
         <div>
           <div className="mt-20 mx-auto w-auto bg-light-beige rounded-md h-10 w-10">
-            <BookmarkIcon />
+            <BookmarkIcon className="h-10 w-10" />
           </div>
           <h4 className="mt-8 text-center text-3xl font-bold tracking-tight text-gray-900">
             <span className="text-light-brown">EngWord</span>에 환영합니다!
@@ -53,6 +74,7 @@ const LoginForm = () => {
               Email address
             </label>
             <input
+              ref={userRef}
               id="email-address"
               name="email"
               type="email"
@@ -63,6 +85,14 @@ const LoginForm = () => {
               onChange={onChangeEmail}
             />
           </div>
+          {email && !validEmail ? (
+            <div className="bg-light-beige rounded-lg">
+              <p className="ml-3 mt-1">
+                이메일 형식<span className="font-bold">(@포함)</span>으로 입력
+                바랍니다.
+              </p>
+            </div>
+          ) : null}
           <div>
             <label htmlFor="password" className="sr-only">
               Password
@@ -78,6 +108,15 @@ const LoginForm = () => {
               onChange={onChangePassword}
             />
           </div>
+          {password && !validPassword ? (
+            <div className="bg-light-beige rounded-lg">
+              <p className="ml-3 mt-1">
+                숫자, 영문포함{" "}
+                <span className="font-bold">6자리 이상 12자리 이하</span>로
+                입력하세요.
+              </p>
+            </div>
+          ) : null}
         </div>
 
         <div className="float-right">

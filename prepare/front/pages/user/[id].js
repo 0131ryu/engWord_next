@@ -13,7 +13,7 @@ import {
 } from "../../redux/feature/userSlice";
 import wrapper from "../../redux/store";
 
-const NavbarForm = dynamic(import("../../components/NavbarForm"));
+const Navbar = dynamic(import("../../components/Navbar"));
 const PostCard = dynamic(import("../../components/post/PostCard"));
 const UserInfo = dynamic(import("../../components/UserInfo"));
 
@@ -39,7 +39,7 @@ const User = () => {
   }, []);
 
   return (
-    <NavbarForm>
+    <Navbar>
       <Head>
         <title>{`title ${userInfo?.nickname}님의 작성 게시글`}</title>
         <meta name="description" content={`${userInfo?.content}`} />
@@ -61,7 +61,7 @@ const User = () => {
             <div className="flex justify-center">
               <button
                 onClick={onGoSNS}
-                className="px-3 py-2 font-medium rounded-lg bg-light-green text-white hover:bg-light-beige hover:text-black"
+                className="px-3 py-2 font-medium text-white rounded-lg bg-light-green hover:bg-light-beige hover:text-black"
               >
                 게시글로 돌아가기
               </button>
@@ -73,7 +73,7 @@ const User = () => {
           <div className="col-span-1"></div>
         </div>
       </div>
-    </NavbarForm>
+    </Navbar>
   );
 };
 

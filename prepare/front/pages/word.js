@@ -18,10 +18,10 @@ import {
 const WordChart = dynamic(import("../components/word/WordChart"));
 const WordItem = dynamic(import("../components/word/WordItem"));
 const WordCheckbox = dynamic(import("../components/word/WordCheckbox"));
-const NavbarForm = dynamic(import("../components/NavbarForm"));
+const Navbar = dynamic(import("../components/Navbar"));
 const WordForm = dynamic(import("../components/word/WordForm"));
 
-const Home = () => {
+const Word = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
   const {
@@ -90,7 +90,7 @@ const Home = () => {
 
   return (
     <>
-      <NavbarForm>
+      <Navbar>
         <Head>
           <title>{`engWord에서 영어 단어, 만들어 봅시다!`}</title>
           <meta
@@ -121,7 +121,7 @@ const Home = () => {
 
         {(easyLength !== 0 || middleLength !== 0 || advanceLength !== 0) &&
           me?.id && (
-            <div className="flex justify-center relative bottom-10">
+            <div className="relative flex justify-center bottom-10">
               <WordChart
                 easyLength={easyLength}
                 middleLength={middleLength}
@@ -130,15 +130,15 @@ const Home = () => {
             </div>
           )}
 
-        <div className="lg:w-full relative">
-          <div className="h-max mx-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-1">
+        <div className="relative lg:w-full">
+          <div className="grid grid-cols-1 mx-20 h-max sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-1">
             {/* Easy start */}
-            <div className="bg-gray-100 group relative rounded-lg p-3 lg:w-80 lg:ml-10">
-              <div className="bg-white overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-md">
+            <div className="relative p-3 bg-gray-100 rounded-lg group lg:w-80 lg:ml-10">
+              <div className="w-full overflow-hidden overflow-y-auto bg-white rounded-md shadow-lg max-h-96 aspect-w-1 aspect-h-1 shadow-black-500/40">
                 <div
                   className={`${easyLength > 0 && me?.id ? "h-full" : "h-40"}`}
                 >
-                  <h1 className="text-slate-900 font-medium px-3 pt-2">
+                  <h1 className="px-3 pt-2 font-medium text-slate-900">
                     🥉 Easy
                   </h1>
                 </div>
@@ -149,8 +149,8 @@ const Home = () => {
                   })
                 ) : (
                   <div className="relative bottom-20 sm:600">
-                    <div className="bg-gray-100 h-3/5 rounded mx-1 flex py-5 mt-1 h-20">
-                      <div className="w-full mt-3 text-center h-10">
+                    <div className="flex h-20 py-5 mx-1 mt-1 bg-gray-100 rounded h-3/5">
+                      <div className="w-full h-10 mt-3 text-center">
                         <p className="text-sm font-bold text-slate-900">
                           단어는 로그인 후 입력 가능합니다.
                         </p>
@@ -168,10 +168,10 @@ const Home = () => {
             </div>
             {/* Easy end */}
             {/* Middle start */}
-            <div className="bg-gray-100 group relative rounded-lg p-3 lg:w-80 lg:ml-10">
-              <div className="bg-white overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-md">
+            <div className="relative p-3 bg-gray-100 rounded-lg group lg:w-80 lg:ml-10">
+              <div className="w-full overflow-hidden overflow-y-auto bg-white rounded-md shadow-lg max-h-96 aspect-w-1 aspect-h-1 shadow-black-500/40">
                 <div className={`${middleLength > 0 ? "h-full" : "h-40"}`}>
-                  <h1 className="text-slate-900 font-medium px-3 pt-2">
+                  <h1 className="px-3 pt-2 font-medium text-slate-900">
                     🥈 Middle
                   </h1>
                 </div>
@@ -186,8 +186,8 @@ const Home = () => {
                   })
                 ) : (
                   <div className="relative bottom-20 sm:600">
-                    <div className="bg-gray-100 h-3/5 rounded mx-1 flex py-5 mt-1 h-20">
-                      <div className="w-full mt-3 text-center h-10">
+                    <div className="flex h-20 py-5 mx-1 mt-1 bg-gray-100 rounded h-3/5">
+                      <div className="w-full h-10 mt-3 text-center">
                         <p className="text-sm font-bold text-slate-900">
                           단어는 로그인 후 입력 가능합니다.
                         </p>
@@ -207,10 +207,10 @@ const Home = () => {
             </div>
             {/* Middle end */}
             {/* Advance start */}
-            <div className="bg-gray-100 group relative rounded-lg p-3 lg:w-80 lg:ml-10">
-              <div className="bg-white overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-md">
+            <div className="relative p-3 bg-gray-100 rounded-lg group lg:w-80 lg:ml-10">
+              <div className="w-full overflow-hidden overflow-y-auto bg-white rounded-md shadow-lg max-h-96 aspect-w-1 aspect-h-1 shadow-black-500/40">
                 <div className={`${advanceLength > 0 ? "h-full" : "h-40"}`}>
-                  <h1 className="text-slate-900 font-medium px-3 pt-2">
+                  <h1 className="px-3 pt-2 font-medium text-slate-900">
                     🥇 Advance
                   </h1>
                 </div>
@@ -224,8 +224,8 @@ const Home = () => {
                   })
                 ) : (
                   <div className="relative bottom-20 sm:600">
-                    <div className="bg-gray-100 h-3/5 rounded mx-1 flex py-5 mt-1 h-20">
-                      <div className="w-full mt-3 text-center h-10">
+                    <div className="flex h-20 py-5 mx-1 mt-1 bg-gray-100 rounded h-3/5">
+                      <div className="w-full h-10 mt-3 text-center">
                         <p className="text-sm font-bold text-slate-900">
                           단어는 로그인 후 입력 가능합니다.
                         </p>
@@ -246,7 +246,7 @@ const Home = () => {
             {/* Advance end */}
           </div>
         </div>
-      </NavbarForm>
+      </Navbar>
     </>
   );
 };
@@ -274,4 +274,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
   }
 );
 
-export default Home;
+export default Word;

@@ -30,7 +30,7 @@ import AlertLogin from "../components/AlertLogin";
 const StartWordList = dynamic(import("../components/game/StartWordList"));
 const LoginForm = dynamic(import("../components/LoginForm"));
 const StartModal = dynamic(import("../components/game/StartModal"));
-const NavbarForm = dynamic(import("../components/NavbarForm"));
+const Navbar = dynamic(import("../components/Navbar"));
 
 const game = () => {
   const dispatch = useDispatch();
@@ -173,7 +173,7 @@ const game = () => {
 
   return (
     <>
-      <NavbarForm>
+      <Navbar>
         <Head>
           <title>{`등록한 영어단어로 게임을 즐겨보세요!`}</title>
           <meta
@@ -218,11 +218,11 @@ const game = () => {
                   leaveFrom="opacity-100"
                   leaveTo="opacity-0"
                 >
-                  <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                  <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" />
                 </Transition.Child>
 
                 <div className="fixed inset-0 z-10 overflow-y-auto">
-                  <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                  <div className="flex items-end justify-center min-h-full p-4 text-center sm:items-center sm:p-0">
                     <Transition.Child
                       as={Fragment}
                       enter="ease-out duration-300"
@@ -233,12 +233,12 @@ const game = () => {
                       leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                     >
                       {me?.id && (
-                        <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                          <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <Dialog.Panel className="relative overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:w-full sm:max-w-lg">
+                          <div className="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
                             <div className="sm:flex sm:items-start">
-                              <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-light-orange text-white sm:mx-0 sm:h-10 sm:w-10">
+                              <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto text-white rounded-full bg-light-orange sm:mx-0 sm:h-10 sm:w-10">
                                 <BookmarkSquareIcon
-                                  className="h-6 w-6 text-black"
+                                  className="w-6 h-6 text-black"
                                   aria-hidden="true"
                                 />
                               </div>
@@ -296,17 +296,17 @@ const game = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="bg-gray-200 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                          <div className="px-4 py-3 bg-gray-200 sm:flex sm:flex-row-reverse sm:px-6">
                             <button
                               type="button"
-                              className="inline-flex w-full justify-center rounded-md border border-transparent bg-light-orange text-white px-4 py-2 text-base font-medium text-black shadow-sm hover:bg-dark-green hover:text-white  sm:ml-3 sm:w-auto sm:text-sm"
+                              className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-black text-white border border-transparent rounded-md shadow-sm bg-light-orange hover:bg-dark-green hover:text-white sm:ml-3 sm:w-auto sm:text-sm"
                               onClick={onStartGame}
                             >
                               시작!
                             </button>
                             <button
                               type="button"
-                              className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                              className="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                               onClick={onOpenCloseModal}
                               ref={cancelButtonRef}
                             >
@@ -322,7 +322,7 @@ const game = () => {
             </Transition.Root>
           )
         )}
-      </NavbarForm>
+      </Navbar>
     </>
   );
 };

@@ -11,7 +11,7 @@ import { loadHashtagPostsRequest } from "../../redux/feature/postSlice";
 import { loadMyInfoRequest } from "../../redux/feature/userSlice";
 import wrapper from "../../redux/store";
 
-const NavbarForm = dynamic(import("../../components/NavbarForm"));
+const Navbar = dynamic(import("../../components/Navbar"));
 const PostCard = dynamic(import("../../components/post/PostCard"));
 const PostSearch = dynamic(import("../../components/post/PostSearch"));
 
@@ -38,7 +38,7 @@ const Hashtag = () => {
   }, []);
 
   return (
-    <NavbarForm>
+    <Navbar>
       <Head>
         <title>{`#${tag}로 찾은 게시글`}</title>
         <meta name="description" content={`${tag}`} />
@@ -54,10 +54,10 @@ const Hashtag = () => {
       <div className="h-full mt-5">
         <div className="grid grid-cols-4 gap-6">
           <div className="col-span-1 ">
-            <div className="bg-gray-100 p-2 text-center ml-2 shadow shadow-black-500/40 rounded-lg">
-              <div className="bg-white rounded-lg flex place-content-center">
+            <div className="p-2 ml-2 text-center bg-gray-100 rounded-lg shadow shadow-black-500/40">
+              <div className="flex bg-white rounded-lg place-content-center">
                 <div className="ml-1 ">
-                  <p className="font-bold p-1 mt-1">
+                  <p className="p-1 mt-1 font-bold">
                     <span className="text-sky-500 lg:text-lg">#{tag}</span> 결과
                   </p>
                 </div>
@@ -65,11 +65,11 @@ const Hashtag = () => {
             </div>
             <PostSearch />
           </div>
-          <div className="col-span-2 bg-gray-100 p-2 rounded-lg">
+          <div className="col-span-2 p-2 bg-gray-100 rounded-lg">
             <div className="flex justify-center">
               <button
                 onClick={onGoSNS}
-                className="px-3 py-2 font-medium rounded-lg bg-light-green text-white hover:bg-light-beige hover:text-black"
+                className="px-3 py-2 font-medium text-white rounded-lg bg-light-green hover:bg-light-beige hover:text-black"
               >
                 게시글로 돌아가기
               </button>
@@ -85,7 +85,7 @@ const Hashtag = () => {
           <div className="col-span-1"></div>
         </div>
       </div>
-    </NavbarForm>
+    </Navbar>
   );
 };
 

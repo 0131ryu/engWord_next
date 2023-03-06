@@ -9,7 +9,7 @@ import wrapper from "../redux/store";
 import { loadMyInfoRequest } from "../redux/feature/userSlice";
 
 const JoinForm = dynamic(import("../components/JoinForm"));
-const NavbarForm = dynamic(import("../components/NavbarForm"));
+const Navbar = dynamic(import("../components/Navbar"));
 const SuccessSignup = dynamic(import("../components/SuccessSignup"));
 
 const signUp = () => {
@@ -32,7 +32,7 @@ const signUp = () => {
 
   return (
     <div>
-      <NavbarForm>
+      <Navbar>
         <Head>
           <title>{`engWord 회원가입`}</title>
           <meta
@@ -51,7 +51,7 @@ const signUp = () => {
           <meta property="og:url" content={`https://engword.shop/signup`} />
         </Head>
         {me || showSignUp ? <SuccessSignup me={me} /> : <JoinForm />}
-      </NavbarForm>
+      </Navbar>
     </div>
   );
 };

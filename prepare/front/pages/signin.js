@@ -10,14 +10,14 @@ import { loadMyInfoRequest } from "../redux/feature/userSlice";
 
 const LoginForm = dynamic(import("../components/LoginForm"));
 const SuccessLogin = dynamic(import("../components/SuccessLogin"));
-const NavbarForm = dynamic(import("../components/NavbarForm"));
+const Navbar = dynamic(import("../components/Navbar"));
 
 const signIn = () => {
   const { me, loginComplete } = useSelector((state) => state.user);
 
   return (
     <div>
-      <NavbarForm>
+      <Navbar>
         <Head>
           <title>{`engWord 로그인`}</title>
           <meta
@@ -36,7 +36,7 @@ const signIn = () => {
           <meta property="og:url" content={`https://engword.shop/signin`} />
         </Head>
         {me || loginComplete ? <SuccessLogin me={me} /> : <LoginForm />}
-      </NavbarForm>
+      </Navbar>
     </div>
   );
 };

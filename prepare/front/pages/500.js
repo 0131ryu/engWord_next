@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useRouter } from "next/router";
-import NavbarForm from "../components/NavbarForm";
+import Navbar from "../components/Navbar";
 
 const Custom500 = () => {
   const router = useRouter();
@@ -8,7 +8,7 @@ const Custom500 = () => {
     router.push("/");
   }, []);
   return (
-    <NavbarForm>
+    <Navbar>
       <section className="flex items-center h-[91.3vh] sm:p-16">
         <div className="container flex flex-col items-center justify-center px-5 mx-auto my-8 space-y-8 text-center sm:max-w-md">
           <svg
@@ -53,7 +53,7 @@ const Custom500 = () => {
           </button>
         </div>
       </section>
-    </NavbarForm>
+    </Navbar>
   );
 };
 

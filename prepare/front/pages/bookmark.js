@@ -12,7 +12,7 @@ import { loadMyInfoRequest } from "../redux/feature/userSlice";
 import PostCardBookmark from "../components/post/PostCardBookmark";
 import wrapper from "../redux/store";
 
-const NavbarForm = dynamic(import("../components/NavbarForm"));
+const Navbar = dynamic(import("../components/Navbar"));
 const PostSearch = dynamic(import("../components/post/PostSearch"));
 const UserInfo = dynamic(import("../components/UserInfo"));
 
@@ -48,7 +48,7 @@ const bookmark = () => {
 
   return (
     <>
-      <NavbarForm>
+      <Navbar>
         <Head>
           <title>{`북마크한 게시글`}</title>
           <meta name="description" content={`내가 북마크한 게시글`} />
@@ -66,10 +66,10 @@ const bookmark = () => {
               <div className="col-span-1">
                 <UserInfo />
                 <div
-                  className="bg-gray-100 ml-2 mt-2 rounded-xl"
+                  className="mt-2 ml-2 bg-gray-100 rounded-xl"
                   onClick={onPost}
                 >
-                  <p className="rounded-xl text-gray-400 font-bold text-center cursor-pointer hover:text-light-orange">
+                  <p className="font-bold text-center text-gray-400 cursor-pointer rounded-xl hover:text-light-orange">
                     게시글(sns)로 이동
                   </p>
                 </div>
@@ -95,7 +95,7 @@ const bookmark = () => {
             </div>
           </div>
         )}
-      </NavbarForm>
+      </Navbar>
     </>
   );
 };

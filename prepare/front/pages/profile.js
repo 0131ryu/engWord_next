@@ -8,7 +8,7 @@ import { loadMyInfoRequest } from "../redux/feature/userSlice";
 import wrapper from "../redux/store";
 
 const AlertLogin = dynamic(import("../components/AlertLogin"));
-const NavbarForm = dynamic(import("../components/NavbarForm"));
+const Navbar = dynamic(import("../components/Navbar"));
 const Profile = dynamic(import("../components/Profile"));
 
 const profile = () => {
@@ -16,7 +16,7 @@ const profile = () => {
 
   return (
     <>
-      <NavbarForm>
+      <Navbar>
         <Head>
           <title>{`engWord 내 정보`}</title>
           <meta
@@ -35,7 +35,7 @@ const profile = () => {
           <meta property="og:url" content={`https://engword.shop/profile`} />
         </Head>
         {me ? <Profile /> : <AlertLogin />}
-      </NavbarForm>
+      </Navbar>
     </>
   );
 };

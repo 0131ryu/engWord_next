@@ -12,7 +12,7 @@ import { loadMyInfoRequest } from "../../redux/feature/userSlice";
 import { loadWordsWeekendRequest } from "../../redux/feature/wordSlice";
 import wrapper from "../../redux/store";
 
-const NavbarForm = dynamic(import("../../components/NavbarForm"));
+const Navbar = dynamic(import("../../components/Navbar"));
 const PostCard = dynamic(import("../../components/post/PostCard"));
 const PostForms = dynamic(import("../../components/post/PostForms"));
 const PostSearch = dynamic(import("../../components/post/PostSearch"));
@@ -71,7 +71,7 @@ const Index = () => {
 
   return (
     <>
-      <NavbarForm>
+      <Navbar>
         <Head>
           <title>{`서로의 영단어와 지식을 공유 해보세요!`}</title>
           <meta
@@ -99,10 +99,10 @@ const Index = () => {
                 <>
                   <UserInfo />
                   <div
-                    className="bg-gray-100 ml-2 mt-2 rounded-xl"
+                    className="mt-2 ml-2 bg-gray-100 rounded-xl"
                     onClick={onBookmark}
                   >
-                    <p className="text-gray-400 font-bold text-center cursor-pointer hover:text-light-orange">
+                    <p className="font-bold text-center text-gray-400 cursor-pointer hover:text-light-orange">
                       내가 북마크한 글
                     </p>
                   </div>
@@ -110,7 +110,7 @@ const Index = () => {
               )}
               <PostSearch />
             </div>
-            <div className="col-span-2 bg-gray-100 p-2 rounded-lg">
+            <div className="col-span-2 p-2 bg-gray-100 rounded-lg">
               {me && <PostForms />}
               {mainPosts.map((post, index) => {
                 return (
@@ -129,7 +129,7 @@ const Index = () => {
             ) : null}
           </div>
         </div>
-      </NavbarForm>
+      </Navbar>
     </>
   );
 };

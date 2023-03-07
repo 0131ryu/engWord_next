@@ -82,7 +82,7 @@ const WordItem = ({ word, index }) => {
       {/* item start */}
       <div
         key={word}
-        className="flex items-start bg-gray-200 hover:opacity-80 rounded-lg h-20 m-2"
+        className="flex items-start bg-gray-200 hover:border-solid hover:border-2 hover:border-light-orange rounded-lg h-20 m-2"
       >
         <div className="h-24 w-90 sm:600 w-96 lg:w-48">
           <div className="flex py-5 pl-3">
@@ -92,13 +92,13 @@ const WordItem = ({ word, index }) => {
               value={word.id}
               name="checkItem"
               type="checkbox"
-              className="h-4 w-4 rounded accent-light-green cursor-pointer"
+              className="h-4 w-4 rounded accent-light-green dark:accent-light-orange cursor-pointer"
             />
           </div>
           <li className="flex first:pt-0 last:pb-0">
             <div className="relative bottom-10 ml-9 overflow-hidden">
               <p className="flex w-44">
-                <span className="font-bold ml-1 text-clip overflow-hidden">
+                <span className="font-bold ml-1 text-clip overflow-hidden dark:text-black">
                   {word.english}
                 </span>
               </p>
@@ -112,7 +112,10 @@ const WordItem = ({ word, index }) => {
           <Menu as="div" className="relative inline-block text-left lg:ml-10">
             <div>
               <Menu.Button className="rounded-md border border-gray-300 bg-white text-sm font-medium">
-                <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
+                <ChevronDownIcon
+                  className="h-5 w-5 dark:text-black"
+                  aria-hidden="true"
+                />
               </Menu.Button>
             </div>
             <Transition
@@ -134,7 +137,7 @@ const WordItem = ({ word, index }) => {
                         (active
                           ? "rounded-md bg-gray-100 text-gray-900"
                           : "rounded-md text-gray-700 ",
-                        "rounded-md block px-8 py-1 text-sm hover:bg-light-green hover:w-24 hover:text-white")
+                        "rounded-md block px-8 py-1 text-sm hover:bg-light-green hover:w-24 hover:text-white dark:text-black dark:hover:text-white")
                       }
                     >
                       수정
@@ -148,7 +151,7 @@ const WordItem = ({ word, index }) => {
                       onClick={onRemoveWord}
                       className={
                         (active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                        "rounded-md block px-8 py-1 text-sm hover:bg-light-green hover:w-24 hover:text-white")
+                        "rounded-md block px-8 py-1 text-sm hover:bg-light-green hover:w-24 hover:text-white dark:text-black dark:hover:text-white")
                       }
                     >
                       삭제
@@ -159,7 +162,9 @@ const WordItem = ({ word, index }) => {
             </Transition>
           </Menu>
           <div className="relative top-5 right-16 inline-block lg:ml-10 w-20">
-            <p className="text-center">{moment(word.createdAt).fromNow()}</p>
+            <p className="text-center dark:text-black">
+              {moment(word.createdAt).fromNow()}
+            </p>
           </div>
         </div>
       </div>

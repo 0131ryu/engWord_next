@@ -136,7 +136,7 @@ router.patch("/all/:userId/:status", isLoggedIn, async (req, res, next) => {
 router.get("/search/:word", async (req, res, next) => {
   const searchWord = req.params.word;
   console.log("searchWord", searchWord);
-
+  //한글일 경우
   if (searchWord.match(/^[가-힣]*$/g)) {
     const result = await Word.findAll({
       where: {
@@ -147,6 +147,7 @@ router.get("/search/:word", async (req, res, next) => {
     });
     res.status(200).json(result);
   }
+  //영어일 경우
   if (searchWord.match(/^[a-zA-Z]*$/g)) {
     const result = await Word.findAll({
       where: {
@@ -155,8 +156,7 @@ router.get("/search/:word", async (req, res, next) => {
       },
       attributes: { exclude: ["status", "createdAt", "updatedAt"] },
     });
-    console.log("(eng) result", result);
-    console.log("(eng) result type", typeof result);
+    console.log("검색 결과", result);
     res.status(200).json(result);
   }
 });

@@ -157,6 +157,7 @@ function* searchWord(action) {
   try {
     const data = action.payload;
     const result = yield call(searchWordAPI, data);
+    console.log("result", result);
     yield put(searchWordSuccess(result.data));
   } catch (error) {
     yield put(searchWordError(error));

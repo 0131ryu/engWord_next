@@ -134,11 +134,11 @@ const Word = () => {
           <div className="grid grid-cols-1 mx-20 h-max sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-1">
             {/* Easy start */}
             <div className="relative p-3 bg-gray-100 rounded-lg group lg:w-80 lg:ml-10">
-              <div className="w-full overflow-hidden overflow-y-auto bg-white rounded-md shadow-lg max-h-96 aspect-w-1 aspect-h-1 shadow-black-500/40">
+              <div className="w-full overflow-hidden overflow-y-auto dark:bg-black bg-white rounded-md shadow-lg max-h-96 aspect-w-1 aspect-h-1 shadow-black-500/40">
                 <div
                   className={`${easyLength > 0 && me?.id ? "h-full" : "h-40"}`}
                 >
-                  <h1 className="px-3 pt-2 font-medium text-slate-900">
+                  <h1 className="px-3 pt-2 font-medium text-slate-900 dark:text-white">
                     🥉 Easy
                   </h1>
                 </div>
@@ -169,9 +169,9 @@ const Word = () => {
             {/* Easy end */}
             {/* Middle start */}
             <div className="relative p-3 bg-gray-100 rounded-lg group lg:w-80 lg:ml-10">
-              <div className="w-full overflow-hidden overflow-y-auto bg-white rounded-md shadow-lg max-h-96 aspect-w-1 aspect-h-1 shadow-black-500/40">
+              <div className="w-full overflow-hidden overflow-y-auto dark:bg-black bg-white rounded-md shadow-lg max-h-96 aspect-w-1 aspect-h-1 shadow-black-500/40">
                 <div className={`${middleLength > 0 ? "h-full" : "h-40"}`}>
-                  <h1 className="px-3 pt-2 font-medium text-slate-900">
+                  <h1 className="px-3 pt-2 font-medium text-slate-900 dark:text-white">
                     🥈 Middle
                   </h1>
                 </div>
@@ -208,9 +208,9 @@ const Word = () => {
             {/* Middle end */}
             {/* Advance start */}
             <div className="relative p-3 bg-gray-100 rounded-lg group lg:w-80 lg:ml-10">
-              <div className="w-full overflow-hidden overflow-y-auto bg-white rounded-md shadow-lg max-h-96 aspect-w-1 aspect-h-1 shadow-black-500/40">
+              <div className="w-full overflow-hidden overflow-y-auto dark:bg-black bg-white rounded-md shadow-lg max-h-96 aspect-w-1 aspect-h-1 shadow-black-500/40">
                 <div className={`${advanceLength > 0 ? "h-full" : "h-40"}`}>
-                  <h1 className="px-3 pt-2 font-medium text-slate-900">
+                  <h1 className="px-3 pt-2 font-medium text-slate-900 dark:text-white">
                     🥇 Advance
                   </h1>
                 </div>

@@ -1,8 +1,8 @@
 import React from "react";
 import Head from "next/head";
-import "antd/dist/antd.css";
-import "tailwindcss/tailwind.css";
+import "../styles/globals.css";
 import wrapper from "../redux/store";
+import { ThemeProvider } from "next-themes";
 
 const App = ({ Component }) => {
   return (
@@ -10,7 +10,9 @@ const App = ({ Component }) => {
       <Head>
         <title>engWord</title>
       </Head>
-      <Component />
+      <ThemeProvider attribute="class">
+        <Component />
+      </ThemeProvider>
     </>
   );
 };

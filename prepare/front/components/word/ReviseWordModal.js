@@ -25,9 +25,6 @@ const ReviseWordModal = ({
   const type = selected.name;
 
   useEffect(() => {
-    console.log("showEng", showEng);
-    console.log("showKor", showKor);
-    console.log("showType", showType);
     if (showType === "middle") {
       setSelected(typesName[1]);
     } else if (showType === "advance") {
@@ -88,7 +85,7 @@ const ReviseWordModal = ({
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div className="bg-white dark:bg-black px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
                     <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-light-green sm:mx-0 sm:h-10 sm:w-10">
                       <ArrowsRightLeftIcon
@@ -99,7 +96,7 @@ const ReviseWordModal = ({
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                       <Dialog.Title
                         as="h3"
-                        className="text-lg font-medium leading-6 text-gray-900"
+                        className="dark:text-white text-lg font-medium leading-6 text-gray-900"
                       >
                         {editMode ? <p>단어 수정</p> : <p>수정 완료</p>}
                       </Dialog.Title>
@@ -111,7 +108,7 @@ const ReviseWordModal = ({
                                 onChange={onChangeEnglish}
                                 rows="1"
                                 className="sm:600 w-52 grid grid-cols-2 gap-4 place-content-center
-                                pl-2 h-7 shadow-lg shadow-black-500/40 rounded-full m-2"
+                                pl-2 h-7 shadow-lg shadow-black-500/40 rounded-full m-2 dark:bg-white dark:text-black"
                                 defaultValue={showEng}
                               />
 
@@ -119,16 +116,14 @@ const ReviseWordModal = ({
                                 onChange={onChangeKorean}
                                 rows="1"
                                 className="sm:600 w-52 grid grid-cols-2 gap-4 place-content-center
-                                pl-2 h-7 shadow-lg shadow-black-500/40 rounded-full m-2"
+                                pl-2 h-7 shadow-lg shadow-black-500/40 rounded-full m-2 dark:bg-white dark:text-black"
                                 defaultValue={showKor}
                               />
                             </div>
                             <div className="ml-10 mt-2 ">
                               <Listbox value={selected} onChange={setSelected}>
                                 <div className="relative ">
-                                  <Listbox.Button className="cursor-pointer bg-white py-2 pl-2 pr-10  sm:text-sm shadow-lg shadow-black-500/40 rounded-full mr-2">
-                                    {/* <span className="block">{selected.name}</span> */}
-
+                                  <Listbox.Button className="cursor-pointer bg-white py-2 pl-2 pr-10  sm:text-sm shadow-lg shadow-black-500/40 rounded-full mr-2 dark:text-black">
                                     <span className="block">
                                       {selected.name}
                                     </span>
@@ -198,7 +193,7 @@ const ReviseWordModal = ({
                                 placeholder={showEng}
                                 name="english"
                                 className="sm:600 w-52 grid grid-cols-2 gap-4 place-content-center
-                                pl-2 h-7 shadow-lg shadow-black-500/40 rounded-full m-2"
+                                pl-2 h-7 shadow-lg shadow-black-500/40 rounded-full m-2 dark:bg-white dark:text-black"
                               />
 
                               <input
@@ -207,15 +202,13 @@ const ReviseWordModal = ({
                                 placeholder={showKor}
                                 name="korean"
                                 className="sm:600 w-52 grid grid-cols-2 gap-4 place-content-center
-                                pl-2 h-7 shadow-lg shadow-black-500/40 rounded-full m-2"
+                                pl-2 h-7 shadow-lg shadow-black-500/40 rounded-full m-2 dark:bg-white dark:text-black"
                               />
                             </div>
                             <div className="ml-10 mt-2 ">
                               <Listbox value={selected} onChange={setSelected}>
                                 <div className="relative ">
-                                  <Listbox.Button className="cursor-default bg-white py-2 pl-2 pr-10  sm:text-sm shadow-lg shadow-black-500/40 rounded-full mr-2">
-                                    {/* <span className="block">{selected.name}</span> */}
-
+                                  <Listbox.Button className="cursor-default bg-white py-2 pl-2 pr-10 sm:text-sm shadow-lg shadow-black-500/40 rounded-full mr-2 dark:text-black">
                                     <span className="block">
                                       {selected.name}
                                     </span>
@@ -235,7 +228,7 @@ const ReviseWordModal = ({
                     </div>
                   </div>
                 </div>
-                <div className="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <div className="dark:bg-black  px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md border border-transparent bg-light-green px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-dark-green focus:outline-none focus:ring-2 focus:ring-light-green focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"

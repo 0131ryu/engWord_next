@@ -91,10 +91,10 @@ const JoinForm = () => {
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
         <div>
-          <h4 className="mt-20 text-center text-3xl font-bold tracking-tight text-gray-900">
+          <h4 className="mt-20 text-center text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
             회원가입
           </h4>
-          <h4 className="mt-2 text-center text-light-brown font-medium">
+          <h4 className="mt-2 text-center text-light-orange font-bold">
             EngWord와 함께해요!
           </h4>
         </div>
@@ -112,13 +112,13 @@ const JoinForm = () => {
             type="email"
             autoComplete="email"
             required
-            className="mb-2 relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
+            className="mb-2 relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg dark:bg-white dark:text-black"
             placeholder="Email"
             onChange={onChangeEmail}
           />
           {email && !validEmail ? (
             <div className="bg-light-beige rounded-lg">
-              <p className="ml-3 mt-1">
+              <p className="ml-3 mt-1 dark:text-black">
                 이메일 형식(ex) test.gmail.com)에 맞게 입력하세요.
               </p>
             </div>
@@ -135,14 +135,14 @@ const JoinForm = () => {
             type="text"
             autoComplete="current-nickname"
             required
-            className="mb-2 relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
+            className="mb-2 relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg dark:bg-white dark:text-black"
             placeholder="Nickname"
             onChange={onChangeNickname}
           />
 
           {nickname && !validNickname ? (
             <div className="bg-light-beige rounded-lg">
-              <p className="ml-3 mt-1">
+              <p className="ml-3 mt-1 dark:text-black">
                 닉네임은 한글, 영문, 숫자 포함 가능합니다.
               </p>
             </div>
@@ -158,14 +158,14 @@ const JoinForm = () => {
             type="password"
             autoComplete="current-password"
             required
-            className="mb-2 relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
+            className="mb-2 relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg dark:bg-white dark:text-black"
             placeholder="Password"
             onChange={onChangePassword}
           />
 
           {password && !validPassword ? (
             <div className="bg-light-beige rounded-lg">
-              <p className="ml-3 mt-1">
+              <p className="ml-3 mt-1 dark:text-black">
                 숫자, 영문포함{" "}
                 <span className="font-bold">6자리 이상 12자리 이하</span>로
                 입력하세요.
@@ -183,19 +183,21 @@ const JoinForm = () => {
             type="password"
             autoComplete="current-password"
             required
-            className="mb-2 relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
+            className="mb-2 relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg dark:bg-white dark:text-black"
             placeholder="Password Check"
             onChange={onChangePasswordCheck}
           />
           {passwordError && (
             <div className="bg-light-beige rounded-lg">
-              <p className="ml-3 mt-1">비밀번호가 일치하지 않습니다</p>
+              <p className="ml-3 mt-1 text-red-500">
+                비밀번호가 일치하지 않습니다
+              </p>
             </div>
           )}
 
           <div className="form-check">
             <input
-              className="accent-light-green mr-1 h-4 w-4 rounded cursor-pointer"
+              className="dark:accent-light-orange accent-light-green mr-1 h-4 w-4 rounded cursor-pointer"
               type="checkbox"
               id="flexCheckChecked"
               value={term}
@@ -206,7 +208,10 @@ const JoinForm = () => {
               className="form-check-label inline-block text-gray-800 mt-5"
               htmlFor="flexCheckChecked"
             >
-              최종적으로 모든 정보가 이상 없습니까?
+              모든 정보를 입력 후 이상없다면,{" "}
+              <span className="text-dark-green font-bold dark:text-light-orange">
+                체크박스를 체크하세요.
+              </span>
             </label>
             {termError && (
               <h4 className="text-red-400 font-bold">

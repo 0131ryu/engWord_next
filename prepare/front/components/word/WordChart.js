@@ -32,8 +32,8 @@ const WordChart = ({ easyLength, middleLength, advanceLength }) => {
               return context.chart.data.labels[idx] + " : " + value;
             }
           },
+          color: "black",
           font: {
-            weight: "bold",
             size: 16,
           },
         },
@@ -46,12 +46,18 @@ const WordChart = ({ easyLength, middleLength, advanceLength }) => {
       legend: {
         position: "bottom",
         align: "center",
+        labels: {
+          color: "black",
+          font: {
+            size: 16,
+          },
+        },
       },
     },
   };
 
   return (
-    <div className="w-60 h-60 grid grid-cols-2 gap-4 place-content-center">
+    <div className="dark:bg-gray-100 rounded-lg w-60 h-60 grid grid-cols-2 gap-4 place-content-center">
       <Doughnut data={data} options={options}></Doughnut>
     </div>
   );

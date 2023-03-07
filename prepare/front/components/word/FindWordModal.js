@@ -85,7 +85,7 @@ const FindWordModal = ({ UserId, setModal }) => {
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
                 <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                  <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                  <div className="bg-white dark:bg-black px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div className="sm:flex sm:items-start">
                       <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-light-orange sm:mx-0 sm:h-10 sm:w-10">
                         <DocumentMagnifyingGlassIcon
@@ -96,7 +96,7 @@ const FindWordModal = ({ UserId, setModal }) => {
                       <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                         <Dialog.Title
                           as="h3"
-                          className="text-lg font-medium leading-6 text-gray-900"
+                          className="text-lg font-medium dark:text-white leading-6 text-gray-900"
                         >
                           단어 만들기
                           <p className="text-xs">
@@ -111,7 +111,7 @@ const FindWordModal = ({ UserId, setModal }) => {
                               type="text"
                               name="korean"
                               className="ml-8 lg:ml-0 sm:600 w-80 lg:w-96 grid grid-cols-2 gap-4 place-content-center
-                          pl-2 h-9  placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-orange group-hover:opacity-80 rounded-full m-2"
+                          pl-2 h-9  placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-orange group-hover:opacity-80 rounded-full m-2 dark:text-black"
                             />
                           </div>
                         </div>
@@ -130,7 +130,7 @@ const FindWordModal = ({ UserId, setModal }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                  <div className="bg-gray-100 dark:bg-black px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                     <button
                       type="button"
                       className="inline-flex w-full justify-center rounded-md border border-transparent bg-light-orange px-4 py-2 text-base font-medium text-black shadow-sm hover:bg-dark-green hover:text-white  sm:ml-3 sm:w-auto sm:text-sm"

@@ -52,7 +52,7 @@ const initialState = {
   loadWordsWeekendComplete: false,
   loadWordsWeekendError: null,
   findResult: [],
-  searchResult: [],
+  searchResult: null,
   weekendResult: [],
 };
 
@@ -359,8 +359,11 @@ export const wordSlice = createSlice({
       state.removeWordComplete = false;
       state.searchWordLoading = false;
       state.searchWordComplete = true;
-      state.searchResult.length = 0;
-      state.searchResult = state.searchResult.concat(data);
+      if (data === []) {
+        state.searchResult = null;
+      } else {
+        state.searchResult = data;
+      }
     },
     searchWordError: (state, action) => {
       state.searchWordLoading = true;

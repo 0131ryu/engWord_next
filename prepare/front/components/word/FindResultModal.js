@@ -118,7 +118,7 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
                 <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                  <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                  <div className="bg-white dark:bg-black px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div className="sm:flex sm:items-start">
                       <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-light-orange sm:mx-0 sm:h-10 sm:w-10">
                         <DocumentMagnifyingGlassIcon
@@ -129,11 +129,9 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
                       <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                         <Dialog.Title
                           as="h3"
-                          className="text-lg font-medium leading-6 text-gray-900"
+                          className="dark:text-white text-lg font-medium leading-6 text-gray-900"
                         >
                           검색 결과
-                          {/* 다른 단어들 start */}
-                          {/* <div className="ml-20"> */}
                           <button
                             className={
                               "ml-2 w-16 h-8 bg-light-beige text-black active:bg-light-orange font-bold text-xs rounded shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150"
@@ -205,7 +203,7 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
                               type="text"
                               name="english"
                               className="sm:600 w-80 lg:w-96 grid grid-cols-2 gap-4 place-content-center
-                          pl-2 h-8 placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-lg m-2"
+                          pl-2 h-8 placeholder:italic placeholder:text-slate-400 flex items-start bg-white border-solid border-2 border-light-green group-hover:opacity-80 rounded-lg m-2 dark:text-black"
                             />
                           </div>
                           <div className="flex">
@@ -219,11 +217,11 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
                                     value={type}
                                     onChange={onChangeType}
                                     type="radio"
-                                    className="ml-3 mt-3 h-4 w-4 border-gray-300 text-dark-green focus:ring-dark-green"
+                                    className="ml-3 mt-3 h-4 w-4 border-gray-300 text-dark-green focus:ring-dark-green dark:accent-light-orange accent-light-green"
                                   />
                                   <label
                                     htmlFor="easy"
-                                    className="ml-3 mt-2 block text-sm font-medium text-gray-700"
+                                    className="ml-3 mt-2 block text-sm font-medium text-gray-700 dark:text-white"
                                   >
                                     {type}
                                   </label>
@@ -235,7 +233,7 @@ const FindResultModal = ({ korean, setModal, setResultModal }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                  <div className="bg-gray-100 dark:bg-black px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                     <button
                       type="button"
                       value={resultEng}

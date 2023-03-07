@@ -20,7 +20,7 @@ const UserInfo = () => {
   return (
     <>
       <div className="bg-gray-100 ml-2 pr-2 lg:py-2 rounded-lg">
-        <div className="ml-2 shadow shadow-black-500/40 rounded-xl bg-white">
+        <div className="ml-2 shadow shadow-black-500/40 rounded-xl bg-white dark:bg-black">
           <div className="md:flex lg:flex">
             {me?.profileImg === "" || me?.profileImg === null ? (
               <img

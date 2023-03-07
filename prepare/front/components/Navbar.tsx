@@ -6,6 +6,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { loadMyInfoRequest, logoutRequest } from "../redux/feature/userSlice";
 import { Action, Dispatch } from "redux";
+import DarkMode from "./darkMode";
 
 interface RootState {
     user: any;
@@ -47,7 +48,7 @@ const Navbar = ({children}) => {
         return (
             userNavItem !== name ? (
                 <Link href={route}>
-                    <span onClick={() => setUserNavItem(name)} className="ml-5 font-bold text-white cursor-pointer hover:text-light-orange">{name}</span>
+                    <span onClick={() => setUserNavItem(name)} className="mx-2 font-bold text-white cursor-pointer hover:text-light-orange">{name}</span>
                 </Link>
         ) : null
         )
@@ -154,7 +155,7 @@ const Navbar = ({children}) => {
                             </span>
                             님
                           </p>
-                          <Menu.Button className="flex text-sm rounded-full bg-light-brown focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                          <Menu.Button className="flex mr-2 text-sm rounded-full bg-light-brown focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                             <span className="sr-only">Open user menu</span>
                             {me.profileImg === "" || me.profileImg === null ? (
                               <img
@@ -170,11 +171,13 @@ const Navbar = ({children}) => {
                               />
                             )}
                           </Menu.Button>
+                          <DarkMode />
                         </div>
                       ) : (
                         <div className="flex">
                              <UserNavItem userNavItem={userNavItem} setUserNavItem={setUserNavItem} name="Login" route="/signin" />
                              <UserNavItem userNavItem={userNavItem} setUserNavItem={setUserNavItem} name="Sign Up" route="/signup" />
+                             <DarkMode />
                         </div>
                       )}
                     </div>

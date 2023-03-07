@@ -36,7 +36,7 @@ const WordCheckbox = ({ me, easyLength, middleLength, advanceLength }) => {
           value={me?.id}
           name="checkItem"
           type="checkbox"
-          className="h-4 w-4 rounded cursor-pointer accent-light-green"
+          className="h-4 w-4 rounded cursor-pointer dark:accent-light-orange accent-light-green"
         />
         전체 선택 / 해제
       </div>

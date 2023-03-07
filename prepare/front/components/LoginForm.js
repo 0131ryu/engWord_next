@@ -60,8 +60,8 @@ const LoginForm = () => {
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
         <div>
-          <h4 className="mt-40 text-center text-3xl font-bold tracking-tight text-gray-900">
-            <span className="text-light-brown">EngWord</span>에 환영합니다!
+          <h4 className="mt-40 text-center text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+            <span className="text-light-orange">EngWord</span>에 환영합니다!
           </h4>
         </div>
         <input type="hidden" name="remember" defaultValue="true" />
@@ -77,14 +77,14 @@ const LoginForm = () => {
               type="email"
               autoComplete="email"
               required
-              className="relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
+              className="relative p-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg dark:bg-white dark:text-black"
               placeholder="Email"
               onChange={onChangeEmail}
             />
           </div>
           {email && !validEmail ? (
             <div className="bg-light-beige rounded-lg">
-              <p className="ml-3 mt-1">
+              <p className="ml-3 mt-1 dark:text-black">
                 이메일 형식<span className="font-bold">(@포함)</span>으로 입력
                 바랍니다.
               </p>
@@ -100,14 +100,14 @@ const LoginForm = () => {
               type="password"
               autoComplete="current-password"
               required
-              className="relative p-2 mt-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg"
+              className="relative p-2 mt-2 block w-full appearance-none shadow-lg shadow-black-500/40 rounded-lg dark:bg-white dark:text-black"
               placeholder="Password"
               onChange={onChangePassword}
             />
           </div>
           {password && !validPassword ? (
             <div className="bg-light-beige rounded-lg">
-              <p className="ml-3 mt-1">
+              <p className="ml-3 mt-1 dark:text-black">
                 숫자, 영문포함{" "}
                 <span className="font-bold">6자리 이상 12자리 이하</span>로
                 입력하세요.

@@ -14,7 +14,7 @@ const SuccessSignup = ({ me }) => {
   return (
     <>
       <div className=" flex min-h-full items-center justify-center py-48 px-4 sm:px-6 lg:px-6">
-        <div className="bg-gray-100 mx-auto max-w-7xl py-12 px-8 sm:px-6 lg:items-center lg:justify-between lg:py-16 lg:px-8">
+        <div className="bg-gray-200 dark:bg-black-700 rounded-lg mx-auto max-w-7xl py-12 px-8 sm:px-6 lg:items-center lg:justify-between lg:py-16 lg:px-8">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             {me ? (
               <span className="block">

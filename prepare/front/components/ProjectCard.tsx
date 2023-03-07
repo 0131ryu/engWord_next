@@ -21,7 +21,7 @@ const ProjectCard:FunctionComponent<{
       return (
         <Link href={buttonPath} >
           <p onClick={() => setActiveItem(buttonTitle)}
-          className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg cursor-pointer bg-light-green hover:bg-dark-green focus:ring-4 focus:outline-none focus:ring-light-green"
+          className="text-black hover:text-dark-green inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg cursor-pointer bg-light-orange hover:bg-dark-orange dark:bg-light-green dark:hover:bg-dark-green dark:text-white focus:ring-4 focus:outline-none focus:ring-light-green"
           >{buttonTitle}로 이동</p>
         </Link>
       )
@@ -30,7 +30,7 @@ const ProjectCard:FunctionComponent<{
   return (
         <>
           {show === id && (
-            <article className="p-6 bg-white border border-gray-200 rounded-lg shadow-md">
+            <article className="p-6 bg-white dark:bg-black border border-gray-200 rounded-lg shadow-md">
             <div className="flex items-center text-gray-500">
               <img className="w-1/2 rounded-lg" src={image_path} alt="" />
               <div className="w-1/2 pl-5 lg:pl-10">
@@ -40,7 +40,7 @@ const ProjectCard:FunctionComponent<{
                   </span>
                   {title}
                 </p>
-                <h5 className="text-2xl font-bold tracking-tight text-gray-900">
+                <h5 className="text-2xl text-black font-bold dark:text-white tracking-tight text-gray-900">
                 {name}
                 </h5>
 

@@ -73,17 +73,19 @@ const WordForm = ({ UserId }) => {
       {modalSearch ? <SearchWordModal setModalSearch={setModalSearch} /> : null}
       <div className="lg:w-full relative">
         <div className="h-80 place-content-center mx-auto max-w-2xl py-8 px-4 sm:py-20 sm:px-3 lg:max-w-screen-xl">
-          <h2 className="text-2xl tracking-tight text-gray-900">
-            <span className="text-dark-green font-bold">영어 단어</span>, 만들어
-            봅시다!
+          <h2 className="text-2xl tracking-tight text-gray-900 dark:text-white">
+            <span className="text-dark-green dark:text-light-orange font-bold">
+              영어 단어
+            </span>
+            , 만들어 봅시다!
             <button
               onClick={onFindModal}
-              className="bg-light-orange ml-3 h-8 w-14 lg:w-20 rounded-lg mb-2"
+              className="bg-light-orange dark:bg-light-green ml-3 h-8 w-14 lg:w-20 rounded-lg mb-2"
             >
               <MagnifyingGlassPlusIcon className="w-5 h-5 ml-2" />
             </button>
             <button
-              className="ml-5 h-8 w-14 lg:w-20 font-bold bg-light-beige border-2 rounded-lg border-light-beige"
+              className="ml-5 h-8 w-14 lg:w-20 font-bold bg-light-beige dark:bg-dark-orange rounded-lg"
               onClick={onSearchModal}
             >
               <MagnifyingGlassIcon className="w-5 h-5 ml-2" />
@@ -106,8 +108,8 @@ const WordForm = ({ UserId }) => {
                 type="text"
                 name="english"
                 className="
-            basis-1/5 md:basis-1/3 sm:600 w-28 md:w-48 lg:w-48 grid grid-cols-2 gap-4 place-content-center
-            pl-2 h-9 placeholder:italic placeholder:text-slate-400 flex overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-full m-2"
+              basis-1/5 md:basis-1/3 sm:600 w-28 md:w-48 lg:w-48 grid grid-cols-2 gap-4 place-content-center
+              pl-2 h-9 placeholder:italic placeholder:text-slate-400 flex overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-full m-2 dark:bg-white dark:text-black"
               />
               {/* korean */}
               <input
@@ -118,10 +120,10 @@ const WordForm = ({ UserId }) => {
                 name="korean"
                 className="
               basis-1/5 md:basis-1/3 sm:600 w-28 md:w-48 lg:w-48 grid grid-cols-2 gap-4 place-content-center
-              pl-2 h-9 placeholder:italic placeholder:text-slate-400 flex overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-full m-2"
+              pl-2 h-9 placeholder:italic placeholder:text-slate-400 flex overflow-y-auto max-h-96 aspect-w-1 aspect-h-1 overflow-hidden w-full shadow-lg shadow-black-500/40 rounded-full m-2 dark:bg-white dark:text-black"
               />
               {/* typesName start */}
-              <div className="z-10 w-20 h-48 mt-2 mr-2 ">
+              <div className="z-10 w-20 h-48 mt-2 mr-2 dark:text-black">
                 <Listbox value={selected} onChange={setSelected}>
                   <div className="relative ">
                     <Listbox.Button className="relative w-full cursor-pointer bg-white py-2 pl-2 pr-10 shadow-lg shadow-black-500/40 rounded-md">

@@ -11,7 +11,7 @@ const ProjectTitle:FunctionComponent<{
     }) => {
   console.log("show", show)
   return (
-    <li className="flex items-center font-bold cursor-pointer hover:text-light-orange" onClick={() => setShow(id)}> 
+    <li className="flex items-center font-bold cursor-pointer hover:text-dark-green dark:hover:text-light-orange" onClick={() => setShow(id)}> 
       <span className="flex items-center justify-center w-5 h-5 mr-2 text-xs border rounded-full border-light-green shrink-0">
         {id}
       </span>

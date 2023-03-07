@@ -6,7 +6,6 @@ import Navbar from "../components/Navbar";
 
 import ProjectCard from "../components/ProjectCard";
 import ProjectTitle from "../components/ProjectTitle";
-import DarkMode from "../components/darkMode";
 
 const Home = () => {
     const [projects, setProjects] = useState(projectsData)
@@ -67,28 +66,5 @@ const Home = () => {
     </>
   );
 };
-
-// export const getServerSideProps = wrapper.getServerSideProps(
-//   async (context) => {
-//     const cookie = context.req ? context.req.headers.cookie : "";
-//     axios.defaults.headers.Cookie = "";
-//     if (context.req && cookie) {
-//       axios.defaults.headers.Cookie = cookie;
-//     }
-
-//     console.log("cookie", cookie);
-
-//     context.store.dispatch(loadMyInfoRequest());
-//     if (cookie !== undefined) {
-//       context.store.dispatch(loadWordsRequest());
-//       context.store.dispatch(loadEasyWordsRequest());
-//       context.store.dispatch(loadMiddleWordsRequest());
-//       context.store.dispatch(loadAdvanceWordsRequest());
-//     }
-
-//     context.store.dispatch(END);
-//     await context.store.sagaTask.toPromise();
-//   }
-// );
 
 export default Home;

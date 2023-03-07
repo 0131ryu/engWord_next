@@ -6,7 +6,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { loadMyInfoRequest, logoutRequest } from "../redux/feature/userSlice";
 import { Action, Dispatch } from "redux";
-import DarkMode from "./darkMode";
+import DarkMode from "./DarkMode";
 
 interface RootState {
     user: any;

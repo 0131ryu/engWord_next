@@ -28,11 +28,11 @@ const CommentForm = ({ post }) => {
   return (
     <>
       <div className="w-full p-1 mx-auto block">
-        <div className="mt-2 shadow shadow-black-500/40 rounded-lg">
+        <div className="mt-2 shadow shadow-black-500/40 rounded-lg dark:bg-white">
           <div className="p-2 justify-between rounde-md">
             <div className="flex">
               <textarea
-                className="w-full"
+                className="w-full dark:bg-white dark:text-black"
                 type="text"
                 value={commentText}
                 onChange={onChangeCommentText}
@@ -41,7 +41,7 @@ const CommentForm = ({ post }) => {
               <button onClick={onSubmitCommentForm} className="mt-1 ml-2">
                 <PencilIcon
                   className="h-8 w-8 md:h-10 md:w-10 lg:h-10 lg:w-10 
-                   hover:bg-light-green hover:text-white hover:rounded-md"
+                   bg-light-green hover:bg-dark-green hover:text-white rounded-md"
                 />
               </button>
             </div>

@@ -234,7 +234,7 @@ const game = () => {
                     >
                       {me?.id && (
                         <Dialog.Panel className="relative overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:w-full sm:max-w-lg">
-                          <div className="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
+                          <div className="px-4 pt-5 pb-4 bg-white dark:bg-black  sm:p-6 sm:pb-4">
                             <div className="sm:flex sm:items-start">
                               <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto text-white rounded-full bg-light-orange sm:mx-0 sm:h-10 sm:w-10">
                                 <BookmarkSquareIcon
@@ -245,7 +245,7 @@ const game = () => {
                               <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                                 <Dialog.Title
                                   as="h3"
-                                  className="text-sm leading-6 text-gray-900"
+                                  className="text-sm leading-6 text-gray-900 dark:text-white"
                                 >
                                   <span className="font-bold">
                                     체크한 영단어&nbsp;
@@ -296,7 +296,7 @@ const game = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="px-4 py-3 bg-gray-200 sm:flex sm:flex-row-reverse sm:px-6">
+                          <div className="px-4 py-3 bg-gray-200 dark:bg-black sm:flex sm:flex-row-reverse sm:px-6">
                             <button
                               type="button"
                               className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-black text-white border border-transparent rounded-md shadow-sm bg-light-orange hover:bg-dark-green hover:text-white sm:ml-3 sm:w-auto sm:text-sm"

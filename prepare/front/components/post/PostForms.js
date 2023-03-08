@@ -82,7 +82,7 @@ const PostForms = () => {
         onSubmit={onSubmitForm}
       >
         <textarea
-          className="w-full p-2 rounde-md"
+          className="w-full p-2 rounde-md dark:bg-white dark:text-black"
           type="text"
           value={text}
           onChange={onChangeText}
@@ -106,12 +106,12 @@ const PostForms = () => {
               <button
                 type="button"
                 onClick={onClickImageUpload}
-                className="ml-2 mb-1 bg-light-beige rounded-md font-bold hover:bg-light-orange"
+                className="ml-2 mb-1 bg-light-beige rounded-md font-bold hover:bg-light-orange dark:text-black"
               >
                 이미지 추가
               </button>
               {imagePaths.length >= 1 && (
-                <p className="ml-2 font-bold">
+                <p className="ml-2 font-bold dark:text-black">
                   <span className="text-red-500">{imagePaths.length}</span>
                   개의 이미지가 등록되어 있습니다
                 </p>
@@ -120,7 +120,7 @@ const PostForms = () => {
           )}
           <button
             type="submit"
-            className="flex hover:bg-light-green hover:text-white hover:rounded-md"
+            className="flex dark:bg-light-green hover:bg-dark-green hover:text-white rounded-md h-7"
           >
             <PencilIcon className="h-5 w-5" />
             <h3 className="pr-1 font-bold hover:text-white">추가</h3>
@@ -145,7 +145,7 @@ const PostForms = () => {
           ))}
         </div>
         {imagePaths.length >= 1 && (
-          <p className="flex justify-center">
+          <p className="flex justify-center dark:text-black">
             이미지는 <span className="font-bold text-red-500 ml-2"> 4개</span>
             까지 가능합니다
           </p>

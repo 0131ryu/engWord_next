@@ -60,13 +60,15 @@ const CommentCard = ({ comment }) => {
                 src={`${comment.User.profileImg}`}
                 alt={comment.profileImg}
               />
-              <p className="p-2 m-1 font-bold text-xs">{comment.nickname}</p>
+              <p className="p-2 m-1 font-bold text-xs dark:text-black">
+                {comment.nickname}
+              </p>
               {editMode ? (
                 <div>
                   <textarea
                     id="message"
                     rows="2"
-                    className="form-control block w-full lg:min-w-[590px] px-3 py-1.5 text-base text-gray-700 bg-white bg-clip-padding
+                    className="dark:text-black form-control block w-full lg:min-w-[590px] px-3 py-1.5 text-base text-gray-700 bg-white bg-clip-padding
                     border border-solid border-gray-300 rounded transition ease-in-out m-0"
                     onChange={onChangeText}
                   >
@@ -75,13 +77,13 @@ const CommentCard = ({ comment }) => {
                   <div className="flex justify-end items-center mt-2 mr-4">
                     <button
                       onClick={onReviseCommentSubmit(editText)}
-                      className="mr-2 px-1 h-5 text-xs lg:h-9 text-sm bg-light-beige rounded-md font-bold focus:bg-light-green focus:text-white"
+                      className="dark:text-black mr-2 px-1 h-5 text-xs lg:h-9 text-sm bg-light-beige rounded-md font-bold focus:bg-light-green focus:text-white"
                     >
                       수정
                     </button>
                     <button
                       onClick={onCancleReviseComment}
-                      className="px-1 h-5 text-xs lg:h-9 text-sm bg-light-beige rounded-md font-bold focus:bg-red-500 focus:text-white"
+                      className="dark:text-black px-1 h-5 text-xs lg:h-9 text-sm bg-light-beige rounded-md font-bold focus:bg-red-500 focus:text-white"
                     >
                       취소
                     </button>
@@ -92,7 +94,7 @@ const CommentCard = ({ comment }) => {
                   <div
                     id="message"
                     rows="3"
-                    className="text-clip overflow-hidden block p-2.5 bg-gray-100 rounded-lg lg:text-sm w-11/12 lg:h-full"
+                    className="dark:text-black text-clip overflow-hidden block p-2.5 bg-gray-100 rounded-lg lg:text-sm w-11/12 lg:h-full"
                   >
                     {comment.content}
                     <p className="text-center text-xs text-gray-400 float-right">
@@ -103,7 +105,7 @@ const CommentCard = ({ comment }) => {
               )}
 
               {editMode ? null : (
-                <div className="ml-2">
+                <div className="ml-2 dark:text-black">
                   <Popover>
                     <>
                       <Popover.Button className="rounded-md mt-1">
@@ -127,13 +129,13 @@ const CommentCard = ({ comment }) => {
                             <div className="bg-light-beige p-1">
                               <button
                                 onClick={onReviseComment}
-                                className="flow-root rounded-md w-full p-1 transition duration-150 ease-in-out hover:bg-light-orange "
+                                className="dark:text-black flow-root rounded-md w-full p-1 transition duration-150 ease-in-out hover:bg-light-orange "
                               >
                                 수정
                               </button>
                               <button
                                 onClick={onRemoveComment}
-                                className="flow-root rounded-md w-full p-1 transition duration-150 ease-in-out hover:bg-red-500 hover:text-white focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                                className="dark:text-black flow-root rounded-md w-full p-1 transition duration-150 ease-in-out hover:bg-red-500 hover:text-white focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                               >
                                 삭제
                               </button>

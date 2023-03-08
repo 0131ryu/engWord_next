@@ -75,9 +75,11 @@ const PostCardBookmark = ({ post, index, me }) => {
       {/* card start */}
       {bookmark && (
         <section className="flex justify-center">
-          <article className="bg-white overflow-hidden w-full my-3 shadow shadow-black-500/40 rounded-md">
+          <article className="bg-white dark:bg-gray-300 overflow-hidden w-full my-3 shadow shadow-black-500/40 rounded-md">
             <div>
-              <p className="ml-3 mt-2 text-gray-400">내가 북마크한 글</p>
+              <p className="ml-3 mt-2 text-gray-400 dark:text-gray-900">
+                내가 북마크한 글
+              </p>
             </div>
             <header className="px-4 py-3 flex items-center justify-between">
               <div className="flex items-center font-bold">
@@ -102,7 +104,7 @@ const PostCardBookmark = ({ post, index, me }) => {
                   </Link>
                 </span>
 
-                <span>{post?.User?.nickname}</span>
+                <span className="dark:text-black">{post?.User?.nickname}</span>
 
                 {id === undefined ? null : blockingLists &&
                   blockingLists?.find((block) => block.id === post.UserId) ? (
@@ -135,7 +137,7 @@ const PostCardBookmark = ({ post, index, me }) => {
                       <Popover.Button className="rounded-md px-3 py-2 text-base">
                         <div>
                           {id === post?.UserId ? (
-                            <EllipsisHorizontalIcon className="h-9 w-9" />
+                            <EllipsisHorizontalIcon className="h-9 w-9 dark:text-black" />
                           ) : null}
                         </div>
                       </Popover.Button>
@@ -155,7 +157,7 @@ const PostCardBookmark = ({ post, index, me }) => {
                                 <button
                                   value={index}
                                   onClick={onClickRevise}
-                                  className="flow-root rounded-md w-full p-1 transition duration-150 ease-in-out hover:bg-light-orange "
+                                  className="dark:text-black flow-root rounded-md w-full p-1 transition duration-150 ease-in-out hover:bg-light-orange "
                                 >
                                   수정
                                 </button>
@@ -163,7 +165,7 @@ const PostCardBookmark = ({ post, index, me }) => {
 
                               <button
                                 onClick={onRemovePost}
-                                className="flow-root rounded-md w-full p-1 transition duration-150 ease-in-out hover:bg-red-500 hover:text-white"
+                                className="dark:text-black flow-root rounded-md w-full p-1 transition duration-150 ease-in-out hover:bg-red-500 hover:text-white"
                               >
                                 삭제
                               </button>
@@ -181,7 +183,7 @@ const PostCardBookmark = ({ post, index, me }) => {
               <p className="ml-3 p-2 text-red-500">게시글을 볼 수 없습니다.</p>
             ) : post?.RetweetId && post?.Retweet ? (
               <>
-                <p className="ml-5">
+                <p className="ml-5 dark:text-black">
                   {post?.RetweetId
                     ? `${post?.User.nickname}님이 리트윗하셨습니다.`
                     : null}
@@ -219,7 +221,7 @@ const PostCardBookmark = ({ post, index, me }) => {
                     )}
                   </article>
                 </section>
-                <small className="text-gray-400 m-5 float-right cursor-pointer">
+                <small className="text-gray-400 dark:text-gray-900 m-5 float-right cursor-pointer">
                   {moment(post?.createdAt).fromNow()}
                 </small>
               </>
@@ -239,7 +241,7 @@ const PostCardBookmark = ({ post, index, me }) => {
                     <PostImages images={post?.Images} />
                   </div>
                 )}
-                <small className="text-gray-400 m-5 float-right ml-2">
+                <small className="text-gray-400 dark:text-gray-900 m-5 float-right ml-2">
                   <p
                     className="text-center cursor-pointer"
                     onClick={onPostDetail}

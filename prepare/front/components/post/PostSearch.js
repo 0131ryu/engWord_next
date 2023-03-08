@@ -21,7 +21,7 @@ const PostSearch = () => {
       <div className="flex bg-gray-100 overflow-hidden w-full my-3 shadow shadow-black-500/40 rounded-md">
         <input
           onChange={onChangeDetail}
-          className="flex-grow p-1 w-10  outline-none text-gray-600 focus:text-blue-600"
+          className="flex-grow p-1 w-10  outline-none text-gray-600 dark:text-white"
           type="text"
           name="detail"
           placeholder="검색할 내용은?"
@@ -29,7 +29,7 @@ const PostSearch = () => {
         <span>
           <MagnifyingGlassIcon
             onClick={onSearch}
-            className="mt-1 h-5 w-5 cursor-pointer"
+            className="dark:text-black mt-1 h-5 w-5 cursor-pointer"
           />
         </span>
       </div>

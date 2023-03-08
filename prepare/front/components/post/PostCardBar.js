@@ -57,11 +57,11 @@ const PostCardBar = ({ post, postId }) => {
             )}
           </button>
 
-          <p className="mt-1">{post?.Likers?.length}</p>
+          <p className="mt-1 dark:text-black">{post?.Likers?.length}</p>
         </span>
         <span className="flex mr-4">
-          <ChatBubbleOvalLeftEllipsisIcon className="h-6 w-6 mt-0.5" />
-          <p className="mt-1">{post?.Comments?.length}</p>
+          <ChatBubbleOvalLeftEllipsisIcon className="h-6 w-6 mt-0.5 dark:text-black" />
+          <p className="mt-1 dark:text-black">{post?.Comments?.length}</p>
         </span>
         <span className="flex mr-1">
           <ArrowPathRoundedSquareIcon

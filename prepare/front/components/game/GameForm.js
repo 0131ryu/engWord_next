@@ -214,7 +214,6 @@ const GameForm = () => {
       {/* 시간초과시 모달 */}
       {num !== 10 && sec === 0 ? <TimeoutModal score={score} /> : null}
       {/* 모든 게임 다 진행 후 모달 */}
-      {/* <EndModal score={score} /> */}
       {num === 10 ? <EndModal score={score} /> : null}
       {/* 힌트 모달 */}
       {modal && sec !== 0 ? (
@@ -226,7 +225,7 @@ const GameForm = () => {
         } items-center justify-center`}
       >
         <div className="sm:500px hidden">quiz game</div>
-        <div className="w-full max-w-sm overflow-hidden bg-white border-2 border-light-green flex-none relative shadow-lg rounded-lg px-10 py-3">
+        <div className="w-full max-w-sm overflow-hidden bg-white dark:bg-gray-400 border-2 border-light-green dark:border-gray-400 flex-none relative shadow-lg rounded-lg px-10 py-3">
           {/* score start */}
           <div className="text-right text-gray-800">
             <p className="text-sm leading-3">Score</p>
@@ -262,7 +261,7 @@ const GameForm = () => {
                 onClick={onClickHint}
                 className="bg-light-orange flex rounded-lg m-5 relative left-24"
               >
-                <HandRaisedIcon className="h-9 h-8" />
+                <HandRaisedIcon className="h-9 h-8 dark:text-black" />
                 <p className="py-2 px-1 font-bold">Hint!</p>
               </button>
             </div>
@@ -286,7 +285,7 @@ const GameForm = () => {
                 <button
                   value="1"
                   onClick={onClickAnswer}
-                  className={`w-full bg-light-beige p-2 rounded-lg mb-3 relative`}
+                  className={`w-full bg-light-beige dark:text-black p-2 rounded-lg mb-3 relative`}
                 >
                   <div id="point1" className="rounded-lg font-bold flex ">
                     <div className="bg-white p-3 rounded-lg">1</div>
@@ -302,7 +301,7 @@ const GameForm = () => {
                 <button
                   value="2"
                   onClick={onClickAnswer}
-                  className={`w-full bg-light-beige p-2 rounded-lg mb-3 relative`}
+                  className={`w-full bg-light-beige dark:text-black p-2 rounded-lg mb-3 relative`}
                 >
                   <div id="point2" className="rounded-lg font-bold flex ">
                     <div className="bg-white p-3 rounded-lg">2</div>
@@ -318,7 +317,7 @@ const GameForm = () => {
                 <button
                   value="3"
                   onClick={onClickAnswer}
-                  className={`w-full bg-light-beige p-2 rounded-lg mb-3 relative`}
+                  className={`w-full bg-light-beige dark:text-black p-2 rounded-lg mb-3 relative`}
                 >
                   <div id="point3" className="rounded-lg font-bold flex ">
                     <div className="bg-white p-3 rounded-lg">3</div>
@@ -334,7 +333,7 @@ const GameForm = () => {
                 <button
                   value="4"
                   onClick={onClickAnswer}
-                  className={`w-full bg-light-beige p-2 rounded-lg mb-3 relative`}
+                  className={`w-full bg-light-beige dark:text-black p-2 rounded-lg mb-3 relative`}
                 >
                   <div id="point4" className="rounded-lg font-bold flex ">
                     <div className="bg-white p-3 rounded-lg">4</div>

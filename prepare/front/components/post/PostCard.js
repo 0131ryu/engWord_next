@@ -74,7 +74,7 @@ const PostCard = ({ post, index, me, routerQueryId }) => {
 
       {/* card start */}
       <section className="flex justify-center">
-        <article className="bg-white overflow-hidden w-full my-3 shadow shadow-black-500/40 rounded-md">
+        <article className="bg-white dark:bg-gray-300 overflow-hidden w-full my-3 shadow shadow-black-500/40 rounded-md">
           <header className="px-4 py-3 flex items-center justify-between">
             <div className="flex items-center font-bold">
               <span className="mr-2">
@@ -98,7 +98,7 @@ const PostCard = ({ post, index, me, routerQueryId }) => {
                 </Link>
               </span>
 
-              <span>{post?.User?.nickname}</span>
+              <span className="dark:text-black">{post?.User?.nickname}</span>
 
               {id === undefined ? null : blockingLists &&
                 blockingLists?.find((block) => block.id === post.UserId) ? (
@@ -122,7 +122,7 @@ const PostCard = ({ post, index, me, routerQueryId }) => {
                 </button>
               )}
             </div>
-            <div className="float-right">
+            <div className="float-right dark:text-black">
               {editMode ? null : (
                 <Popover>
                   <>
@@ -175,7 +175,7 @@ const PostCard = ({ post, index, me, routerQueryId }) => {
             <p className="ml-3 p-2 text-red-500">게시글을 볼 수 없습니다.</p>
           ) : post?.RetweetId && post?.Retweet ? (
             <>
-              <p className="ml-5">
+              <p className="ml-5 dark:text-black">
                 {post?.RetweetId
                   ? `${post?.User.nickname}님이 리트윗하셨습니다.`
                   : null}
@@ -191,7 +191,7 @@ const PostCard = ({ post, index, me, routerQueryId }) => {
                         className="h-8 w-8 rounded-full"
                       />
                     </span>
-                    <span className="mr-2 mt-2 font-bold">
+                    <span className="mr-2 mt-2 font-bold dark:text-black">
                       {post?.Retweet.User.nickname}
                     </span>
                   </header>

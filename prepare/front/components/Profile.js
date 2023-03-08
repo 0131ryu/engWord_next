@@ -102,7 +102,7 @@ const Profile = () => {
         <div className="mt-10 lg:mt-20">
           <section className="flex flex-wrap justify-center">
             <div className="container mx-auto px-4">
-              <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-10 shadow-xl rounded-lg">
+              <div className="relative flex flex-col min-w-0 break-words bg-white dark:bg-gray-400 w-full mb-10 shadow-xl rounded-lg">
                 <div className="px-6">
                   <div className="flex flex-wrap justify-center">
                     <div className=" w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
@@ -137,7 +137,9 @@ const Profile = () => {
                                 className="bg-gray-100 rounded-full w-28 h-5 relative left-32 bottom-10 cursor-pointer "
                                 onClick={onClickImageUpload}
                               >
-                                <p className="font-bold">프로필 변경</p>
+                                <p className="font-bold dark:text-black">
+                                  프로필 변경
+                                </p>
                               </button>
                             </div>
                           </form>
@@ -171,7 +173,7 @@ const Profile = () => {
                             onClick={onClickFollowingModal}
                             className="text-xl font-bold block uppercase tracking-wide text-blueGray-600"
                           >
-                            <a className="hover:text-sky-500">
+                            <a className="hover:text-sky-500 cursor-pointer">
                               {me?.Followings.length}
                             </a>
                           </span>
@@ -184,7 +186,7 @@ const Profile = () => {
                             onClick={onClickFollowerModal}
                             className="text-xl font-bold block uppercase tracking-wide text-blueGray-600"
                           >
-                            <a className="hover:text-sky-500">
+                            <a className="hover:text-sky-500 cursor-pointer">
                               {me?.Followers.length}
                             </a>
                           </span>
@@ -197,7 +199,7 @@ const Profile = () => {
                             onClick={onClickBlockFollowModal}
                             className="text-xl font-bold block uppercase tracking-wide text-blueGray-600"
                           >
-                            <a className="hover:text-sky-500">
+                            <a className="hover:text-sky-500 cursor-pointer">
                               {me?.Blockings?.length}
                             </a>
                           </span>

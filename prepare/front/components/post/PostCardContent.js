@@ -85,7 +85,7 @@ const PostCardContent = ({
           <textarea
             id="message"
             rows="4"
-            className="ml-2.5 block p-2.5 w-11/12 lg:ml-7 h-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+            className="dark:text-black ml-2.5 block p-2.5 w-11/12 lg:ml-7 h-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
             onChange={onChangeText}
           >
             {content}
@@ -236,7 +236,7 @@ const PostCardContent = ({
               <button
                 type="button"
                 onClick={onClickImageUpload}
-                className="ml-4 mt-3 bg-light-beige rounded-md font-bold hover:bg-light-orange"
+                className="dark:text-black ml-4 mt-3 bg-light-beige rounded-md font-bold hover:bg-light-orange"
               >
                 이미지 추가
               </button>
@@ -246,13 +246,13 @@ const PostCardContent = ({
           <div className="flex justify-end items-center mt-2 mr-4">
             <button
               onClick={onRevisePost(editText, index)}
-              className="mr-2 px-1 h-9 bg-light-beige rounded-md font-bold focus:bg-light-green focus:text-white"
+              className="dark:text-black mr-2 px-1 h-9 bg-light-beige rounded-md font-bold focus:bg-light-green focus:text-white"
             >
               수정
             </button>
             <button
               onClick={onCancleRevisePost}
-              className="px-1 h-9 bg-light-beige rounded-md font-bold focus:bg-red-500 focus:text-white"
+              className="dark:text-black px-1 h-9 bg-light-beige rounded-md font-bold focus:bg-red-500 focus:text-white"
             >
               취소
             </button>
@@ -260,7 +260,7 @@ const PostCardContent = ({
         </div>
       ) : (
         <>
-          <div className="mx-5">
+          <div className="mx-5 dark:text-black">
             {retweetId
               ? content?.split(/(#[^\s#]+)/g).map((v, i) => {
                   if (v.match(/(#[^\s#]+)/)) {

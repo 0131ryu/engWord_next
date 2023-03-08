@@ -68,7 +68,7 @@ const WeekendWordChart = ({ weekendResult }) => {
         </span>{" "}
         단어 작성 개수
       </p>
-      <div className="h-48 lg:w-80">
+      <div className="h-20 lg:w-80 dark:bg-white text-center">
         <Line data={data} options={options}></Line>
       </div>
     </>

@@ -18,7 +18,7 @@ const NicknameEditForm = ({
         <div>
           <textarea
             rows="1"
-            className="w-full h-12 rounded border-solid border-2 border-light-green text-4xl text-center "
+            className="w-full h-12 rounded border-solid border-2 border-light-green text-4xl text-center dark:bg-white dark:text-black"
             onChange={onEditNickname}
           >
             {nickname}
@@ -26,20 +26,20 @@ const NicknameEditForm = ({
           <div>
             <button
               onClick={onChangeNicknameEdit(editNickname)}
-              className="mr-2 px-1 h-9 bg-light-beige rounded-md font-bold focus:bg-light-green focus:text-white"
+              className="dark:text-black mr-2 px-1 h-9 bg-light-beige rounded-md font-bold focus:bg-light-green focus:text-white"
             >
               수정
             </button>
             <button
               onClick={onCancleChangeNickname}
-              className="px-1 h-9 bg-light-beige rounded-md font-bold focus:bg-red-500 focus:text-white"
+              className="dark:text-black px-1 h-9 bg-light-beige rounded-md font-bold focus:bg-red-500 focus:text-white"
             >
               취소
             </button>
           </div>
         </div>
       ) : (
-        <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
+        <h3 className="dark:text-dark-green text-4xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
           {nickname}
         </h3>
       )}

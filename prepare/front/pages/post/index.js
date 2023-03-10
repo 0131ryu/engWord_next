@@ -19,6 +19,7 @@ const PostSearch = dynamic(import("../../components/post/PostSearch"));
 const WeekendWordChart = dynamic(
   import("../../components/post/WeekendWordChart")
 );
+const Qutoes = dynamic(import("../../components/post/Quotes"));
 const UserInfo = dynamic(import("../../components/UserInfo"));
 
 const Index = () => {
@@ -109,6 +110,11 @@ const Index = () => {
                 </>
               )}
               <PostSearch />
+              {weekendResult.length > 0 ? (
+                <div className="mt-10">
+                  <WeekendWordChart weekendResult={weekendResult} />
+                </div>
+              ) : null}
             </div>
             <div className="col-span-2 p-2 bg-gray-100 rounded-lg">
               {me && <PostForms />}
@@ -122,11 +128,7 @@ const Index = () => {
                 className="h-10"
               />
             </div>
-            {weekendResult.length > 0 ? (
-              <div className="mt-10">
-                <WeekendWordChart weekendResult={weekendResult} />
-              </div>
-            ) : null}
+            <Qutoes />
           </div>
         </div>
       </Navbar>

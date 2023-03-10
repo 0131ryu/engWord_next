@@ -399,7 +399,7 @@ export const wordSlice = createSlice({
     },
     loadWordListsFailure: (state, action) => {
       state.loadWordListsLoading = false;
-      state.loadWordListsError = action.error;
+      // state.loadWordListsError = action.error;
     },
     loadEasyWordsRequest: (state) => {
       state.loadEasyWordsLoading = true;

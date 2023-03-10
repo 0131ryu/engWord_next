@@ -4,8 +4,7 @@ import { createWrapper } from "next-redux-wrapper";
 
 import rootReducer from "./feature";
 import rootSaga from "./sagas/rootSaga";
-
-import logger from "redux-logger";
+import { quoteProps } from "../type";
 
 const isDev = process.env.NODE_ENV === "development";
 
@@ -17,12 +16,16 @@ const createStore = () => {
     middleware: middlewares,
     devTools: isDev,
   });
-  store.sagaTask = sagaMiddleware.run(rootSaga);
+  (store as any).sagaTask = sagaMiddleware.run(rootSaga);
   return store;
 };
 
 const wrapper = createWrapper(createStore, {
   debug: isDev,
 });
+
+export interface RootState {
+  quote: quoteProps;
+}
 
 export default wrapper;

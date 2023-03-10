@@ -8,6 +8,7 @@ const dotenv = require("dotenv");
 const path = require("path");
 const hpp = require("hpp");
 const helmet = require("helmet");
+const axios = require("axios");
 
 const db = require("./models");
 const passportConfig = require("./passport");
@@ -19,6 +20,9 @@ const userRouter = require("./routes/user");
 const gameRouter = require("./routes/game");
 const gamesRouter = require("./routes/games");
 const hashtagRouter = require("./routes/hashtag");
+const quoteRouter = require("./routes/quote");
+
+const quoteData = require("./quoteData");
 
 dotenv.config();
 const app = express();
@@ -89,6 +93,16 @@ app.use("/posts", postsRouter);
 app.use("/game", gameRouter);
 app.use("/games", gamesRouter);
 app.use("/hashtag", hashtagRouter);
+app.use("/quote", quoteRouter);
+
+// axios
+//   .request(quoteData)
+//   .then(function (response) {
+//     console.log(response.data);
+//   })
+//   .catch(function (error) {
+//     console.error(error);
+//   });
 
 app.listen(3005, (req, res) => {
   console.log("The server is running at port 80");

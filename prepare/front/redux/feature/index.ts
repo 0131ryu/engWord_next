@@ -5,6 +5,7 @@ import user from "./userSlice";
 import word from "./wordSlice";
 import post from "./postSlice";
 import game from "./gameSlice";
+import quote from "./quoteSlice";
 
 const rootReducer = (state, action) => {
   switch (action.type) {
@@ -17,6 +18,7 @@ const rootReducer = (state, action) => {
         post,
         word,
         game,
+        quote,
       });
       return combinedReducer(state, action);
     }

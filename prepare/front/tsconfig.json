@@ -23,7 +23,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "components/post/Quotes.tsx", "components/post/Quotes.tsx", "redux/sagas/quoteSaga.ts", "redux/sagas/quoteSaga.ts", "pages/post/index.js"  ],
   "exclude": [
     "node_modules"
   ]
